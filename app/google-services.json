@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "870530768225",
+    "project_id": "quotify-63934",
+    "storage_bucket": "quotify-63934.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870530768225:android:69f298b14dfbabe0327920",
+        "android_client_info": {
+          "package_name": "com.kovhan.quotify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEYVjiRxFlgptfwpUE_9RNDTSb0J_8sR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
