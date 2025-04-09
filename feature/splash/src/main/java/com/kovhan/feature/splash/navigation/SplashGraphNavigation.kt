@@ -4,13 +4,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.navigation
-import com.kovhan.feature.splash.presentation.splash.navigation.SplashScreen
+import com.kovhan.core.ui.navigation.SplashGraph
+import com.kovhan.core.ui.navigation.startDestination
 import com.kovhan.feature.splash.presentation.splash.navigation.splashScreen
-import kotlinx.serialization.Serializable
-
-
-@Serializable
-data object Splash
 
 fun NavGraphBuilder.splashGraph(
     navController: NavController,
@@ -18,8 +14,8 @@ fun NavGraphBuilder.splashGraph(
     navigateToOnboarding: ()-> Unit,
     navigateToMain: ()-> Unit
 ) {
-    navigation<Splash>(
-        startDestination = SplashScreen
+    navigation<SplashGraph>(
+        startDestination = SplashGraph.startDestination
     ) {
         splashScreen(
             navAction = SplashScreenNavAction(

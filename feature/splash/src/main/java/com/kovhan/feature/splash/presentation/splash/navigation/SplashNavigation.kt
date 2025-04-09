@@ -6,20 +6,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.kovhan.core.ui.navigation.SplashGraph
 import com.kovhan.feature.splash.navigation.SplashScreenNavAction
 import com.kovhan.feature.splash.presentation.splash.SplashScreen
 import com.kovhan.feature.splash.presentation.splash.SplashScreenViewModel
 import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenEffect
-import kotlinx.serialization.Serializable
-
-@Serializable
-data object SplashScreen
 
 internal fun NavGraphBuilder.splashScreen(
     navAction: SplashScreenNavAction,
     paddingValues: PaddingValues
 ) {
-    composable<SplashScreen> {
+    composable<SplashGraph.SplashScreen> {
         val viewModel = hiltViewModel<SplashScreenViewModel>()
         val state = viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -27,10 +24,10 @@ internal fun NavGraphBuilder.splashScreen(
             viewModel.uiEffect.collect { event ->
                 when (event) {
                     SplashScreenEffect.NavigateToOnboarding->{
-                        navAction.navigateToOnboarding
+                        navAction.navigateToOnboarding.invoke()
                     }
                     SplashScreenEffect.NavigateToMain->{
-                        navAction.navigateToMain
+                        navAction.navigateToMain.invoke()
                     }
                     else->{
 

@@ -63,7 +63,7 @@ dependencies {
     implementation(project(":design-systems"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:onboarding"))
-    implementation(project(":feature:home"))
+    implementation(project(":feature:main"))
     implementationAndroidX()
     implementationCompose()
     implementationHilt()

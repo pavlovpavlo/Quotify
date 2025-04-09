@@ -1,75 +1,139 @@
 package com.kovhan.quotify
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.kovhan.core.ui.component.BottomBar
-import com.kovhan.core.ui.extensions.findLifecycleOwner
-import com.kovhan.feature.splash.navigation.Splash
+import androidx.navigation.compose.rememberNavController
+import com.kovhan.core.ui.navigation.MainGraph
+import com.kovhan.core.ui.navigation.OnboardingGraph
+import com.kovhan.core.ui.navigation.SplashGraph
+import com.kovhan.feature.main.navigation.mainGraph
+import com.kovhan.feature.onboarding.navigation.onboardingGraph
 import com.kovhan.feature.splash.navigation.splashGraph
 import com.kovhan.quotify.mvi.MainActivityState
 import com.kovhan.quotify.mvi.MainIntent
+import com.kovhan.quotify.navigation.BottomBar
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+private val mainScope = MainScope()
+
+/**
+ * Визначає, чи потрібно показувати BottomBar для поточного destination
+ */
+private fun shouldShowBottomBar(destination: NavDestination?): Boolean {
+    if (destination == null) return false
+    
+    // Перевіряємо, чи route destination містить характерну частину для екранів MainGraph
+    val route = destination.route ?: ""
+    return route.contains("Home", ignoreCase = true) ||
+           route.contains("Quotes", ignoreCase = true) ||
+           route.contains("Favorites", ignoreCase = true) ||
+           route.contains("Profile", ignoreCase = true) ||
+           // Додаємо перевірку на випадок, якщо використовується MainGraph безпосередньо
+           route.contains("MainGraph", ignoreCase = true)
+}
 
 @Composable
 fun AppContent(
     modifier: Modifier = Modifier,
     uiState: MainActivityState,
     uiIntent: MainIntent,
-    navController: NavHostController,
+    navController: NavHostController = rememberNavController(),
 ) {
-    val context = LocalContext.current
-    val keyboardManager = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
-    val localDensity = LocalDensity.current
-    val lifecycleOwner = remember { context.findLifecycleOwner() }
     val snackBarSuccessHostState = remember { SnackbarHostState() }
     val snackBarErrorHostState = remember { SnackbarHostState() }
+    var showBottomBar by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             snackBarSuccessHostState.currentSnackbarData?.dismiss()
             snackBarErrorHostState.currentSnackbarData?.dismiss()
+            
+            val shouldShowBottomBar = shouldShowBottomBar(destination)
+            
+            if (shouldShowBottomBar && !showBottomBar) {
+                // Зменшуємо затримку перед показом BottomBar для швидшого відображення
+                mainScope.launch {
+                    delay(150) // Зменшена затримка з 300ms до 150ms
+                    showBottomBar = true
+                }
+            } else if (!shouldShowBottomBar && showBottomBar) {
+                // Одразу ховаємо BottomBar при переході з Main графу
+                showBottomBar = false
+            }
         }
     }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            BottomBar(
-                navController = navController
-            )
-        },
-        //containerColor = HasherMaterialTheme.colors.backgroundColor
-    ) { innerPaddingModifier ->
-
-        LaunchedEffect(innerPaddingModifier.calculateBottomPadding()) {
-//            val bottomPadding = localDensity.run {
-//                innerPaddingModifier.calculateBottomPadding().toPx()
-//            }.toInt()
-//            uiIntent.updateChatBottomPadding(bottomPadding)
+            AnimatedVisibility(
+                visible = showBottomBar,
+                enter = slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(durationMillis = 150) // Швидша анімація появи
+                ),
+                exit = slideOutVertically(
+                    targetOffsetY = { it },
+                    animationSpec = tween(durationMillis = 100) // Швидша анімація зникнення
+                )
+            ) {
+                BottomBar(navController = navController)
+            }
         }
-
+    ) { innerPaddingModifier ->
         NavHost(
             modifier = modifier.fillMaxSize(),
             navController = navController,
-            startDestination = Splash,
+            startDestination = SplashGraph::class.qualifiedName!!
         ) {
-            splashGraph(navController, paddingValues = innerPaddingModifier,
+            splashGraph(
+                navController = navController,
+                paddingValues = innerPaddingModifier,
                 navigateToOnboarding = {
-                    navController
+                    navController.navigate(OnboardingGraph::class.qualifiedName!!) {
+                        popUpTo(SplashGraph::class.qualifiedName!!) { inclusive = true }
+                    }
                 },
                 navigateToMain = {
+                    navController.navigate(MainGraph::class.qualifiedName!!) {
+                        popUpTo(SplashGraph::class.qualifiedName!!) { inclusive = true }
+                    }
+                }
+            )
 
-                })
+            onboardingGraph(
+                navController = navController,
+                paddingValues = innerPaddingModifier,
+                navigateToMain = {
+                    navController.navigate(MainGraph::class.qualifiedName!!) {
+                        popUpTo(OnboardingGraph::class.qualifiedName!!) { inclusive = true }
+                    }
+                }
+            )
+
+            mainGraph(
+                navController = navController,
+                paddingValues = innerPaddingModifier
+            )
         }
     }
 }

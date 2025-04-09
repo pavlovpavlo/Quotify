@@ -15,8 +15,8 @@ constructor(
 
     init {
         viewModelScope.launch {
-            delay(3000)
-            publishEffect(SplashScreenEffect.NavigateToOnboarding)
+            delay(4000)
+            publishEffect(SplashScreenEffect.NavigateToMain)
         }
     }
 }
