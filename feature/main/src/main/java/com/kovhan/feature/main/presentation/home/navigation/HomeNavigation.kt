@@ -15,9 +15,6 @@ import com.kovhan.feature.main.presentation.home.HomeScreen
 import com.kovhan.feature.main.presentation.home.HomeScreenViewModel
 import com.kovhan.feature.main.presentation.home.mvi.HomeScreenEffect
 
-// Константи для швидших анімацій
-private const val ANIMATION_DURATION = 150 // Мілісекунди
-private const val ANIMATION_OFFSET = 50 // Відсотки від ширини екрану
 
 internal fun NavGraphBuilder.homeScreen(
     navAction: HomeScreenNavAction,

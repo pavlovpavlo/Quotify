@@ -1,15 +1,35 @@
+# === Android build artifacts ===
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+*.jar
+
+# === Build folders ===
+build/
+*/build/
+.gradle/
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+
+# === Kotlin Annotation Processing / KAPT ===
+*.kapt_metadata
+*.kapt_stubs
+*.tab
+*.len
+*.at
+
+# === IntelliJ / Android Studio ===
+.navigation/
+captures/
+output.json
 local.properties
+.DS_Store
+Thumbs.db
+
+# === Module-specific ===
+**/app/release/
+**/app/debug/
+**/bin/
+**/gen/

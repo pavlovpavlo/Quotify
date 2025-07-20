@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.kovhan.feature.main.test.main-mergeDebugAndroidTestResources-66:/values-v24/values-v24.xml",
+            "outputFile": "com.kovhan.feature.main.test.main-mergeDebugAndroidTestResources-67:/values-v24/values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Pavlo\\AndroidStudioProjects\\dental_android\\caches\\8.9\\transforms\\79b6e23d0f2b0c83a649a16022af3449\\transformed\\appcompat-1.6.1\\res\\values-v24\\values-v24.xml",
+                    "source": "F:\\Projects\\android_hasher\\caches\\8.9\\transforms\\242c1a7c6d4903a4a2913261a4ce4919\\transformed\\appcompat-1.6.1\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

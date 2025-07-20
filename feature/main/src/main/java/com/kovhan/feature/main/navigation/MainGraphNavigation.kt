@@ -3,6 +3,7 @@ package com.kovhan.feature.main.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.navigation
 import com.kovhan.core.ui.navigation.MainGraph
 import com.kovhan.core.ui.navigation.startDestination
@@ -14,6 +15,13 @@ import com.kovhan.feature.main.presentation.profile.navigation.ProfileScreenNavA
 import com.kovhan.feature.main.presentation.profile.navigation.profileScreen
 import com.kovhan.feature.main.presentation.quotes.navigation.QuotesScreenNavAction
 import com.kovhan.feature.main.presentation.quotes.navigation.quotesScreen
+
+fun NavController.navigateToMainGraph(builder: NavOptionsBuilder.() -> Unit = { }){
+    navigate(
+        route = MainGraph,
+        builder = builder,
+    )
+}
 
 fun NavGraphBuilder.mainGraph(
     navController: NavController,

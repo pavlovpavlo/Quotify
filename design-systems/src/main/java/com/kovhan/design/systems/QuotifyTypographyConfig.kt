@@ -4,12 +4,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.kovhan.design.systems.util.getDimensionMultiplier
 
 val LocalTypography = compositionLocalOf { QuotifyTypography() }
+
+val QuotifyFontFamily = FontFamily(
+    Font(R.font.jakarta_regular, FontWeight.W400),
+    Font(R.font.jakarta_medium, FontWeight.W500),
+    Font(R.font.jakarta_bold, FontWeight.W700),
+    Font(R.font.jakarta_semibold, FontWeight.W600), // якщо є
+)
 
 @Composable
 internal fun provideTypography(): QuotifyTypography {
@@ -103,151 +112,188 @@ val defaultTextDimensions = TextDimensions(
 data class QuotifyTypography(
     val displayLargeExtraBold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.displayLarge,
-        fontWeight = FontWeight.W800
+        fontWeight = FontWeight.W800,
+        fontFamily = QuotifyFontFamily
     ),
     val displayLargeSemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.displayLarge,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val displayBold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.display,
-        fontWeight = FontWeight.W700
+        fontWeight = FontWeight.W700,
+        fontFamily = QuotifyFontFamily
     ),
     val displaySemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.display,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val displaySmallSemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.displaySmall,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val displaySmallMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.displaySmall,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val displayNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.display,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val headlineLargeNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.headlineLarge,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val headlineLargeMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.headlineLarge,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val headlineBigMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.headlineBig,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val headlineBigBold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.headlineBig,
-        fontWeight = FontWeight.W700
+        fontWeight = FontWeight.W700,
+        fontFamily = QuotifyFontFamily
     ),
     val headlineBold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.headline,
-        fontWeight = FontWeight.W700
+        fontWeight = FontWeight.W700,
+        fontFamily = QuotifyFontFamily
     ),
     val headlineSemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.headline,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val headlineNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.headline,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val titleBold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.title,
-        fontWeight = FontWeight.W700
+        fontWeight = FontWeight.W700,
+        fontFamily = QuotifyFontFamily
     ),
     val titleSemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.title,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val titleMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.title,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val titleNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.title,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val subtitleSemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.subtitle,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val subtitleMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.subtitle,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val subtitleNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.subtitle,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val bodyBold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.body,
-        fontWeight = FontWeight.W700
+        fontWeight = FontWeight.W700,
+        fontFamily = QuotifyFontFamily
     ),
     val bodySemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.body,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val bodyMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.body,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val bodyNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.body,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val labelBold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.label,
-        fontWeight = FontWeight.W700
+        fontWeight = FontWeight.W700,
+        fontFamily = QuotifyFontFamily
     ),
     val labelSemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.label,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val labelMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.label,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val labelNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.label,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val smallLabelBold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.smallLabel,
-        fontWeight = FontWeight.W700
+        fontWeight = FontWeight.W700,
+        fontFamily = QuotifyFontFamily
     ),
     val smallLabelSemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.smallLabel,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val smallLabelMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.smallLabel,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val smallLabelNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.smallLabel,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val tinySemibold: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.tiny,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W600,
+        fontFamily = QuotifyFontFamily
     ),
     val tinyMedium: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.tiny,
-        fontWeight = FontWeight.W500
+        fontWeight = FontWeight.W500,
+        fontFamily = QuotifyFontFamily
     ),
     val tinyNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.tiny,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     ),
     val faintNormal: TextStyle = TextStyle(
         fontSize = defaultTextDimensions.faint,
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W400,
+        fontFamily = QuotifyFontFamily
     )
 )
 

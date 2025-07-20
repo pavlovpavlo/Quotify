@@ -2,7 +2,6 @@ package com.kovhan.core.ui.navigation
 
 import kotlinx.serialization.Serializable
 
-// Графи навігації
 @Serializable
 sealed class NavigationGraph
 
@@ -18,10 +17,20 @@ data object OnboardingGraph : NavigationGraph() {
     data object OnboardingScreen
 }
 
-// Основний граф, що включає в себе всі таби
+@Serializable
+data object AuthGraph : NavigationGraph() {
+    @Serializable
+    data object LoginScreen
+    
+    @Serializable
+    data object RegisterScreen
+    
+    @Serializable
+    data object ForgotPasswordScreen
+}
+
 @Serializable
 data object MainGraph : NavigationGraph() {
-    // Екрани головного графа
     @Serializable
     data object HomeScreen
     
@@ -35,31 +44,34 @@ data object MainGraph : NavigationGraph() {
     data object ProfileScreen
 }
 
-// Extension property для відображення BottomBar
 val NavigationGraph.showBottomBar: Boolean
     get() = when (this) {
         is MainGraph -> true
         else -> false
     }
 
-// Отримання початкового екрану для графа
 val SplashGraph.startDestination: SplashGraph.SplashScreen
     get() = SplashGraph.SplashScreen
 
 val OnboardingGraph.startDestination: OnboardingGraph.OnboardingScreen
     get() = OnboardingGraph.OnboardingScreen
 
+val AuthGraph.startDestination: AuthGraph.LoginScreen
+    get() = AuthGraph.LoginScreen
+
 val MainGraph.startDestination: MainGraph.HomeScreen
     get() = MainGraph.HomeScreen
 
-// Функції для роботи з маршрутами в NavDestination
 fun findGraphByRoute(route: String?): NavigationGraph? {
     if (route == null) return null
-    
-    // Перевіряємо по префіксу маршруту до якого графа він належить
+
     return when {
         route.startsWith("splash", ignoreCase = true) -> SplashGraph
         route.startsWith("onboarding", ignoreCase = true) -> OnboardingGraph
+        route.startsWith("auth", ignoreCase = true) || 
+        route.startsWith("login", ignoreCase = true) || 
+        route.startsWith("register", ignoreCase = true) || 
+        route.startsWith("forgot_password", ignoreCase = true) -> AuthGraph
         route.startsWith("main", ignoreCase = true) || 
         route.startsWith("home", ignoreCase = true) || 
         route.startsWith("quotes", ignoreCase = true) || 

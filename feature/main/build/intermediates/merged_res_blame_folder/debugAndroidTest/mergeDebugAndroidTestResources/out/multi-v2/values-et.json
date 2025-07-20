@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.kovhan.feature.main.test.main-mergeDebugAndroidTestResources-66:/values-et/values-et.xml",
+            "outputFile": "com.kovhan.feature.main.test.main-mergeDebugAndroidTestResources-67:/values-et/values-et.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Pavlo\\AndroidStudioProjects\\dental_android\\caches\\8.9\\transforms\\d78cfe5cef6abd6080bb5465b09863a7\\transformed\\ui-release\\res\\values-et\\values-et.xml",
+                    "source": "F:\\Projects\\android_hasher\\caches\\8.9\\transforms\\9f873344c00f8831f0c9fd1cbefabdb1\\transformed\\ui-release\\res\\values-et\\values-et.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,24 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Pavlo\\AndroidStudioProjects\\dental_android\\caches\\8.9\\transforms\\2bf988e8c9267946d9f1f64a5443d119\\transformed\\foundation-release\\res\\values-et\\values-et.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,145",
-                        "endColumns": "89,88",
-                        "endOffsets": "140,229"
-                    },
-                    "to": {
-                        "startLines": "113,114",
-                        "startColumns": "4,4",
-                        "startOffsets": "11507,11597",
-                        "endColumns": "89,88",
-                        "endOffsets": "11592,11681"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Pavlo\\AndroidStudioProjects\\dental_android\\caches\\8.9\\transforms\\917c3716167e7ab5d3e3c2825ed6fba5\\transformed\\material3-release\\res\\values-et\\values-et.xml",
+                    "source": "F:\\Projects\\android_hasher\\caches\\8.9\\transforms\\80adde5e41356b216039509d3676d714\\transformed\\material3-release\\res\\values-et\\values-et.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -55,24 +38,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Pavlo\\AndroidStudioProjects\\dental_android\\caches\\8.9\\transforms\\bc966ed2b465c774adf0131a7d694f24\\transformed\\core-1.13.1\\res\\values-et\\values-et.xml",
+                    "source": "F:\\Projects\\android_hasher\\caches\\8.9\\transforms\\c802f53fe0973f3e24e8f6434a724bf6\\transformed\\foundation-release\\res\\values-et\\values-et.xml",
                     "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,150,252,350,453,559,664,784",
-                        "endColumns": "94,101,97,102,105,104,119,100",
-                        "endOffsets": "145,247,345,448,554,659,779,880"
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,145",
+                        "endColumns": "89,88",
+                        "endOffsets": "140,229"
                     },
                     "to": {
-                        "startLines": "29,30,31,32,33,34,35,109",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "2827,2922,3024,3122,3225,3331,3436,11136",
-                        "endColumns": "94,101,97,102,105,104,119,100",
-                        "endOffsets": "2917,3019,3117,3220,3326,3431,3551,11232"
+                        "startLines": "113,114",
+                        "startColumns": "4,4",
+                        "startOffsets": "11507,11597",
+                        "endColumns": "89,88",
+                        "endOffsets": "11592,11681"
                     }
                 },
                 {
-                    "source": "C:\\Users\\Pavlo\\AndroidStudioProjects\\dental_android\\caches\\8.9\\transforms\\79b6e23d0f2b0c83a649a16022af3449\\transformed\\appcompat-1.6.1\\res\\values-et\\values-et.xml",
+                    "source": "F:\\Projects\\android_hasher\\caches\\8.9\\transforms\\242c1a7c6d4903a4a2913261a4ce4919\\transformed\\appcompat-1.6.1\\res\\values-et\\values-et.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -86,6 +69,23 @@
                         "startOffsets": "105,211,310,421,507,609,726,807,884,976,1070,1166,1268,1377,1471,1572,1666,1758,1851,1934,2045,2149,2248,2358,2460,2559,2725,10759",
                         "endColumns": "105,98,110,85,101,116,80,76,91,93,95,101,108,93,100,93,91,92,82,110,103,98,109,101,98,165,101,82",
                         "endOffsets": "206,305,416,502,604,721,802,879,971,1065,1161,1263,1372,1466,1567,1661,1753,1846,1929,2040,2144,2243,2353,2455,2554,2720,2822,10837"
+                    }
+                },
+                {
+                    "source": "F:\\Projects\\android_hasher\\caches\\8.9\\transforms\\5e8e4ea1e971113656edfb5b6c5af994\\transformed\\core-1.13.1\\res\\values-et\\values-et.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,150,252,350,453,559,664,784",
+                        "endColumns": "94,101,97,102,105,104,119,100",
+                        "endOffsets": "145,247,345,448,554,659,779,880"
+                    },
+                    "to": {
+                        "startLines": "29,30,31,32,33,34,35,109",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "2827,2922,3024,3122,3225,3331,3436,11136",
+                        "endColumns": "94,101,97,102,105,104,119,100",
+                        "endOffsets": "2917,3019,3117,3220,3326,3431,3551,11232"
                     }
                 }
             ]

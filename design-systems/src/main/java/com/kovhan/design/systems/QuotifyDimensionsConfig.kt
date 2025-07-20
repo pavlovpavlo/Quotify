@@ -335,6 +335,7 @@ data class QuotifyDimensions(
     val topBarHeight: Dp = 56.dp,
     val buttonHeight: Dp = 50.dp,
 
+    val corner_radius_20: Dp = 20.dp,
     val corner_radius_15: Dp = 15.dp,
     val corner_radius_12: Dp = 12.dp,
     val corner_radius_10: Dp = 10.dp,

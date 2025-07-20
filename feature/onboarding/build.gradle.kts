@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+
 plugins {
     AndroidLibrary
     KotlinAndroid
@@ -10,6 +12,16 @@ plugins {
 
 android {
     namespace = "${AppConfig.applicationId}.feature.onboarding"
+    buildFeatures {
+        compose = true
+    }
+
+    composeCompiler {
+        featureFlags.addAll(
+            ComposeFeatureFlag.StrongSkipping,
+            ComposeFeatureFlag.OptimizeNonSkippingGroups
+        )
+    }
 }
 
 dependencies {

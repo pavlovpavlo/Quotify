@@ -20,10 +20,15 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.kovhan.core.ui.navigation.AuthGraph
 import com.kovhan.core.ui.navigation.MainGraph
 import com.kovhan.core.ui.navigation.OnboardingGraph
 import com.kovhan.core.ui.navigation.SplashGraph
+import com.kovhan.feature.auth.navigation.authGraph
+import com.kovhan.feature.auth.navigation.navigateToAuthGraph
 import com.kovhan.feature.main.navigation.mainGraph
+import com.kovhan.feature.main.navigation.navigateToMainGraph
+import com.kovhan.feature.onboarding.navigation.navigateToOnboardingGraph
 import com.kovhan.feature.onboarding.navigation.onboardingGraph
 import com.kovhan.feature.splash.navigation.splashGraph
 import com.kovhan.quotify.mvi.MainActivityState
@@ -40,14 +45,12 @@ private val mainScope = MainScope()
  */
 private fun shouldShowBottomBar(destination: NavDestination?): Boolean {
     if (destination == null) return false
-    
-    // Перевіряємо, чи route destination містить характерну частину для екранів MainGraph
+
     val route = destination.route ?: ""
     return route.contains("Home", ignoreCase = true) ||
            route.contains("Quotes", ignoreCase = true) ||
            route.contains("Favorites", ignoreCase = true) ||
            route.contains("Profile", ignoreCase = true) ||
-           // Додаємо перевірку на випадок, якщо використовується MainGraph безпосередньо
            route.contains("MainGraph", ignoreCase = true)
 }
 
@@ -70,13 +73,11 @@ fun AppContent(
             val shouldShowBottomBar = shouldShowBottomBar(destination)
             
             if (shouldShowBottomBar && !showBottomBar) {
-                // Зменшуємо затримку перед показом BottomBar для швидшого відображення
                 mainScope.launch {
-                    delay(150) // Зменшена затримка з 300ms до 150ms
+                    delay(150)
                     showBottomBar = true
                 }
             } else if (!shouldShowBottomBar && showBottomBar) {
-                // Одразу ховаємо BottomBar при переході з Main графу
                 showBottomBar = false
             }
         }
@@ -109,13 +110,18 @@ fun AppContent(
                 navController = navController,
                 paddingValues = innerPaddingModifier,
                 navigateToOnboarding = {
-                    navController.navigate(OnboardingGraph::class.qualifiedName!!) {
-                        popUpTo(SplashGraph::class.qualifiedName!!) { inclusive = true }
+                    navController.navigateToOnboardingGraph {
+                        popUpTo(SplashGraph) { inclusive = true }
                     }
                 },
                 navigateToMain = {
-                    navController.navigate(MainGraph::class.qualifiedName!!) {
-                        popUpTo(SplashGraph::class.qualifiedName!!) { inclusive = true }
+                    navController.navigateToMainGraph {
+                        popUpTo(SplashGraph) { inclusive = true }
+                    }
+                },
+                navigateToAuth = {
+                    navController.navigateToAuthGraph {
+                        popUpTo(SplashGraph) { inclusive = true }
                     }
                 }
             )
@@ -124,10 +130,15 @@ fun AppContent(
                 navController = navController,
                 paddingValues = innerPaddingModifier,
                 navigateToMain = {
-                    navController.navigate(MainGraph::class.qualifiedName!!) {
-                        popUpTo(OnboardingGraph::class.qualifiedName!!) { inclusive = true }
+                    navController.navigateToMainGraph {
+                        popUpTo(OnboardingGraph) { inclusive = true }
                     }
                 }
+            )
+
+            authGraph(
+                navController = navController,
+                paddingValues = innerPaddingModifier
             )
 
             mainGraph(

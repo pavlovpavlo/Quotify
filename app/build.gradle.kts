@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":feature:splash"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:main"))
+    implementation(project(":feature:auth"))
     implementationAndroidX()
     implementationCompose()
     implementationHilt()

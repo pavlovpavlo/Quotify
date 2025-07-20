@@ -74,8 +74,8 @@ fun BottomBar(navController: NavController) {
                 selected = isSelected,
                 onClick = {
                     if (!isSelected) {
-                        navController.navigate(tab.destination::class.qualifiedName!!) {
-                            popUpTo(MainGraph::class.qualifiedName!!) {
+                        navController.navigate(tab.destination) {
+                            popUpTo(MainGraph) {
                                 saveState = true
                                 inclusive = false
                             }

@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":design-systems"))
     apiSerialization()
     implementationAndroidX()
     implementationCompose()
