@@ -1,46 +1,57 @@
 package com.kovhan.feature.auth.presentation.register.navigation
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.kovhan.core.ui.navigation.AuthGraph
+import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
+import com.kovhan.design.systems.R
 import com.kovhan.feature.auth.presentation.register.RegisterScreen
 import com.kovhan.feature.auth.presentation.register.RegisterScreenViewModel
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenEffect
 
-fun NavGraphBuilder.registerScreen(
+internal fun NavGraphBuilder.registerScreen(
     navAction: RegisterScreenNavAction,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
-    composable<AuthGraph.RegisterScreen>{
+    composable<AuthGraph.RegisterScreen> {
         val viewModel = hiltViewModel<RegisterScreenViewModel>()
         val state = viewModel.uiState.collectAsStateWithLifecycle()
-        
+        val context = LocalContext.current
+        val snackbarHostState = remember { SnackbarHostState() }
+
+        SnackbarMessageEffect(viewModel.snackbar, snackbarHostState)
+
         LaunchedEffect(Unit) {
             viewModel.uiEffect.collect { effect ->
                 when (effect) {
-                    is RegisterScreenEffect.None -> {
-                        // Нічого не робимо
-                    }
-                    else -> {
-                        // Обробка інших ефектів у майбутньому
-                    }
+                    RegisterScreenEffect.NavigateToMain -> navAction.navigateToMain()
+                    RegisterScreenEffect.NavigateToSignIn -> navAction.navigateToLogin()
+                    RegisterScreenEffect.NavigateBack -> navAction.navigateBack()
+                    is RegisterScreenEffect.OpenPrivacyPolicy -> navAction.navigateToWebView(
+                        title = context.getString(R.string.auth_privacy_policy_title),
+                        url = effect.url,
+                    )
+                    is RegisterScreenEffect.OpenTermsOfService -> navAction.navigateToWebView(
+                        title = context.getString(R.string.auth_terms_of_service_title),
+                        url = effect.url,
+                    )
                 }
             }
         }
-        
+
         RegisterScreen(
             state = state.value,
             intent = viewModel,
             navAction = navAction,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            snackbarHostState = snackbarHostState,
         )
     }
-} 
+}

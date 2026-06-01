@@ -6,295 +6,223 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.kovhan.design.systems.util.getDimensionMultiplier
 
 val LocalTypography = compositionLocalOf { QuotifyTypography() }
 
-val QuotifyFontFamily = FontFamily(
-    Font(R.font.jakarta_regular, FontWeight.W400),
-    Font(R.font.jakarta_medium, FontWeight.W500),
-    Font(R.font.jakarta_bold, FontWeight.W700),
-    Font(R.font.jakarta_semibold, FontWeight.W600), // якщо є
+/* ------------------------------------------------------------------
+ * Font families — Folio spec, all static optical-size sets:
+ *   Newsreader 24pt (serif, headings + reading)
+ *   Inter 18pt      (sans, UI body + labels)
+ *   JetBrains Mono  (mono, code)
+ * ------------------------------------------------------------------ */
+val NewsreaderFamily: FontFamily = FontFamily(
+    Font(R.font.newsreader_regular, FontWeight.W400),
+    Font(R.font.newsreader_medium, FontWeight.W500),
+    Font(R.font.newsreader_semibold, FontWeight.W600),
+    Font(R.font.newsreader_bold, FontWeight.W700),
+    Font(R.font.newsreader_italic, FontWeight.W400, FontStyle.Italic),
+    Font(R.font.newsreader_medium_italic, FontWeight.W500, FontStyle.Italic),
+)
+
+val InterFamily: FontFamily = FontFamily(
+    Font(R.font.inter_regular, FontWeight.W400),
+    Font(R.font.inter_medium, FontWeight.W500),
+    Font(R.font.inter_semibold, FontWeight.W600),
+    Font(R.font.inter_bold, FontWeight.W700),
+)
+
+val JetBrainsMonoFamily: FontFamily = FontFamily(
+    Font(R.font.jetbrains_mono_regular, FontWeight.W400),
+    Font(R.font.jetbrains_mono_medium, FontWeight.W500),
+)
+
+/* Folio modular type scale (in sp). */
+@Immutable
+data class TextDimensions(
+    val text3xs: TextUnit,
+    val text2xs: TextUnit,
+    val textXs:  TextUnit,
+    val textSm:  TextUnit,
+    val textBase: TextUnit,
+    val textMd:  TextUnit,
+    val textLg:  TextUnit,
+    val textXl:  TextUnit,
+    val text2xl: TextUnit,
+    val text3xl: TextUnit,
+    val text4xl: TextUnit,
+    val text5xl: TextUnit,
+    val text6xl: TextUnit,
+)
+
+val defaultTextDimensions = TextDimensions(
+    text3xs = 11.sp,
+    text2xs = 12.sp,
+    textXs  = 13.sp,
+    textSm  = 14.sp,
+    textBase = 16.sp,
+    textMd  = 17.sp,
+    textLg  = 19.sp,
+    textXl  = 22.sp,
+    text2xl = 26.sp,
+    text3xl = 32.sp,
+    text4xl = 40.sp,
+    text5xl = 52.sp,
+    text6xl = 68.sp,
 )
 
 @Composable
 internal fun provideTypography(): QuotifyTypography {
     val multiplier = getDimensionMultiplier()
-
-    val textDimension = defaultTextDimensions.copy(
-        displayLarge = defaultTextDimensions.displayLarge * multiplier,
-        display = defaultTextDimensions.display * multiplier,
-        displaySmall = defaultTextDimensions.displaySmall * multiplier,
-        headlineLarge = defaultTextDimensions.headlineLarge * multiplier,
-        headlineBig = defaultTextDimensions.headlineBig * multiplier,
-        headline = defaultTextDimensions.headline * multiplier,
-        title = defaultTextDimensions.title * multiplier,
-        subtitle = defaultTextDimensions.subtitle * multiplier,
-        body = defaultTextDimensions.body * multiplier,
-        label = defaultTextDimensions.label * multiplier,
-        smallLabel = defaultTextDimensions.smallLabel * multiplier,
-        tiny = defaultTextDimensions.tiny * multiplier,
+    val s = defaultTextDimensions.copy(
+        text3xs = defaultTextDimensions.text3xs * multiplier,
+        text2xs = defaultTextDimensions.text2xs * multiplier,
+        textXs  = defaultTextDimensions.textXs  * multiplier,
+        textSm  = defaultTextDimensions.textSm  * multiplier,
+        textBase = defaultTextDimensions.textBase * multiplier,
+        textMd  = defaultTextDimensions.textMd  * multiplier,
+        textLg  = defaultTextDimensions.textLg  * multiplier,
+        textXl  = defaultTextDimensions.textXl  * multiplier,
+        text2xl = defaultTextDimensions.text2xl * multiplier,
+        text3xl = defaultTextDimensions.text3xl * multiplier,
+        text4xl = defaultTextDimensions.text4xl * multiplier,
+        text5xl = defaultTextDimensions.text5xl * multiplier,
+        text6xl = defaultTextDimensions.text6xl * multiplier,
     )
 
+    val d = defaultTypography
     return QuotifyTypography(
-        displayLargeSemibold = defaultTypography.displayLargeSemibold.copy(fontSize = textDimension.displayLarge),
-        displayBold = defaultTypography.displayBold.copy(fontSize = textDimension.display),
-        displaySemibold = defaultTypography.displaySemibold.copy(fontSize = textDimension.display),
-        displaySmallSemibold = defaultTypography.displaySmallSemibold.copy(fontSize = textDimension.displaySmall),
-        headlineLargeNormal = defaultTypography.headlineLargeNormal.copy(fontSize = textDimension.headlineLarge),
-        headlineLargeMedium = defaultTypography.headlineLargeMedium.copy(fontSize = textDimension.headlineLarge),
-        headlineBigMedium = defaultTypography.headlineBigMedium.copy(fontSize = textDimension.headlineBig),
-        headlineBigBold = defaultTypography.headlineBigBold.copy(fontSize = textDimension.headlineBig),
-        headlineBold = defaultTypography.headlineBold.copy(fontSize = textDimension.headline),
-        headlineSemibold = defaultTypography.headlineSemibold.copy(fontSize = textDimension.headline),
-        headlineNormal = defaultTypography.headlineNormal.copy(fontSize = textDimension.headline),
-        titleBold = defaultTypography.titleBold.copy(fontSize = textDimension.title),
-        titleSemibold = defaultTypography.titleSemibold.copy(fontSize = textDimension.title),
-        titleMedium = defaultTypography.titleMedium.copy(fontSize = textDimension.title),
-        titleNormal = defaultTypography.titleNormal.copy(fontSize = textDimension.title),
-        subtitleSemibold = defaultTypography.subtitleSemibold.copy(fontSize = textDimension.subtitle),
-        subtitleMedium = defaultTypography.subtitleMedium.copy(fontSize = textDimension.subtitle),
-        bodyBold = defaultTypography.bodyBold.copy(fontSize = textDimension.body),
-        bodySemibold = defaultTypography.bodySemibold.copy(fontSize = textDimension.body),
-        bodyNormal = defaultTypography.bodyNormal.copy(fontSize = textDimension.body),
-        bodyMedium = defaultTypography.bodyMedium.copy(fontSize = textDimension.body),
-        labelBold = defaultTypography.labelBold.copy(fontSize = textDimension.label),
-        labelSemibold = defaultTypography.labelSemibold.copy(fontSize = textDimension.label),
-        labelMedium = defaultTypography.labelMedium.copy(fontSize = textDimension.label),
-        labelNormal = defaultTypography.labelNormal.copy(fontSize = textDimension.label),
-        smallLabelBold = defaultTypography.smallLabelBold.copy(fontSize = textDimension.smallLabel),
-        smallLabelSemibold = defaultTypography.smallLabelSemibold.copy(fontSize = textDimension.smallLabel),
-        smallLabelMedium = defaultTypography.smallLabelMedium.copy(fontSize = textDimension.smallLabel),
-        smallLabelNormal = defaultTypography.smallLabelNormal.copy(fontSize = textDimension.smallLabel),
-        tinySemibold = defaultTypography.tinySemibold.copy(fontSize = textDimension.tiny),
-        tinyMedium = defaultTypography.tinyMedium.copy(fontSize = textDimension.tiny),
+        display       = d.display.copy(fontSize = s.text6xl),
+        h1            = d.h1.copy(fontSize = s.text4xl),
+        h2            = d.h2.copy(fontSize = s.text3xl),
+        h3            = d.h3.copy(fontSize = s.text2xl),
+        h4            = d.h4.copy(fontSize = s.textLg),
+        body          = d.body.copy(fontSize = s.textBase),
+        bodyStrong    = d.bodyStrong.copy(fontSize = s.textBase),
+        readingBody   = d.readingBody.copy(fontSize = s.textMd),
+        lede          = d.lede.copy(fontSize = s.textXl),
+        eyebrow       = d.eyebrow.copy(fontSize = s.text2xs),
+        caption       = d.caption.copy(fontSize = s.textXs),
+        meta          = d.meta.copy(fontSize = s.text2xs),
+        small         = d.small.copy(fontSize = s.textXs),
+        code          = d.code.copy(fontSize = s.textSm),
+        blockquote    = d.blockquote.copy(fontSize = s.textLg),
     )
 }
 
+/**
+ * Folio semantic text styles. Color is intentionally NOT baked in —
+ * pass it at the call site so light/dark switching keeps working.
+ */
 @Immutable
-data class TextDimensions(
-    val displayExtraLarge: TextUnit,
-    val displayLarge: TextUnit,
-    val display: TextUnit,
-    val displaySmall: TextUnit,
-    val headlineLarge: TextUnit,
-    val headlineBig: TextUnit,
-    val headline: TextUnit,
-    val title: TextUnit,
-    val subtitle: TextUnit,
-    val body: TextUnit,
-    val label: TextUnit,
-    val smallLabel: TextUnit,
-    val tiny: TextUnit,
-    val faint: TextUnit
-)
-
-val defaultTextDimensions = TextDimensions(
-    displayExtraLarge = 42.sp,
-    displayLarge = 36.sp,
-    display = 24.sp,
-    displaySmall = 22.sp,
-    headlineLarge = 20.sp,
-    headlineBig = 18.sp,
-    headline = 17.sp,
-    title = 16.sp,
-    subtitle = 15.sp,
-    body = 14.sp,
-    label = 13.sp,
-    smallLabel = 12.sp,
-    tiny = 11.sp,
-    faint = 8.sp
-)
-
 data class QuotifyTypography(
-    val displayLargeExtraBold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.displayLarge,
-        fontWeight = FontWeight.W800,
-        fontFamily = QuotifyFontFamily
-    ),
-    val displayLargeSemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.displayLarge,
+    // Display & headlines — serif (Newsreader)
+    val display: TextStyle = TextStyle(
+        fontFamily = NewsreaderFamily,
+        fontSize = defaultTextDimensions.text6xl,
         fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.15.em,
+        letterSpacing = (-0.04).em,
     ),
-    val displayBold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.display,
-        fontWeight = FontWeight.W700,
-        fontFamily = QuotifyFontFamily
-    ),
-    val displaySemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.display,
+    val h1: TextStyle = TextStyle(
+        fontFamily = NewsreaderFamily,
+        fontSize = defaultTextDimensions.text4xl,
         fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.15.em,
+        letterSpacing = (-0.02).em,
     ),
-    val displaySmallSemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.displaySmall,
+    val h2: TextStyle = TextStyle(
+        fontFamily = NewsreaderFamily,
+        fontSize = defaultTextDimensions.text3xl,
         fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.3.em,
+        letterSpacing = (-0.02).em,
     ),
-    val displaySmallMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.displaySmall,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val displayNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.display,
-        fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
-    ),
-    val headlineLargeNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.headlineLarge,
-        fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
-    ),
-    val headlineLargeMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.headlineLarge,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val headlineBigMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.headlineBig,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val headlineBigBold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.headlineBig,
-        fontWeight = FontWeight.W700,
-        fontFamily = QuotifyFontFamily
-    ),
-    val headlineBold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.headline,
-        fontWeight = FontWeight.W700,
-        fontFamily = QuotifyFontFamily
-    ),
-    val headlineSemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.headline,
+    val h3: TextStyle = TextStyle(
+        fontFamily = NewsreaderFamily,
+        fontSize = defaultTextDimensions.text2xl,
         fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.3.em,
     ),
-    val headlineNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.headline,
-        fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
-    ),
-    val titleBold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.title,
-        fontWeight = FontWeight.W700,
-        fontFamily = QuotifyFontFamily
-    ),
-    val titleSemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.title,
+    // h4 — sans (Inter), used for UI section titles
+    val h4: TextStyle = TextStyle(
+        fontFamily = InterFamily,
+        fontSize = defaultTextDimensions.textLg,
         fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.3.em,
     ),
-    val titleMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.title,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val titleNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.title,
+    // Body — sans (Inter), default UI body
+    val body: TextStyle = TextStyle(
+        fontFamily = InterFamily,
+        fontSize = defaultTextDimensions.textBase,
         fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.5.em,
     ),
-    val subtitleSemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.subtitle,
+    // Body strong — used on buttons, CTAs
+    val bodyStrong: TextStyle = TextStyle(
+        fontFamily = InterFamily,
+        fontSize = defaultTextDimensions.textBase,
         fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.5.em,
     ),
-    val subtitleMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.subtitle,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val subtitleNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.subtitle,
+    // Reading body — serif, relaxed leading. For long-form quote/article reading.
+    val readingBody: TextStyle = TextStyle(
+        fontFamily = NewsreaderFamily,
+        fontSize = defaultTextDimensions.textMd,
         fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.65.em,
     ),
-    val bodyBold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.body,
-        fontWeight = FontWeight.W700,
-        fontFamily = QuotifyFontFamily
+    // Lede — italic serif intro paragraph
+    val lede: TextStyle = TextStyle(
+        fontFamily = NewsreaderFamily,
+        fontSize = defaultTextDimensions.textXl,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.W400,
+        lineHeight = 1.3.em,
     ),
-    val bodySemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.body,
+    // Eyebrow — small uppercase label above headings
+    val eyebrow: TextStyle = TextStyle(
+        fontFamily = InterFamily,
+        fontSize = defaultTextDimensions.text2xs,
         fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
+        letterSpacing = 0.12.em,
     ),
-    val bodyMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.body,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val bodyNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.body,
+    val caption: TextStyle = TextStyle(
+        fontFamily = InterFamily,
+        fontSize = defaultTextDimensions.textXs,
         fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.5.em,
     ),
-    val labelBold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.label,
-        fontWeight = FontWeight.W700,
-        fontFamily = QuotifyFontFamily
-    ),
-    val labelSemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.label,
-        fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
-    ),
-    val labelMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.label,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val labelNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.label,
+    val meta: TextStyle = TextStyle(
+        fontFamily = InterFamily,
+        fontSize = defaultTextDimensions.text2xs,
         fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
+        letterSpacing = 0.04.em,
     ),
-    val smallLabelBold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.smallLabel,
-        fontWeight = FontWeight.W700,
-        fontFamily = QuotifyFontFamily
-    ),
-    val smallLabelSemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.smallLabel,
-        fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
-    ),
-    val smallLabelMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.smallLabel,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val smallLabelNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.smallLabel,
+    val small: TextStyle = TextStyle(
+        fontFamily = InterFamily,
+        fontSize = defaultTextDimensions.textXs,
         fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
+        lineHeight = 1.5.em,
     ),
-    val tinySemibold: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.tiny,
-        fontWeight = FontWeight.W600,
-        fontFamily = QuotifyFontFamily
-    ),
-    val tinyMedium: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.tiny,
-        fontWeight = FontWeight.W500,
-        fontFamily = QuotifyFontFamily
-    ),
-    val tinyNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.tiny,
+    val code: TextStyle = TextStyle(
+        fontFamily = JetBrainsMonoFamily,
+        fontSize = defaultTextDimensions.textSm,
         fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
     ),
-    val faintNormal: TextStyle = TextStyle(
-        fontSize = defaultTextDimensions.faint,
+    val blockquote: TextStyle = TextStyle(
+        fontFamily = NewsreaderFamily,
+        fontSize = defaultTextDimensions.textLg,
+        fontStyle = FontStyle.Italic,
         fontWeight = FontWeight.W400,
-        fontFamily = QuotifyFontFamily
-    )
+        lineHeight = 1.65.em,
+    ),
 )
 
 val defaultTypography = QuotifyTypography()
+

@@ -1,46 +1,45 @@
 package com.kovhan.feature.auth.presentation.forgot_password.navigation
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.kovhan.core.ui.navigation.AuthGraph
+import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
 import com.kovhan.feature.auth.presentation.forgot_password.ForgotPasswordScreen
 import com.kovhan.feature.auth.presentation.forgot_password.ForgotPasswordScreenViewModel
 import com.kovhan.feature.auth.presentation.forgot_password.mvi.ForgotPasswordScreenEffect
 
-fun NavGraphBuilder.forgotPasswordScreen(
+internal fun NavGraphBuilder.forgotPasswordScreen(
     navAction: ForgotPasswordScreenNavAction,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
-    composable<AuthGraph.ForgotPasswordScreen>{
+    composable<AuthGraph.ForgotPasswordScreen> {
         val viewModel = hiltViewModel<ForgotPasswordScreenViewModel>()
         val state = viewModel.uiState.collectAsStateWithLifecycle()
-        
+        val snackbarHostState = remember { SnackbarHostState() }
+
+        SnackbarMessageEffect(viewModel.snackbar, snackbarHostState)
+
         LaunchedEffect(Unit) {
             viewModel.uiEffect.collect { effect ->
                 when (effect) {
-                    is ForgotPasswordScreenEffect.None -> {
-                        // Нічого не робимо
-                    }
-                    else -> {
-                        // Обробка інших ефектів у майбутньому
-                    }
+                    ForgotPasswordScreenEffect.NavigateToSignIn -> navAction.navigateToLogin()
+                    ForgotPasswordScreenEffect.NavigateBack -> navAction.navigateBack()
                 }
             }
         }
-        
+
         ForgotPasswordScreen(
             state = state.value,
             intent = viewModel,
             navAction = navAction,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            snackbarHostState = snackbarHostState,
         )
     }
-} 
+}

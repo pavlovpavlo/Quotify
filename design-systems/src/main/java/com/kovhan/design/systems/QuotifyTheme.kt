@@ -1,13 +1,16 @@
 package com.kovhan.design.systems
 
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.compose.ui.graphics.toArgb
 
 object QuotifyMaterialTheme {
     val colors: QuotifyColorPalette
@@ -32,82 +35,82 @@ object QuotifyMaterialTheme {
         @Composable get() = LocalSystem.current
 }
 
+/**
+ * Root theme for the app. Drives:
+ *
+ * - Compose palette/typography/dimensions/images via [CompositionLocalProvider]
+ * - System bars (status + nav): transparent background, icon color flipped to
+ *   match [isDarkTheme] so they stay readable in light and dark mode.
+ *
+ * [isDarkTheme] defaults to [isSystemInDarkTheme], so the app follows the
+ * system setting out of the box and reacts live to Settings → Display →
+ * Dark mode toggle. Pass an explicit value once a user-overridable theme
+ * preference exists.
+ */
 @Composable
 fun QuotifyAppTheme(
-    isDarkIcons: Boolean = false,
+    activity: AppCompatActivity,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val systemUiController = rememberSystemUiController()
-    if (isDarkTheme) {
-        QuotifyDarkTheme(content = content)
-        SideEffect {
-            systemUiController.setStatusBarColor(
-                color = Color.Transparent,
-                darkIcons = false
-            )
-            systemUiController.setNavigationBarColor(
-                color = Colors.darkBackgroundColor,
-                darkIcons = false
-            )
-        }
-    } else {
-        QuotifyLightTheme(content = content)
-        SideEffect {
-            systemUiController.setStatusBarColor(
-                color = Color.Transparent,
-                darkIcons = isDarkIcons
-            )
-            systemUiController.setNavigationBarColor(
-                color = Colors.lightBackgroundColor,
-                darkIcons = true
-            )
-        }
+    LaunchedEffect(isDarkTheme) {
+        // SystemBarStyle.dark -> dark *background* style -> system shows LIGHT icons.
+        // SystemBarStyle.light -> light background -> system shows DARK icons.
+        // We want icons to contrast with our app surface, so:
+        //   dark theme app -> dark style -> light icons
+        //   light theme app -> light style -> dark icons
+        activity.enableEdgeToEdge(
+            statusBarStyle = if (isDarkTheme) {
+                SystemBarStyle.dark(Color.Transparent.toArgb())
+            } else {
+                SystemBarStyle.light(
+                    Color.Transparent.toArgb(),
+                    Color.Transparent.toArgb(),
+                )
+            },
+            navigationBarStyle = if (isDarkTheme) {
+                SystemBarStyle.dark(Color.Transparent.toArgb())
+            } else {
+                SystemBarStyle.light(
+                    Color.Transparent.toArgb(),
+                    Color.Transparent.toArgb(),
+                )
+            },
+        )
     }
+
+    if (isDarkTheme) QuotifyDarkTheme(content = content)
+    else QuotifyLightTheme(content = content)
 }
 
 @Composable
 private fun QuotifyLightTheme(
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val quotifyColors = quotifyLightPalette
-    val quotifyImages = quotifyLightImages
-    val quotifyAnimation = quotifyLightAnimation
-
     CompositionLocalProvider(
-        LocaleQuotifyColors provides quotifyColors,
-        LocaleQuotifyImages provides quotifyImages,
+        LocaleQuotifyColors provides quotifyLightPalette,
+        LocaleQuotifyImages provides quotifyLightImages,
         LocalTypography provides provideTypography(),
         LocalDimensions provides provideDimensions(),
-        LocalAnimation provides quotifyAnimation,
-        LocalSystem provides quotifyLightSystem
+        LocalAnimation provides quotifyLightAnimation,
+        LocalSystem provides quotifyLightSystem,
     ) {
-        MaterialTheme(
-            shapes = Shapes(),
-            content = content
-        )
+        MaterialTheme(shapes = Shapes(), content = content)
     }
 }
 
 @Composable
 private fun QuotifyDarkTheme(
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val quotifyColors = quotifyDarkPalette
-    val quotifyImages = quotifyDarkImages
-    val quotifyAnimation = quotifyDarkAnimation
-
     CompositionLocalProvider(
-        LocaleQuotifyColors provides quotifyColors,
-        LocaleQuotifyImages provides quotifyImages,
+        LocaleQuotifyColors provides quotifyDarkPalette,
+        LocaleQuotifyImages provides quotifyDarkImages,
         LocalTypography provides provideTypography(),
         LocalDimensions provides provideDimensions(),
-        LocalAnimation provides quotifyAnimation,
-        LocalSystem provides quotifyDarkSystem
+        LocalAnimation provides quotifyDarkAnimation,
+        LocalSystem provides quotifyDarkSystem,
     ) {
-        MaterialTheme(
-            shapes = Shapes(),
-            content = content
-        )
+        MaterialTheme(shapes = Shapes(), content = content)
     }
 }

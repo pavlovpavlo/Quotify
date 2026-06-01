@@ -10,29 +10,26 @@ import com.kovhan.core.ui.navigation.startDestination
 import com.kovhan.feature.onboarding.presentation.onboarding.navigation.OnboardingScreenNavAction
 import com.kovhan.feature.onboarding.presentation.onboarding.navigation.onboardingScreen
 
-fun NavController.navigateToOnboardingGraph(builder: NavOptionsBuilder.() -> Unit = { }){
-    navigate(
-        route = OnboardingGraph,
-        builder = builder,
-    )
+fun NavController.navigateToOnboardingGraph(builder: NavOptionsBuilder.() -> Unit = { }) {
+    navigate(route = OnboardingGraph, builder = builder)
 }
 
 fun NavGraphBuilder.onboardingGraph(
     navController: NavController,
     paddingValues: PaddingValues,
-    navigateToMain: () -> Unit
+    navigateToComplete: () -> Unit,
 ) {
-    navigation<OnboardingGraph>(
-        startDestination = OnboardingGraph.startDestination
-    ) {
+    navigation<OnboardingGraph>(startDestination = OnboardingGraph.startDestination) {
         onboardingScreen(
-            navAction = OnboardingScreenNavAction(
-                onBack = {
+            navAction = object : OnboardingScreenNavAction {
+                override fun onBack() {
                     navController.navigateUp()
-                },
-                navigateToMain = navigateToMain
-            ),
-            paddingValues = paddingValues
+                }
+                override fun navigateToComplete() {
+                    navigateToComplete()
+                }
+            },
+            paddingValues = paddingValues,
         )
     }
-} 
+}

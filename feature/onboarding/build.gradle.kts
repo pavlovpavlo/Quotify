@@ -27,9 +27,11 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":design-systems"))
+    implementation(project(":domain"))
     implementationAndroidX()
     implementationCompose()
     implementationCoroutines()
+    implementationDatastore()
     implementationNavigation()
     implementationSerialization()
     implementationLogs()

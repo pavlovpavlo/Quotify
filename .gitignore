@@ -1,35 +1,90 @@
-# === Android build artifacts ===
+# === Build outputs ===
 *.apk
-*.ap_
 *.aab
+*.ap_
 *.dex
 *.class
 *.jar
+*.aar
+*.war
 
-# === Build folders ===
+# Keep the Gradle wrapper jar (needed by ./gradlew); excluded from *.jar above.
+!gradle/wrapper/gradle-wrapper.jar
+
+# === Build folders (Gradle, R, generated sources) ===
 build/
 */build/
-.gradle/
-.idea/
-*.iml
+**/build/
+**/release/
+**/debug/
+**/bin/
+**/gen/
+.cxx/
+.externalNativeBuild/
 
-# === Kotlin Annotation Processing / KAPT ===
+# === Gradle ===
+.gradle/
+gradle-app.setting
+.gradletasknamecache
+local.gradle
+
+# === Kotlin / KAPT / KSP caches ===
+.kotlin/
+*.kotlin_module
 *.kapt_metadata
 *.kapt_stubs
 *.tab
 *.len
 *.at
 
-# === IntelliJ / Android Studio ===
+# === IDE — IntelliJ / Android Studio ===
+.idea/
+*.iml
+*.iws
+*.ipr
 .navigation/
 captures/
 output.json
+
+# === IDE — other ===
+.vscode/
+.fleet/
+*.swp
+*.swo
+*.bak
+*~
+
+# === Local config / secrets ===
 local.properties
+keystore.properties
+key.properties
+*.jks
+*.keystore
+release.keystore
+debug.keystore
+*.pepk
+*.aps
+
+# Firebase configs are project-specific — decide per repo whether to commit.
+# Uncomment to keep them local-only:
+# **/google-services.json
+# **/GoogleService-Info.plist
+
+# === OS junk ===
 .DS_Store
 Thumbs.db
+desktop.ini
+ehthumbs.db
+ehthumbs_vista.db
 
-# === Module-specific ===
-**/app/release/
-**/app/debug/
-**/bin/
-**/gen/
+# === Logs / profiling / heap dumps ===
+*.log
+*.hprof
+*.profraw
+hs_err_pid*
+
+# === Design / spec dumps left in repo root ===
+/*.html
+
+# === Tooling caches ===
+.claude/

@@ -52,11 +52,11 @@ fun QuotifyOutlinedTextField(
 ) {
     val textSelectionColors = TextSelectionColors(
         handleColor = Color.Transparent,
-        backgroundColor = QuotifyMaterialTheme.colors.textFieldBg
+        backgroundColor = QuotifyMaterialTheme.colors.bgElevated
     )
 
     val textColor = textStyle.color.takeOrElse {
-        if (isError) QuotifyMaterialTheme.colors.textColorError else textStyle.color
+        if (isError) QuotifyMaterialTheme.colors.error else textStyle.color
     }
     val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
 
@@ -70,9 +70,9 @@ fun QuotifyOutlinedTextField(
             textStyle = mergedTextStyle,
             cursorBrush = SolidColor(
                 if (isError) {
-                    QuotifyMaterialTheme.colors.textColorError
+                    QuotifyMaterialTheme.colors.error
                 } else {
-                    QuotifyMaterialTheme.colors.textColorGray
+                    QuotifyMaterialTheme.colors.textSecondary
                 }
             ),
             visualTransformation = visualTransformation,

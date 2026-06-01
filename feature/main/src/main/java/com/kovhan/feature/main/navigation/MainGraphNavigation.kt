@@ -25,44 +25,57 @@ fun NavController.navigateToMainGraph(builder: NavOptionsBuilder.() -> Unit = { 
 
 fun NavGraphBuilder.mainGraph(
     navController: NavController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigateToAuth: () -> Unit,
 ) {
     navigation<MainGraph>(
         startDestination = MainGraph.startDestination
     ) {
         homeScreen(
-            navAction = HomeScreenNavAction(
-                navigateBack = {
+            navAction = object : HomeScreenNavAction {
+                override fun navigateBack() {
                     navController.navigateUp()
                 }
-            ),
+            },
             paddingValues = paddingValues
         )
         
         quotesScreen(
-            navAction = QuotesScreenNavAction(
-                onBack = {
+            navAction = object : QuotesScreenNavAction {
+                override fun onBack() {
                     navController.navigateUp()
                 }
-            ),
+                override fun navigateToQuoteDetails(quoteId: String) {
+                    // TODO: Implement quote details navigation
+                }
+            },
             paddingValues = paddingValues
         )
         
         favoritesScreen(
-            navAction = FavoritesScreenNavAction(
-                navigateBack = {
+            navAction = object : FavoritesScreenNavAction {
+                override fun navigateBack() {
                     navController.navigateUp()
                 }
-            ),
+                override fun navigateToQuoteDetails(quoteId: String) {
+                    // TODO: Implement quote details navigation
+                }
+            },
             paddingValues = paddingValues
         )
         
         profileScreen(
-            navAction = ProfileScreenNavAction(
-                navigateBack = {
+            navAction = object : ProfileScreenNavAction {
+                override fun navigateBack() {
                     navController.navigateUp()
                 }
-            ),
+                override fun navigateToSettings() {
+                    // TODO: Implement settings navigation
+                }
+                override fun navigateToAuth() {
+                    navigateToAuth()
+                }
+            },
             paddingValues = paddingValues
         )
     }

@@ -9,33 +9,34 @@ import com.kovhan.core.ui.navigation.SplashGraph
 import com.kovhan.core.ui.navigation.startDestination
 import com.kovhan.feature.splash.presentation.splash.navigation.splashScreen
 
-fun NavController.navigateToSplashGraph(builder: NavOptionsBuilder.() -> Unit = { }){
-    navigate(
-        route = SplashGraph,
-        builder = builder,
-    )
+fun NavController.navigateToSplashGraph(builder: NavOptionsBuilder.() -> Unit = { }) {
+    navigate(route = SplashGraph, builder = builder)
 }
 
 fun NavGraphBuilder.splashGraph(
     navController: NavController,
     paddingValues: PaddingValues,
-    navigateToOnboarding: ()-> Unit,
-    navigateToMain: ()-> Unit,
-    navigateToAuth: ()-> Unit
+    navigateToOnboarding: () -> Unit,
+    navigateToAuth: () -> Unit,
 ) {
-    navigation<SplashGraph>(
-        startDestination = SplashGraph.startDestination
-    ) {
+    navigation<SplashGraph>(startDestination = SplashGraph.startDestination) {
         splashScreen(
-            navAction = SplashScreenNavAction(
-                onBack = {
+            navAction = object : SplashScreenNavAction {
+                override fun onBack() {
                     navController.navigateUp()
-                },
-                navigateToOnboarding = navigateToOnboarding,
-                navigateToMain = navigateToMain,
-                navigateToAuth = navigateToAuth
-            ),
-            paddingValues = paddingValues
+                }
+                override fun navigateToOnboarding() {
+                    navigateToOnboarding()
+                }
+                override fun navigateToMain() {
+                    // Splash no longer goes straight to Main — kept on the interface
+                    // for future auth-aware splash logic.
+                }
+                override fun navigateToAuth() {
+                    navigateToAuth()
+                }
+            },
+            paddingValues = paddingValues,
         )
     }
 }

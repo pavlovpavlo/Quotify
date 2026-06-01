@@ -1,6 +1,20 @@
 package com.kovhan.feature.main.presentation.profile.navigation
 
-class ProfileScreenNavAction(
-    val navigateBack: () -> Unit = { },
-    val navigateToSettings: () -> Unit = { }
-) 
+import androidx.compose.runtime.Stable
+
+@Stable
+interface ProfileScreenNavAction {
+    fun navigateBack()
+    fun navigateToSettings()
+    fun navigateToAuth()
+
+    companion object {
+        val Empty: ProfileScreenNavAction = EmptyProfileScreenNavAction
+    }
+}
+
+private object EmptyProfileScreenNavAction : ProfileScreenNavAction {
+    override fun navigateBack() = Unit
+    override fun navigateToSettings() = Unit
+    override fun navigateToAuth() = Unit
+}

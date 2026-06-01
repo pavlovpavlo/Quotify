@@ -189,7 +189,7 @@ fun Modifier.skeleton(
                 ),
                 progress = animatedOffset.value
             ),
-            shape = shape ?: RoundedCornerShape(QuotifyMaterialTheme.dimensions.size_6)
+            shape = shape ?: RoundedCornerShape(QuotifyMaterialTheme.dimensions.radiusMd)
         )
     } else Modifier
 }

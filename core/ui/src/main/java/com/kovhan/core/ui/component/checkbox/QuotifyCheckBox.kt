@@ -51,8 +51,8 @@ fun QuotifyCheckBox(
     ) {
 //        Image(
 //            modifier = Modifier
-//                .padding(top = QuotifyMaterialTheme.dimensions.space_4)
-//                .size(size = QuotifyMaterialTheme.dimensions.size_icon_18),
+//                .padding(top = QuotifyMaterialTheme.dimensions.space1)
+//                .size(size = QuotifyMaterialTheme.dimensions.iconSm),
 //            painter = painterResource(
 //                id = if (isChecked) {
 //                    QuotifyMaterialTheme.images.iconCheckboxChecked
@@ -64,17 +64,16 @@ fun QuotifyCheckBox(
 //            contentDescription = null,
 //        )
 
-        HorizontalSpacer(space = QuotifyMaterialTheme.dimensions.space_10)
+        HorizontalSpacer(space = QuotifyMaterialTheme.dimensions.space3)
 
         Text(
             modifier = Modifier
                 .wrapContentSize()
                 .align(Alignment.CenterVertically)
-                .padding(top = QuotifyMaterialTheme.dimensions.space_4),
+                .padding(top = QuotifyMaterialTheme.dimensions.space1),
             text = text,
-            style = QuotifyMaterialTheme.typography.labelNormal,
-            color = QuotifyMaterialTheme.colors.textColorPrimary,
-            lineHeight = QuotifyMaterialTheme.dimensions.line_height_22,
+            style = QuotifyMaterialTheme.typography.small,
+            color = QuotifyMaterialTheme.colors.textPrimary,
             textAlign = TextAlign.Start,
         )
     }

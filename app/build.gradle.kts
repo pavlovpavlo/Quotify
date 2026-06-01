@@ -60,11 +60,13 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":domain"))
+    implementation(project(":data:auth"))
     implementation(project(":design-systems"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:main"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:webview"))
     implementationAndroidX()
     implementationCompose()
     implementationHilt()

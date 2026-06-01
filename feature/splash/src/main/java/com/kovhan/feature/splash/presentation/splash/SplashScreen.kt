@@ -1,5 +1,6 @@
 package com.kovhan.feature.splash.presentation.splash
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,7 @@ fun SplashScreen(
 
     Box(modifier = Modifier
         .fillMaxSize()
+        .background(QuotifyMaterialTheme.colors.bgPrimary)
         .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
 
@@ -37,6 +39,7 @@ fun SplashScreen(
             composition = preloaderLottieComposition,
             modifier = Modifier,
             iterations = 1,
+            speed = 1.3f,
             isPlaying = true
         )
     }

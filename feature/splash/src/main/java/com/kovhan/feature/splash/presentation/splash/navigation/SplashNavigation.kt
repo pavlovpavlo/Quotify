@@ -14,7 +14,7 @@ import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenEffect
 
 internal fun NavGraphBuilder.splashScreen(
     navAction: SplashScreenNavAction,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     composable<SplashGraph.SplashScreen> {
         val viewModel = hiltViewModel<SplashScreenViewModel>()
@@ -23,15 +23,8 @@ internal fun NavGraphBuilder.splashScreen(
         LaunchedEffect(Unit) {
             viewModel.uiEffect.collect { event ->
                 when (event) {
-                    SplashScreenEffect.NavigateToOnboarding->{
-                        navAction.navigateToOnboarding.invoke()
-                    }
-                    SplashScreenEffect.NavigateToMain->{
-                        navAction.navigateToMain.invoke()
-                    }
-                    else->{
-
-                    }
+                    SplashScreenEffect.NavigateToOnboarding -> navAction.navigateToOnboarding()
+                    SplashScreenEffect.NavigateToAuth -> navAction.navigateToAuth()
                 }
             }
         }
@@ -40,7 +33,7 @@ internal fun NavGraphBuilder.splashScreen(
             state = state.value,
             intent = viewModel,
             paddingValues = paddingValues,
-            navAction = navAction
+            navAction = navAction,
         )
     }
 }

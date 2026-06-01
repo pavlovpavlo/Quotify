@@ -1,5 +1,6 @@
 package com.kovhan.feature.main.presentation.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,18 +25,19 @@ fun HomeScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(QuotifyMaterialTheme.colors.bgPrimary)
             .padding(paddingValues)
     ) {
         if (state.isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center),
-                color = QuotifyMaterialTheme.colors.primary
+                color = QuotifyMaterialTheme.colors.accentPrimary
             )
         } else {
             Text(
                 text = "Home Screen",
                 modifier = Modifier.align(Alignment.Center),
-                color = QuotifyMaterialTheme.colors.primary
+                color = QuotifyMaterialTheme.colors.accentPrimary
             )
         }
     }

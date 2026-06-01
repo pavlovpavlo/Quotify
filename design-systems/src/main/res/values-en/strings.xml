@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quotify</string>
+    <string name="home">Home</string>
+    <string name="quotes">Quotes</string>
+    <string name="favorites">Favorites</string>
+    <string name="profile">Profile</string>
+
+    <!-- Bottom dock -->
+    <string name="dock_tab_library">Library</string>
+    <string name="dock_tab_profile">Profile</string>
+    <string name="dock_fab_open">Add quote</string>
+    <string name="dock_fab_close">Close menu</string>
+    <string name="dock_input_keyboard">Keyboard input</string>
+    <string name="dock_input_scan">Scan text</string>
+    <string name="dock_input_voice">Voice input</string>
+
+    <!-- Onboarding — common -->
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_done">Start</string>
+
+    <!-- Onboarding — slide 1 -->
+    <string name="onboarding_slide_1_title">Collect quotes from books</string>
+    <string name="onboarding_slide_1_body">Type by hand or snap a page — Quotify will read the text for you.</string>
+
+    <!-- Onboarding — slide 2 -->
+    <string name="onboarding_slide_2_title">Folders, tags,\ninstant search</string>
+    <string name="onboarding_slide_2_body">Sort quotes into folders, add tags, and find any one in a second.</string>
+    <string name="onboarding_chip_philosophy">#philosophy</string>
+    <string name="onboarding_chip_author">#Saint-Exupéry</string>
+    <string name="onboarding_chip_favorites">#favorites</string>
+    <string name="onboarding_chip_life">#life</string>
+    <string name="onboarding_chip_science">#science</string>
+
+    <!-- Onboarding — slide 3 -->
+    <string name="onboarding_slide_3_title">Put a widget on your home screen</string>
+    <string name="onboarding_slide_3_body">A random quote from your library, on your home screen every day.</string>
+
+    <!-- Auth — common -->
+    <string name="auth_back">Back</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_or">or</string>
+    <string name="auth_google">Google</string>
+    <string name="auth_terms">Terms of Use</string>
+    <string name="auth_privacy">Privacy Policy</string>
+    <string name="auth_and">and</string>
+    <string name="auth_legal_intro">By continuing you agree to our</string>
+    <string name="auth_agree_intro">By creating an account, I agree to the</string>
+    <string name="auth_privacy_policy_title">Privacy Policy</string>
+    <string name="auth_terms_of_service_title">Terms of Use</string>
+
+    <!-- Complete (Welcome) -->
+    <string name="complete_eyebrow">ALMOST THERE</string>
+    <string name="complete_title">You’re all set.</string>
+    <string name="complete_quote">“Being happy doesn’t mean having everything. It means being glad for what you have.”</string>
+    <string name="complete_author">ELEANOR PORTER</string>
+    <string name="complete_sign_up">Create account</string>
+    <string name="complete_sign_in">I already have an account</string>
+    <string name="complete_later">I’ll do it later</string>
+
+    <!-- Sign in -->
+    <string name="sign_in_title">Welcome back</string>
+    <string name="sign_in_subtitle">Sign in to sync your library.</string>
+    <string name="sign_in_email_placeholder">your\@email.com</string>
+    <string name="sign_in_password_placeholder">your password</string>
+    <string name="sign_in_forgot">Forgot password?</string>
+    <string name="sign_in_cta">Sign in</string>
+    <string name="sign_in_alt_q">No account yet?</string>
+    <string name="sign_in_alt_cta">Create one</string>
+
+    <!-- Sign up -->
+    <string name="sign_up_title">Create an account</string>
+    <string name="sign_up_subtitle">A few seconds and your library follows you everywhere.</string>
+    <string name="sign_up_full_name">Full name</string>
+    <string name="sign_up_full_name_placeholder">Jane Doe</string>
+    <string name="sign_up_username">Username</string>
+    <string name="sign_up_username_placeholder">jane</string>
+    <string name="sign_up_email_placeholder">your\@email.com</string>
+    <string name="sign_up_password_placeholder">at least 8 characters</string>
+    <string name="sign_up_cta">Create account</string>
+    <string name="sign_up_alt_q">Already have an account?</string>
+    <string name="sign_up_alt_cta">Sign in</string>
+
+    <!-- Forgot password -->
+    <string name="forgot_title">Reset password</string>
+    <string name="forgot_subtitle">Enter your email — we’ll send a recovery link.</string>
+    <string name="forgot_sent_subtitle">Check your inbox. If you don’t see it, peek in Spam.</string>
+    <string name="forgot_email_placeholder">your\@email.com</string>
+    <string name="forgot_cta">Send link</string>
+    <string name="forgot_sent_cta">Done, back to sign in</string>
+    <string name="forgot_back_to_sign_in">Remembered? · Sign in</string>
+</resources>

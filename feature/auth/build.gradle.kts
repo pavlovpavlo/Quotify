@@ -19,7 +19,7 @@ android {
     composeCompiler {
         featureFlags.addAll(
             ComposeFeatureFlag.StrongSkipping,
-            ComposeFeatureFlag.OptimizeNonSkippingGroups
+            ComposeFeatureFlag.OptimizeNonSkippingGroups,
         )
     }
 }
@@ -36,4 +36,5 @@ dependencies {
     implementationLogs()
     implementationTests()
     implementationHilt()
+    implementationCredentialManager()
 } 

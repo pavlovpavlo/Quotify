@@ -17,9 +17,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
     implementationDatabase()
     implementationDatastore()
     implementationFirebase()
+    implementationCoroutines()
     implementationLogs()
     implementationNetworking()
     implementationHilt()

@@ -23,10 +23,9 @@ android {
         featureFlags.addAll(
             ComposeFeatureFlag.StrongSkipping,
             ComposeFeatureFlag.OptimizeNonSkippingGroups,
-            ComposeFeatureFlag.PausableComposition
+            ComposeFeatureFlag.PausableComposition,
         )
     }
-
 }
 
 dependencies {

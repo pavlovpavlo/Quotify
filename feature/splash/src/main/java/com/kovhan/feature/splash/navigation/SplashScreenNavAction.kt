@@ -1,8 +1,22 @@
 package com.kovhan.feature.splash.navigation
 
-class SplashScreenNavAction(
-    val onBack: () -> Unit = { },
-    val navigateToOnboarding: () -> Unit = { },
-    val navigateToMain: () -> Unit = { },
-    val navigateToAuth: () -> Unit = { },
-)
+import androidx.compose.runtime.Stable
+
+@Stable
+interface SplashScreenNavAction {
+    fun onBack()
+    fun navigateToOnboarding()
+    fun navigateToMain()
+    fun navigateToAuth()
+
+    companion object {
+        val Empty: SplashScreenNavAction = EmptySplashScreenNavAction
+    }
+}
+
+private object EmptySplashScreenNavAction : SplashScreenNavAction {
+    override fun onBack() = Unit
+    override fun navigateToOnboarding() = Unit
+    override fun navigateToMain() = Unit
+    override fun navigateToAuth() = Unit
+}

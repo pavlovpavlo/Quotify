@@ -12,7 +12,20 @@
           "package_name": "com.kovhan.quotify"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "870530768225-je440c4uraav0jjn19t4aucqqp0aea07.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kovhan.quotify",
+            "certificate_hash": "0f75e5425395f3158486bbbf9c3958f32678f621"
+          }
+        },
+        {
+          "client_id": "870530768225-kum84uupeafl6b0964in94dduan8iogf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBEYVjiRxFlgptfwpUE_9RNDTSb0J_8sR8"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870530768225-kum84uupeafl6b0964in94dduan8iogf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

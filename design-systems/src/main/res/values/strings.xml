@@ -1,8 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Quotify</string>
-    <string name="home">Home</string>
-    <string name="quotes">Quotes</string>
-    <string name="favorites">Favorites</string>
-    <string name="profile">Profile</string>
+    <string name="home">Головна</string>
+    <string name="quotes">Цитати</string>
+    <string name="favorites">Обрані</string>
+    <string name="profile">Профіль</string>
+    <string name="profile_no_name">Без імені</string>
+    <string name="profile_sign_out">Вийти</string>
+
+    <!-- Bottom dock -->
+    <string name="dock_tab_library">Бібліотека</string>
+    <string name="dock_tab_profile">Профіль</string>
+    <string name="dock_fab_open">Додати цитату</string>
+    <string name="dock_fab_close">Закрити меню</string>
+    <string name="dock_input_keyboard">Ввід з клавіатури</string>
+    <string name="dock_input_scan">Сканування тексту</string>
+    <string name="dock_input_voice">Голосовий ввід</string>
+
+    <!-- Onboarding — common -->
+    <string name="onboarding_skip">Пропустити</string>
+    <string name="onboarding_next">Далі</string>
+    <string name="onboarding_done">Почати</string>
+
+    <!-- Onboarding — slide 1 -->
+    <string name="onboarding_slide_1_title">Збирай цитати з книг</string>
+    <string name="onboarding_slide_1_body">Вводь вручну або сфотографуй сторінку — Quotify розпізнає текст за тебе.</string>
+
+    <!-- Onboarding — slide 2 -->
+    <string name="onboarding_slide_2_title">Папки, теги,\nмиттєвий пошук</string>
+    <string name="onboarding_slide_2_body">Розкладай цитати по папках, додавай теги і знаходь будь-яку за секунду.</string>
+    <string name="onboarding_chip_philosophy">#філософія</string>
+    <string name="onboarding_chip_author">#Сент-Екзюпері</string>
+    <string name="onboarding_chip_favorites">#обрані</string>
+    <string name="onboarding_chip_life">#життя</string>
+    <string name="onboarding_chip_science">#наука</string>
+
+    <!-- Onboarding — slide 3 -->
+    <string name="onboarding_slide_3_title">Постав віджет на екран</string>
+    <string name="onboarding_slide_3_body">Випадкова цитата з твоєї бібліотеки щодня прямо на головному екрані.</string>
+
+    <!-- Auth — common -->
+    <string name="auth_back">Назад</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_or">або</string>
+    <string name="auth_google">Google</string>
+    <string name="auth_terms">Умовами використання</string>
+    <string name="auth_privacy">Політикою конфіденційності</string>
+    <string name="auth_and">та</string>
+    <string name="auth_legal_intro">Продовжуючи, ти приймаєш</string>
+    <string name="auth_agree_intro">Створюючи акаунт, я погоджуюся з</string>
+    <!-- Used as the WebView screen title (nominative form). -->
+    <string name="auth_privacy_policy_title">Політика конфіденційності</string>
+    <string name="auth_terms_of_service_title">Умови використання</string>
+
+    <!-- Complete (Welcome) screen — almost there, sign in / sign up / later -->
+    <string name="complete_eyebrow">МАЙЖЕ ГОТОВО</string>
+    <string name="complete_title">Усе на місці.</string>
+    <string name="complete_quote">«Бути щасливим — це не означає мати все. Це означає радіти тому, що маєш.»</string>
+    <string name="complete_author">ЕЛЕОНОР ПОРТЕР</string>
+    <string name="complete_sign_up">Створити акаунт</string>
+    <string name="complete_sign_in">У мене вже є акаунт</string>
+    <string name="complete_later">Зроблю пізніше</string>
+
+    <!-- Sign in -->
+    <string name="sign_in_title">З поверненням</string>
+    <string name="sign_in_subtitle">Увійди, щоб синхронізувати бібліотеку.</string>
+    <string name="sign_in_email_placeholder">your\@email.com</string>
+    <string name="sign_in_password_placeholder">твій пароль</string>
+    <string name="sign_in_forgot">Забули пароль?</string>
+    <string name="sign_in_cta">Увійти</string>
+    <string name="sign_in_alt_q">Немає акаунту?</string>
+    <string name="sign_in_alt_cta">Створити</string>
+
+    <!-- Sign up -->
+    <string name="sign_up_title">Створи акаунт</string>
+    <string name="sign_up_subtitle">Кілька секунд — і бібліотека твоя на всіх пристроях.</string>
+    <string name="sign_up_full_name">Повне імʼя</string>
+    <string name="sign_up_full_name_placeholder">Тарас Шевченко</string>
+    <string name="sign_up_username">Імʼя користувача</string>
+    <string name="sign_up_username_placeholder">taras</string>
+    <string name="sign_up_email_placeholder">your\@email.com</string>
+    <string name="sign_up_password_placeholder">мінімум 8 символів</string>
+    <string name="sign_up_cta">Створити акаунт</string>
+    <string name="sign_up_alt_q">Уже маєш акаунт?</string>
+    <string name="sign_up_alt_cta">Увійти</string>
+
+    <!-- Forgot password -->
+    <string name="forgot_title">Скинути пароль</string>
+    <string name="forgot_subtitle">Введи email — надішлемо посилання для відновлення.</string>
+    <string name="forgot_sent_subtitle">Перевір пошту. Якщо листа немає — глянь у Спам.</string>
+    <string name="forgot_email_placeholder">your\@email.com</string>
+    <string name="forgot_cta">Надіслати посилання</string>
+    <string name="forgot_sent_cta">Готово, повернутися до входу</string>
+    <string name="forgot_back_to_sign_in">Згадав пароль? · Увійти</string>
+    <string name="forgot_reset_sent">Посилання для відновлення надіслано на пошту.</string>
+
+    <!-- Auth — validation -->
+    <string name="auth_validation_name">Введи імʼя.</string>
+    <string name="auth_validation_email">Введи коректний email.</string>
+    <string name="auth_validation_password">Пароль має містити щонайменше 6 символів.</string>
+
+    <!-- Auth — errors -->
+    <string name="auth_error_invalid_credentials">Невірний email або пароль.</string>
+    <string name="auth_error_invalid_email">Невірний формат email.</string>
+    <string name="auth_error_email_in_use">Акаунт із таким email уже існує.</string>
+    <string name="auth_error_weak_password">Пароль надто простий. Спробуй надійніший.</string>
+    <string name="auth_error_user_not_found">Акаунт із таким email не знайдено.</string>
+    <string name="auth_error_user_disabled">Цей акаунт вимкнено.</string>
+    <string name="auth_error_too_many_requests">Забагато спроб. Спробуй трохи пізніше.</string>
+    <string name="auth_error_network">Немає звʼязку. Перевір інтернет і спробуй ще раз.</string>
+    <string name="auth_error_google_cancelled">Вхід через Google скасовано.</string>
+    <string name="auth_error_google_failed">Не вдалося увійти через Google. Спробуй ще раз.</string>
+    <string name="auth_error_generic">Щось пішло не так. Спробуй ще раз.</string>
 </resources>

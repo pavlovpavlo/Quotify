@@ -14,6 +14,7 @@ android {
 
 dependencies {
     implementationHilt()
+    implementationCoroutines()
     implementationSerialization()
     implementationLogs()
     implementationTests()

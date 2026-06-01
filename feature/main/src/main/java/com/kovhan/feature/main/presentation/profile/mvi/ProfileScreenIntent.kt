@@ -1,7 +1,11 @@
 package com.kovhan.feature.main.presentation.profile.mvi
 
 interface ProfileScreenIntent {
-}
+    fun onSignOutClicked()
 
-class DefaultProfileScreenIntent : ProfileScreenIntent {
-} 
+    companion object {
+        val Empty: ProfileScreenIntent = object : ProfileScreenIntent {
+            override fun onSignOutClicked() = Unit
+        }
+    }
+}
