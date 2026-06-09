@@ -1,4 +1,4 @@
-package com.kovhan.design.systems.component.button
+package com.kovhan.core.ui.component.button
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -9,28 +9,12 @@ import com.kovhan.design.systems.QuotifyColorPalette
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
 /**
- * Folio-spec defaults for [QuotifyButtonColors] and [QuotifyButtonSizeSpec].
- *
- * Compose any button through this object so the visual ladder
- * (variant × accent × size) stays consistent across the app.
- *
- *   QuotifyButton(text = "Save", variant = Tonal, accent = Saved, size = Medium)
- *
- * To deviate without abandoning the system, copy a resolved value:
- *
- *   val colors = QuotifyButtonDefaults
- *       .colors(Filled, Primary)
- *       .copy(container = QuotifyMaterialTheme.colors.bgElevated)
- *
+ * Default [QuotifyButtonColors] and [QuotifyButtonSizeSpec] for the button
+ * system, keyed by variant × accent × size. Construct buttons through this
+ * object to keep styling consistent, or copy a resolved value to deviate.
  */
 object QuotifyButtonDefaults {
 
-    /**
-     * Container / content / border colors for the given combination.
-     *
-     * Disabled colors fall back to muted neutrals so a disabled button looks
-     * the same no matter which accent it normally uses — keeps the UI calm.
-     */
     @Composable
     fun colors(
         variant: QuotifyButtonVariant = QuotifyButtonVariant.Filled,
@@ -39,9 +23,6 @@ object QuotifyButtonDefaults {
         val palette = QuotifyMaterialTheme.colors
         val tone = palette.accentTone(accent)
 
-        // Ghost + Neutral is the "Skip / Cancel" pattern — low-emphasis muted
-        // text. Bump content down to textSecondary so it doesn't compete with
-        // primary headlines.
         val ghostNeutralContent = palette.textSecondary
 
         val (container, content, border) = when (variant) {
@@ -84,10 +65,7 @@ object QuotifyButtonDefaults {
         )
     }
 
-    /**
-     * Folio "pill" CTA — Large size, custom [height], full-radius shape.
-     * Used by every auth screen and the post-onboarding Complete screen.
-     */
+    /** Full-radius "pill" CTA used by auth and onboarding screens. */
     @Composable
     fun pillSizeSpec(height: Dp = 50.dp): QuotifyButtonSizeSpec =
         sizeSpec(QuotifyButtonSize.Large).copy(
@@ -132,7 +110,6 @@ object QuotifyButtonDefaults {
     }
 }
 
-/** Container/content/border triple resolved from an [accent] role. */
 internal data class AccentTone(
     val base: Color,
     val hover: Color,
@@ -179,4 +156,3 @@ internal fun QuotifyColorPalette.accentTone(accent: QuotifyButtonAccent): Accent
             onAccent = textOnAccent,
         )
     }
-

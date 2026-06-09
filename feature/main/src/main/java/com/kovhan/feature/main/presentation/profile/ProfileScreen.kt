@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.component.button.QuotifyButton
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
-import com.kovhan.design.systems.component.button.QuotifyButtonAccent
-import com.kovhan.design.systems.component.button.QuotifyButtonDefaults
-import com.kovhan.design.systems.component.button.QuotifyButtonVariant
+import com.kovhan.core.ui.component.button.QuotifyButtonAccent
+import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
+import com.kovhan.core.ui.component.button.QuotifyButtonVariant
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenIntent
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenState
 import com.kovhan.feature.main.presentation.profile.navigation.ProfileScreenNavAction

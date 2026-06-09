@@ -2,18 +2,11 @@ package com.kovhan.core.ui.component.button
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.kovhan.design.systems.component.button.QuotifyButtonAccent
-import com.kovhan.design.systems.component.button.QuotifyButtonSize
-import com.kovhan.design.systems.component.button.QuotifyButtonVariant
 
 /**
- * Convenience for a small ghost button — common enough (Skip, Cancel, inline
- * "Forgot password?") to deserve its own name. Delegates to [QuotifyButton]
- * so styling stays in lockstep with the rest of the system.
- *
- * Defaults to *no ripple* because ghost buttons sit on the page background
- * with no container — a ripple looks like a stray smudge there. Pass
- * `withRipple = true` to opt back in.
+ * Convenience for a small ghost button (Skip, Cancel, "Forgot password?").
+ * Delegates to [QuotifyButton]. Defaults to no ripple since ghost buttons sit
+ * directly on the page background.
  */
 @Composable
 fun QuotifyTextBtn(

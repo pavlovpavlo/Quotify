@@ -8,5 +8,4 @@ import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
 
-): com.kovhan.core.ui.view_model.BaseViewModel<MainActivityState, MainActivityEffect>(MainActivityState()), MainIntent {
-}
+): BaseViewModel<MainActivityState, MainActivityEffect>(MainActivityState()), MainIntent

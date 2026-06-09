@@ -1,7 +1,7 @@
 package com.kovhan.feature.auth.presentation.register.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.kovhan.domain.auth.AuthError
+import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
 
 interface RegisterScreenIntent {
     fun onFullNameChanged(value: TextFieldValue)
@@ -10,9 +10,8 @@ interface RegisterScreenIntent {
     fun onPasswordChanged(value: TextFieldValue)
     fun onTermsToggled(accepted: Boolean)
     fun onSignUpClicked()
-    fun onGoogleSignInStarted()
-    fun onGoogleIdTokenReceived(idToken: String)
-    fun onGoogleSignInFailed(error: AuthError)
+    fun onGoogleSignInClicked()
+    fun onGoogleSignInResult(outcome: GoogleSignInOutcome)
     fun onSignInClicked()
     fun onBackClicked()
     fun onPrivacyPolicyClicked()
@@ -26,9 +25,8 @@ interface RegisterScreenIntent {
             override fun onPasswordChanged(value: TextFieldValue) = Unit
             override fun onTermsToggled(accepted: Boolean) = Unit
             override fun onSignUpClicked() = Unit
-            override fun onGoogleSignInStarted() = Unit
-            override fun onGoogleIdTokenReceived(idToken: String) = Unit
-            override fun onGoogleSignInFailed(error: AuthError) = Unit
+            override fun onGoogleSignInClicked() = Unit
+            override fun onGoogleSignInResult(outcome: GoogleSignInOutcome) = Unit
             override fun onSignInClicked() = Unit
             override fun onBackClicked() = Unit
             override fun onPrivacyPolicyClicked() = Unit

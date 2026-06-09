@@ -27,9 +27,9 @@ import com.kovhan.core.ui.component.button.QuotifyButton
 import com.kovhan.core.ui.component.text_field.QuotifyTextField
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
-import com.kovhan.design.systems.component.button.QuotifyButtonAccent
-import com.kovhan.design.systems.component.button.QuotifyButtonDefaults
-import com.kovhan.design.systems.component.button.QuotifyButtonVariant
+import com.kovhan.core.ui.component.button.QuotifyButtonAccent
+import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
+import com.kovhan.core.ui.component.button.QuotifyButtonVariant
 import com.kovhan.feature.auth.presentation.component.AuthScreenScaffold
 import com.kovhan.feature.auth.presentation.component.AuthTextLink
 import com.kovhan.feature.auth.presentation.component.AuthTitleBlock

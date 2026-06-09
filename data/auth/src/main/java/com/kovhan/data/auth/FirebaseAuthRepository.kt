@@ -102,7 +102,6 @@ class FirebaseAuthRepository
             )
     }
 
-// Local Task.await() to avoid the kotlinx-coroutines-play-services dependency.
 private suspend fun <T> Task<T>.await(): T =
     suspendCancellableCoroutine<T> { cont ->
         addOnCompleteListener { task ->

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dark-theme override: folio_paper flips to ink so the system splash
-         doesn't flash a bright surface before MainActivity renders. -->
     <color name="folio_paper">#1A1714</color>
     <color name="folio_ink">#FAF7F2</color>
 </resources>

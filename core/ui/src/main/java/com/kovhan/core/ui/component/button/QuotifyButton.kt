@@ -23,24 +23,10 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.extensions.debouncedClickable
-import com.kovhan.design.systems.component.button.QuotifyButtonAccent
-import com.kovhan.design.systems.component.button.QuotifyButtonColors
-import com.kovhan.design.systems.component.button.QuotifyButtonDefaults
-import com.kovhan.design.systems.component.button.QuotifyButtonSize
-import com.kovhan.design.systems.component.button.QuotifyButtonSizeSpec
-import com.kovhan.design.systems.component.button.QuotifyButtonVariant
 
 /**
  * Folio-spec button. Pick a [variant], [accent] and [size] and the colors,
  * paddings, icon size and label style fall out of the design system.
- *
- *   QuotifyButton(text = "Save", onClick = ::save)                         // primary filled large
- *   QuotifyButton(text = "Cancel", variant = Ghost, accent = Neutral, ...)
- *   QuotifyButton(text = "Delete", accent = Destructive, ...)
- *
- * For one-off tweaks, copy and override:
- *
- *   colors = QuotifyButtonDefaults.colors(Filled, Primary).copy(content = …)
  */
 @Composable
 fun QuotifyButton(
@@ -80,9 +66,6 @@ fun QuotifyButton(
                 indication = if (withRipple) ripple(color = content) else null,
                 enabled = isInteractive,
                 role = Role.Button,
-                // Short debounce — only blocks accidental double-taps. The previous
-                // 1.5s default ate intentional fast taps (e.g. tapping "Next" twice
-                // in a row through the onboarding pager).
                 debounceInterval = 300L,
                 onClick = onClick,
             )

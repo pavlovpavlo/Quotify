@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val navController = rememberNavController()
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-            // Follow the system theme; uiState.isDarkMode flips it once user
-            // preferences are wired (right now it's just a stub `false`).
             val isDarkTheme = uiState.isDarkMode || isSystemInDarkTheme()
 
             QuotifyAppTheme(

@@ -10,6 +10,7 @@ import com.kovhan.domain.auth.SignInWithGoogleUseCase
 import com.kovhan.domain.auth.ValidateAuthInputUseCase
 import com.kovhan.domain.auth.onFailure
 import com.kovhan.domain.auth.onSuccess
+import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
 import com.kovhan.feature.auth.presentation.login.mvi.LoginScreenEffect
 import com.kovhan.feature.auth.presentation.login.mvi.LoginScreenIntent
 import com.kovhan.feature.auth.presentation.login.mvi.LoginScreenState
@@ -45,20 +46,23 @@ class LoginScreenViewModel @Inject constructor(
         }
     }
 
-    override fun onGoogleSignInStarted() {
+    override fun onGoogleSignInClicked() {
+        if (uiState.value.isGoogleLoading) return
         publishState { copy(isGoogleLoading = true) }
+        publishEffect(LoginScreenEffect.LaunchGoogleSignIn)
     }
 
-    override fun onGoogleIdTokenReceived(idToken: String) {
-        viewModelScope.launch {
-            handleResult(signInWithGoogle(idToken))
-        }
-    }
-
-    override fun onGoogleSignInFailed(error: AuthError) {
-        publishState { copy(isGoogleLoading = false) }
-        if (error != AuthError.GoogleSignInCancelled) {
-            showSnackbar(error.toSnackbar())
+    override fun onGoogleSignInResult(outcome: GoogleSignInOutcome) {
+        when (outcome) {
+            is GoogleSignInOutcome.Success -> viewModelScope.launch {
+                handleResult(signInWithGoogle(outcome.idToken))
+            }
+            is GoogleSignInOutcome.Failure -> {
+                publishState { copy(isGoogleLoading = false) }
+                if (outcome.error != AuthError.GoogleSignInCancelled) {
+                    showSnackbar(outcome.error.toSnackbar())
+                }
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -12,9 +13,11 @@ import androidx.navigation.compose.composable
 import com.kovhan.core.ui.navigation.AuthGraph
 import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
 import com.kovhan.design.systems.R
+import com.kovhan.feature.auth.presentation.google.rememberGoogleSignInClient
 import com.kovhan.feature.auth.presentation.login.LoginScreen
 import com.kovhan.feature.auth.presentation.login.LoginScreenViewModel
 import com.kovhan.feature.auth.presentation.login.mvi.LoginScreenEffect
+import kotlinx.coroutines.launch
 
 internal fun NavGraphBuilder.loginScreen(
     navAction: LoginScreenNavAction,
@@ -24,6 +27,8 @@ internal fun NavGraphBuilder.loginScreen(
         val viewModel = hiltViewModel<LoginScreenViewModel>()
         val state = viewModel.uiState.collectAsStateWithLifecycle()
         val context = LocalContext.current
+        val scope = rememberCoroutineScope()
+        val googleSignInClient = rememberGoogleSignInClient()
         val snackbarHostState = remember { SnackbarHostState() }
 
         SnackbarMessageEffect(viewModel.snackbar, snackbarHostState)
@@ -31,6 +36,9 @@ internal fun NavGraphBuilder.loginScreen(
         LaunchedEffect(Unit) {
             viewModel.uiEffect.collect { effect ->
                 when (effect) {
+                    LoginScreenEffect.LaunchGoogleSignIn -> scope.launch {
+                        viewModel.onGoogleSignInResult(googleSignInClient.signIn(context))
+                    }
                     LoginScreenEffect.NavigateToMain -> navAction.navigateToMain()
                     LoginScreenEffect.NavigateToSignUp -> navAction.navigateToRegister()
                     LoginScreenEffect.NavigateToForgotPassword -> navAction.navigateToForgotPassword()

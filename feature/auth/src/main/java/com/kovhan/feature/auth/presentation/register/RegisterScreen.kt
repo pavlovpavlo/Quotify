@@ -18,15 +18,14 @@ import com.kovhan.core.ui.component.text_field.QuotifyPasswordField
 import com.kovhan.core.ui.component.text_field.QuotifyTextField
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
-import com.kovhan.design.systems.component.button.QuotifyButtonAccent
-import com.kovhan.design.systems.component.button.QuotifyButtonDefaults
-import com.kovhan.design.systems.component.button.QuotifyButtonVariant
+import com.kovhan.core.ui.component.button.QuotifyButtonAccent
+import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
+import com.kovhan.core.ui.component.button.QuotifyButtonVariant
 import com.kovhan.feature.auth.presentation.component.AuthAltRow
 import com.kovhan.feature.auth.presentation.component.AuthOrDivider
 import com.kovhan.feature.auth.presentation.component.AuthScreenScaffold
 import com.kovhan.feature.auth.presentation.component.AuthTitleBlock
 import com.kovhan.feature.auth.presentation.component.GoogleAuthButton
-import com.kovhan.feature.auth.presentation.google.rememberGoogleSignIn
 import com.kovhan.feature.auth.presentation.register.component.TermsCheckboxText
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenIntent
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenState
@@ -41,11 +40,6 @@ fun RegisterScreen(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val dimens = QuotifyMaterialTheme.dimensions
-    val launchGoogleSignIn = rememberGoogleSignIn(
-        onStart = intent::onGoogleSignInStarted,
-        onIdToken = intent::onGoogleIdTokenReceived,
-        onError = intent::onGoogleSignInFailed,
-    )
 
     AuthScreenScaffold(
         onBack = intent::onBackClicked,
@@ -139,7 +133,7 @@ fun RegisterScreen(
 
             GoogleAuthButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = launchGoogleSignIn,
+                onClick = intent::onGoogleSignInClicked,
                 enabled = !state.isLoading,
                 loading = state.isGoogleLoading,
             )
