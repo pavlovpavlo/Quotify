@@ -7,6 +7,10 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.navigation
 import com.kovhan.core.ui.navigation.MainGraph
 import com.kovhan.core.ui.navigation.startDestination
+import com.kovhan.feature.main.presentation.about.navigation.AboutScreenNavAction
+import com.kovhan.feature.main.presentation.about.navigation.aboutScreen
+import com.kovhan.feature.main.presentation.edit_profile.navigation.EditProfileScreenNavAction
+import com.kovhan.feature.main.presentation.edit_profile.navigation.editProfileScreen
 import com.kovhan.feature.main.presentation.favorites.navigation.FavoritesScreenNavAction
 import com.kovhan.feature.main.presentation.favorites.navigation.favoritesScreen
 import com.kovhan.feature.main.presentation.home.navigation.HomeScreenNavAction
@@ -72,11 +76,38 @@ fun NavGraphBuilder.mainGraph(
                 override fun navigateToSettings() {
                     // TODO: Implement settings navigation
                 }
+                override fun navigateToEditProfile() {
+                    navController.navigate(MainGraph.EditProfileScreen)
+                }
+                override fun navigateToAbout() {
+                    navController.navigate(MainGraph.AboutScreen)
+                }
                 override fun navigateToAuth() {
                     navigateToAuth()
                 }
             },
             paddingValues = paddingValues
         )
+
+        editProfileScreen(
+            navAction = object : EditProfileScreenNavAction {
+                override fun navigateBack() {
+                    navController.navigateUp()
+                }
+                override fun navigateToAuth() {
+                    navigateToAuth()
+                }
+            },
+            paddingValues = paddingValues
+        )
+
+        aboutScreen(
+            navAction = object : AboutScreenNavAction {
+                override fun navigateBack() {
+                    navController.navigateUp()
+                }
+            },
+            paddingValues = paddingValues
+        )
     }
-} 
+}

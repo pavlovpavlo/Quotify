@@ -21,6 +21,8 @@ dependencies {
     implementationDatabase()
     implementationDatastore()
     implementationFirebase()
+    implementationCloudinary()
+    implementationCredentialManager()
     implementationCoroutines()
     implementationLogs()
     implementationNetworking()

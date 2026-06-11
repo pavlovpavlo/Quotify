@@ -41,16 +41,12 @@ fun OnboardingScreen(
         pageCount = { OnboardingScreenState.PAGE_COUNT },
     )
 
-    // VM-driven page changes (Next button) → pager
     LaunchedEffect(state.currentPage) {
         if (pagerState.currentPage != state.currentPage) {
             pagerState.animateScrollToPage(state.currentPage)
         }
     }
 
-    // User swipes → VM. rememberUpdatedState avoids the LaunchedEffect closure
-    // capturing a stale state.currentPage — without this, swiping back to slide 1
-    // never propagates and the page indicator stays on slide 2.
     val latestStatePage by rememberUpdatedState(state.currentPage)
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->

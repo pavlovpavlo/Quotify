@@ -15,6 +15,8 @@ sealed class AuthError {
 
     data object TooManyRequests : AuthError()
 
+    data object RecentLoginRequired : AuthError()
+
     data object Network : AuthError()
 
     data object GoogleSignInCancelled : AuthError()

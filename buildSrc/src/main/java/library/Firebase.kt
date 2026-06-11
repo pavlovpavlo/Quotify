@@ -12,6 +12,7 @@ object FirebaseDependencies {
     internal const val FIREBASE_CRASHLYTICS_PATH = "com.google.firebase:firebase-crashlytics-ktx"
     internal const val FIREBASE_MESSAGING_PATH = "com.google.firebase:firebase-messaging-ktx"
     internal const val FIREBASE_DYNAMIC_LINKS = "com.google.firebase:firebase-dynamic-links-ktx"
+    internal const val FIREBASE_FIRESTORE_PATH = "com.google.firebase:firebase-firestore-ktx"
 
 }
 
@@ -22,4 +23,5 @@ fun DependencyHandlerScope.implementationFirebase() {
     implementation(FirebaseDependencies.FIREBASE_CRASHLYTICS_PATH)
     implementation(FirebaseDependencies.FIREBASE_MESSAGING_PATH)
     implementation(FirebaseDependencies.FIREBASE_DYNAMIC_LINKS)
+    implementation(FirebaseDependencies.FIREBASE_FIRESTORE_PATH)
 }

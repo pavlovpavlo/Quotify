@@ -18,6 +18,7 @@ fun NavGraphBuilder.splashGraph(
     paddingValues: PaddingValues,
     navigateToOnboarding: () -> Unit,
     navigateToAuth: () -> Unit,
+    navigateToMain: () -> Unit,
 ) {
     navigation<SplashGraph>(startDestination = SplashGraph.startDestination) {
         splashScreen(
@@ -29,8 +30,7 @@ fun NavGraphBuilder.splashGraph(
                     navigateToOnboarding()
                 }
                 override fun navigateToMain() {
-                    // Splash no longer goes straight to Main — kept on the interface
-                    // for future auth-aware splash logic.
+                    navigateToMain()
                 }
                 override fun navigateToAuth() {
                     navigateToAuth()

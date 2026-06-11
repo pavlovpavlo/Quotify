@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +31,9 @@ fun BottomDock(
     onVoiceInput: () -> Unit = {},
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentTab = TabEnum.fromRoute(navBackStackEntry?.destination?.route) ?: TabEnum.LIBRARY
+    val routeTab = TabEnum.fromRoute(navBackStackEntry?.destination?.route)
+    var currentTab by remember { mutableStateOf(routeTab ?: TabEnum.LIBRARY) }
+    LaunchedEffect(routeTab) { routeTab?.let { currentTab = it } }
     var menuOpen by remember { mutableStateOf(false) }
 
     val images = QuotifyMaterialTheme.images

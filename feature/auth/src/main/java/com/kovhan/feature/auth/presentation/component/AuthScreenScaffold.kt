@@ -31,6 +31,7 @@ internal fun AuthScreenScaffold(
     paddingValues: PaddingValues,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollable: Boolean = true,
+    footer: (@Composable ColumnScope.() -> Unit)? = null,
     body: @Composable ColumnScope.() -> Unit,
 ) {
     Box(
@@ -40,8 +41,7 @@ internal fun AuthScreenScaffold(
             .padding(
                 top = paddingValues.calculateTopPadding(),
                 bottom = paddingValues.calculateBottomPadding(),
-            )
-            .imePadding(),
+            ),
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             AuthTopBar(onBack = onBack)
@@ -50,6 +50,7 @@ internal fun AuthScreenScaffold(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
+                    .imePadding()
                     .then(
                         if (scrollable) Modifier.verticalScroll(rememberScrollState()) else Modifier,
                     )
@@ -61,6 +62,19 @@ internal fun AuthScreenScaffold(
                     ),
                 content = body,
             )
+
+            if (footer != null) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = AuthBodyHorizontal,
+                            end = AuthBodyHorizontal,
+                            bottom = AuthBodyBottom,
+                        ),
+                    content = footer,
+                )
+            }
         }
 
         SnackbarHost(

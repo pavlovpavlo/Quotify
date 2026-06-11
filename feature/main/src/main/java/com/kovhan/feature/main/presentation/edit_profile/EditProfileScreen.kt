@@ -1,0 +1,229 @@
+package com.kovhan.feature.main.presentation.edit_profile
+
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.kovhan.core.ui.component.QuotifyTopBar
+import com.kovhan.core.ui.snackbar.QuotifySnackbar
+import com.kovhan.design.systems.QuotifyMaterialTheme
+import com.kovhan.design.systems.R
+import com.kovhan.feature.main.presentation.edit_profile.component.ChangePhotoBottomSheet
+import com.kovhan.feature.main.presentation.edit_profile.component.ConfirmDialog
+import com.kovhan.feature.main.presentation.edit_profile.component.EditAvatar
+import com.kovhan.feature.main.presentation.edit_profile.component.EditCard
+import com.kovhan.feature.main.presentation.edit_profile.component.EditRow
+import com.kovhan.feature.main.presentation.edit_profile.component.EditSectionTitle
+import com.kovhan.feature.main.presentation.edit_profile.component.FieldBottomSheet
+import com.kovhan.feature.main.presentation.edit_profile.mvi.EditField
+import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileDialog
+import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileIntent
+import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileSheet
+import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileState
+import com.kovhan.feature.main.presentation.edit_profile.navigation.EditProfileScreenNavAction
+import java.io.File
+
+@Composable
+fun EditProfileScreen(
+    state: EditProfileState,
+    intent: EditProfileIntent,
+    navAction: EditProfileScreenNavAction,
+    paddingValues: PaddingValues,
+    snackbarHostState: SnackbarHostState,
+) {
+    val colors = QuotifyMaterialTheme.colors
+    val context = LocalContext.current
+    val isGoogleAccount = state.user?.isGoogleAccount == true
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent(),
+    ) { uri: Uri? ->
+        uri?.let { intent.onPhotoPicked(it.toString()) }
+    }
+    val cameraLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.TakePicturePreview(),
+    ) { bitmap: Bitmap? ->
+        bitmap?.let {
+            val file = File(context.cacheDir, "camera_${System.currentTimeMillis()}.jpg")
+            file.outputStream().use { os -> it.compress(Bitmap.CompressFormat.JPEG, 90, os) }
+            intent.onPhotoPicked(Uri.fromFile(file).toString())
+        }
+    }
+
+    val displayName = state.user?.displayName?.takeIf { it.isNotBlank() }
+        ?: stringResource(R.string.profile_no_name)
+    val email = state.user?.email.orEmpty()
+    val username = state.user?.username
+        ?: email.substringBefore("@").takeIf { it.isNotBlank() }.orEmpty()
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colors.bgPrimary)
+                .padding(top = paddingValues.calculateTopPadding()),
+        ) {
+            QuotifyTopBar(
+                title = stringResource(R.string.edit_profile_title),
+                onBack = navAction::navigateBack,
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = 22.dp,
+                        end = 22.dp,
+                        top = 4.dp,
+                        bottom = paddingValues.calculateBottomPadding() + 40.dp,
+                    ),
+            ) {
+                EditAvatar(
+                    photoUrl = state.user?.photoUrl,
+                    initialLetter = displayName.take(1).uppercase(),
+                    onCameraClick = intent::onPhotoClicked,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 24.dp),
+                )
+
+                EditCard {
+                    EditRow(
+                        iconRes = R.drawable.ic_user,
+                        label = stringResource(R.string.edit_field_name),
+                        value = displayName,
+                        showDivider = true,
+                        onClick = { intent.onFieldClicked(EditField.NAME) },
+                    )
+                    EditRow(
+                        iconRes = R.drawable.ic_at_sign,
+                        label = stringResource(R.string.edit_field_username),
+                        value = if (username.isNotBlank()) "@$username" else "",
+                        showDivider = !isGoogleAccount,
+                        onClick = { intent.onFieldClicked(EditField.USERNAME) },
+                    )
+                    if (!isGoogleAccount) {
+                        EditRow(
+                            iconRes = R.drawable.ic_mail,
+                            label = stringResource(R.string.edit_field_email),
+                            value = email,
+                            showDivider = false,
+                            onClick = { intent.onFieldClicked(EditField.EMAIL) },
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(16.dp))
+
+                EditSectionTitle(stringResource(R.string.edit_account_section))
+
+                EditCard {
+                    if (!isGoogleAccount) {
+                        EditRow(
+                            iconRes = R.drawable.ic_lock,
+                            label = stringResource(R.string.edit_change_password),
+                            value = "",
+                            showDivider = true,
+                            onClick = intent::onPasswordClicked,
+                        )
+                    }
+                    EditRow(
+                        iconRes = R.drawable.ic_log_out,
+                        label = stringResource(R.string.edit_sign_out),
+                        value = "",
+                        showDivider = true,
+                        onClick = intent::onLogoutClicked,
+                    )
+                    EditRow(
+                        iconRes = R.drawable.ic_trash,
+                        label = stringResource(R.string.edit_delete_account),
+                        value = "",
+                        showDivider = false,
+                        danger = true,
+                        onClick = intent::onDeleteAccountClicked,
+                    )
+                }
+            }
+        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 8.dp),
+        ) { data ->
+            QuotifySnackbar(snackbarData = data)
+        }
+    }
+
+    when (val sheet = state.sheet) {
+        EditProfileSheet.Photo -> ChangePhotoBottomSheet(
+            onTakePhoto = {
+                intent.onSheetDismissed()
+                cameraLauncher.launch(null)
+            },
+            onPickGallery = {
+                intent.onSheetDismissed()
+                galleryLauncher.launch("image/*")
+            },
+            onRemovePhoto = intent::onPhotoRemoved,
+            onDismiss = intent::onSheetDismissed,
+        )
+
+        is EditProfileSheet.Field -> FieldBottomSheet(
+            field = sheet.field,
+            initialValue = when (sheet.field) {
+                EditField.NAME -> displayName
+                EditField.USERNAME -> username
+                EditField.EMAIL -> email
+            },
+            onSave = { value -> intent.onFieldSaved(sheet.field, value) },
+            onDismiss = intent::onSheetDismissed,
+        )
+
+        null -> Unit
+    }
+
+    when (state.dialog) {
+        EditProfileDialog.Logout -> ConfirmDialog(
+            iconRes = R.drawable.ic_log_out,
+            title = stringResource(R.string.dialog_logout_title),
+            message = stringResource(R.string.dialog_logout_text),
+            confirmText = stringResource(R.string.dialog_logout_confirm),
+            cancelText = stringResource(R.string.dialog_cancel),
+            onConfirm = intent::onLogoutConfirmed,
+            onDismiss = intent::onDialogDismissed,
+        )
+
+        EditProfileDialog.Delete -> ConfirmDialog(
+            iconRes = R.drawable.ic_trash,
+            title = stringResource(R.string.dialog_delete_title),
+            message = stringResource(R.string.dialog_delete_text),
+            confirmText = stringResource(R.string.dialog_delete_confirm),
+            cancelText = stringResource(R.string.dialog_cancel),
+            onConfirm = intent::onDeleteConfirmed,
+            onDismiss = intent::onDialogDismissed,
+        )
+
+        null -> Unit
+    }
+}

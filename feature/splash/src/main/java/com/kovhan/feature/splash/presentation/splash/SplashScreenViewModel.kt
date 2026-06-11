@@ -1,7 +1,8 @@
 package com.kovhan.feature.splash.presentation.splash
 
 import com.kovhan.core.ui.view_model.BaseViewModel
-import com.kovhan.domain.onboarding.GetOnboardingCompletedUseCase
+import com.kovhan.domain.auth.use_case.IsLoggedInUseCase
+import com.kovhan.domain.onboarding.use_case.GetOnboardingCompletedUseCase
 import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenEffect
 import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenIntent
 import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenState
@@ -13,16 +14,17 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashScreenViewModel @Inject constructor(
     private val getOnboardingCompleted: GetOnboardingCompletedUseCase,
+    private val isLoggedIn: IsLoggedInUseCase,
 ) : BaseViewModel<SplashScreenState, SplashScreenEffect>(SplashScreenState()), SplashScreenIntent {
 
     init {
         viewModelScope.launch {
             // Mirrors the lottie intro length so navigation feels paced, not abrupt.
             delay(SPLASH_MIN_DURATION_MS)
-            val effect = if (getOnboardingCompleted.await()) {
-                SplashScreenEffect.NavigateToAuth
-            } else {
-                SplashScreenEffect.NavigateToOnboarding
+            val effect = when {
+                !getOnboardingCompleted.await() -> SplashScreenEffect.NavigateToOnboarding
+                isLoggedIn() -> SplashScreenEffect.NavigateToMain
+                else -> SplashScreenEffect.NavigateToAuth
             }
             publishEffect(effect)
         }

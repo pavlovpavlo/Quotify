@@ -5,4 +5,7 @@ data class AuthUser(
     val email: String?,
     val displayName: String?,
     val isEmailVerified: Boolean,
+    val photoUrl: String? = null,
+    val username: String? = null,
+    val isGoogleAccount: Boolean = false,
 )

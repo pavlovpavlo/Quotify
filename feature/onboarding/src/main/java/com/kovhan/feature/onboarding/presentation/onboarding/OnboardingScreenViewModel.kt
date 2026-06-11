@@ -1,7 +1,7 @@
 package com.kovhan.feature.onboarding.presentation.onboarding
 
 import com.kovhan.core.ui.view_model.BaseViewModel
-import com.kovhan.domain.onboarding.SetOnboardingCompletedUseCase
+import com.kovhan.domain.onboarding.use_case.SetOnboardingCompletedUseCase
 import com.kovhan.feature.onboarding.presentation.onboarding.mvi.OnboardingScreenEffect
 import com.kovhan.feature.onboarding.presentation.onboarding.mvi.OnboardingScreenIntent
 import com.kovhan.feature.onboarding.presentation.onboarding.mvi.OnboardingScreenState
@@ -38,9 +38,7 @@ class OnboardingScreenViewModel @Inject constructor(
         if (uiState.value.isCompleting) return
         publishState { copy(isCompleting = true) }
         viewModelScope.launch {
-            // Temporarily disabled so the onboarding flow can be replayed on every
-            // launch while we iterate on the post-onboarding screens.
-            // setOnboardingCompleted()
+            setOnboardingCompleted()
             publishEffect(OnboardingScreenEffect.NavigateToComplete)
         }
     }

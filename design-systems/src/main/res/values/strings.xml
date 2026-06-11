@@ -109,8 +109,123 @@
     <string name="auth_error_user_not_found">Акаунт із таким email не знайдено.</string>
     <string name="auth_error_user_disabled">Цей акаунт вимкнено.</string>
     <string name="auth_error_too_many_requests">Забагато спроб. Спробуй трохи пізніше.</string>
+    <string name="auth_error_recent_login_required">Будь ласка, увійди знову, щоб змінити email.</string>
     <string name="auth_error_network">Немає звʼязку. Перевір інтернет і спробуй ще раз.</string>
     <string name="auth_error_google_cancelled">Вхід через Google скасовано.</string>
     <string name="auth_error_google_failed">Не вдалося увійти через Google. Спробуй ще раз.</string>
     <string name="auth_error_generic">Щось пішло не так. Спробуй ще раз.</string>
+
+    <!-- Profile — header -->
+    <string name="profile_edit_avatar_cd">Редагувати фото профілю</string>
+
+    <!-- Profile — stats -->
+    <string name="profile_stat_quotes">ЦИТАТИ</string>
+    <string name="profile_stat_books">КНИГИ</string>
+    <string name="profile_stat_folders">ПАПКИ</string>
+    <string name="profile_stat_authors">АВТОРИ</string>
+
+    <!-- Profile — premium banner -->
+    <string name="profile_premium_eyebrow">QUOTIFY PREMIUM</string>
+    <string name="profile_premium_title">Більше місця для думок</string>
+    <string name="profile_premium_benefit_folders">Безліміт папок</string>
+    <string name="profile_premium_benefit_widgets">Віджети</string>
+    <string name="profile_premium_benefit_sync">Синхронізація</string>
+    <string name="profile_premium_cta">Оформити</string>
+
+    <!-- Profile — widget section -->
+    <string name="profile_widget_section">На головному екрані</string>
+    <string name="profile_widget_title">Постав віджет із цитатою</string>
+    <string name="profile_widget_subtitle">Випадкова цитата з бібліотеки щодня просто на екрані.</string>
+    <string name="profile_widget_cta">Створити віджет</string>
+    <string name="profile_widget_preview_quote">«Ми те, що ми постійно робимо.»</string>
+    <string name="profile_widget_preview_brand">Quotify</string>
+
+    <!-- Profile — notifications section -->
+    <string name="profile_notifications_section">Сповіщення</string>
+    <string name="profile_notif_quote_title">Показувати цитату дня</string>
+    <string name="profile_notif_quote_subtitle">Цитата дня просто на головному екрані.</string>
+    <string name="profile_notif_push_title">Нотифікація</string>
+    <string name="profile_notif_push_subtitle">Щоденно пуш з новою цитатою з підбірки.</string>
+    <string name="profile_notif_time_title">Час нагадування</string>
+
+    <!-- Profile — time picker -->
+    <string name="profile_time_picker_title">Час нагадування</string>
+    <string name="profile_time_picker_hours">ГОДИНА</string>
+    <string name="profile_time_picker_minutes">ХВИЛИНИ</string>
+    <string name="profile_time_picker_cancel">Скасувати</string>
+    <string name="profile_time_picker_confirm">Готово</string>
+
+    <!-- Profile — settings -->
+    <string name="profile_settings_section">Налаштування</string>
+    <string name="profile_settings_folders">Папки й теги</string>
+    <string name="profile_settings_folders_meta">12</string>
+    <string name="profile_settings_edit_profile">Редагувати профіль</string>
+    <string name="profile_settings_appearance">Зовнішній вигляд</string>
+    <string name="profile_settings_appearance_meta">Авто</string>
+    <string name="profile_settings_language">Мова</string>
+    <string name="profile_settings_language_meta">Українська</string>
+    <string name="profile_settings_subscription">Підписка</string>
+    <string name="profile_settings_subscription_meta">Free</string>
+    <string name="profile_settings_rate">Оцінити застосунок</string>
+    <string name="profile_settings_support">Підтримка</string>
+    <string name="profile_settings_about">Про застосунок</string>
+    <string name="profile_settings_about_meta">v2.4</string>
+    <string name="profile_version">Версія %1$s</string>
+
+    <string name="profile_time_picker_select">Обрати</string>
+
+    <!-- About app screen -->
+    <string name="about_title">Про застосунок</string>
+    <string name="about_placeholder">Інформація про застосунок зʼявиться незабаром.</string>
+
+    <!-- Shared -->
+    <string name="nav_back">Назад</string>
+
+    <!-- Edit profile -->
+    <string name="edit_profile_title">Редагувати профіль</string>
+    <string name="edit_profile_back">Назад</string>
+    <string name="edit_field_name">Повне імʼя</string>
+    <string name="edit_field_username">Імʼя користувача</string>
+    <string name="edit_field_email">Email</string>
+    <string name="edit_account_section">Акаунт</string>
+    <string name="edit_change_password">Змінити пароль</string>
+    <string name="edit_sign_out">Вийти</string>
+    <string name="edit_delete_account">Видалити акаунт</string>
+    <string name="edit_field_save">Зберегти</string>
+
+    <!-- Edit profile — change photo sheet -->
+    <string name="edit_photo_sheet_title">Змінити фото</string>
+    <string name="edit_photo_take">Зробити фото</string>
+    <string name="edit_photo_gallery">Вибрати з галереї</string>
+    <string name="edit_photo_remove">Прибрати фото</string>
+
+    <!-- Edit profile — change password / email -->
+    <string name="edit_password_sheet_title">Змінити пароль</string>
+    <string name="edit_password_current">Поточний пароль</string>
+    <string name="edit_password_new">Новий пароль</string>
+    <string name="edit_password_confirm">Підтвердити новий пароль</string>
+    <string name="edit_password_placeholder">••••••••</string>
+    <string name="edit_password_reset_sent">Ми надіслали лист з інструкціями на вашу пошту.</string>
+    <string name="edit_email_verification_sent">Лист підтвердження надіслано на нову пошту. Email зміниться після підтвердження.</string>
+    <string name="edit_photo_upload_failed">Не вдалося завантажити фото. Спробуй ще раз.</string>
+
+    <!-- Edit profile — confirm dialogs -->
+    <string name="dialog_cancel">Скасувати</string>
+    <string name="dialog_logout_title">Вийти з акаунту?</string>
+    <string name="dialog_logout_text">Бібліотека лишиться у безпеці — ви зможете знову увійти будь-коли.</string>
+    <string name="dialog_logout_confirm">Вийти</string>
+    <string name="dialog_delete_title">Видалити акаунт?</string>
+    <string name="dialog_delete_text">Усі ваші цитати, папки та нотатки буде видалено назавжди. Цю дію не можна скасувати.</string>
+    <string name="dialog_delete_confirm">Видалити акаунт</string>
+
+    <!-- Profile — appearance / theme sheet -->
+    <string name="profile_theme_sheet_title">Зовнішній вигляд</string>
+    <string name="profile_theme_light">Світла</string>
+    <string name="profile_theme_dark">Темна</string>
+    <string name="profile_theme_system">Авто (система)</string>
+
+    <!-- Profile — language sheet -->
+    <string name="profile_language_sheet_title">Мова</string>
+    <string name="profile_language_uk">Українська</string>
+    <string name="profile_language_en">English</string>
 </resources>

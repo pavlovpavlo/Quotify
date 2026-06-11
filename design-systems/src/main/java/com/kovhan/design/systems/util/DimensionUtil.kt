@@ -1,6 +1,8 @@
 package com.kovhan.design.systems.util
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toComposeRect
 import androidx.compose.ui.platform.LocalContext
@@ -16,10 +18,16 @@ private const val AVERAGE_DIVIDER = 2
 
 @Composable
 private fun getCurrentWindowSize(): DpSize {
-    val activity = LocalContext.current as Activity
+    val activity = LocalContext.current.findActivity()
     val density = LocalDensity.current
     val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(activity)
     return with(density) { metrics.bounds.toComposeRect().size.toDpSize() }
+}
+
+private tailrec fun Context.findActivity(): Activity = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> error("Expected an Activity context but found $this")
 }
 
 private fun calculateDimensionMultiplier(size: Float, mediumSize: Float): Float {

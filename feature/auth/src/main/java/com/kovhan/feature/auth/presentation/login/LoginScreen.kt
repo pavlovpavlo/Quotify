@@ -51,6 +51,23 @@ fun LoginScreen(
         onBack = intent::onBackClicked,
         paddingValues = paddingValues,
         snackbarHostState = snackbarHostState,
+        footer = {
+            LegalFooter(
+                modifier = Modifier
+                    .widthIn(max = 280.dp)
+                    .align(Alignment.CenterHorizontally),
+                onTermsClick = intent::onTermsOfServiceClicked,
+                onPrivacyClick = intent::onPrivacyPolicyClicked,
+            )
+
+            Spacer(Modifier.height(10.dp))
+
+            AuthAltRow(
+                question = stringResource(R.string.sign_in_alt_q),
+                action = stringResource(R.string.sign_in_alt_cta),
+                onActionClick = intent::onSignUpClicked,
+            )
+        },
     ) {
         AuthTitleBlock(
             title = stringResource(R.string.sign_in_title),
@@ -118,24 +135,6 @@ fun LoginScreen(
             onClick = intent::onGoogleSignInClicked,
             enabled = !state.isLoading,
             loading = state.isGoogleLoading,
-        )
-
-        Spacer(Modifier.height(28.dp))
-
-        LegalFooter(
-            modifier = Modifier
-                .widthIn(max = 280.dp)
-                .align(Alignment.CenterHorizontally),
-            onTermsClick = intent::onTermsOfServiceClicked,
-            onPrivacyClick = intent::onPrivacyPolicyClicked,
-        )
-
-        Spacer(Modifier.height(10.dp))
-
-        AuthAltRow(
-            question = stringResource(R.string.sign_in_alt_q),
-            action = stringResource(R.string.sign_in_alt_cta),
-            onActionClick = intent::onSignUpClicked,
         )
     }
 }

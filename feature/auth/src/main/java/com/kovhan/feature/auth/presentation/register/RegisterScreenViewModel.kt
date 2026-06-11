@@ -5,12 +5,12 @@ import com.kovhan.core.ui.constants.AppLinks
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.auth.AuthError
 import com.kovhan.domain.auth.AuthResult
-import com.kovhan.domain.auth.SignInWithGoogleUseCase
-import com.kovhan.domain.auth.SignUpUseCase
-import com.kovhan.domain.auth.ValidateAuthInputUseCase
+import com.kovhan.domain.auth.use_case.SignInWithGoogleUseCase
+import com.kovhan.domain.auth.use_case.SignUpUseCase
+import com.kovhan.domain.auth.use_case.ValidateAuthInputUseCase
 import com.kovhan.domain.auth.onFailure
 import com.kovhan.domain.auth.onSuccess
-import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
+import com.kovhan.domain.auth.GoogleSignInOutcome
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenEffect
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenIntent
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenState

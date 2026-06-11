@@ -36,5 +36,4 @@ dependencies {
     implementationLogs()
     implementationTests()
     implementationHilt()
-    implementationCredentialManager()
-} 
+}

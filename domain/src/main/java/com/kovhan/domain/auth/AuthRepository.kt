@@ -18,6 +18,14 @@ interface AuthRepository {
 
     suspend fun updateDisplayName(displayName: String): AuthResult<AuthUser>
 
+    suspend fun updateEmail(newEmail: String): AuthResult<Unit>
+
+    suspend fun reloadUser(): AuthResult<AuthUser>
+
+    suspend fun changePassword(currentPassword: String, newPassword: String): AuthResult<Unit>
+
+    suspend fun deleteAccount(): AuthResult<Unit>
+
     fun currentUser(): AuthUser?
 
     fun signOut()

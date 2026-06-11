@@ -25,6 +25,7 @@ internal fun NavGraphBuilder.splashScreen(
                 when (event) {
                     SplashScreenEffect.NavigateToOnboarding -> navAction.navigateToOnboarding()
                     SplashScreenEffect.NavigateToAuth -> navAction.navigateToAuth()
+                    SplashScreenEffect.NavigateToMain -> navAction.navigateToMain()
                 }
             }
         }

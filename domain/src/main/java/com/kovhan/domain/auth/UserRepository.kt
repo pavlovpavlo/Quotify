@@ -7,5 +7,15 @@ interface UserRepository {
 
     suspend fun cacheUser(user: AuthUser)
 
+    suspend fun setDisplayName(displayName: String)
+
+    suspend fun setUsername(username: String)
+
+    suspend fun setEmail(email: String)
+
+    suspend fun setCustomPhoto(sourceUri: String): Boolean
+
+    suspend fun clearCustomPhoto()
+
     suspend fun clear()
 }

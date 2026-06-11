@@ -91,4 +91,117 @@
     <string name="forgot_cta">Send link</string>
     <string name="forgot_sent_cta">Done, back to sign in</string>
     <string name="forgot_back_to_sign_in">Remembered? · Sign in</string>
+
+    <!-- Profile — header -->
+    <string name="profile_no_name">No name</string>
+    <string name="profile_sign_out">Sign out</string>
+    <string name="profile_edit_avatar_cd">Edit profile photo</string>
+
+    <!-- Profile — stats -->
+    <string name="profile_stat_quotes">QUOTES</string>
+    <string name="profile_stat_books">BOOKS</string>
+    <string name="profile_stat_folders">FOLDERS</string>
+    <string name="profile_stat_authors">AUTHORS</string>
+
+    <!-- Profile — premium banner -->
+    <string name="profile_premium_eyebrow">QUOTIFY PREMIUM</string>
+    <string name="profile_premium_title">More room for your thoughts</string>
+    <string name="profile_premium_benefit_folders">Unlimited folders</string>
+    <string name="profile_premium_benefit_widgets">Widgets</string>
+    <string name="profile_premium_benefit_sync">Sync</string>
+    <string name="profile_premium_cta">Upgrade</string>
+
+    <!-- Profile — widget section -->
+    <string name="profile_widget_section">On your home screen</string>
+    <string name="profile_widget_title">Add a quote widget</string>
+    <string name="profile_widget_subtitle">A random quote from your library on your screen every day.</string>
+    <string name="profile_widget_cta">Create widget</string>
+    <string name="profile_widget_preview_quote">“We are what we repeatedly do.”</string>
+    <string name="profile_widget_preview_brand">Quotify</string>
+
+    <!-- Profile — notifications section -->
+    <string name="profile_notifications_section">Notifications</string>
+    <string name="profile_notif_quote_title">Show quote of the day</string>
+    <string name="profile_notif_quote_subtitle">The daily quote right on your home screen.</string>
+    <string name="profile_notif_push_title">Notification</string>
+    <string name="profile_notif_push_subtitle">A daily push with a new quote from your picks.</string>
+    <string name="profile_notif_time_title">Reminder time</string>
+
+    <!-- Profile — time picker -->
+    <string name="profile_time_picker_title">Reminder time</string>
+    <string name="profile_time_picker_hours">HOUR</string>
+    <string name="profile_time_picker_minutes">MINUTES</string>
+    <string name="profile_time_picker_cancel">Cancel</string>
+    <string name="profile_time_picker_confirm">Done</string>
+
+    <!-- Profile — settings -->
+    <string name="profile_settings_section">Settings</string>
+    <string name="profile_settings_folders">Folders &amp; tags</string>
+    <string name="profile_settings_folders_meta">12</string>
+    <string name="profile_settings_edit_profile">Edit profile</string>
+    <string name="profile_settings_appearance">Appearance</string>
+    <string name="profile_settings_appearance_meta">Auto</string>
+    <string name="profile_settings_language">Language</string>
+    <string name="profile_settings_language_meta">English</string>
+    <string name="profile_settings_subscription">Subscription</string>
+    <string name="profile_settings_subscription_meta">Free</string>
+    <string name="profile_settings_rate">Rate the app</string>
+    <string name="profile_settings_support">Support</string>
+    <string name="profile_settings_about">About</string>
+    <string name="profile_settings_about_meta">v2.4</string>
+    <string name="profile_version">Version %1$s</string>
+    <string name="about_title">About</string>
+    <string name="about_placeholder">App information is coming soon.</string>
+    <string name="nav_back">Back</string>
+
+    <!-- Profile — appearance / theme sheet -->
+    <string name="profile_theme_sheet_title">Appearance</string>
+    <string name="profile_theme_light">Light</string>
+    <string name="profile_theme_dark">Dark</string>
+    <string name="profile_theme_system">Auto (system)</string>
+
+    <!-- Profile — language sheet -->
+    <string name="profile_language_sheet_title">Language</string>
+    <string name="profile_language_uk">Українська</string>
+    <string name="profile_language_en">English</string>
+
+    <string name="profile_time_picker_select">Select</string>
+
+    <!-- Edit profile -->
+    <string name="edit_profile_title">Edit profile</string>
+    <string name="edit_profile_back">Back</string>
+    <string name="edit_field_name">Full name</string>
+    <string name="edit_field_username">Username</string>
+    <string name="edit_field_email">Email</string>
+    <string name="edit_account_section">Account</string>
+    <string name="edit_change_password">Change password</string>
+    <string name="edit_sign_out">Sign out</string>
+    <string name="edit_delete_account">Delete account</string>
+    <string name="edit_field_save">Save</string>
+
+    <!-- Edit profile — change photo sheet -->
+    <string name="edit_photo_sheet_title">Change photo</string>
+    <string name="edit_photo_take">Take photo</string>
+    <string name="edit_photo_gallery">Choose from gallery</string>
+    <string name="edit_photo_remove">Remove photo</string>
+
+    <!-- Edit profile — change password / email -->
+    <string name="edit_password_sheet_title">Change password</string>
+    <string name="edit_password_current">Current password</string>
+    <string name="edit_password_new">New password</string>
+    <string name="edit_password_confirm">Confirm new password</string>
+    <string name="edit_password_placeholder">••••••••</string>
+    <string name="edit_password_reset_sent">We sent an email with instructions to your inbox.</string>
+    <string name="edit_email_verification_sent">A verification link was sent to your new email. The email changes after you confirm it.</string>
+    <string name="edit_photo_upload_failed">Couldn\'t upload the photo. Please try again.</string>
+    <string name="auth_error_recent_login_required">Please sign in again to change your email.</string>
+
+    <!-- Edit profile — confirm dialogs -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_logout_title">Sign out?</string>
+    <string name="dialog_logout_text">Your library stays safe — you can sign back in anytime.</string>
+    <string name="dialog_logout_confirm">Sign out</string>
+    <string name="dialog_delete_title">Delete account?</string>
+    <string name="dialog_delete_text">All your quotes, folders and notes will be deleted permanently. This action can\'t be undone.</string>
+    <string name="dialog_delete_confirm">Delete account</string>
 </resources>

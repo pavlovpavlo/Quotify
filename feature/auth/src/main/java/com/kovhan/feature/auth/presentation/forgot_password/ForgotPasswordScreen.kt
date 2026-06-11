@@ -52,6 +52,17 @@ fun ForgotPasswordScreen(
         onBack = intent::onBackClicked,
         paddingValues = paddingValues,
         snackbarHostState = snackbarHostState,
+        footer = {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center,
+            ) {
+                AuthTextLink(
+                    text = stringResource(R.string.forgot_back_to_sign_in),
+                    onClick = intent::onBackToSignInClicked,
+                )
+            }
+        },
     ) {
         Box(
             modifier = Modifier
@@ -101,17 +112,5 @@ fun ForgotPasswordScreen(
             accent = QuotifyButtonAccent.Primary,
             sizeSpec = QuotifyButtonDefaults.pillSizeSpec(),
         )
-
-        Spacer(Modifier.height(28.dp))
-
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center,
-        ) {
-            AuthTextLink(
-                text = stringResource(R.string.forgot_back_to_sign_in),
-                onClick = intent::onBackToSignInClicked,
-            )
-        }
     }
 }

@@ -53,6 +53,12 @@ data object MainGraph : NavigationGraph() {
 
     @Serializable
     data object ProfileScreen
+
+    @Serializable
+    data object EditProfileScreen
+
+    @Serializable
+    data object AboutScreen
 }
 
 /**

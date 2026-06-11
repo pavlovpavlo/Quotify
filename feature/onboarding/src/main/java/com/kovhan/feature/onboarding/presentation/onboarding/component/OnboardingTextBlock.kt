@@ -12,9 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
-/**
- * Shared title + body block that lives below the hero on every onboarding slide.
- */
+
 @Composable
 internal fun OnboardingTextBlock(
     @StringRes title: Int,

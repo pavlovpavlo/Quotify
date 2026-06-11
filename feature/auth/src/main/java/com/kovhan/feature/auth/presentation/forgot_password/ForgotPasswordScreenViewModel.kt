@@ -2,8 +2,8 @@ package com.kovhan.feature.auth.presentation.forgot_password
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.kovhan.core.ui.view_model.BaseViewModel
-import com.kovhan.domain.auth.SendPasswordResetUseCase
-import com.kovhan.domain.auth.ValidateAuthInputUseCase
+import com.kovhan.domain.auth.use_case.SendPasswordResetUseCase
+import com.kovhan.domain.auth.use_case.ValidateAuthInputUseCase
 import com.kovhan.domain.auth.onFailure
 import com.kovhan.domain.auth.onSuccess
 import com.kovhan.feature.auth.presentation.forgot_password.mvi.ForgotPasswordScreenEffect

@@ -1,7 +1,7 @@
 package com.kovhan.feature.auth.presentation.register.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
+import com.kovhan.domain.auth.GoogleSignInOutcome
 
 interface RegisterScreenIntent {
     fun onFullNameChanged(value: TextFieldValue)

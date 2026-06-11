@@ -45,6 +45,13 @@ fun RegisterScreen(
         onBack = intent::onBackClicked,
         paddingValues = paddingValues,
         snackbarHostState = snackbarHostState,
+        footer = {
+            AuthAltRow(
+                question = stringResource(R.string.sign_up_alt_q),
+                action = stringResource(R.string.sign_up_alt_cta),
+                onActionClick = intent::onSignInClicked,
+            )
+        },
     ) {
         androidx.compose.foundation.layout.Column(
             modifier = Modifier.fillMaxWidth(),
@@ -136,14 +143,6 @@ fun RegisterScreen(
                 onClick = intent::onGoogleSignInClicked,
                 enabled = !state.isLoading,
                 loading = state.isGoogleLoading,
-            )
-
-            Spacer(Modifier.height(18.dp))
-
-            AuthAltRow(
-                question = stringResource(R.string.sign_up_alt_q),
-                action = stringResource(R.string.sign_up_alt_cta),
-                onActionClick = intent::onSignInClicked,
             )
         }
     }

@@ -1,7 +1,10 @@
 package com.kovhan.quotify.mvi
 
 import com.kovhan.core.ui.UiState
+import com.kovhan.domain.settings.AppLanguage
+import com.kovhan.domain.settings.AppTheme
 
 data class MainActivityState(
-    val isDarkMode: Boolean = false
+    val theme: AppTheme = AppTheme.SYSTEM,
+    val language: AppLanguage = AppLanguage.UKRAINIAN,
 ) : UiState

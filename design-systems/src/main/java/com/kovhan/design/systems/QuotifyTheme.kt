@@ -79,37 +79,17 @@ fun QuotifyAppTheme(
         )
     }
 
-    if (isDarkTheme) QuotifyDarkTheme(content = content)
-    else QuotifyLightTheme(content = content)
-}
-
-@Composable
-private fun QuotifyLightTheme(
-    content: @Composable () -> Unit,
-) {
+    // Single CompositionLocalProvider call site so flipping [isDarkTheme] only
+    // swaps the provided palette — [content] stays mounted. Branching into two
+    // separate composables here would remount the whole tree (and reset the
+    // NavHost) on every theme change.
     CompositionLocalProvider(
-        LocaleQuotifyColors provides quotifyLightPalette,
-        LocaleQuotifyImages provides quotifyLightImages,
+        LocaleQuotifyColors provides if (isDarkTheme) quotifyDarkPalette else quotifyLightPalette,
+        LocaleQuotifyImages provides if (isDarkTheme) quotifyDarkImages else quotifyLightImages,
         LocalTypography provides provideTypography(),
         LocalDimensions provides provideDimensions(),
-        LocalAnimation provides quotifyLightAnimation,
-        LocalSystem provides quotifyLightSystem,
-    ) {
-        MaterialTheme(shapes = Shapes(), content = content)
-    }
-}
-
-@Composable
-private fun QuotifyDarkTheme(
-    content: @Composable () -> Unit,
-) {
-    CompositionLocalProvider(
-        LocaleQuotifyColors provides quotifyDarkPalette,
-        LocaleQuotifyImages provides quotifyDarkImages,
-        LocalTypography provides provideTypography(),
-        LocalDimensions provides provideDimensions(),
-        LocalAnimation provides quotifyDarkAnimation,
-        LocalSystem provides quotifyDarkSystem,
+        LocalAnimation provides if (isDarkTheme) quotifyDarkAnimation else quotifyLightAnimation,
+        LocalSystem provides if (isDarkTheme) quotifyDarkSystem else quotifyLightSystem,
     ) {
         MaterialTheme(shapes = Shapes(), content = content)
     }

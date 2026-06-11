@@ -40,6 +40,7 @@ import com.kovhan.quotify.navigation.dock.BottomDock
 
 private fun isMainTabRoute(destination: NavDestination?): Boolean {
     val route = destination?.route ?: return false
+    if (route.contains("Edit", ignoreCase = true)) return false
     return route.contains("Quotes", ignoreCase = true) ||
         route.contains("Profile", ignoreCase = true) ||
         route.contains("Home", ignoreCase = true) ||
@@ -87,6 +88,11 @@ fun AppContent(
                     },
                     navigateToAuth = {
                         navController.navigateToAuthGraph {
+                            popUpTo(SplashGraph) { inclusive = true }
+                        }
+                    },
+                    navigateToMain = {
+                        navController.navigateToMainGraph {
                             popUpTo(SplashGraph) { inclusive = true }
                         }
                     },

@@ -14,10 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
-/**
- * Small pill chip with colored background, used as decorative tags floating
- * around the hero illustration on the second onboarding slide.
- */
+
 @Composable
 internal fun OnboardingChip(
     text: String,
