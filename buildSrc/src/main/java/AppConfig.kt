@@ -1,7 +1,7 @@
 object AppConfig {
     const val applicationId = "com.kovhan"
 
-    const val compileSdk = 35
+    const val compileSdk = 36
     const val minSdk = 28
     const val targetSdk = 35
 

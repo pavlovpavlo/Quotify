@@ -1,9 +1,5 @@
-package com.kovhan.feature.main.presentation.edit_profile
+﻿package com.kovhan.feature.main.presentation.edit_profile
 
-import android.graphics.Bitmap
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,27 +15,20 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.component.QuotifyTopBar
 import com.kovhan.core.ui.snackbar.QuotifySnackbar
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
-import com.kovhan.feature.main.presentation.edit_profile.component.ChangePhotoBottomSheet
-import com.kovhan.feature.main.presentation.edit_profile.component.ConfirmDialog
 import com.kovhan.feature.main.presentation.edit_profile.component.EditAvatar
 import com.kovhan.feature.main.presentation.edit_profile.component.EditCard
 import com.kovhan.feature.main.presentation.edit_profile.component.EditRow
 import com.kovhan.feature.main.presentation.edit_profile.component.EditSectionTitle
-import com.kovhan.feature.main.presentation.edit_profile.component.FieldBottomSheet
-import com.kovhan.feature.main.presentation.edit_profile.mvi.EditField
-import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileDialog
+import com.kovhan.core.navigation.EditField
 import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileIntent
-import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileSheet
 import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileState
 import com.kovhan.feature.main.presentation.edit_profile.navigation.EditProfileScreenNavAction
-import java.io.File
 
 @Composable
 fun EditProfileScreen(
@@ -50,23 +39,7 @@ fun EditProfileScreen(
     snackbarHostState: SnackbarHostState,
 ) {
     val colors = QuotifyMaterialTheme.colors
-    val context = LocalContext.current
     val isGoogleAccount = state.user?.isGoogleAccount == true
-
-    val galleryLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetContent(),
-    ) { uri: Uri? ->
-        uri?.let { intent.onPhotoPicked(it.toString()) }
-    }
-    val cameraLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.TakePicturePreview(),
-    ) { bitmap: Bitmap? ->
-        bitmap?.let {
-            val file = File(context.cacheDir, "camera_${System.currentTimeMillis()}.jpg")
-            file.outputStream().use { os -> it.compress(Bitmap.CompressFormat.JPEG, 90, os) }
-            intent.onPhotoPicked(Uri.fromFile(file).toString())
-        }
-    }
 
     val displayName = state.user?.displayName?.takeIf { it.isNotBlank() }
         ?: stringResource(R.string.profile_no_name)
@@ -173,57 +146,5 @@ fun EditProfileScreen(
         ) { data ->
             QuotifySnackbar(snackbarData = data)
         }
-    }
-
-    when (val sheet = state.sheet) {
-        EditProfileSheet.Photo -> ChangePhotoBottomSheet(
-            onTakePhoto = {
-                intent.onSheetDismissed()
-                cameraLauncher.launch(null)
-            },
-            onPickGallery = {
-                intent.onSheetDismissed()
-                galleryLauncher.launch("image/*")
-            },
-            onRemovePhoto = intent::onPhotoRemoved,
-            onDismiss = intent::onSheetDismissed,
-        )
-
-        is EditProfileSheet.Field -> FieldBottomSheet(
-            field = sheet.field,
-            initialValue = when (sheet.field) {
-                EditField.NAME -> displayName
-                EditField.USERNAME -> username
-                EditField.EMAIL -> email
-            },
-            onSave = { value -> intent.onFieldSaved(sheet.field, value) },
-            onDismiss = intent::onSheetDismissed,
-        )
-
-        null -> Unit
-    }
-
-    when (state.dialog) {
-        EditProfileDialog.Logout -> ConfirmDialog(
-            iconRes = R.drawable.ic_log_out,
-            title = stringResource(R.string.dialog_logout_title),
-            message = stringResource(R.string.dialog_logout_text),
-            confirmText = stringResource(R.string.dialog_logout_confirm),
-            cancelText = stringResource(R.string.dialog_cancel),
-            onConfirm = intent::onLogoutConfirmed,
-            onDismiss = intent::onDialogDismissed,
-        )
-
-        EditProfileDialog.Delete -> ConfirmDialog(
-            iconRes = R.drawable.ic_trash,
-            title = stringResource(R.string.dialog_delete_title),
-            message = stringResource(R.string.dialog_delete_text),
-            confirmText = stringResource(R.string.dialog_delete_confirm),
-            cancelText = stringResource(R.string.dialog_cancel),
-            onConfirm = intent::onDeleteConfirmed,
-            onDismiss = intent::onDialogDismissed,
-        )
-
-        null -> Unit
     }
 }

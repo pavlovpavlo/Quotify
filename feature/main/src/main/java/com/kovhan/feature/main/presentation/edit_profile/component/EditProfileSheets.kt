@@ -1,4 +1,4 @@
-package com.kovhan.feature.main.presentation.edit_profile.component
+﻿package com.kovhan.feature.main.presentation.edit_profile.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,7 +40,7 @@ import com.kovhan.core.ui.component.bottomsheet.QuotifyBottomSheet
 import com.kovhan.design.systems.InterFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
-import com.kovhan.feature.main.presentation.edit_profile.mvi.EditField
+import com.kovhan.core.navigation.EditField
 import com.kovhan.feature.main.presentation.profile.component.PrimaryActionButton
 
 @OptIn(ExperimentalMaterial3Api::class)

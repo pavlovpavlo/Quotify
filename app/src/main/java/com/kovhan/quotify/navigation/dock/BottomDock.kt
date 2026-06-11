@@ -1,4 +1,4 @@
-package com.kovhan.quotify.navigation.dock
+﻿package com.kovhan.quotify.navigation.dock
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,32 +8,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.kovhan.core.ui.navigation.TabEnum
+import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.TabEnum
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 
 @Composable
 fun BottomDock(
-    navController: NavController,
+    coordinator: NavigationCoordinator,
     modifier: Modifier = Modifier,
     onKeyboardInput: () -> Unit = {},
     onScanInput: () -> Unit = {},
     onVoiceInput: () -> Unit = {},
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val routeTab = TabEnum.fromRoute(navBackStackEntry?.destination?.route)
-    var currentTab by remember { mutableStateOf(routeTab ?: TabEnum.LIBRARY) }
-    LaunchedEffect(routeTab) { routeTab?.let { currentTab = it } }
+    val currentTab = TabEnum.fromKey(coordinator.currentKey) ?: TabEnum.LIBRARY
     var menuOpen by remember { mutableStateOf(false) }
 
     val images = QuotifyMaterialTheme.images
@@ -75,21 +69,10 @@ fun BottomDock(
                 currentTab = currentTab,
                 onTabSelected = { tab ->
                     if (menuOpen) menuOpen = false
-                    if (tab != currentTab) navController.switchTab(tab)
+                    if (tab != currentTab) coordinator.navigate(tab.key)
                 },
             )
             DockFab(menuOpen = menuOpen, onClick = { menuOpen = !menuOpen })
         }
-    }
-}
-
-private fun NavController.switchTab(tab: TabEnum) {
-    navigate(tab.destination) {
-        popUpTo(graph.findStartDestination().id) {
-            saveState = true
-            inclusive = false
-        }
-        launchSingleTop = true
-        restoreState = true
     }
 }

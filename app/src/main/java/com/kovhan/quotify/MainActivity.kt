@@ -1,4 +1,4 @@
-package com.kovhan.quotify
+﻿package com.kovhan.quotify
 
 import android.content.Context
 import android.content.res.Configuration
@@ -21,8 +21,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.rememberNavController
+import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.kovhan.core.ui.activity.ActivityRequired
+import com.kovhan.core.navigation.BottomSheetEntryBuilder
+import com.kovhan.core.navigation.DialogEntryBuilder
+import com.kovhan.core.navigation.EntryBuilder
+import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.ui.util.ContextUtils
 import com.kovhan.design.systems.QuotifyAppTheme
 import com.kovhan.domain.settings.AppTheme
@@ -38,6 +42,18 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var activityRequired: Set<@JvmSuppressWildcards ActivityRequired>
+
+    @Inject
+    lateinit var navigationCoordinator: NavigationCoordinator
+
+    @Inject
+    lateinit var entryBuilders: Set<@JvmSuppressWildcards EntryBuilder>
+
+    @Inject
+    lateinit var bottomSheetEntryBuilders: Set<@JvmSuppressWildcards BottomSheetEntryBuilder>
+
+    @Inject
+    lateinit var dialogEntryBuilders: Set<@JvmSuppressWildcards DialogEntryBuilder>
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(ContextUtils.updateConfiguration(base))
@@ -58,7 +74,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         setContent {
-            val navController = rememberNavController()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val isDarkTheme = when (uiState.theme) {
                 AppTheme.LIGHT -> false
@@ -79,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             CompositionLocalProvider(
                 LocalContext provides localizedContext,
                 LocalConfiguration provides localizedContext.resources.configuration,
+                LocalNavigationEventDispatcherOwner provides this@MainActivity,
             ) {
                 QuotifyAppTheme(
                     activity = this,
@@ -90,9 +106,12 @@ class MainActivity : AppCompatActivity() {
                         color = Color.Transparent,
                     ) {
                         AppContent(
-                            navController = navController,
                             uiState = uiState,
                             uiIntent = viewModel,
+                            coordinator = navigationCoordinator,
+                            entryBuilders = entryBuilders,
+                            bottomSheetEntryBuilders = bottomSheetEntryBuilders,
+                            dialogEntryBuilders = dialogEntryBuilders,
                         )
                     }
                 }

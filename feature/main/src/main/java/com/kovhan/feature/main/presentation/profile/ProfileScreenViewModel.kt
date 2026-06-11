@@ -65,28 +65,20 @@ class ProfileScreenViewModel @Inject constructor(
 
     override fun onNotificationsToggled(enabled: Boolean) = publishState { copy(notificationsEnabled = enabled) }
 
-    override fun onReminderTimeClicked() = publishState { copy(isTimePickerVisible = true) }
+    override fun onReminderTimeClicked() = publishEffect(ProfileScreenEffect.OpenReminderSheet)
 
     override fun onReminderTimeSelected(hour: Int, minute: Int) =
         publishState { copy(reminderHour = hour, reminderMinute = minute) }
 
-    override fun onTimePickerDismissed() = publishState { copy(isTimePickerVisible = false) }
-
-    override fun onAppearanceClicked() = publishState { copy(isThemeSheetVisible = true) }
+    override fun onAppearanceClicked() = publishEffect(ProfileScreenEffect.OpenThemeSheet)
 
     override fun onThemeSelected(theme: AppTheme) {
         viewModelScope.launch { setTheme(theme) }
-        publishState { copy(isThemeSheetVisible = false) }
     }
 
-    override fun onThemeSheetDismissed() = publishState { copy(isThemeSheetVisible = false) }
-
-    override fun onLanguageClicked() = publishState { copy(isLanguageSheetVisible = true) }
+    override fun onLanguageClicked() = publishEffect(ProfileScreenEffect.OpenLanguageSheet)
 
     override fun onLanguageSelected(language: AppLanguage) {
-        publishState { copy(isLanguageSheetVisible = false) }
         viewModelScope.launch { setLanguage(language) }
     }
-
-    override fun onLanguageSheetDismissed() = publishState { copy(isLanguageSheetVisible = false) }
 }

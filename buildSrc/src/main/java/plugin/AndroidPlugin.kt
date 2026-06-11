@@ -2,7 +2,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 inline val PluginDependenciesSpec.PLUGIN_ANDROID_VERSION
-    get() = "8.7.3"
+    get() = "8.9.1"
 
 inline val PluginDependenciesSpec.AndroidApplication: PluginDependencySpec
     get() = id("com.android.application")

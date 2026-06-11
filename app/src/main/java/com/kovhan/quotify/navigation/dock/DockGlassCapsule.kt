@@ -1,4 +1,4 @@
-package com.kovhan.quotify.navigation.dock
+﻿package com.kovhan.quotify.navigation.dock
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.kovhan.core.ui.navigation.TabEnum
+import com.kovhan.core.navigation.TabEnum
 import com.kovhan.design.systems.InterFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R

@@ -1,4 +1,4 @@
-package com.kovhan.feature.main.presentation.edit_profile
+﻿package com.kovhan.feature.main.presentation.edit_profile
 
 import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.core.ui.snackbar.SnackbarType
@@ -15,11 +15,9 @@ import com.kovhan.domain.auth.use_case.SignOutUseCase
 import com.kovhan.domain.auth.use_case.UpdateEmailUseCase
 import com.kovhan.domain.auth.use_case.UpdateUserProfileUseCase
 import com.kovhan.domain.auth.use_case.UpdateUsernameUseCase
-import com.kovhan.feature.main.presentation.edit_profile.mvi.EditField
-import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileDialog
+import com.kovhan.core.navigation.EditField
 import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileEffect
 import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileIntent
-import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileSheet
 import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -51,10 +49,19 @@ class EditProfileViewModel @Inject constructor(
         viewModelScope.launch { refreshUser() }
     }
 
-    override fun onPhotoClicked() = publishState { copy(sheet = EditProfileSheet.Photo) }
+    override fun onPhotoClicked() = publishEffect(EditProfileEffect.OpenPhotoSheet)
 
-    override fun onFieldClicked(field: EditField) =
-        publishState { copy(sheet = EditProfileSheet.Field(field)) }
+    override fun onFieldClicked(field: EditField) {
+        val user = uiState.value.user
+        val email = user?.email.orEmpty()
+        val initialValue = when (field) {
+            EditField.NAME -> user?.displayName.orEmpty()
+            EditField.USERNAME ->
+                user?.username ?: email.substringBefore("@").takeIf { it.isNotBlank() }.orEmpty()
+            EditField.EMAIL -> email
+        }
+        publishEffect(EditProfileEffect.OpenFieldSheet(field, initialValue))
+    }
 
     override fun onPasswordClicked() {
         val email = uiState.value.user?.email?.takeIf { it.isNotBlank() } ?: return
@@ -68,12 +75,9 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    override fun onSheetDismissed() = publishState { copy(sheet = null) }
-
     override fun onFieldSaved(field: EditField, value: String) {
         val trimmed = value.trim()
         if (trimmed.isEmpty()) return
-        publishState { copy(sheet = null) }
         viewModelScope.launch {
             when (field) {
                 EditField.NAME -> updateName(trimmed)
@@ -88,7 +92,6 @@ class EditProfileViewModel @Inject constructor(
     }
 
     override fun onPhotoPicked(uri: String) {
-        publishState { copy(sheet = null) }
         viewModelScope.launch {
             if (!setPhoto(uri)) {
                 showSnackbar(SnackbarMessage.error(R.string.edit_photo_upload_failed))
@@ -97,19 +100,16 @@ class EditProfileViewModel @Inject constructor(
     }
 
     override fun onPhotoRemoved() {
-        publishState { copy(sheet = null) }
         viewModelScope.launch { removePhoto() }
     }
 
-    override fun onLogoutClicked() = publishState { copy(dialog = EditProfileDialog.Logout) }
+    override fun onLogoutClicked() = publishEffect(EditProfileEffect.OpenLogoutDialog)
 
-    override fun onDeleteAccountClicked() = publishState { copy(dialog = EditProfileDialog.Delete) }
-
-    override fun onDialogDismissed() = publishState { copy(dialog = null) }
+    override fun onDeleteAccountClicked() = publishEffect(EditProfileEffect.OpenDeleteDialog)
 
     override fun onLogoutConfirmed() {
         if (uiState.value.isProcessing) return
-        publishState { copy(isProcessing = true, dialog = null) }
+        publishState { copy(isProcessing = true) }
         viewModelScope.launch {
             signOut()
             publishState { copy(isProcessing = false) }
@@ -119,7 +119,7 @@ class EditProfileViewModel @Inject constructor(
 
     override fun onDeleteConfirmed() {
         if (uiState.value.isProcessing) return
-        publishState { copy(isProcessing = true, dialog = null) }
+        publishState { copy(isProcessing = true) }
         viewModelScope.launch {
             deleteAccount()
             signOut()

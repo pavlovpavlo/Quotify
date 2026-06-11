@@ -23,14 +23,11 @@ import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
-import com.kovhan.feature.main.presentation.profile.component.LanguageBottomSheet
 import com.kovhan.feature.main.presentation.profile.component.NotificationsCard
 import com.kovhan.feature.main.presentation.profile.component.PremiumBanner
 import com.kovhan.feature.main.presentation.profile.component.ProfileHeader
 import com.kovhan.feature.main.presentation.profile.component.ProfileStatsCard
-import com.kovhan.feature.main.presentation.profile.component.ReminderTimePickerSheet
 import com.kovhan.feature.main.presentation.profile.component.SettingsSection
-import com.kovhan.feature.main.presentation.profile.component.ThemeBottomSheet
 import com.kovhan.feature.main.presentation.profile.component.WidgetSection
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenIntent
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenState
@@ -137,34 +134,6 @@ fun ProfileScreen(
                 onRateClick = intent::onRateClicked,
                 onSupportClick = navAction::navigateToSettings,
                 onAboutClick = navAction::navigateToAbout,
-            )
-        }
-
-        if (state.isTimePickerVisible) {
-            ReminderTimePickerSheet(
-                initialHour = state.reminderHour,
-                initialMinute = state.reminderMinute,
-                onConfirm = { hour, minute ->
-                    intent.onReminderTimeSelected(hour, minute)
-                    intent.onTimePickerDismissed()
-                },
-                onDismiss = intent::onTimePickerDismissed,
-            )
-        }
-
-        if (state.isThemeSheetVisible) {
-            ThemeBottomSheet(
-                selected = state.theme,
-                onThemeSelected = intent::onThemeSelected,
-                onDismiss = intent::onThemeSheetDismissed,
-            )
-        }
-
-        if (state.isLanguageSheetVisible) {
-            LanguageBottomSheet(
-                selected = state.language,
-                onLanguageSelected = intent::onLanguageSelected,
-                onDismiss = intent::onLanguageSheetDismissed,
             )
         }
     }

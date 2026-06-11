@@ -2,6 +2,8 @@ plugins {
     AndroidLibrary
     KotlinAndroid
     Compose
+    KotlinKapt
+    Hilt
     Ktlint
     KotlinSerialization
 }
@@ -12,6 +14,7 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:navigation"))
     implementation(project(":design-systems"))
     implementationAndroidX()
     implementationCompose()
@@ -19,5 +22,6 @@ dependencies {
     implementationNavigation()
     implementationSerialization()
     implementationLogs()
+    implementationHilt()
     implementationTests()
 }

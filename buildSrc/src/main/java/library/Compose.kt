@@ -6,9 +6,9 @@ import org.gradle.kotlin.dsl.DependencyHandlerScope
 private object ComposeDependencies {
 
     object Version {
-        const val BOM = "2024.12.01"
+        const val BOM = "2025.11.01"
         const val ACTIVITY = "1.9.3"
-        const val LIFECYCLE = "2.8.7"
+        const val LIFECYCLE = "2.10.0"
         const val CONSTRAINT_LAYOUT = "1.1.0"
         const val LOTTY = "6.6.2"
         const val COIL = "2.7.0"

@@ -14,11 +14,8 @@ data class ProfileScreenState(
     val notificationsEnabled: Boolean = true,
     val reminderHour: Int = 9,
     val reminderMinute: Int = 0,
-    val isTimePickerVisible: Boolean = false,
     val theme: AppTheme = AppTheme.SYSTEM,
     val language: AppLanguage = AppLanguage.UKRAINIAN,
-    val isThemeSheetVisible: Boolean = false,
-    val isLanguageSheetVisible: Boolean = false,
 ) : UiState
 
 data class ProfileStats(
