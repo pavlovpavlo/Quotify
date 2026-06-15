@@ -1,15 +1,17 @@
 # Quotify
 
-Android-застосунок для роботи з цитатами. Побудований на Jetpack Compose з модульною
-архітектурою, MVI та Firebase-автентифікацією.
+An Android app for managing quotes. Built using Jetpack Compose with a modular
+architecture, MVI, and Firebase authentication.
 
-## Стек
+## Stack
 
-- **Мова / UI:** Kotlin, Jetpack Compose
-- **Архітектура:** багатомодульна (feature / core / data / domain), MVI, Clean Architecture
+- **Language / UI:** Kotlin, Jetpack Compose
+- **Architecture:** multi-module (feature / core / data / domain), MVI, Clean Architecture
 - **DI:** Hilt
-- **Навігація:** Navigation 3 (`NavDisplay` + `NavigationCoordinator`, без `NavHost`)
-- **Бекенд:** Firebase Auth (Email/Password + Google Sign-In), Firestore, Crashlytics
-- **Медіа:** Cloudinary (завантаження фото профілю)
-- **Локальне сховище:** DataStore (тема, мова, кеш профілю)
-- **Інше:** Coroutines, Credential Manager, Accompanist
+- **Navigation:** Navigation 3 (`NavDisplay` + `NavigationCoordinator`, without `NavHost`)
+- **Backend:** Firebase Auth (Email/Password + Google Sign-In), Firestore, Crashlytics
+- **Media:** Cloudinary (profile photo upload)
+- **Local storage:** DataStore (theme, language, profile cache)
+- **Other:** Coroutines, Credential Manager, Accompanist
+
+Translated with DeepL.com (free version)
