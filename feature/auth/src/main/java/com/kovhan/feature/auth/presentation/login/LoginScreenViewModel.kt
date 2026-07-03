@@ -27,15 +27,15 @@ class LoginScreenViewModel @Inject constructor(
 ) : BaseViewModel<LoginScreenState, LoginScreenEffect>(LoginScreenState()),
     LoginScreenIntent {
 
-    override fun onEmailChanged(value: TextFieldValue) = publishState { copy(email = value) }
-    override fun onPasswordChanged(value: TextFieldValue) = publishState { copy(password = value) }
+    override fun onEmailChanged(value: TextFieldValue) = publishState { copy(email = value, errorMessage = null, errorValidationMessage = null) }
+    override fun onPasswordChanged(value: TextFieldValue) = publishState { copy(password = value, errorMessage = null, errorValidationMessage = null) }
 
     override fun onSignInClicked() {
         val current = uiState.value
         if (!current.canSubmit) return
 
         validateInput(email = current.email.text, password = current.password.text)?.let { error ->
-            showSnackbar(error.toSnackbar())
+            publishState { copy(errorValidationMessage = error) }
             return
         }
 
@@ -60,7 +60,7 @@ class LoginScreenViewModel @Inject constructor(
             is GoogleSignInOutcome.Failure -> {
                 publishState { copy(isGoogleLoading = false) }
                 if (outcome.error != AuthError.GoogleSignInCancelled) {
-                    showSnackbar(outcome.error.toSnackbar())
+                    publishState { copy(errorMessage = outcome.error) }
                 }
             }
         }
@@ -70,7 +70,9 @@ class LoginScreenViewModel @Inject constructor(
         publishState { copy(isLoading = false, isGoogleLoading = false) }
         result
             .onSuccess { publishEffect(LoginScreenEffect.NavigateToMain) }
-            .onFailure { showSnackbar(it.toSnackbar()) }
+            .onFailure {
+                publishState { copy(errorMessage = it) }
+            }
     }
 
     override fun onForgotPasswordClicked() {

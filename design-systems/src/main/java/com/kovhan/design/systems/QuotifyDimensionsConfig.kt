@@ -50,15 +50,7 @@ internal fun provideDimensions(): QuotifyDimensions {
     )
 }
 
-/**
- * Folio design system spacing & radii. 4px base scale.
- *
- *   space1=4, space2=8, space3=12, space4=16, space5=20, space6=24,
- *   space8=32, space10=40, space12=48, space16=64, space20=80, space24=96
- *
- *   radiusXs=2, radiusSm=4, radiusMd=6, radiusLg=10, radiusXl=14,
- *   radius2xl=20, radiusFull=999
- */
+
 @Immutable
 data class QuotifyDimensions(
     // Folio 4px-base spacing scale
@@ -106,6 +98,9 @@ data class QuotifyDimensions(
 
     // Feature-specific
     val loginIllustrationHeight: Dp = 260.dp,
+
+    //Custom sizes
+    val size18: Dp = 18.dp
 )
 
 val defaultDimensions = QuotifyDimensions()

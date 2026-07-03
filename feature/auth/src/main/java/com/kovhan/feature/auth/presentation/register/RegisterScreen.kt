@@ -1,5 +1,6 @@
 package com.kovhan.feature.auth.presentation.register
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,13 +16,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.component.button.QuotifyButton
-import com.kovhan.core.ui.component.text_field.QuotifyPasswordField
-import com.kovhan.core.ui.component.text_field.QuotifyTextField
-import com.kovhan.design.systems.QuotifyMaterialTheme
-import com.kovhan.design.systems.R
 import com.kovhan.core.ui.component.button.QuotifyButtonAccent
 import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
 import com.kovhan.core.ui.component.button.QuotifyButtonVariant
+import com.kovhan.core.ui.component.text.ErrorText
+import com.kovhan.core.ui.component.text_field.QuotifyPasswordField
+import com.kovhan.core.ui.component.text_field.QuotifyTextField
+import com.kovhan.core.ui.extensions.orEmpty
+import com.kovhan.design.systems.QuotifyMaterialTheme
+import com.kovhan.design.systems.R
+import com.kovhan.domain.auth.model.ValidationError
 import com.kovhan.feature.auth.presentation.component.AuthAltRow
 import com.kovhan.feature.auth.presentation.component.AuthOrDivider
 import com.kovhan.feature.auth.presentation.component.AuthScreenScaffold
@@ -30,6 +35,7 @@ import com.kovhan.feature.auth.presentation.register.component.TermsCheckboxText
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenIntent
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenState
 import com.kovhan.feature.auth.presentation.register.navigation.RegisterScreenNavAction
+import com.kovhan.feature.auth.presentation.util.toSnackbar
 
 @Composable
 fun RegisterScreen(
@@ -40,6 +46,11 @@ fun RegisterScreen(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val dimens = QuotifyMaterialTheme.dimensions
+    val errorValidationMessage = remember {
+        derivedStateOf {
+            state.errorValidationMessage?.toSnackbar()?.messageRes
+        }
+    }
 
     AuthScreenScaffold(
         onBack = intent::onBackClicked,
@@ -53,7 +64,7 @@ fun RegisterScreen(
             )
         },
     ) {
-        androidx.compose.foundation.layout.Column(
+        Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
             AuthTitleBlock(
@@ -82,6 +93,9 @@ fun RegisterScreen(
                 placeholder = stringResource(R.string.sign_up_username_placeholder),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 onValueChange = intent::onUsernameChanged,
+                error = if(state.errorValidationMessage is ValidationError.EmptyName)
+                    errorValidationMessage.value
+                else null,
             )
 
             Spacer(Modifier.height(dimens.space3))
@@ -97,6 +111,9 @@ fun RegisterScreen(
                     imeAction = ImeAction.Next,
                 ),
                 onValueChange = intent::onEmailChanged,
+                error = if(state.errorValidationMessage is ValidationError.InvalidEmail)
+                    errorValidationMessage.value
+                else null,
             )
 
             Spacer(Modifier.height(dimens.space3))
@@ -109,6 +126,9 @@ fun RegisterScreen(
                 placeholder = stringResource(R.string.sign_up_password_placeholder),
                 imeAction = ImeAction.Done,
                 onValueChange = intent::onPasswordChanged,
+                error = if(state.errorValidationMessage is ValidationError.ShortPassword)
+                    errorValidationMessage.value
+                else null
             )
 
             Spacer(Modifier.height(dimens.space3))
@@ -120,6 +140,14 @@ fun RegisterScreen(
                 onPrivacyPolicyClick = intent::onPrivacyPolicyClicked,
                 onTermsOfServiceClick = intent::onTermsOfServiceClicked,
             )
+
+            if (state.errorMessage != null) {
+                ErrorText(
+                    modifier = Modifier,
+                    error = state.errorMessage.toSnackbar().messageRes.orEmpty(),
+                    paddingTop = dimens.space4
+                )
+            }
 
             Spacer(Modifier.height(dimens.space4))
 

@@ -2,6 +2,8 @@ package com.kovhan.feature.auth.presentation.register.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.kovhan.core.ui.UiState
+import com.kovhan.domain.auth.model.AuthError
+import com.kovhan.domain.auth.model.ValidationError
 
 data class RegisterScreenState(
     val fullName: TextFieldValue = TextFieldValue(""),
@@ -11,6 +13,9 @@ data class RegisterScreenState(
     val termsAccepted: Boolean = false,
     val isLoading: Boolean = false,
     val isGoogleLoading: Boolean = false,
+    val errorMessage: AuthError? = null,
+    val errorValidationMessage: ValidationError? = null,
+
 ) : UiState {
     val canSubmit: Boolean
         get() = !isLoading &&
@@ -18,5 +23,7 @@ data class RegisterScreenState(
             username.text.isNotBlank() &&
             email.text.isNotBlank() &&
             password.text.isNotBlank() &&
-            termsAccepted
+            termsAccepted &&
+            errorValidationMessage == null &&
+            errorMessage == null
 }

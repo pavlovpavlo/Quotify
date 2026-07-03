@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.kovhan.core.ui.component.text.ErrorText
 import com.kovhan.core.ui.extensions.isNotNull
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
@@ -126,18 +127,7 @@ fun QuotifyTextField(
         )
 
         if (error != null) {
-            Text(
-                modifier = modifierError
-                    .padding(
-                        start = dimens.space3,
-                        end = dimens.space3,
-                        top = dimens.space1,
-                    )
-                    .fillMaxWidth(),
-                text = stringResource(id = error),
-                color = colors.error,
-                style = typography.caption,
-            )
+            ErrorText(modifier = modifierError, error = error)
         }
     }
 }
