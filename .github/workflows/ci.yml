@@ -65,7 +65,8 @@ jobs:
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
+          name: app-debug 
+          path: app/build/outputs/apk/debug/*.apk
           
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -91,5 +92,3 @@ jobs:
 
               Репозиторій:
               ${{ github.repository }}
-              
-          path: app/build/outputs/apk/debug/*.apk
