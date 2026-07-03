@@ -17,10 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
-/**
- * 3-dot page indicator used on the onboarding pager. The active page becomes an
- * elongated pill in the accent color; inactive pages are small muted dots.
- */
+
 @Composable
 fun OnboardingPageIndicator(
     pageCount: Int,
