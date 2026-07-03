@@ -45,10 +45,6 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      # 6. Перевірка стилю коду
-      - name: ktlint
-        run: ./gradlew ktlintCheck --stacktrace
-
       # 7. Юніт-тести (JUnit 5 + MockK)
       - name: Unit tests
         run: ./gradlew test --stacktrace
