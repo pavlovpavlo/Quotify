@@ -30,12 +30,15 @@ import com.kovhan.design.systems.R
 import com.kovhan.core.ui.component.button.QuotifyButtonAccent
 import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
 import com.kovhan.core.ui.component.button.QuotifyButtonVariant
+import com.kovhan.core.ui.component.text.ErrorText
+import com.kovhan.core.ui.extensions.orEmpty
 import com.kovhan.feature.auth.presentation.component.AuthScreenScaffold
 import com.kovhan.feature.auth.presentation.component.AuthTextLink
 import com.kovhan.feature.auth.presentation.component.AuthTitleBlock
 import com.kovhan.feature.auth.presentation.forgot_password.mvi.ForgotPasswordScreenIntent
 import com.kovhan.feature.auth.presentation.forgot_password.mvi.ForgotPasswordScreenState
 import com.kovhan.feature.auth.presentation.forgot_password.navigation.ForgotPasswordScreenNavAction
+import com.kovhan.feature.auth.presentation.util.toSnackbar
 
 @Composable
 fun ForgotPasswordScreen(
@@ -98,7 +101,14 @@ fun ForgotPasswordScreen(
                 imeAction = ImeAction.Done,
             ),
             onValueChange = intent::onEmailChanged,
+            error = state.errorValidationMessage?.toSnackbar()?.messageRes
         )
+
+        if (state.errorMessage != null) {
+            ErrorText(modifier = Modifier,
+                error = state.errorMessage.toSnackbar().messageRes.orEmpty(),
+                paddingTop = dimens.space4)
+        }
 
         Spacer(Modifier.height(dimens.space4))
 

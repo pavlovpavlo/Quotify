@@ -21,14 +21,13 @@ class ForgotPasswordScreenViewModel @Inject constructor(
 ) : BaseViewModel<ForgotPasswordScreenState, ForgotPasswordScreenEffect>(ForgotPasswordScreenState()),
     ForgotPasswordScreenIntent {
 
-    override fun onEmailChanged(value: TextFieldValue) = publishState { copy(email = value) }
+    override fun onEmailChanged(value: TextFieldValue) = publishState { copy(email = value, errorMessage = null, errorValidationMessage = null) }
 
     override fun onSendClicked() {
         val current = uiState.value
         if (!current.canSubmit) return
-
         validateInput(email = current.email.text)?.let { error ->
-            showSnackbar(error.toSnackbar())
+            publishState { copy(isLoading = false, errorValidationMessage = error) }
             return
         }
 
@@ -36,12 +35,11 @@ class ForgotPasswordScreenViewModel @Inject constructor(
         viewModelScope.launch {
             sendPasswordReset(current.email.text)
                 .onSuccess {
-                    publishState { copy(isLoading = false) }
+                    publishState { copy(isLoading = false, errorMessage = null) }
                     publishEffect(ForgotPasswordScreenEffect.NavigateBack)
                 }
                 .onFailure {
-                    publishState { copy(isLoading = false) }
-                    showSnackbar(it.toSnackbar())
+                    publishState { copy(isLoading = false, errorMessage = it) }
                 }
         }
     }
