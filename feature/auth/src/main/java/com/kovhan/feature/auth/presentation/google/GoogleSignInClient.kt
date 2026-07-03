@@ -1,6 +1,7 @@
-package com.kovhan.domain.auth
+package com.kovhan.feature.auth.presentation.google
 
 import android.content.Context
+import com.kovhan.domain.auth.model.AuthError
 
 sealed interface GoogleSignInOutcome {
     data class Success(val idToken: String) : GoogleSignInOutcome

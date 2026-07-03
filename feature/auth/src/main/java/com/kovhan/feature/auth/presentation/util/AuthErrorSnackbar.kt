@@ -1,8 +1,8 @@
 package com.kovhan.feature.auth.presentation.util
 
 import com.kovhan.core.ui.snackbar.SnackbarMessage
-import com.kovhan.domain.auth.AuthError
-import com.kovhan.domain.auth.ValidationError
+import com.kovhan.domain.auth.model.AuthError
+import com.kovhan.domain.auth.model.ValidationError
 import com.kovhan.design.systems.R
 
 internal fun AuthError.toSnackbar(): SnackbarMessage = SnackbarMessage.error(stringRes())

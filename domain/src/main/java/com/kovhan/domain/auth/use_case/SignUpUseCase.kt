@@ -1,8 +1,8 @@
 ﻿package com.kovhan.domain.auth.use_case
 
 import com.kovhan.domain.auth.AuthRepository
-import com.kovhan.domain.auth.AuthResult
-import com.kovhan.domain.auth.AuthUser
+import com.kovhan.domain.auth.model.AuthResult
+import com.kovhan.core.models.AuthUser
 import javax.inject.Inject
 
 class SignUpUseCase

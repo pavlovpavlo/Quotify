@@ -1,23 +1,19 @@
-﻿package com.kovhan.data.auth.remote
+package com.kovhan.data.auth.remote
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.kovhan.data.auth.source.RemoteProfile
+import com.kovhan.data.auth.source.RemoteUserProfileSource
 import com.kovhan.data.auth.util.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
-data class RemoteProfile(
-    val username: String? = null,
-    val photoUrl: String? = null,
-    val photoPublicId: String? = null,
-)
-
 @Singleton
-class FirestoreUserRepository @Inject constructor(
+class FirestoreUserProfileDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
-) {
+) : RemoteUserProfileSource {
 
-    suspend fun fetchProfile(uid: String): RemoteProfile? {
+    override suspend fun fetchProfile(uid: String): RemoteProfile? {
         val snapshot = userDoc(uid).get().await()
         if (!snapshot.exists()) return null
         return RemoteProfile(
@@ -27,11 +23,11 @@ class FirestoreUserRepository @Inject constructor(
         )
     }
 
-    suspend fun setUsername(uid: String, username: String) {
+    override suspend fun setUsername(uid: String, username: String) {
         userDoc(uid).set(mapOf(FIELD_USERNAME to username), SetOptions.merge()).await()
     }
 
-    suspend fun setPhoto(uid: String, url: String?, publicId: String?) {
+    override suspend fun setPhoto(uid: String, url: String?, publicId: String?) {
         userDoc(uid).set(
             mapOf(FIELD_PHOTO_URL to url, FIELD_PHOTO_PUBLIC_ID to publicId),
             SetOptions.merge(),

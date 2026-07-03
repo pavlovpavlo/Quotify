@@ -1,4 +1,4 @@
-package com.kovhan.domain.auth
+package com.kovhan.core.models
 
 data class AuthUser(
     val uid: String,

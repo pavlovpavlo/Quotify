@@ -1,7 +1,7 @@
 ﻿package com.kovhan.domain.auth.use_case
 
 import com.kovhan.domain.auth.AuthRepository
-import com.kovhan.domain.auth.AuthResult
+import com.kovhan.domain.auth.model.AuthResult
 import javax.inject.Inject
 
 class SendPasswordResetUseCase

@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import com.kovhan.domain.auth.AuthError
+import com.kovhan.domain.auth.model.AuthError
 
 internal fun Throwable.toAuthError(): AuthError =
     when (this) {
@@ -29,7 +29,6 @@ internal fun Throwable.toAuthError(): AuthError =
         else -> fromErrorCode() ?: AuthError.Unknown(message)
     }
 
-// Newer Firebase Auth collapses several cases into ERROR_INVALID_CREDENTIAL; sniff the message.
 private fun Throwable.fromErrorCode(): AuthError? {
     val haystack = (message ?: "").uppercase()
     return when {

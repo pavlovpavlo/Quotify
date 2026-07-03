@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":domain"))
     implementation(project(":data:auth"))
+    implementation(project(":data:settings"))
     implementation(project(":design-systems"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:onboarding"))

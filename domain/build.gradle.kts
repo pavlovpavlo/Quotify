@@ -13,6 +13,7 @@ android {
 }
 
 dependencies {
+    api(project(":core:models"))
     implementationHilt()
     implementationCoroutines()
     implementationSerialization()

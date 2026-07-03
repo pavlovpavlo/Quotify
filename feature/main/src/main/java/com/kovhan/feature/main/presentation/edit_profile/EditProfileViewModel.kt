@@ -4,7 +4,7 @@ import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.core.ui.snackbar.SnackbarType
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.design.systems.R
-import com.kovhan.domain.auth.AuthResult
+import com.kovhan.core.models.Outcome
 import com.kovhan.domain.auth.use_case.DeleteAccountUseCase
 import com.kovhan.domain.auth.use_case.GetUserUseCase
 import com.kovhan.domain.auth.use_case.RefreshUserUseCase
@@ -67,9 +67,9 @@ class EditProfileViewModel @Inject constructor(
         val email = uiState.value.user?.email?.takeIf { it.isNotBlank() } ?: return
         viewModelScope.launch {
             when (sendPasswordReset(email)) {
-                is AuthResult.Success ->
+                is Outcome.Success ->
                     showSnackbar(R.string.edit_password_reset_sent, SnackbarType.Success)
-                is AuthResult.Failure ->
+                is Outcome.Failure ->
                     showSnackbar(SnackbarMessage.error(R.string.auth_error_generic))
             }
         }
@@ -83,9 +83,9 @@ class EditProfileViewModel @Inject constructor(
                 EditField.NAME -> updateName(trimmed)
                 EditField.USERNAME -> updateUsername(trimmed)
                 EditField.EMAIL -> when (val result = updateEmail(trimmed)) {
-                    is AuthResult.Success ->
+                    is Outcome.Success ->
                         showSnackbar(R.string.edit_email_verification_sent, SnackbarType.Success)
-                    is AuthResult.Failure -> showSnackbar(result.error.toSnackbar())
+                    is Outcome.Failure -> showSnackbar(result.error.toSnackbar())
                 }
             }
         }

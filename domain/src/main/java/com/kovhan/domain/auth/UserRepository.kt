@@ -1,5 +1,6 @@
 package com.kovhan.domain.auth
 
+import com.kovhan.core.models.AuthUser
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

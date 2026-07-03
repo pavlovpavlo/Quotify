@@ -1,7 +1,7 @@
 package com.kovhan.feature.main.presentation.profile.mvi
 
 import com.kovhan.core.ui.UiState
-import com.kovhan.domain.auth.AuthUser
+import com.kovhan.core.models.AuthUser
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 

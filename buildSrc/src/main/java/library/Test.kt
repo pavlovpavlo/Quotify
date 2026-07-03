@@ -3,24 +3,29 @@ import extension.testImplementation
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 
 object Test {
-    internal const val JUNIT_VERSION = "4.13.2"
-    internal const val ANDROID_JUNIT_VERSION = "1.2.1"
-    internal const val ESPRESSO_VERSION = "3.6.1"
-    internal const val MOCKITO_VERSION = "5.15.2"
-    internal const val MOCKITO_KOTLIN_VERSION = "5.4.0"
+    private const val JUNIT5_VERSION = "5.11.4"
+    private const val MOCKK_VERSION = "1.13.14"
+    private const val COROUTINES_TEST_VERSION = "1.8.0"
+    private const val TURBINE_VERSION = "1.2.0"
 
-    internal const val JUNIT_PATH = "junit:junit:$JUNIT_VERSION"
+    private const val ANDROID_JUNIT_VERSION = "1.2.1"
+    private const val ESPRESSO_VERSION = "3.6.1"
+
+    internal const val JUNIT5_PATH = "org.junit.jupiter:junit-jupiter:$JUNIT5_VERSION"
+    internal const val MOCKK_PATH = "io.mockk:mockk:$MOCKK_VERSION"
+    internal const val COROUTINES_TEST_PATH =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:$COROUTINES_TEST_VERSION"
+    internal const val TURBINE_PATH = "app.cash.turbine:turbine:$TURBINE_VERSION"
+
     internal const val ANDROID_JUNIT_PATH = "androidx.test.ext:junit:$ANDROID_JUNIT_VERSION"
     internal const val ESPRESSO_PATH = "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"
-    internal const val MOCKITO_CORE_PATH = "org.mockito:mockito-core:$MOCKITO_VERSION"
-    internal const val MOCKITO_KOTLIN_PATH = "org.mockito.kotlin:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
-
 }
 
 fun DependencyHandlerScope.implementationTests() {
-    testImplementation(Test.JUNIT_PATH)
-    testImplementation(Test.MOCKITO_CORE_PATH)
-    testImplementation(Test.MOCKITO_KOTLIN_PATH)
+    testImplementation(Test.JUNIT5_PATH)
+    testImplementation(Test.MOCKK_PATH)
+    testImplementation(Test.COROUTINES_TEST_PATH)
+    testImplementation(Test.TURBINE_PATH)
 }
 
 fun DependencyHandlerScope.implementationAndroidTests() {

@@ -5,15 +5,16 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.kovhan.data.auth.local.SettingsDataStore
-import com.kovhan.data.auth.remote.CredentialGoogleSignInClient
+import com.kovhan.data.auth.local.UserLocalDataSource
+import com.kovhan.data.auth.remote.CloudinaryPhotoUploader
+import com.kovhan.data.auth.remote.FirestoreUserProfileDataSource
 import com.kovhan.data.auth.repository.FirebaseAuthRepository
 import com.kovhan.data.auth.repository.UserRepositoryImpl
+import com.kovhan.data.auth.source.PhotoUploader
+import com.kovhan.data.auth.source.RemoteUserProfileSource
+import com.kovhan.data.auth.source.UserCache
 import com.kovhan.domain.auth.AuthRepository
-import com.kovhan.domain.auth.GoogleSignInClient
 import com.kovhan.domain.auth.UserRepository
-import com.kovhan.domain.onboarding.OnboardingRepository
-import com.kovhan.domain.settings.SettingsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -46,13 +47,13 @@ abstract class AuthDataModule {
 
     @Binds
     @Singleton
-    abstract fun bindSettingsRepository(impl: SettingsDataStore): SettingsRepository
+    abstract fun bindUserCache(impl: UserLocalDataSource): UserCache
 
     @Binds
     @Singleton
-    abstract fun bindOnboardingRepository(impl: SettingsDataStore): OnboardingRepository
+    abstract fun bindRemoteUserProfileSource(impl: FirestoreUserProfileDataSource): RemoteUserProfileSource
 
     @Binds
     @Singleton
-    abstract fun bindGoogleSignInClient(impl: CredentialGoogleSignInClient): GoogleSignInClient
+    abstract fun bindPhotoUploader(impl: CloudinaryPhotoUploader): PhotoUploader
 }

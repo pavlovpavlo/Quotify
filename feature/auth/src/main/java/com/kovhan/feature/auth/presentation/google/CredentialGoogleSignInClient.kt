@@ -1,4 +1,4 @@
-﻿package com.kovhan.data.auth.remote
+package com.kovhan.feature.auth.presentation.google
 
 import android.content.Context
 import androidx.credentials.CredentialManager
@@ -9,9 +9,7 @@ import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.kovhan.domain.auth.AuthError
-import com.kovhan.domain.auth.GoogleSignInClient
-import com.kovhan.domain.auth.GoogleSignInOutcome
+import com.kovhan.domain.auth.model.AuthError
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,7 +18,7 @@ class CredentialGoogleSignInClient @Inject constructor() : GoogleSignInClient {
     override suspend fun signIn(context: Context): GoogleSignInOutcome {
         val webClientId = context.webClientId()
         if (webClientId.isNullOrBlank()) {
-            Timber.w("Google Sign-In: default_web_client_id is missing â€” enable Google provider in Firebase.")
+            Timber.w("Google Sign-In: default_web_client_id is missing — enable Google provider in Firebase.")
             return GoogleSignInOutcome.Failure(AuthError.GoogleSignInFailed)
         }
 

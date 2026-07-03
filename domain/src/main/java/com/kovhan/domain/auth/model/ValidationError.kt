@@ -1,4 +1,4 @@
-package com.kovhan.domain.auth
+package com.kovhan.domain.auth.model
 
 sealed interface ValidationError {
     data object EmptyName : ValidationError

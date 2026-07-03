@@ -18,11 +18,11 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":core:datastore"))
     implementationDatabase()
     implementationDatastore()
     implementationFirebase()
     implementationCloudinary()
-    implementationCredentialManager()
     implementationCoroutines()
     implementationLogs()
     implementationNetworking()

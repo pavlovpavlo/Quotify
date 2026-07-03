@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":domain"))
     implementationAndroidX()
     implementationCompose()
+    implementationCredentialManager()
     implementationCoroutines()
     implementationNavigation()
     implementationSerialization()

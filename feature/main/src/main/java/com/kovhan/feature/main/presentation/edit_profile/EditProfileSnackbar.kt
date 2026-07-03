@@ -2,7 +2,7 @@ package com.kovhan.feature.main.presentation.edit_profile
 
 import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.design.systems.R
-import com.kovhan.domain.auth.AuthError
+import com.kovhan.domain.auth.model.AuthError
 
 internal fun AuthError.toSnackbar(): SnackbarMessage = SnackbarMessage.error(
     when (this) {

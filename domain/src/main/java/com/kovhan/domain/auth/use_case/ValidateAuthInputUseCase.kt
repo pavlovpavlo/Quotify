@@ -1,6 +1,6 @@
 ﻿package com.kovhan.domain.auth.use_case
 
-import com.kovhan.domain.auth.ValidationError
+import com.kovhan.domain.auth.model.ValidationError
 import javax.inject.Inject
 
 class ValidateAuthInputUseCase @Inject constructor(

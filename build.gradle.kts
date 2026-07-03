@@ -39,6 +39,12 @@ fun BaseExtension.baseConfig() {
         }
     }
 
+    testOptions {
+        unitTests.all { test ->
+            test.useJUnitPlatform()
+        }
+    }
+
 }
 
 /**

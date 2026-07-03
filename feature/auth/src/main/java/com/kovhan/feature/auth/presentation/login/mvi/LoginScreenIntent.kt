@@ -1,7 +1,7 @@
 package com.kovhan.feature.auth.presentation.login.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.kovhan.domain.auth.GoogleSignInOutcome
+import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
 
 interface LoginScreenIntent {
     fun onEmailChanged(value: TextFieldValue)

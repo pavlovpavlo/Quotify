@@ -1,5 +1,8 @@
 package com.kovhan.domain.auth
 
+import com.kovhan.domain.auth.model.AuthResult
+import com.kovhan.core.models.AuthUser
+
 interface AuthRepository {
     suspend fun signIn(
         email: String,

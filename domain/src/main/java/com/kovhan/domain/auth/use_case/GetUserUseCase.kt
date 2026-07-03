@@ -1,6 +1,6 @@
 ﻿package com.kovhan.domain.auth.use_case
 
-import com.kovhan.domain.auth.AuthUser
+import com.kovhan.core.models.AuthUser
 import com.kovhan.domain.auth.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
