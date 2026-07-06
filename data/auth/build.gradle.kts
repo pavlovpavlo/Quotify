@@ -19,6 +19,7 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:firebase"))
     implementationDatabase()
     implementationDatastore()
     implementationFirebase()

@@ -7,5 +7,5 @@ class UpdateUsernameUseCase @Inject constructor(
     private val userRepository: UserRepository,
 ) {
     suspend operator fun invoke(username: String) =
-        userRepository.setUsername(username.trim().removePrefix("@"))
+        userRepository.setUsername(username.trim().replace("@",""))
 }
