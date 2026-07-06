@@ -1,10 +1,5 @@
 package com.kovhan.data.auth.di
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.kovhan.data.auth.local.UserLocalDataSource
 import com.kovhan.data.auth.remote.CloudinaryPhotoUploader
 import com.kovhan.data.auth.remote.FirestoreUserProfileDataSource
@@ -17,22 +12,9 @@ import com.kovhan.domain.auth.AuthRepository
 import com.kovhan.domain.auth.UserRepository
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
-@Module
-@InstallIn(SingletonComponent::class)
-internal object AuthProvidesModule {
-    @Provides
-    @Singleton
-    fun provideFirebaseAuth(): FirebaseAuth = Firebase.auth
-
-    @Provides
-    @Singleton
-    fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
-}
 
 @Module
 @InstallIn(SingletonComponent::class)
