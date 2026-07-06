@@ -8,6 +8,6 @@ data class SavedCollection(
 ) {
     companion object {
         const val DEFAULT_ICON_ID = "default"
-        const val DEFAULT_ICON_COLOR = "E8E2D5"
+        const val DEFAULT_ICON_COLOR = "terra"
     }
 }
