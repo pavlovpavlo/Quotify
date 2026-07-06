@@ -99,7 +99,7 @@
     <!-- Auth — validation -->
     <string name="auth_validation_name">Введи імʼя.</string>
     <string name="auth_validation_email">Введи коректний email.</string>
-    <string name="auth_validation_password">Пароль має містити щонайменше 6 символів.</string>
+    <string name="auth_validation_password">Пароль має містити щонайменше 8 символів.</string>
 
     <!-- Auth — errors -->
     <string name="auth_error_invalid_credentials">Невірний email або пароль.</string>

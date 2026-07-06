@@ -26,6 +26,9 @@ import com.kovhan.design.systems.R
 import com.kovhan.core.ui.component.button.QuotifyButtonAccent
 import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
 import com.kovhan.core.ui.component.button.QuotifyButtonVariant
+import com.kovhan.core.ui.component.text.ErrorText
+import com.kovhan.core.ui.extensions.orEmpty
+import com.kovhan.domain.auth.model.ValidationError
 import com.kovhan.feature.auth.presentation.component.AuthAltRow
 import com.kovhan.feature.auth.presentation.component.AuthOrDivider
 import com.kovhan.feature.auth.presentation.component.AuthScreenScaffold
@@ -36,6 +39,7 @@ import com.kovhan.feature.auth.presentation.component.LegalFooter
 import com.kovhan.feature.auth.presentation.login.mvi.LoginScreenIntent
 import com.kovhan.feature.auth.presentation.login.mvi.LoginScreenState
 import com.kovhan.feature.auth.presentation.login.navigation.LoginScreenNavAction
+import com.kovhan.feature.auth.presentation.util.toSnackbar
 
 @Composable
 fun LoginScreen(
@@ -86,6 +90,8 @@ fun LoginScreen(
                 imeAction = ImeAction.Next,
             ),
             onValueChange = intent::onEmailChanged,
+            error = if(state.errorValidationMessage is ValidationError.InvalidEmail)
+                state.errorValidationMessage?.toSnackbar()?.messageRes else null
         )
 
         Spacer(Modifier.height(dimens.space3))
@@ -97,6 +103,8 @@ fun LoginScreen(
             placeholder = stringResource(R.string.sign_in_password_placeholder),
             imeAction = ImeAction.Done,
             onValueChange = intent::onPasswordChanged,
+            error = if(state.errorValidationMessage is ValidationError.ShortPassword)
+                state.errorValidationMessage?.toSnackbar()?.messageRes else null
         )
 
         Spacer(Modifier.height(10.dp))
@@ -110,6 +118,14 @@ fun LoginScreen(
                 onClick = intent::onForgotPasswordClicked,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W500,
+            )
+        }
+
+        if (state.errorMessage != null) {
+            ErrorText(
+                modifier = Modifier,
+                error = state.errorMessage.toSnackbar().messageRes.orEmpty(),
+                paddingTop = dimens.space4
             )
         }
 

@@ -1,5 +1,6 @@
 package com.kovhan.feature.auth.presentation.component
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,7 +20,7 @@ internal fun AuthTitleBlock(
     val colors = QuotifyMaterialTheme.colors
     val typography = QuotifyMaterialTheme.typography
 
-    androidx.compose.foundation.layout.Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = title,

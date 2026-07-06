@@ -17,13 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.snackbar.QuotifySnackbar
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
-private val AuthBodyHorizontal = 24.dp
-private val AuthBodyTop = 4.dp
-private val AuthBodyBottom = 18.dp
 
 @Composable
 internal fun AuthScreenScaffold(
@@ -31,6 +29,9 @@ internal fun AuthScreenScaffold(
     paddingValues: PaddingValues,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollable: Boolean = true,
+    horizontalPadding: Dp = QuotifyMaterialTheme.dimensions.space6,
+    topPadding: Dp = QuotifyMaterialTheme.dimensions.space1,
+    bottomPadding: Dp = QuotifyMaterialTheme.dimensions.size18,
     footer: (@Composable ColumnScope.() -> Unit)? = null,
     body: @Composable ColumnScope.() -> Unit,
 ) {
@@ -50,16 +51,16 @@ internal fun AuthScreenScaffold(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .imePadding()
                     .then(
                         if (scrollable) Modifier.verticalScroll(rememberScrollState()) else Modifier,
                     )
                     .padding(
-                        start = AuthBodyHorizontal,
-                        end = AuthBodyHorizontal,
-                        top = AuthBodyTop,
-                        bottom = AuthBodyBottom,
-                    ),
+                        start = horizontalPadding,
+                        end = horizontalPadding,
+                        top = topPadding,
+                        bottom = bottomPadding,
+                    )
+                    .imePadding(),
                 content = body,
             )
 
@@ -68,9 +69,9 @@ internal fun AuthScreenScaffold(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = AuthBodyHorizontal,
-                            end = AuthBodyHorizontal,
-                            bottom = AuthBodyBottom,
+                            start = horizontalPadding,
+                            end = horizontalPadding,
+                            bottom = bottomPadding,
                         ),
                     content = footer,
                 )

@@ -28,9 +28,9 @@ class RegisterScreenViewModel @Inject constructor(
     RegisterScreenIntent {
 
     override fun onFullNameChanged(value: TextFieldValue) = publishState { copy(fullName = value) }
-    override fun onUsernameChanged(value: TextFieldValue) = publishState { copy(username = value) }
-    override fun onEmailChanged(value: TextFieldValue) = publishState { copy(email = value) }
-    override fun onPasswordChanged(value: TextFieldValue) = publishState { copy(password = value) }
+    override fun onUsernameChanged(value: TextFieldValue) = publishState { copy(username = value, errorMessage = null, errorValidationMessage = null) }
+    override fun onEmailChanged(value: TextFieldValue) = publishState { copy(email = value, errorMessage = null, errorValidationMessage = null) }
+    override fun onPasswordChanged(value: TextFieldValue) = publishState { copy(password = value, errorMessage = null, errorValidationMessage = null) }
     override fun onTermsToggled(accepted: Boolean) = publishState { copy(termsAccepted = accepted) }
 
     override fun onSignUpClicked() {
@@ -42,7 +42,7 @@ class RegisterScreenViewModel @Inject constructor(
             email = current.email.text,
             password = current.password.text,
         )?.let { error ->
-            showSnackbar(error.toSnackbar())
+            publishState { copy(errorValidationMessage = error) }
             return
         }
 
@@ -67,7 +67,7 @@ class RegisterScreenViewModel @Inject constructor(
             is GoogleSignInOutcome.Failure -> {
                 publishState { copy(isGoogleLoading = false) }
                 if (outcome.error != AuthError.GoogleSignInCancelled) {
-                    showSnackbar(outcome.error.toSnackbar())
+                    publishState { copy(errorMessage = outcome.error) }
                 }
             }
         }
@@ -77,7 +77,9 @@ class RegisterScreenViewModel @Inject constructor(
         publishState { copy(isLoading = false, isGoogleLoading = false) }
         result
             .onSuccess { publishEffect(RegisterScreenEffect.NavigateToMain) }
-            .onFailure { showSnackbar(it.toSnackbar()) }
+            .onFailure {
+                publishState { copy(errorMessage = it) }
+            }
     }
 
     override fun onSignInClicked() {
