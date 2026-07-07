@@ -204,4 +204,19 @@
     <string name="dialog_delete_title">Delete account?</string>
     <string name="dialog_delete_text">All your quotes, folders and notes will be deleted permanently. This action can\'t be undone.</string>
     <string name="dialog_delete_confirm">Delete account</string>
+
+    <!-- Quote of the day card -->
+    <string name="daily_quote_eyebrow">QUOTE OF THE DAY</string>
+    <string name="daily_quote_remove_cd">Remove the quote of the day</string>
+    <string name="daily_quote_save_cd">Save to favourites</string>
+    <string name="collection_favourites">Favourites</string>
+    <string name="collection_general">General</string>
+
+    <!-- Hide daily quote dialog -->
+    <string name="daily_quote_hide_title">Hide the quote of the day?</string>
+    <string name="daily_quote_hide_text">If you remove it for good, you won\'t see daily quotes anymore. You can change this anytime in settings.</string>
+    <string name="daily_quote_hide_forever">Remove for good</string>
+    <string name="daily_quote_hide_today">Hide for today</string>
+    <string name="daily_quote_hide_keep">Keep</string>
+    <string name="daily_quote_hide_close_cd">Close</string>
 </resources>

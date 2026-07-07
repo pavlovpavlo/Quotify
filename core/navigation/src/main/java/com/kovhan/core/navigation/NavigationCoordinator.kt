@@ -458,5 +458,7 @@ class NavigationCoordinator @Inject constructor() {
         const val KEY_EDIT_FIELD_VALUE = "edit_field_value"
         const val KEY_LOGOUT_CONFIRMED = "logout_confirmed"
         const val KEY_DELETE_CONFIRMED = "delete_confirmed"
+        const val KEY_DAILY_QUOTE_HIDE_FOREVER = "daily_quote_hide_forever"
+        const val KEY_DAILY_QUOTE_HIDE_TODAY = "daily_quote_hide_today"
     }
 }

@@ -97,6 +97,9 @@ data object LogoutDialogKey : DialogKey
 @Serializable
 data object DeleteAccountDialogKey : DialogKey
 
+@Serializable
+data object HideDailyQuoteDialogKey : DialogKey
+
 // ---------------------------------------------------------------------------
 // OVERLAY PAYLOADS
 // ---------------------------------------------------------------------------

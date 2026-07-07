@@ -32,6 +32,12 @@ class SettingsLocalDataSource @Inject constructor(
     override suspend fun setLanguage(language: AppLanguage) =
         dataStore.put(SettingsPreferences.Settings.LANGUAGE, language.tag)
 
+    override fun observeDailyQuoteEnabled(): Flow<Boolean> =
+        dataStore.get(SettingsPreferences.Settings.DAILY_QUOTE_ENABLED, true)
+
+    override suspend fun setDailyQuoteEnabled(enabled: Boolean) =
+        dataStore.put(SettingsPreferences.Settings.DAILY_QUOTE_ENABLED, enabled)
+
     override fun isCompleted(): Flow<Boolean> =
         dataStore.get(SettingsPreferences.Onboarding.COMPLETED, false)
 

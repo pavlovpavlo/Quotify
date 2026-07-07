@@ -228,4 +228,19 @@
     <string name="profile_language_sheet_title">Мова</string>
     <string name="profile_language_uk">Українська</string>
     <string name="profile_language_en">English</string>
+
+    <!-- Quote of the day card -->
+    <string name="daily_quote_eyebrow">ЦИТАТА ДНЯ</string>
+    <string name="daily_quote_remove_cd">Прибрати цитату дня</string>
+    <string name="daily_quote_save_cd">Зберегти в улюблене</string>
+    <string name="collection_favourites">Улюблене</string>
+    <string name="collection_general">Загальна</string>
+
+    <!-- Hide daily quote dialog -->
+    <string name="daily_quote_hide_title">Приховати цитату дня?</string>
+    <string name="daily_quote_hide_text">Якщо прибрати назавжди, ти більше не бачитимеш щоденні цитати. Змінити цей вибір можна будь-коли в налаштуваннях.</string>
+    <string name="daily_quote_hide_forever">Прибрати назавжди</string>
+    <string name="daily_quote_hide_today">Закрити на сьогодні</string>
+    <string name="daily_quote_hide_keep">Залишити</string>
+    <string name="daily_quote_hide_close_cd">Закрити</string>
 </resources>

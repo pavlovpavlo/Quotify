@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":core:firebase"))
     implementation(project(":core:models"))
     implementationFirebase()
+    implementationDatabase()
     implementationCoroutines()
     implementationHilt()
     implementationTests()

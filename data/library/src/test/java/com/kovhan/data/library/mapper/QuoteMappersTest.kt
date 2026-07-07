@@ -17,6 +17,7 @@ class QuoteMappersTest {
         tagIds = listOf("t1", "t2"),
         inPushPlaylist = true,
         inWidgetPlaylist = false,
+        sourceDailyId = "d1",
     )
 
     private val dto = QuoteDto(
@@ -27,6 +28,7 @@ class QuoteMappersTest {
         tagIds = listOf("t1", "t2"),
         inPushPlaylist = true,
         inWidgetPlaylist = false,
+        sourceDailyId = "d1",
     )
 
     @Test

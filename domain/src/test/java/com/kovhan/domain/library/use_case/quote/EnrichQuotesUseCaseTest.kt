@@ -4,7 +4,9 @@ import app.cash.turbine.test
 import com.kovhan.core.models.Quote
 import com.kovhan.core.models.SavedAuthor
 import com.kovhan.core.models.SavedBook
+import com.kovhan.core.models.SavedCollection
 import com.kovhan.core.models.SavedTag
+import com.kovhan.domain.library.CollectionRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository
 import com.kovhan.domain.library.SavedTagRepository
@@ -25,6 +27,7 @@ class EnrichQuotesUseCaseTest {
     private lateinit var authorRepository: SavedAuthorRepository
     private lateinit var bookRepository: SavedBookRepository
     private lateinit var tagRepository: SavedTagRepository
+    private lateinit var collectionRepository: CollectionRepository
     private lateinit var useCase: EnrichQuotesUseCase
 
     private val quote = Quote(
@@ -32,6 +35,7 @@ class EnrichQuotesUseCaseTest {
         text = "The only way to deal with an unfree world",
         authorId = "a1",
         bookId = "b1",
+        collectionId = "c1",
         tagIds = listOf("t1", "t2"),
         inPushPlaylist = true,
         inWidgetPlaylist = false,
@@ -42,7 +46,10 @@ class EnrichQuotesUseCaseTest {
         authorRepository = mockk()
         bookRepository = mockk()
         tagRepository = mockk()
-        useCase = EnrichQuotesUseCase(authorRepository, bookRepository, tagRepository)
+        collectionRepository = mockk()
+        useCase = EnrichQuotesUseCase(
+            authorRepository, bookRepository, tagRepository, collectionRepository,
+        )
     }
 
     @Test
@@ -52,12 +59,15 @@ class EnrichQuotesUseCaseTest {
         every { bookRepository.observeAll() } returns flowOf(listOf(SavedBook("b1", "The Rebel")))
         every { tagRepository.observeAll() } returns
             flowOf(listOf(SavedTag("t1", "Absurdism"), SavedTag("t2", "Rebellion")))
+        every { collectionRepository.observeAll() } returns
+            flowOf(listOf(SavedCollection("c1", "Favourites")))
 
         useCase(flowOf(listOf(quote))).test {
             val enriched = awaitItem().single()
 
             assertEquals(SavedAuthor("a1", "Camus"), enriched.author)
             assertEquals(SavedBook("b1", "The Rebel"), enriched.book)
+            assertEquals(SavedCollection("c1", "Favourites"), enriched.collection)
             assertEquals(
                 listOf(SavedTag("t1", "Absurdism"), SavedTag("t2", "Rebellion")),
                 enriched.tags,
@@ -73,12 +83,14 @@ class EnrichQuotesUseCaseTest {
         every { authorRepository.observeAll() } returns flowOf(emptyList())
         every { bookRepository.observeAll() } returns flowOf(emptyList())
         every { tagRepository.observeAll() } returns flowOf(listOf(SavedTag("t1", "Absurdism")))
+        every { collectionRepository.observeAll() } returns flowOf(emptyList())
 
         useCase(flowOf(listOf(quote))).test {
             val enriched = awaitItem().single()
 
             assertNull(enriched.author)
             assertNull(enriched.book)
+            assertNull(enriched.collection)
             assertEquals(listOf(SavedTag("t1", "Absurdism")), enriched.tags)
             awaitComplete()
         }

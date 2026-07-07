@@ -6,8 +6,10 @@ import com.kovhan.domain.auth.use_case.GetUserUseCase
 import com.kovhan.domain.auth.use_case.SignOutUseCase
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
+import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
 import com.kovhan.domain.settings.use_case.GetThemeUseCase
+import com.kovhan.domain.settings.use_case.SetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.SetLanguageUseCase
 import com.kovhan.domain.settings.use_case.SetThemeUseCase
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenEffect
@@ -24,8 +26,10 @@ class ProfileScreenViewModel @Inject constructor(
     getUser: GetUserUseCase,
     getTheme: GetThemeUseCase,
     getLanguage: GetLanguageUseCase,
+    getDailyQuoteEnabled: GetDailyQuoteEnabledUseCase,
     private val setTheme: SetThemeUseCase,
     private val setLanguage: SetLanguageUseCase,
+    private val setDailyQuoteEnabled: SetDailyQuoteEnabledUseCase,
     private val signOut: SignOutUseCase,
     private val rateApp: RateAppUseCase,
 ) : BaseViewModel<ProfileScreenState, ProfileScreenEffect>(ProfileScreenState()),
@@ -42,6 +46,10 @@ class ProfileScreenViewModel @Inject constructor(
 
         getLanguage()
             .onEach { language -> publishState { copy(language = language) } }
+            .launchIn(viewModelScope)
+
+        getDailyQuoteEnabled()
+            .onEach { enabled -> publishState { copy(showQuoteOfDay = enabled) } }
             .launchIn(viewModelScope)
     }
 
@@ -61,7 +69,10 @@ class ProfileScreenViewModel @Inject constructor(
 
     override fun onCreateWidgetClicked() = Unit
 
-    override fun onShowQuoteOfDayToggled(enabled: Boolean) = publishState { copy(showQuoteOfDay = enabled) }
+    override fun onShowQuoteOfDayToggled(enabled: Boolean) {
+        publishState { copy(showQuoteOfDay = enabled) }
+        viewModelScope.launch { setDailyQuoteEnabled(enabled) }
+    }
 
     override fun onNotificationsToggled(enabled: Boolean) = publishState { copy(notificationsEnabled = enabled) }
 

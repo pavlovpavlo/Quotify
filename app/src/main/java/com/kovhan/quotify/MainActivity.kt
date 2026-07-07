@@ -8,11 +8,11 @@ import android.view.ContextThemeWrapper
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,14 +55,29 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var dialogEntryBuilders: Set<@JvmSuppressWildcards DialogEntryBuilder>
 
+    // Driven from onConfigurationChanged so a live system dark-mode toggle updates
+    // the theme. Compose's isSystemInDarkTheme() misses it because the custom
+    // createConfigurationContext base context detaches from system config updates.
+    private val systemInDarkTheme = mutableStateOf(false)
+
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(ContextUtils.updateConfiguration(base))
     }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        systemInDarkTheme.value = newConfig.isSystemInDarkTheme()
+    }
+
+    private fun Configuration.isSystemInDarkTheme(): Boolean =
+        (uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        systemInDarkTheme.value = resources.configuration.isSystemInDarkTheme()
 
         activityRequired.forEach { it.onCreated(this) }
 
@@ -78,7 +93,7 @@ class MainActivity : AppCompatActivity() {
             val isDarkTheme = when (uiState.theme) {
                 AppTheme.LIGHT -> false
                 AppTheme.DARK -> true
-                AppTheme.SYSTEM -> isSystemInDarkTheme()
+                AppTheme.SYSTEM -> systemInDarkTheme.value
             }
 
             val baseContext = LocalContext.current

@@ -7,6 +7,7 @@ internal object SettingsPreferences {
     object Settings {
         val THEME = stringPreferencesKey("app_theme")
         val LANGUAGE = stringPreferencesKey("app_language")
+        val DAILY_QUOTE_ENABLED = booleanPreferencesKey("daily_quote_enabled")
     }
 
     object Onboarding {

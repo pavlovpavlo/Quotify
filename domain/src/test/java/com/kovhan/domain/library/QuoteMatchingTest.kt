@@ -16,6 +16,7 @@ class QuoteMatchingTest {
         text = "x",
         authorId = "a1",
         bookId = "b1",
+        collectionId = "c1",
         tagIds = listOf("t1", "t2"),
         inPushPlaylist = true,
         inWidgetPlaylist = false,
@@ -46,6 +47,13 @@ class QuoteMatchingTest {
     fun matchesByTag() {
         assertTrue(quote.matches(QuoteFilter(tagId = "t2")))
         assertFalse(quote.matches(QuoteFilter(tagId = "tX")))
+    }
+
+    @Test
+    @DisplayName("matches by collection membership")
+    fun matchesByCollection() {
+        assertTrue(quote.matches(QuoteFilter(collectionId = "c1")))
+        assertFalse(quote.matches(QuoteFilter(collectionId = "other")))
     }
 
     @Test

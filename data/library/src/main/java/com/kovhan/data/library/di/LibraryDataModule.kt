@@ -1,10 +1,14 @@
 package com.kovhan.data.library.di
 
 import com.kovhan.data.library.repository.CollectionRepositoryImpl
+import com.kovhan.data.library.repository.DailyQuoteRepositoryImpl
 import com.kovhan.data.library.repository.QuoteRepositoryImpl
 import com.kovhan.data.library.repository.SavedAuthorRepositoryImpl
 import com.kovhan.data.library.repository.SavedBookRepositoryImpl
 import com.kovhan.data.library.repository.SavedTagRepositoryImpl
+import com.kovhan.data.library.util.UuidIdGenerator
+import com.kovhan.domain.common.IdGenerator
+import com.kovhan.domain.daily.DailyQuoteRepository
 import com.kovhan.domain.library.CollectionRepository
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
@@ -38,4 +42,12 @@ abstract class LibraryDataModule {
     @Binds
     @Singleton
     abstract fun bindQuoteRepository(impl: QuoteRepositoryImpl): QuoteRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindDailyQuoteRepository(impl: DailyQuoteRepositoryImpl): DailyQuoteRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindIdGenerator(impl: UuidIdGenerator): IdGenerator
 }

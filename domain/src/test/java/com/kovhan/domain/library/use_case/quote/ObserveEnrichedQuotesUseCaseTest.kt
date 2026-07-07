@@ -26,6 +26,7 @@ class ObserveEnrichedQuotesUseCaseTest {
     private lateinit var authorRepository: SavedAuthorRepository
     private lateinit var bookRepository: SavedBookRepository
     private lateinit var tagRepository: SavedTagRepository
+    private lateinit var collectionRepository: com.kovhan.domain.library.CollectionRepository
     private lateinit var useCase: ObserveEnrichedQuotesUseCase
 
     private val quote = Quote(id = "q1", text = "x", authorId = "a1", bookId = "b1", tagIds = listOf("t1"))
@@ -36,12 +37,14 @@ class ObserveEnrichedQuotesUseCaseTest {
         authorRepository = mockk()
         bookRepository = mockk()
         tagRepository = mockk()
+        collectionRepository = mockk()
         every { authorRepository.observeAll() } returns flowOf(listOf(SavedAuthor("a1", "Camus")))
         every { bookRepository.observeAll() } returns flowOf(listOf(SavedBook("b1", "The Rebel")))
         every { tagRepository.observeAll() } returns flowOf(listOf(SavedTag("t1", "Absurdism")))
+        every { collectionRepository.observeAll() } returns flowOf(emptyList())
         useCase = ObserveEnrichedQuotesUseCase(
             ObserveFilteredQuotesUseCase(quoteRepository),
-            EnrichQuotesUseCase(authorRepository, bookRepository, tagRepository),
+            EnrichQuotesUseCase(authorRepository, bookRepository, tagRepository, collectionRepository),
         )
     }
 

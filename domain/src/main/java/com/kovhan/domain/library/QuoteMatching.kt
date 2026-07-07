@@ -9,6 +9,7 @@ fun Quote.matches(filter: QuoteFilter): Boolean {
     return (filter.authorId == null || authorId == filter.authorId) &&
         (filter.bookId == null || bookId == filter.bookId) &&
         (filter.tagId == null || filter.tagId in tagIds) &&
+        (filter.collectionId == null || collectionId == filter.collectionId) &&
         (playlist == null || inPlaylist(playlist))
 }
 

@@ -5,6 +5,7 @@ data class EnrichedQuote(
     val text: String,
     val author: SavedAuthor?,
     val book: SavedBook?,
+    val collection: SavedCollection? = null,
     val tags: List<SavedTag>,
     val inPushPlaylist: Boolean = false,
     val inWidgetPlaylist: Boolean = false,

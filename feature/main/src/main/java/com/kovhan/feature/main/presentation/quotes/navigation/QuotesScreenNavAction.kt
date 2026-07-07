@@ -6,6 +6,7 @@ import androidx.compose.runtime.Stable
 interface QuotesScreenNavAction {
     fun onBack()
     fun navigateToQuoteDetails(quoteId: String)
+    fun showHideDailyQuoteDialog()
 
     companion object {
         val Empty: QuotesScreenNavAction = EmptyQuotesScreenNavAction
@@ -15,4 +16,5 @@ interface QuotesScreenNavAction {
 private object EmptyQuotesScreenNavAction : QuotesScreenNavAction {
     override fun onBack() = Unit
     override fun navigateToQuoteDetails(quoteId: String) = Unit
-} 
+    override fun showHideDailyQuoteDialog() = Unit
+}

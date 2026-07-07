@@ -99,8 +99,38 @@ data class QuotifyDimensions(
     // Feature-specific
     val loginIllustrationHeight: Dp = 260.dp,
 
-    //Custom sizes
-    val size18: Dp = 18.dp
+    // Raw dp scale — literal size tokens (size1 = 1.dp, …) for one-off values
+    val size1: Dp   = 1.dp,
+    val size2: Dp   = 2.dp,
+    val size3: Dp   = 3.dp,
+    val size4: Dp   = 4.dp,
+    val size5: Dp   = 5.dp,
+    val size6: Dp   = 6.dp,
+    val size7: Dp   = 7.dp,
+    val size8: Dp   = 8.dp,
+    val size8_6: Dp   = 8.6.dp,
+    val size9: Dp   = 9.dp,
+    val size10: Dp  = 10.dp,
+    val size11: Dp  = 11.dp,
+    val size12: Dp  = 12.dp,
+    val size13: Dp  = 13.dp,
+    val size14: Dp  = 14.dp,
+    val size15: Dp  = 15.dp,
+    val size16: Dp  = 16.dp,
+    val size17: Dp  = 17.dp,
+    val size18: Dp  = 18.dp,
+    val size19: Dp  = 19.dp,
+    val size20: Dp  = 20.dp,
+    val size21: Dp  = 21.dp,
+    val size22: Dp  = 22.dp,
+    val size23: Dp  = 23.dp,
+    val size24: Dp  = 24.dp,
+    val size28: Dp  = 28.dp,
+    val size30: Dp  = 30.dp,
+    val size38: Dp  = 38.dp,
+    val size40: Dp  = 40.dp,
+    val size128: Dp = 128.dp,
+    val size163: Dp = 163.dp,
 )
 
 val defaultDimensions = QuotifyDimensions()

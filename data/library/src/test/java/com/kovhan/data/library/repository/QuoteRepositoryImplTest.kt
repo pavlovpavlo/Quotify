@@ -40,6 +40,7 @@ class QuoteRepositoryImplTest {
         text = "seneca none",
         authorId = "a-seneca",
         bookId = "b-letters",
+        collectionId = "c-fav",
         tagIds = listOf("t-stoic"),
         inPushPlaylist = false,
         inWidgetPlaylist = false,
@@ -87,6 +88,15 @@ class QuoteRepositoryImplTest {
     @Nested
     @DisplayName("observeFiltered")
     inner class ObserveFiltered {
+
+        @Test
+        @DisplayName("filters by collection")
+        fun byCollection() = runTest {
+            repository.observeFiltered(QuoteFilter(collectionId = "c-fav")).test {
+                assertEquals(listOf("q2"), awaitItem().map { it.id })
+                awaitComplete()
+            }
+        }
 
         @Test
         @DisplayName("filters by author")
