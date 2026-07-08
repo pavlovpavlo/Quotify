@@ -1,6 +1,7 @@
 ﻿package com.kovhan.quotify.di
 
 import com.kovhan.core.navigation.EntryBuilder
+import com.kovhan.feature.addquote.navigation.AddQuoteEntryBuilder
 import com.kovhan.feature.auth.navigation.AuthEntryBuilder
 import com.kovhan.feature.main.navigation.MainEntryBuilder
 import com.kovhan.feature.onboarding.navigation.OnboardingEntryBuilder
@@ -39,4 +40,8 @@ abstract class NavigationModule {
     @Binds
     @IntoSet
     abstract fun bindWebViewEntryBuilder(impl: WebViewEntryBuilder): EntryBuilder
+
+    @Binds
+    @IntoSet
+    abstract fun bindAddQuoteEntryBuilder(impl: AddQuoteEntryBuilder): EntryBuilder
 }

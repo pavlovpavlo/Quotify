@@ -15,6 +15,81 @@
     <string name="dock_input_scan">Scan text</string>
     <string name="dock_input_voice">Voice input</string>
 
+    <!-- Add quote screen -->
+    <string name="add_quote_title">New quote</string>
+    <string name="add_quote_close_cd">Close</string>
+    <string name="add_quote_tab_text">Text</string>
+    <string name="add_quote_tab_scan">Scan</string>
+    <string name="add_quote_tab_voice">Voice</string>
+    <string name="add_quote_field_label">Quote</string>
+    <string name="add_quote_field_placeholder">Type the quote you want to keep here…</string>
+    <string name="add_quote_next">Next</string>
+    <string name="add_quote_scan_caption_live">Point at the text and take a photo</string>
+    <string name="add_quote_scan_caption_scanning">Recognizing text…</string>
+    <string name="add_quote_scan_caption_select">Press and drag to select a fragment. No selection keeps all text</string>
+    <string name="add_quote_scan_no_text">Couldn\'t recognize any text. Try again</string>
+    <string name="add_quote_scan_gallery">Gallery</string>
+    <string name="add_quote_scan_shutter_cd">Take a photo</string>
+    <string name="add_quote_scan_retake">Retake</string>
+    <string name="add_quote_scan_permission">Allow camera access to scan text</string>
+    <string name="add_quote_scan_permission_action">Grant access</string>
+    <string name="add_quote_voice_title">Dictate your quote</string>
+    <string name="add_quote_voice_subtitle">Hold the button and say the lines out loud — we\'ll turn them into text.</string>
+    <string name="add_quote_voice_field_label">Recognized quote</string>
+    <string name="add_quote_voice_hint_idle">Tap to talk</string>
+    <string name="add_quote_voice_hint_listening">Listening… go ahead</string>
+    <string name="add_quote_voice_mic_cd">Microphone</string>
+    <string name="add_quote_voice_unavailable">Speech recognition isn\'t available on this device.</string>
+
+    <!-- Add quote — details step -->
+    <string name="details_title">Additional info</string>
+    <string name="details_back_cd">Back</string>
+    <string name="details_field_quote">Quote</string>
+    <string name="details_field_author">Author</string>
+    <string name="details_field_book">Book</string>
+    <string name="details_field_tags">Tags</string>
+    <string name="details_quote_ph">Type the quote here…</string>
+    <string name="details_author_ph">Author or source</string>
+    <string name="details_book_ph">Book title</string>
+    <string name="details_combo_empty">Nothing found — a new one will be created</string>
+    <string name="details_tag_add">Add tag</string>
+    <string name="details_tag_remove_cd">Remove tag</string>
+    <string name="details_tag_sheet_title">Tags</string>
+    <string name="details_tag_search_ph">Find or create tag</string>
+    <string name="details_tag_create">Create “%1$s”</string>
+    <string name="details_ai_generate">Generate tags with AI</string>
+    <string name="details_ai_loading">Analyzing the quote…</string>
+    <string name="details_ai_eyebrow">Suggested by AI</string>
+    <string name="details_recent_eyebrow">Recent</string>
+    <string name="details_tag_empty">Nothing found</string>
+    <string name="details_tag_done">Done</string>
+    <string name="details_tag_done_count">Done · %1$d</string>
+    <string name="details_playlist_widget_title">Widget playlist</string>
+    <string name="details_playlist_widget_subtitle">Show this quote in widgets</string>
+    <string name="details_playlist_push_title">Notification playlist</string>
+    <string name="details_playlist_push_subtitle">Send this quote in push reminders</string>
+    <string name="details_save_collection_title">Save to collection</string>
+    <string name="details_save_collection_add_cd">Add to collection</string>
+    <string name="details_create_collection">Create collection</string>
+    <string name="details_new_collection_title">New collection</string>
+    <string name="details_new_collection_name">NAME</string>
+    <string name="details_new_collection_placeholder">Collection name</string>
+    <string name="details_save">Save</string>
+
+    <!-- AI access gate (upsell / limits) -->
+    <string name="ai_gate_upsell_title">Unlock AI</string>
+    <string name="ai_gate_upsell_message">AI features are part of a Quotify subscription. Subscribe to scan text and get tag suggestions without limits.</string>
+    <string name="ai_gate_upsell_cta">Subscribe</string>
+    <string name="ai_gate_review_cta">Review subscriptions</string>
+    <string name="ai_gate_daily_title">Daily limit reached</string>
+    <string name="ai_gate_daily_message">You\'ve used all of today\'s AI requests. Try again tomorrow.</string>
+    <string name="ai_gate_monthly_title">Monthly limit reached</string>
+    <string name="ai_gate_monthly_message">You\'ve used all of this month\'s AI requests. The limit resets next month.</string>
+    <string name="ai_gate_dismiss">Got it</string>
+    <string name="ai_gate_not_now">Not now</string>
+    <string name="ai_dialog_cta">View plans</string>
+    <string name="ai_dialog_dismiss">Not now</string>
+
     <!-- Onboarding — common -->
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>

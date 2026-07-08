@@ -17,6 +17,81 @@
     <string name="dock_input_scan">Сканування тексту</string>
     <string name="dock_input_voice">Голосовий ввід</string>
 
+    <!-- Add quote screen -->
+    <string name="add_quote_title">Нова цитата</string>
+    <string name="add_quote_close_cd">Закрити</string>
+    <string name="add_quote_tab_text">Текст</string>
+    <string name="add_quote_tab_scan">Сканування</string>
+    <string name="add_quote_tab_voice">Голос</string>
+    <string name="add_quote_field_label">Цитата</string>
+    <string name="add_quote_field_placeholder">Впиши тут цитату, яку хочеш зберегти…</string>
+    <string name="add_quote_next">Далі</string>
+    <string name="add_quote_scan_caption_live">Наведи на текст і зроби фото</string>
+    <string name="add_quote_scan_caption_scanning">Розпізнаю текст…</string>
+    <string name="add_quote_scan_caption_select">Утримай і потягни, щоб виділити фрагмент. Без виділення — увесь текст</string>
+    <string name="add_quote_scan_no_text">Не вдалося розпізнати текст. Спробуй ще раз</string>
+    <string name="add_quote_scan_gallery">Галерея</string>
+    <string name="add_quote_scan_shutter_cd">Зробити фото</string>
+    <string name="add_quote_scan_retake">Перезняти</string>
+    <string name="add_quote_scan_permission">Дозволь доступ до камери, щоб сканувати текст</string>
+    <string name="add_quote_scan_permission_action">Надати доступ</string>
+    <string name="add_quote_voice_title">Продиктуй цитату</string>
+    <string name="add_quote_voice_subtitle">Затисни кнопку і промов рядки вголос — ми перетворимо їх на текст.</string>
+    <string name="add_quote_voice_field_label">Розпізнана цитата</string>
+    <string name="add_quote_voice_hint_idle">Натисни, щоб говорити</string>
+    <string name="add_quote_voice_hint_listening">Слухаю… говоріть</string>
+    <string name="add_quote_voice_mic_cd">Мікрофон</string>
+    <string name="add_quote_voice_unavailable">Розпізнавання мовлення недоступне на цьому пристрої.</string>
+
+    <!-- Add quote — details step -->
+    <string name="details_title">Додаткова інформація</string>
+    <string name="details_back_cd">Назад</string>
+    <string name="details_field_quote">Цитата</string>
+    <string name="details_field_author">Автор</string>
+    <string name="details_field_book">Книга</string>
+    <string name="details_field_tags">Теги</string>
+    <string name="details_quote_ph">Впиши тут цитату…</string>
+    <string name="details_author_ph">Автор або джерело</string>
+    <string name="details_book_ph">Назва книги</string>
+    <string name="details_combo_empty">Нічого не знайдено — буде створено новий</string>
+    <string name="details_tag_add">Додати тег</string>
+    <string name="details_tag_remove_cd">Видалити тег</string>
+    <string name="details_tag_sheet_title">Теги</string>
+    <string name="details_tag_search_ph">Знайти або створити тег</string>
+    <string name="details_tag_create">Створити «%1$s»</string>
+    <string name="details_ai_generate">Згенерувати теги через AI</string>
+    <string name="details_ai_loading">Аналізуємо цитату…</string>
+    <string name="details_ai_eyebrow">Запропоновані AI</string>
+    <string name="details_recent_eyebrow">Нещодавні</string>
+    <string name="details_tag_empty">Нічого не знайдено</string>
+    <string name="details_tag_done">Готово</string>
+    <string name="details_tag_done_count">Готово · %1$d</string>
+    <string name="details_playlist_widget_title">Плейлист віджетів</string>
+    <string name="details_playlist_widget_subtitle">Показувати цю цитату у віджетах</string>
+    <string name="details_playlist_push_title">Плейлист сповіщень</string>
+    <string name="details_playlist_push_subtitle">Надсилати цю цитату у пуш-нагадуваннях</string>
+    <string name="details_save_collection_title">Зберегти в колекцію</string>
+    <string name="details_save_collection_add_cd">Додати в колекцію</string>
+    <string name="details_create_collection">Створити колекцію</string>
+    <string name="details_new_collection_title">Нова колекція</string>
+    <string name="details_new_collection_name">НАЗВА</string>
+    <string name="details_new_collection_placeholder">Назва колекції</string>
+    <string name="details_save">Зберегти</string>
+
+    <!-- AI access gate (upsell / limits) -->
+    <string name="ai_gate_upsell_title">Розблокуйте AI</string>
+    <string name="ai_gate_upsell_message">AI-функції — частина підписки Quotify. Оформіть її, щоб сканувати текст і отримувати підказки тегів без обмежень.</string>
+    <string name="ai_gate_upsell_cta">Оформити підписку</string>
+    <string name="ai_gate_review_cta">Переглянути підписки</string>
+    <string name="ai_gate_daily_title">Ліміт на сьогодні вичерпано</string>
+    <string name="ai_gate_daily_message">Ви використали всі AI-запити на сьогодні. Спробуйте знову завтра.</string>
+    <string name="ai_gate_monthly_title">Ліміт на місяць вичерпано</string>
+    <string name="ai_gate_monthly_message">Ви використали всі AI-запити цього місяця. Ліміт оновиться наступного місяця.</string>
+    <string name="ai_gate_dismiss">Зрозуміло</string>
+    <string name="ai_gate_not_now">Не зараз</string>
+    <string name="ai_dialog_cta">Переглянути підписки</string>
+    <string name="ai_dialog_dismiss">Не зараз</string>
+
     <!-- Onboarding — common -->
     <string name="onboarding_skip">Пропустити</string>
     <string name="onboarding_next">Далі</string>

@@ -55,6 +55,17 @@ data object EditProfileKey : NavKey
 @Serializable
 data object AboutKey : NavKey
 
+@Serializable
+data class AddQuoteKey(val tab: AddQuoteTab = AddQuoteTab.TEXT) : NavKey
+
+/**
+ * "Additional info" step of the add-quote flow. Receives the captured quote
+ * text and lets the user attach an author, book, tags and playlist toggles
+ * before saving.
+ */
+@Serializable
+data class QuoteDetailsKey(val quote: String) : NavKey
+
 /**
  * Generic external-page key. Any feature can navigate here for Privacy Policy,
  * Terms of Service, blog posts, etc.
@@ -84,6 +95,34 @@ data object ChangePhotoSheetKey : BottomSheetKey
 @Serializable
 data class EditFieldSheetKey(val field: EditField, val initialValue: String) : BottomSheetKey
 
+@Serializable
+data class TagSheetKey(
+    val quoteText: String,
+    val selectedTags: List<String>,
+    val tagPool: List<String>,
+    val aiTags: List<String>,
+) : BottomSheetKey
+
+@Serializable
+data class SaveQuoteCollectionSheetKey(
+    val text: String,
+    val authorName: String?,
+    val bookName: String?,
+    val tagNames: List<String>,
+    val inWidgetPlaylist: Boolean,
+    val inPushPlaylist: Boolean,
+) : BottomSheetKey
+
+@Serializable
+data class NewCollectionSheetKey(
+    val text: String,
+    val authorName: String?,
+    val bookName: String?,
+    val tagNames: List<String>,
+    val inWidgetPlaylist: Boolean,
+    val inPushPlaylist: Boolean,
+) : BottomSheetKey
+
 // ---------------------------------------------------------------------------
 // DIALOG KEYS
 // ---------------------------------------------------------------------------
@@ -100,11 +139,25 @@ data object DeleteAccountDialogKey : DialogKey
 @Serializable
 data object HideDailyQuoteDialogKey : DialogKey
 
+@Serializable
+data class TagSheetAiLimitDialogKey(val reason: AiLimitDialogReason) : DialogKey
+
 // ---------------------------------------------------------------------------
 // OVERLAY PAYLOADS
 // ---------------------------------------------------------------------------
 
 @Serializable
 enum class EditField { NAME, USERNAME, EMAIL }
+
+@Serializable
+enum class AddQuoteTab { TEXT, SCAN, VOICE }
+
+@Serializable
+enum class AiLimitDialogReason {
+    NOT_REGISTERED,
+    FREE_LIMIT_REACHED,
+    DAILY_LIMIT_REACHED,
+    MONTHLY_LIMIT_REACHED,
+}
 
 enum class PhotoAction { TAKE, GALLERY, REMOVE }

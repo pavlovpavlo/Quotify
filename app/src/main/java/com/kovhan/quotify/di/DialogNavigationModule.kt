@@ -1,6 +1,7 @@
 ﻿package com.kovhan.quotify.di
 
 import com.kovhan.core.navigation.DialogEntryBuilder
+import com.kovhan.feature.addquote.navigation.AddQuoteDialogEntryBuilder
 import com.kovhan.feature.main.navigation.MainDialogEntryBuilder
 import dagger.Binds
 import dagger.Module
@@ -11,6 +12,10 @@ import dagger.multibindings.IntoSet
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 abstract class DialogNavigationModule {
+
+    @Binds
+    @IntoSet
+    abstract fun bindAddQuoteDialogEntryBuilder(impl: AddQuoteDialogEntryBuilder): DialogEntryBuilder
 
     @Binds
     @IntoSet

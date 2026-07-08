@@ -14,6 +14,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.kovhan.core.navigation.AddQuoteKey
+import com.kovhan.core.navigation.AddQuoteTab
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.TabEnum
 import com.kovhan.design.systems.QuotifyMaterialTheme
@@ -23,23 +25,25 @@ import com.kovhan.design.systems.R
 fun BottomDock(
     coordinator: NavigationCoordinator,
     modifier: Modifier = Modifier,
-    onKeyboardInput: () -> Unit = {},
-    onScanInput: () -> Unit = {},
-    onVoiceInput: () -> Unit = {},
 ) {
     val currentTab = TabEnum.fromKey(coordinator.currentKey) ?: TabEnum.LIBRARY
     var menuOpen by remember { mutableStateOf(false) }
 
+    val openAddQuote: (AddQuoteTab) -> Unit = { tab ->
+        menuOpen = false
+        coordinator.navigate(AddQuoteKey(tab))
+    }
+
     val images = QuotifyMaterialTheme.images
     val actions = listOf(
         SpeedDialAction(R.string.dock_input_keyboard, images.dockInputKeyboard) {
-            menuOpen = false; onKeyboardInput()
+            openAddQuote(AddQuoteTab.TEXT)
         },
         SpeedDialAction(R.string.dock_input_scan, images.dockInputScan) {
-            menuOpen = false; onScanInput()
+            openAddQuote(AddQuoteTab.SCAN)
         },
         SpeedDialAction(R.string.dock_input_voice, images.dockInputVoice) {
-            menuOpen = false; onVoiceInput()
+            openAddQuote(AddQuoteTab.VOICE)
         },
     )
 
