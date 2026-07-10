@@ -14,8 +14,6 @@ import com.kovhan.feature.addquote.presentation.save_collection.SaveQuoteCollect
 import com.kovhan.feature.addquote.presentation.save_collection.SaveQuoteCollectionViewModel
 import com.kovhan.feature.addquote.presentation.save_collection.mvi.SaveQuoteCollectionEffect
 
-internal const val KEY_COLLECTION_CREATED = "addquote_collection_created"
-
 @Composable
 internal fun SaveQuoteCollectionSheetEntry(
     key: SaveQuoteCollectionSheetKey,
@@ -30,9 +28,9 @@ internal fun SaveQuoteCollectionSheetEntry(
     }
 
     LaunchedEffect(Unit) {
-        coordinator.observeResult<Boolean>(KEY_COLLECTION_CREATED).collect { created ->
-            if (created == true) {
-                viewModel.loadCollections(generalName)
+        coordinator.observeResult<String>(NavigationCoordinator.KEY_COLLECTION_CREATED).collect { createdId ->
+            if (createdId != null) {
+                viewModel.loadCollections(generalName, selectId = createdId)
             }
         }
     }

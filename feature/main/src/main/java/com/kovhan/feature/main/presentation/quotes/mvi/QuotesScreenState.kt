@@ -1,6 +1,7 @@
 package com.kovhan.feature.main.presentation.quotes.mvi
 
 import com.kovhan.core.models.DailyQuote
+import com.kovhan.core.models.SavedCollection
 import com.kovhan.core.ui.UiState
 import com.kovhan.domain.settings.AppLanguage
 
@@ -13,4 +14,5 @@ data class QuotesScreenState(
     val language: AppLanguage = AppLanguage.UKRAINIAN,
     val isDailyQuoteFavourite: Boolean = false,
     val isDailyQuoteFavouriteLoading: Boolean = false,
+    val folders: List<SavedCollection> = emptyList(),
 ) : UiState

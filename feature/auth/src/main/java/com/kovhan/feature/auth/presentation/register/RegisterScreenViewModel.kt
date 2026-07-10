@@ -8,6 +8,8 @@ import com.kovhan.domain.auth.model.AuthResult
 import com.kovhan.domain.auth.use_case.SignInWithGoogleUseCase
 import com.kovhan.domain.auth.use_case.SignUpUseCase
 import com.kovhan.domain.auth.use_case.ValidateAuthInputUseCase
+import com.kovhan.domain.library.use_case.sync.RefreshLibraryUseCase
+import com.kovhan.domain.library.use_case.sync.SyncPendingChangesUseCase
 import com.kovhan.core.models.onFailure
 import com.kovhan.core.models.onSuccess
 import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
@@ -24,6 +26,8 @@ class RegisterScreenViewModel @Inject constructor(
     private val signUp: SignUpUseCase,
     private val signInWithGoogle: SignInWithGoogleUseCase,
     private val validateInput: ValidateAuthInputUseCase,
+    private val syncPendingChanges: SyncPendingChangesUseCase,
+    private val refreshLibrary: RefreshLibraryUseCase,
 ) : BaseViewModel<RegisterScreenState, RegisterScreenEffect>(RegisterScreenState()),
     RegisterScreenIntent {
 
@@ -76,7 +80,14 @@ class RegisterScreenViewModel @Inject constructor(
     private fun <T> handleResult(result: AuthResult<T>) {
         publishState { copy(isLoading = false, isGoogleLoading = false) }
         result
-            .onSuccess { publishEffect(RegisterScreenEffect.NavigateToMain) }
+            .onSuccess {
+                // New session: pull this user's library into Room before entering the app.
+                viewModelScope.launch {
+                    runCatching { syncPendingChanges() }
+                    runCatching { refreshLibrary() }
+                    publishEffect(RegisterScreenEffect.NavigateToMain)
+                }
+            }
             .onFailure {
                 publishState { copy(errorMessage = it) }
             }

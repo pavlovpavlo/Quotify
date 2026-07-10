@@ -6,15 +6,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.rememberCoroutineScope
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.TagSheetResult
 import com.kovhan.core.navigation.TagSheetAiLimitDialogKey
 import com.kovhan.core.navigation.TagSheetKey
+import com.kovhan.core.navigation.TagSheetOfflineDialogKey
 import com.kovhan.feature.addquote.presentation.common.toNav
 import com.kovhan.feature.addquote.presentation.details.component.tageditor.TagSheet
 import com.kovhan.feature.addquote.presentation.details.component.tageditor.TagSheetEffect
 import com.kovhan.feature.addquote.presentation.details.component.tageditor.TagSheetViewModel
 import kotlinx.coroutines.launch
-
-internal const val KEY_TAG_SHEET_RESULT = "addquote_tag_sheet_result"
 
 @Composable
 internal fun TagSheetEntry(
@@ -42,13 +42,24 @@ internal fun TagSheetEntry(
                         TagSheetAiLimitDialogKey(reason = effect.reason.toNav()),
                     )
                 }
+
+                TagSheetEffect.ShowOfflineDialog -> {
+                    coordinator.showDialog(TagSheetOfflineDialogKey)
+                }
             }
         }
     }
 
     fun dismissWithResult() {
         scope.launch {
-            coordinator.emitResult(KEY_TAG_SHEET_RESULT, viewModel.buildResult())
+            val result = viewModel.buildResult()
+            coordinator.emitResult(
+                NavigationCoordinator.KEY_TAG_SHEET_RESULT,
+                TagSheetResult(
+                    selectedTags = result.selectedTags,
+                    aiTags = result.aiTags,
+                ),
+            )
             coordinator.dismissBottomSheet()
         }
     }

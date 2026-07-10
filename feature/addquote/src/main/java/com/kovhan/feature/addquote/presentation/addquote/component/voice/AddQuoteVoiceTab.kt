@@ -21,9 +21,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.core.content.ContextCompat
+import com.kovhan.core.ui.component.quote.QuoteTextInputField
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
-import com.kovhan.feature.addquote.presentation.addquote.component.QuoteInputField
 
 @Composable
 internal fun AddQuoteVoiceTab(
@@ -74,7 +74,7 @@ internal fun AddQuoteVoiceTab(
             if (quote.text.isBlank()) {
                 VoiceEmptyState()
             } else {
-                QuoteInputField(
+                QuoteTextInputField(
                     value = quote,
                     onValueChange = onQuoteChange,
                     label = stringResource(R.string.add_quote_voice_field_label),

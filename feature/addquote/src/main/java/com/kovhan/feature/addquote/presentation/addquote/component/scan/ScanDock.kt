@@ -87,6 +87,8 @@ internal fun ScanDock(
                     sizeSpec = QuotifyButtonDefaults.pillSizeSpec(height = dimensions.buttonHeight),
                 )
             }
+
+            ScanMode.CROP -> Unit
         }
     }
 }

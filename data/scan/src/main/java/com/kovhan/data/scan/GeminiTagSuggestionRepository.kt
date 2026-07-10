@@ -4,7 +4,10 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.content
+import com.kovhan.core.models.AiError
+import com.kovhan.core.models.Outcome
 import com.kovhan.domain.ai.TagSuggestionRepository
+import com.kovhan.domain.connectivity.ConnectivityRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -20,25 +23,29 @@ import javax.inject.Inject
  * is treated as "no suggestions". Needs the network — an empty list means the
  * request failed or produced nothing usable.
  */
-class GeminiTagSuggestionRepository @Inject constructor() : TagSuggestionRepository {
+class GeminiTagSuggestionRepository @Inject constructor(
+    private val connectivity: ConnectivityRepository,
+) : TagSuggestionRepository {
 
     private val model by lazy {
         Firebase.ai(backend = GenerativeBackend.googleAI())
             .generativeModel(MODEL_NAME)
     }
 
-    override suspend fun suggest(quote: String): List<String> = withContext(Dispatchers.IO) {
-        val trimmed = quote.trim()
-        if (trimmed.isEmpty()) return@withContext emptyList()
-        try {
-            val request = content { text(PROMPT + trimmed) }
-            val raw = model.generateContent(request).text.orEmpty()
-            parseTags(raw)
-        } catch (t: Throwable) {
-            Timber.e(t, "Gemini tag suggestion failed")
-            emptyList()
+    override suspend fun suggest(quote: String): Outcome<List<String>, AiError> =
+        withContext(Dispatchers.IO) {
+            val trimmed = quote.trim()
+            if (trimmed.isEmpty()) return@withContext Outcome.Success(emptyList())
+            if (!connectivity.isOnline()) return@withContext Outcome.Failure(AiError.Offline)
+            try {
+                val request = content { text(PROMPT + trimmed) }
+                val raw = model.generateContent(request).text.orEmpty()
+                Outcome.Success(parseTags(raw))
+            } catch (t: Throwable) {
+                Timber.e(t, "Gemini tag suggestion failed")
+                Outcome.Failure(AiError.Unknown)
+            }
         }
-    }
 
     private fun parseTags(raw: String): List<String> {
         val json = raw.substringAfter('[', "").let { if (it.isEmpty()) "" else "[$it" }

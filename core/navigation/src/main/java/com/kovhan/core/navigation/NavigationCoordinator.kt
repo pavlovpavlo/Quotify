@@ -460,5 +460,9 @@ class NavigationCoordinator @Inject constructor() {
         const val KEY_DELETE_CONFIRMED = "delete_confirmed"
         const val KEY_DAILY_QUOTE_HIDE_FOREVER = "daily_quote_hide_forever"
         const val KEY_DAILY_QUOTE_HIDE_TODAY = "daily_quote_hide_today"
+        const val KEY_COLLECTION_CREATED = "collection_created"
+        const val KEY_TAG_SHEET_RESULT = "addquote_tag_sheet_result"
+        const val KEY_OFFLINE_RETRY = "offline_retry"
+        const val KEY_OFFLINE_DISMISS = "offline_dismiss"
     }
 }

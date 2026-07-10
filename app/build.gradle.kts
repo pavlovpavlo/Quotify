@@ -71,6 +71,8 @@ dependencies {
     implementation(project(":feature:splash"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:main"))
+    implementation(project(":feature:entitydetails"))
+    implementation(project(":feature:search"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:webview"))
     implementation(project(":feature:addquote"))

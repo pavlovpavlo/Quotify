@@ -10,10 +10,9 @@ import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.QuoteDetailsKey
 import com.kovhan.core.navigation.SaveQuoteCollectionSheetKey
 import com.kovhan.core.navigation.TagSheetKey
+import com.kovhan.core.navigation.TagSheetResult
 import com.kovhan.feature.addquote.presentation.details.DetailsScreen
 import com.kovhan.feature.addquote.presentation.details.DetailsViewModel
-import com.kovhan.feature.addquote.presentation.details.component.tageditor.TagSheetResult
-import com.kovhan.feature.addquote.presentation.details.component.tageditor.navigation.KEY_TAG_SHEET_RESULT
 import com.kovhan.feature.addquote.presentation.details.mvi.DetailsEffect
 import com.kovhan.feature.addquote.presentation.details.mvi.QuoteDraft
 
@@ -65,7 +64,7 @@ internal fun DetailsEntry(
     }
 
     LaunchedEffect(Unit) {
-        coordinator.observeResult<TagSheetResult>(KEY_TAG_SHEET_RESULT).collect { result ->
+        coordinator.observeResult<TagSheetResult>(NavigationCoordinator.KEY_TAG_SHEET_RESULT).collect { result ->
             result ?: return@collect
             viewModel.onTagSheetApplied(
                 selectedTags = result.selectedTags,

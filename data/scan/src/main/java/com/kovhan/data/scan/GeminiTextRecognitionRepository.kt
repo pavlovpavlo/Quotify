@@ -8,6 +8,9 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.content
+import com.kovhan.core.models.AiError
+import com.kovhan.core.models.Outcome
+import com.kovhan.domain.connectivity.ConnectivityRepository
 import com.kovhan.domain.scan.TextRecognitionRepository
 import com.kovhan.domain.scan.model.RecognizedTextLine
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,6 +30,7 @@ import javax.inject.Inject
  */
 class GeminiTextRecognitionRepository @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val connectivity: ConnectivityRepository,
 ) : TextRecognitionRepository {
 
     private val model by lazy {
@@ -34,16 +38,18 @@ class GeminiTextRecognitionRepository @Inject constructor(
             .generativeModel(MODEL_NAME)
     }
 
-    override suspend fun recognize(image: Uri): List<RecognizedTextLine> =
+    override suspend fun recognize(image: Uri): Outcome<List<RecognizedTextLine>, AiError> =
         withContext(Dispatchers.IO) {
-            val bitmap = decodeBitmap(image) ?: return@withContext emptyList()
+            if (!connectivity.isOnline()) return@withContext Outcome.Failure(AiError.Offline)
+            val bitmap = decodeBitmap(image)
+                ?: return@withContext Outcome.Failure(AiError.Unknown)
             try {
                 val request = content {
                     image(bitmap)
                     text(PROMPT)
                 }
                 val recognized = model.generateContent(request).text.orEmpty().trim()
-                if (recognized.isEmpty() || recognized == EMPTY_MARKER) {
+                val lines = if (recognized.isEmpty() || recognized == EMPTY_MARKER) {
                     emptyList()
                 } else {
                     recognized.split('\n')
@@ -51,9 +57,10 @@ class GeminiTextRecognitionRepository @Inject constructor(
                         .filter(String::isNotEmpty)
                         .map(::RecognizedTextLine)
                 }
+                Outcome.Success(lines)
             } catch (t: Throwable) {
                 Timber.e(t, "Gemini text recognition failed")
-                emptyList()
+                Outcome.Failure(AiError.Unknown)
             } finally {
                 bitmap.recycle()
             }

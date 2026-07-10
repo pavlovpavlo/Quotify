@@ -33,8 +33,20 @@
     <string name="add_quote_scan_gallery">Галерея</string>
     <string name="add_quote_scan_shutter_cd">Зробити фото</string>
     <string name="add_quote_scan_retake">Перезняти</string>
+    <string name="add_quote_scan_crop_caption">Обріжте область із текстом</string>
+    <string name="add_quote_scan_crop_confirm">Розпізнати</string>
+    <string name="add_quote_scan_crop_cancel">Скасувати</string>
     <string name="add_quote_scan_permission">Дозволь доступ до камери, щоб сканувати текст</string>
     <string name="add_quote_scan_permission_action">Надати доступ</string>
+    <string name="add_quote_scan_offline">В офлайн-режимі сканування тексту недоступне. Перевір з\'єднання й спробуй ще раз</string>
+    <string name="add_quote_scan_offline_action">Спробувати ще раз</string>
+    <string name="add_quote_scan_offline_caption">Немає з\'єднання з інтернетом</string>
+    <string name="ai_offline_title">Ви офлайн</string>
+    <string name="ai_offline_message">Ви зараз в офлайн-режимі, для цієї функції потрібне інтернет-з\'єднання</string>
+    <string name="ai_offline_ok">Зрозуміло</string>
+    <string name="splash_offline_title">Немає з\'єднання</string>
+    <string name="splash_offline_message">Щоб продовжити без інтернету, потрібна активна підписка. Перевір з\'єднання й спробуй ще раз</string>
+    <string name="splash_offline_retry">Повторити</string>
     <string name="add_quote_voice_title">Продиктуй цитату</string>
     <string name="add_quote_voice_subtitle">Затисни кнопку і промов рядки вголос — ми перетворимо їх на текст.</string>
     <string name="add_quote_voice_field_label">Розпізнана цитата</string>
@@ -311,6 +323,19 @@
     <string name="collection_favourites">Улюблене</string>
     <string name="collection_general">Загальна</string>
 
+    <!-- Library screen -->
+    <string name="library_title">Бібліотека</string>
+    <string name="library_search_placeholder">Шукати цитату, автора або тег</string>
+    <string name="library_search_cd">Пошук</string>
+    <string name="library_folders_eyebrow">ПАПКИ</string>
+    <string name="library_new_folder">Нова папка</string>
+    <plurals name="library_folder_quote_count">
+        <item quantity="one">%d цитата</item>
+        <item quantity="few">%d цитати</item>
+        <item quantity="many">%d цитат</item>
+        <item quantity="other">%d цитати</item>
+    </plurals>
+
     <!-- Hide daily quote dialog -->
     <string name="daily_quote_hide_title">Приховати цитату дня?</string>
     <string name="daily_quote_hide_text">Якщо прибрати назавжди, ти більше не бачитимеш щоденні цитати. Змінити цей вибір можна будь-коли в налаштуваннях.</string>
@@ -318,4 +343,51 @@
     <string name="daily_quote_hide_today">Закрити на сьогодні</string>
     <string name="daily_quote_hide_keep">Залишити</string>
     <string name="daily_quote_hide_close_cd">Закрити</string>
+    <!-- Collection details -->
+    <string name="collection_details_close_cd">Закрити деталі колекції</string>
+    <string name="collection_details_menu_cd">Меню колекції</string>
+    <string name="collection_details_menu_rename">Перейменувати</string>
+    <string name="collection_details_menu_edit">Редагувати</string>
+    <string name="collection_details_menu_delete">Видалити</string>
+    <string name="collection_details_empty_title">Тут поки порожньо</string>
+    <string name="collection_details_empty_message">Зберігай цитати з бібліотеки чи пошуку в цю папку — вони зʼявляться тут</string>
+    <string name="collection_details_rename_title">Перейменувати папку</string>
+    <string name="collection_details_name_label">НАЗВА</string>
+    <string name="collection_details_name_placeholder">Назва папки</string>
+    <string name="collection_details_style_title">Редагувати папку</string>
+    <string name="collection_details_color_label">КОЛІР</string>
+    <string name="collection_details_icon_label">ІКОНКА</string>
+    <string name="collection_details_delete_collection_title">Видалити папку?</string>
+    <string name="collection_details_delete_collection_message">Сама папка зникне назавжди, а цитати залишаться в загальній бібліотеці.</string>
+    <string name="collection_details_delete_collection_confirm">Видалити папку</string>
+    <string name="collection_details_quote_menu_cd">Меню цитати</string>
+    <string name="collection_details_quote_edit">Редагувати</string>
+    <string name="collection_details_quote_move">Перемістити</string>
+    <string name="collection_details_quote_delete">Видалити</string>
+    <string name="collection_details_quote_edit_title">Редагування</string>
+    <string name="collection_details_move_title">Перемістити в колекцію</string>
+    <string name="collection_details_move_add_cd">Додати до колекції</string>
+    <string name="collection_details_delete_quote_title">Видалити цитату?</string>
+    <string name="collection_details_delete_quote_message">Цитату буде прибрано з цієї колекції. Цю дію не можна скасувати.</string>
+    <string name="collection_details_delete_quote_confirm">Видалити цитату</string>
+    <!-- Search -->
+    <string name="search_title">Пошук</string>
+    <string name="search_placeholder">Шукати цитату, автора або тег</string>
+    <string name="search_clear_cd">Очистити</string>
+    <string name="search_scope_quotes">Цитати</string>
+    <string name="search_scope_folders">Папки</string>
+    <string name="search_scope_tags">Теги</string>
+    <string name="search_scope_books">Книги</string>
+    <string name="search_scope_authors">Автори</string>
+    <string name="search_empty_title">Нічого не знайдено</string>
+    <string name="search_empty_sub">Спробуй іншу фразу або зміни область пошуку</string>
+    <!-- Entity details -->
+    <string name="entity_menu_cd">Меню</string>
+    <string name="entity_rename_title">Перейменувати</string>
+    <string name="entity_name_placeholder">Назва</string>
+    <string name="entity_delete_title">Видалити?</string>
+    <string name="entity_delete_message">Це прибере її з усіх повʼязаних цитат. Дію не можна скасувати.</string>
+    <string name="entity_delete_confirm">Видалити</string>
+    <string name="entity_delete_quote_message">Цитату буде видалено назавжди. Цю дію не можна скасувати.</string>
+    <string name="entity_remove_quote_message">Цитату буде прибрано з цього списку. Саму цитату не видалено.</string>
 </resources>

@@ -3,11 +3,13 @@ package com.kovhan.feature.addquote.presentation.addquote
 import android.net.Uri
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kovhan.core.models.Outcome
 import com.kovhan.core.navigation.AddQuoteTab
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.ai.AiAccess
 import com.kovhan.domain.ai.use_case.CheckAiAccessUseCase
 import com.kovhan.domain.ai.use_case.RecordAiRequestUseCase
+import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
 import com.kovhan.domain.scan.use_case.RecognizeTextUseCase
 import com.kovhan.domain.voice.use_case.IsVoiceInputAvailableUseCase
 import com.kovhan.domain.voice.use_case.ObserveVoiceInputUseCase
@@ -26,6 +28,7 @@ class AddQuoteScreenViewModel @Inject constructor(
     private val recognizeText: RecognizeTextUseCase,
     private val checkAiAccess: CheckAiAccessUseCase,
     private val recordAiRequest: RecordAiRequestUseCase,
+    private val checkConnectivity: CheckConnectivityUseCase,
 ) : BaseViewModel<AddQuoteScreenState, AddQuoteScreenEffect>(AddQuoteScreenState()),
     AddQuoteScreenIntent {
 
@@ -41,19 +44,25 @@ class AddQuoteScreenViewModel @Inject constructor(
         if (tabInitialized) return
         tabInitialized = true
         publishState { copy(selectedTab = tab) }
-        if (tab == AddQuoteTab.SCAN) refreshScanAiAccess()
+        if (tab == AddQuoteTab.SCAN) refreshScanGate()
     }
 
     override fun onTabSelected(tab: AddQuoteTab) {
         if (uiState.value.isRecording) onMicReleased()
         publishState { copy(selectedTab = tab) }
-        if (tab == AddQuoteTab.SCAN) refreshScanAiAccess()
+        if (tab == AddQuoteTab.SCAN) refreshScanGate()
     }
 
-    private fun refreshScanAiAccess() {
+    override fun onScanRetry() = refreshScanGate()
+
+    private fun refreshScanGate() {
         viewModelScope.launch {
+            if (!checkConnectivity()) {
+                publishState { copy(scanOffline = true, scanAiDenial = null) }
+                return@launch
+            }
             val denial = (checkAiAccess() as? AiAccess.Denied)?.reason
-            publishState { copy(scanAiDenial = denial) }
+            publishState { copy(scanOffline = false, scanAiDenial = denial) }
         }
     }
 
@@ -88,18 +97,28 @@ class AddQuoteScreenViewModel @Inject constructor(
     override fun onScanImagePicked(image: Uri) {
         viewModelScope.launch {
             when (val access = checkAiAccess()) {
-                is AiAccess.Denied -> publishState { copy(scanAiDenial = access.reason) }
-                AiAccess.Allowed -> {
-                    publishState {
-                        copy(
-                            scanAiDenial = null,
-                            isScanning = true,
-                            scanLines = emptyList(),
-                            scanNoTextFound = false,
-                        )
-                    }
-                    val lines = recognizeText(image).map { it.text }
+                is AiAccess.Denied -> publishState { copy(pickedImage = null, scanAiDenial = access.reason) }
+                AiAccess.Allowed -> publishState { copy(scanAiDenial = null, pickedImage = image) }
+            }
+        }
+    }
+
+    override fun onScanCropConfirmed(image: Uri) {
+        viewModelScope.launch {
+            publishState {
+                copy(
+                    pickedImage = null,
+                    isScanning = true,
+                    scanLines = emptyList(),
+                    scanNoTextFound = false,
+                    scanOffline = false,
+                )
+            }
+            when (val outcome = recognizeText(image)) {
+                is Outcome.Success -> {
+                    // Count the request only when the model actually ran.
                     recordAiRequest()
+                    val lines = outcome.data.map { it.text }
                     publishState {
                         copy(
                             isScanning = false,
@@ -108,12 +127,30 @@ class AddQuoteScreenViewModel @Inject constructor(
                         )
                     }
                 }
+
+                is Outcome.Failure -> publishState {
+                    when (outcome.error) {
+                        com.kovhan.core.models.AiError.Offline ->
+                            copy(isScanning = false, scanOffline = true)
+
+                        com.kovhan.core.models.AiError.Unknown ->
+                            copy(isScanning = false, scanNoTextFound = true)
+                    }
+                }
             }
         }
     }
 
+    override fun onScanCropCancelled() = publishState { copy(pickedImage = null) }
+
     override fun onScanRetake() = publishState {
-        copy(isScanning = false, scanLines = emptyList(), scanNoTextFound = false)
+        copy(
+            isScanning = false,
+            pickedImage = null,
+            scanLines = emptyList(),
+            scanNoTextFound = false,
+            scanOffline = false,
+        )
     }
 
     override fun onScanProceed(text: String) {

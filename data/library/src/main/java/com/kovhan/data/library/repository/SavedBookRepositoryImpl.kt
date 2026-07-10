@@ -1,9 +1,13 @@
 package com.kovhan.data.library.repository
 
 import com.kovhan.core.models.SavedBook
+import com.kovhan.data.library.local.library.PendingEntityType
+import com.kovhan.data.library.local.library.PendingOpType
+import com.kovhan.data.library.local.library.PendingOperationDao
+import com.kovhan.data.library.local.library.PendingOperationEntity
+import com.kovhan.data.library.local.library.SavedBookDao
 import com.kovhan.data.library.mapper.toDomain
-import com.kovhan.data.library.mapper.toDto
-import com.kovhan.data.library.remote.SavedBookRemoteDataSource
+import com.kovhan.data.library.mapper.toEntity
 import com.kovhan.domain.library.SavedBookRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -12,19 +16,37 @@ import javax.inject.Singleton
 
 @Singleton
 class SavedBookRepositoryImpl @Inject constructor(
-    private val remote: SavedBookRemoteDataSource,
+    private val dao: SavedBookDao,
+    private val pendingDao: PendingOperationDao,
 ) : SavedBookRepository {
 
     override suspend fun getAll(): List<SavedBook> =
-        remote.getAll().map { it.toDomain() }
+        dao.getAll().map { it.toDomain() }
 
     override suspend fun getById(id: String): SavedBook? =
-        remote.getById(id)?.toDomain()
+        dao.getById(id)?.toDomain()
 
     override fun observeAll(): Flow<List<SavedBook>> =
-        remote.observeAll().map { list -> list.map { it.toDomain() } }
+        dao.observeAll().map { list -> list.map { it.toDomain() } }
 
-    override suspend fun deleteById(id: String) = remote.deleteById(id)
+    override suspend fun deleteById(id: String) {
+        dao.deleteById(id)
+        enqueue(id, PendingOpType.DELETE)
+    }
 
-    override suspend fun edit(item: SavedBook) = remote.edit(item.toDto())
+    override suspend fun edit(item: SavedBook) {
+        dao.upsert(item.toEntity())
+        enqueue(item.id, PendingOpType.UPSERT)
+    }
+
+    private suspend fun enqueue(id: String, opType: PendingOpType) {
+        pendingDao.insert(
+            PendingOperationEntity.of(
+                entityType = PendingEntityType.BOOK,
+                entityId = id,
+                opType = opType,
+                createdAt = System.currentTimeMillis(),
+            ),
+        )
+    }
 }

@@ -11,7 +11,10 @@ interface AddQuoteScreenIntent {
     fun onMicPressed()
     fun onMicReleased()
     fun onScanImagePicked(image: Uri)
+    fun onScanCropConfirmed(image: Uri)
+    fun onScanCropCancelled()
     fun onScanRetake()
+    fun onScanRetry()
     fun onScanProceed(text: String)
     fun onNextClicked()
     fun onCloseClicked()
@@ -24,7 +27,10 @@ interface AddQuoteScreenIntent {
             override fun onMicPressed() = Unit
             override fun onMicReleased() = Unit
             override fun onScanImagePicked(image: Uri) = Unit
+            override fun onScanCropConfirmed(image: Uri) = Unit
+            override fun onScanCropCancelled() = Unit
             override fun onScanRetake() = Unit
+            override fun onScanRetry() = Unit
             override fun onScanProceed(text: String) = Unit
             override fun onNextClicked() = Unit
             override fun onCloseClicked() = Unit

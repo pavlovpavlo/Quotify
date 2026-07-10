@@ -1,11 +1,14 @@
 package com.kovhan.feature.addquote.presentation.details.component.tageditor
 
+import com.kovhan.core.models.AiError
+import com.kovhan.core.models.Outcome
 import com.kovhan.core.ui.UiState
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.ai.AiAccess
 import com.kovhan.domain.ai.use_case.CheckAiAccessUseCase
 import com.kovhan.domain.ai.use_case.RecordAiRequestUseCase
 import com.kovhan.domain.ai.use_case.SuggestTagsUseCase
+import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
 import com.kovhan.feature.addquote.presentation.details.mvi.AiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -45,6 +48,7 @@ class TagSheetViewModel @Inject constructor(
     private val suggestTags: SuggestTagsUseCase,
     private val checkAiAccess: CheckAiAccessUseCase,
     private val recordAiRequest: RecordAiRequestUseCase,
+    private val checkConnectivity: CheckConnectivityUseCase,
 ) : BaseViewModel<TagSheetUiState, TagSheetEffect>(TagSheetUiState()) {
 
     fun initialize(
@@ -86,13 +90,29 @@ class TagSheetViewModel @Inject constructor(
         val quote = uiState.value.quoteText.trim()
         if (quote.isBlank() || uiState.value.aiState == AiState.LOADING) return
         viewModelScope.launch {
+            // Offline is a distinct case: show the offline notice, not the quota dialog.
+            if (!checkConnectivity()) {
+                publishEffect(TagSheetEffect.ShowOfflineDialog)
+                return@launch
+            }
             when (val access = checkAiAccess()) {
                 is AiAccess.Denied -> publishEffect(TagSheetEffect.ShowAiLimitDialog(access.reason))
                 AiAccess.Allowed -> {
                     publishState { copy(aiState = AiState.LOADING) }
-                    val tags = suggestTags(quote)
-                    recordAiRequest()
-                    publishState { copy(aiState = AiState.DONE, aiTags = tags) }
+                    when (val outcome = suggestTags(quote)) {
+                        is Outcome.Success -> {
+                            // Count the request only when the model actually ran.
+                            recordAiRequest()
+                            publishState { copy(aiState = AiState.DONE, aiTags = outcome.data) }
+                        }
+
+                        is Outcome.Failure -> {
+                            publishState { copy(aiState = AiState.IDLE) }
+                            if (outcome.error == AiError.Offline) {
+                                publishEffect(TagSheetEffect.ShowOfflineDialog)
+                            }
+                        }
+                    }
                 }
             }
         }

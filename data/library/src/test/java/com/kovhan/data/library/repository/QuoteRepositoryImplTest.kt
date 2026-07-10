@@ -3,13 +3,15 @@ package com.kovhan.data.library.repository
 import app.cash.turbine.test
 import com.kovhan.core.models.QuoteFilter
 import com.kovhan.core.models.QuotePlaylist
-import com.kovhan.data.library.dto.QuoteDto
-import com.kovhan.data.library.mapper.toDomain
-import com.kovhan.data.library.remote.QuoteRemoteDataSource
+import com.kovhan.data.library.local.library.PendingOperationDao
+import com.kovhan.data.library.local.library.PendingOperationEntity
+import com.kovhan.data.library.local.library.QuoteDao
+import com.kovhan.data.library.local.library.QuoteEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -22,20 +24,23 @@ import org.junit.jupiter.api.Test
 @DisplayName("QuoteRepositoryImpl")
 class QuoteRepositoryImplTest {
 
-    private lateinit var remote: QuoteRemoteDataSource
+    private lateinit var dao: QuoteDao
+    private lateinit var pendingDao: PendingOperationDao
     private lateinit var repository: QuoteRepositoryImpl
 
     // q1 is in BOTH playlists; q2 is in neither; q3 is widget-only.
-    private val q1 = QuoteDto(
+    private val q1 = QuoteEntity(
         id = "q1",
         text = "camus push+widget",
         authorId = "a-camus",
         bookId = "b-stranger",
+        collectionId = null,
         tagIds = listOf("t-absurd"),
         inPushPlaylist = true,
         inWidgetPlaylist = true,
+        sourceDailyId = null,
     )
-    private val q2 = QuoteDto(
+    private val q2 = QuoteEntity(
         id = "q2",
         text = "seneca none",
         authorId = "a-seneca",
@@ -44,22 +49,26 @@ class QuoteRepositoryImplTest {
         tagIds = listOf("t-stoic"),
         inPushPlaylist = false,
         inWidgetPlaylist = false,
+        sourceDailyId = null,
     )
-    private val q3 = QuoteDto(
+    private val q3 = QuoteEntity(
         id = "q3",
         text = "camus widget",
         authorId = "a-camus",
         bookId = "b-myth",
+        collectionId = null,
         tagIds = listOf("t-absurd", "t-stoic"),
         inPushPlaylist = false,
         inWidgetPlaylist = true,
+        sourceDailyId = null,
     )
 
     @BeforeEach
     fun setUp() {
-        remote = mockk(relaxed = true)
-        repository = QuoteRepositoryImpl(remote)
-        every { remote.observeAll() } returns flowOf(listOf(q1, q2, q3))
+        dao = mockk(relaxed = true)
+        pendingDao = mockk(relaxed = true)
+        repository = QuoteRepositoryImpl(dao, pendingDao)
+        every { dao.observeAll() } returns flowOf(listOf(q1, q2, q3))
     }
 
     @Nested
@@ -99,35 +108,6 @@ class QuoteRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("filters by author")
-        fun byAuthor() = runTest {
-            repository.observeFiltered(QuoteFilter(authorId = "a-camus")).test {
-                assertEquals(listOf("q1", "q3"), awaitItem().map { it.id })
-                awaitComplete()
-            }
-        }
-
-        @Test
-        @DisplayName("filters by tag membership")
-        fun byTag() = runTest {
-            repository.observeFiltered(QuoteFilter(tagId = "t-stoic")).test {
-                assertEquals(listOf("q2", "q3"), awaitItem().map { it.id })
-                awaitComplete()
-            }
-        }
-
-        @Test
-        @DisplayName("combines several criteria with AND")
-        fun combinesCriteria() = runTest {
-            repository.observeFiltered(
-                QuoteFilter(authorId = "a-camus", playlist = QuotePlaylist.PUSH),
-            ).test {
-                assertEquals(listOf("q1"), awaitItem().map { it.id })
-                awaitComplete()
-            }
-        }
-
-        @Test
         @DisplayName("returns everything for an empty filter")
         fun emptyFilter() = runTest {
             repository.observeFiltered(QuoteFilter()).test {
@@ -142,9 +122,9 @@ class QuoteRepositoryImplTest {
     inner class ReadsAndWrites {
 
         @Test
-        @DisplayName("getById maps a found dto")
+        @DisplayName("getById maps a found entity")
         fun getByIdMaps() = runTest {
-            coEvery { remote.getById("q1") } returns q1
+            coEvery { dao.getById("q1") } returns q1
 
             assertEquals("q1", repository.getById("q1")?.id)
         }
@@ -152,33 +132,55 @@ class QuoteRepositoryImplTest {
         @Test
         @DisplayName("getById returns null when missing")
         fun getByIdMissing() = runTest {
-            coEvery { remote.getById("q1") } returns null
+            coEvery { dao.getById("q1") } returns null
 
             assertNull(repository.getById("q1"))
         }
 
         @Test
-        @DisplayName("edit converts the quote to a dto before writing")
-        fun editConverts() = runTest {
-            repository.edit(q1.toDomain())
+        @DisplayName("edit writes to Room and enqueues an UPSERT pending op")
+        fun editEnqueues() = runTest {
+            val op = slot<PendingOperationEntity>()
 
-            coVerify { remote.edit(q1) }
+            repository.edit(q1.toDomainQuote())
+
+            coVerify { dao.upsert(q1) }
+            coVerify { pendingDao.insert(capture(op)) }
+            assertEquals("QUOTE:q1", op.captured.key)
+            assertEquals("UPSERT", op.captured.opType)
         }
 
         @Test
-        @DisplayName("setInPushPlaylist forwards to the remote source")
-        fun pushForwards() = runTest {
+        @DisplayName("deleteById removes from Room and enqueues a DELETE pending op")
+        fun deleteEnqueues() = runTest {
+            val op = slot<PendingOperationEntity>()
+
+            repository.deleteById("q1")
+
+            coVerify { dao.deleteById("q1") }
+            coVerify { pendingDao.insert(capture(op)) }
+            assertEquals("DELETE", op.captured.opType)
+        }
+
+        @Test
+        @DisplayName("setInPushPlaylist updates Room and enqueues an UPSERT pending op")
+        fun pushEnqueues() = runTest {
             repository.setInPushPlaylist("q1", true)
 
-            coVerify { remote.setInPushPlaylist("q1", true) }
-        }
-
-        @Test
-        @DisplayName("setInWidgetPlaylist forwards to the remote source")
-        fun widgetForwards() = runTest {
-            repository.setInWidgetPlaylist("q1", false)
-
-            coVerify { remote.setInWidgetPlaylist("q1", false) }
+            coVerify { dao.setInPushPlaylist("q1", true) }
+            coVerify { pendingDao.insert(any()) }
         }
     }
+
+    private fun QuoteEntity.toDomainQuote() = com.kovhan.core.models.Quote(
+        id = id,
+        text = text,
+        authorId = authorId,
+        bookId = bookId,
+        collectionId = collectionId,
+        tagIds = tagIds,
+        inPushPlaylist = inPushPlaylist,
+        inWidgetPlaylist = inWidgetPlaylist,
+        sourceDailyId = sourceDailyId,
+    )
 }

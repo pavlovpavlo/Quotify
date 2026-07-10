@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,6 +60,10 @@ fun QuoteOfTheDayCard(
     val shape = RoundedCornerShape(dimensions.radiusXl)
 
     var expanded by remember { mutableStateOf(false) }
+    // Enable the size animation only after the first layout, so the card doesn't
+    // play an "expand" animation every time the Library screen (re)appears.
+    var animateEnabled by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { animateEnabled = true }
 
     Box(
         modifier = modifier
@@ -69,10 +73,12 @@ fun QuoteOfTheDayCard(
             .background(colors.accentPremiumSoft)
             .border(dimensions.size1, colors.accentPremium.copy(alpha = 0.32f), shape)
             .noRippleClickable { expanded = !expanded }
-            .animateContentSize(tween(EXPAND_DURATION_MS, easing = FolioEasing))
             .then(
-                if (expanded) Modifier.heightIn(min = dimensions.size163)
-                else Modifier.height(dimensions.size163),
+                if (animateEnabled) {
+                    Modifier.animateContentSize(tween(EXPAND_DURATION_MS, easing = FolioEasing))
+                } else {
+                    Modifier
+                },
             ),
     ) {
         DailyQuoteCloseButton(

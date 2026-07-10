@@ -5,8 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kovhan.core.navigation.EntityDetailsKey
+import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.navigation.HideDailyQuoteDialogKey
+import com.kovhan.core.navigation.NewCollectionSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.SearchKey
 import com.kovhan.feature.main.presentation.quotes.QuotesScreen
 import com.kovhan.feature.main.presentation.quotes.QuotesScreenViewModel
 
@@ -39,6 +43,32 @@ internal fun QuotesEntry(
 
             override fun showHideDailyQuoteDialog() =
                 coordinator.showDialog(HideDailyQuoteDialogKey)
+
+            override fun openSearch() {
+                coordinator.navigate(SearchKey)
+            }
+
+            override fun openFolder(collectionId: String) {
+                coordinator.navigate(
+                    EntityDetailsKey(
+                        type = EntityType.COLLECTION,
+                        entityId = collectionId,
+                    ),
+                )
+            }
+
+            override fun createFolder() {
+                coordinator.showBottomSheet(
+                    NewCollectionSheetKey(
+                        text = "",
+                        authorName = null,
+                        bookName = null,
+                        tagNames = emptyList(),
+                        inWidgetPlaylist = false,
+                        inPushPlaylist = false,
+                    ),
+                )
+            }
         },
         paddingValues = paddingValues,
     )

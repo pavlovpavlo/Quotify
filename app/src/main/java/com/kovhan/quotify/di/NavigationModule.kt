@@ -3,8 +3,10 @@
 import com.kovhan.core.navigation.EntryBuilder
 import com.kovhan.feature.addquote.navigation.AddQuoteEntryBuilder
 import com.kovhan.feature.auth.navigation.AuthEntryBuilder
+import com.kovhan.feature.entitydetails.navigation.EntityDetailsEntryBuilder
 import com.kovhan.feature.main.navigation.MainEntryBuilder
 import com.kovhan.feature.onboarding.navigation.OnboardingEntryBuilder
+import com.kovhan.feature.search.navigation.SearchEntryBuilder
 import com.kovhan.feature.splash.navigation.SplashEntryBuilder
 import com.kovhan.feature.webview.navigation.WebViewEntryBuilder
 import dagger.Binds
@@ -36,6 +38,14 @@ abstract class NavigationModule {
     @Binds
     @IntoSet
     abstract fun bindMainEntryBuilder(impl: MainEntryBuilder): EntryBuilder
+
+    @Binds
+    @IntoSet
+    abstract fun bindEntityDetailsEntryBuilder(impl: EntityDetailsEntryBuilder): EntryBuilder
+
+    @Binds
+    @IntoSet
+    abstract fun bindSearchEntryBuilder(impl: SearchEntryBuilder): EntryBuilder
 
     @Binds
     @IntoSet

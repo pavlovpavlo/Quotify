@@ -31,8 +31,20 @@
     <string name="add_quote_scan_gallery">Gallery</string>
     <string name="add_quote_scan_shutter_cd">Take a photo</string>
     <string name="add_quote_scan_retake">Retake</string>
+    <string name="add_quote_scan_crop_caption">Crop the area with text</string>
+    <string name="add_quote_scan_crop_confirm">Recognize</string>
+    <string name="add_quote_scan_crop_cancel">Cancel</string>
     <string name="add_quote_scan_permission">Allow camera access to scan text</string>
     <string name="add_quote_scan_permission_action">Grant access</string>
+    <string name="add_quote_scan_offline">Text scanning is unavailable offline. Check your connection and try again</string>
+    <string name="add_quote_scan_offline_action">Try again</string>
+    <string name="add_quote_scan_offline_caption">No internet connection</string>
+    <string name="ai_offline_title">You\'re offline</string>
+    <string name="ai_offline_message">You\'re currently offline; this feature needs an internet connection</string>
+    <string name="ai_offline_ok">Got it</string>
+    <string name="splash_offline_title">No connection</string>
+    <string name="splash_offline_message">To continue without internet you need an active subscription. Check your connection and try again</string>
+    <string name="splash_offline_retry">Retry</string>
     <string name="add_quote_voice_title">Dictate your quote</string>
     <string name="add_quote_voice_subtitle">Hold the button and say the lines out loud — we\'ll turn them into text.</string>
     <string name="add_quote_voice_field_label">Recognized quote</string>
@@ -270,6 +282,21 @@
     <string name="edit_email_verification_sent">A verification link was sent to your new email. The email changes after you confirm it.</string>
     <string name="edit_photo_upload_failed">Couldn\'t upload the photo. Please try again.</string>
     <string name="auth_error_recent_login_required">Please sign in again to change your email.</string>
+    <string name="auth_validation_name">Enter your name.</string>
+    <string name="auth_validation_email">Enter a valid email.</string>
+    <string name="auth_validation_password">Password must be at least 8 characters.</string>
+    <string name="auth_error_invalid_credentials">Invalid email or password.</string>
+    <string name="auth_error_invalid_email">Invalid email format.</string>
+    <string name="auth_error_email_in_use">An account with this email already exists.</string>
+    <string name="auth_error_weak_password">Password is too weak. Try a stronger one.</string>
+    <string name="auth_error_user_not_found">No account found with this email.</string>
+    <string name="auth_error_user_disabled">This account has been disabled.</string>
+    <string name="auth_error_too_many_requests">Too many attempts. Please try again later.</string>
+    <string name="auth_error_network">No connection. Check your internet and try again.</string>
+    <string name="auth_error_google_cancelled">Google sign-in was canceled.</string>
+    <string name="auth_error_google_failed">Google sign-in failed. Please try again.</string>
+    <string name="auth_error_generic">Something went wrong. Please try again.</string>
+    <string name="forgot_reset_sent">A recovery link has been sent to your email.</string>
 
     <!-- Edit profile — confirm dialogs -->
     <string name="dialog_cancel">Cancel</string>
@@ -287,6 +314,17 @@
     <string name="collection_favourites">Favourites</string>
     <string name="collection_general">General</string>
 
+    <!-- Library screen -->
+    <string name="library_title">Library</string>
+    <string name="library_search_placeholder">Search a quote, author or tag</string>
+    <string name="library_search_cd">Search</string>
+    <string name="library_folders_eyebrow">FOLDERS</string>
+    <string name="library_new_folder">New folder</string>
+    <plurals name="library_folder_quote_count">
+        <item quantity="one">%d quote</item>
+        <item quantity="other">%d quotes</item>
+    </plurals>
+
     <!-- Hide daily quote dialog -->
     <string name="daily_quote_hide_title">Hide the quote of the day?</string>
     <string name="daily_quote_hide_text">If you remove it for good, you won\'t see daily quotes anymore. You can change this anytime in settings.</string>
@@ -294,4 +332,51 @@
     <string name="daily_quote_hide_today">Hide for today</string>
     <string name="daily_quote_hide_keep">Keep</string>
     <string name="daily_quote_hide_close_cd">Close</string>
+    <!-- Collection details -->
+    <string name="collection_details_close_cd">Close collection details</string>
+    <string name="collection_details_menu_cd">Collection menu</string>
+    <string name="collection_details_menu_rename">Rename</string>
+    <string name="collection_details_menu_edit">Edit</string>
+    <string name="collection_details_menu_delete">Delete</string>
+    <string name="collection_details_empty_title">Nothing here yet</string>
+    <string name="collection_details_empty_message">Save quotes from your library or search into this folder — they\'ll appear here.</string>
+    <string name="collection_details_rename_title">Rename folder</string>
+    <string name="collection_details_name_label">NAME</string>
+    <string name="collection_details_name_placeholder">Folder name</string>
+    <string name="collection_details_style_title">Edit folder</string>
+    <string name="collection_details_color_label">COLOR</string>
+    <string name="collection_details_icon_label">ICON</string>
+    <string name="collection_details_delete_collection_title">Delete folder?</string>
+    <string name="collection_details_delete_collection_message">The folder will be removed forever, while the quotes stay in your general library.</string>
+    <string name="collection_details_delete_collection_confirm">Delete folder</string>
+    <string name="collection_details_quote_menu_cd">Quote menu</string>
+    <string name="collection_details_quote_edit">Edit</string>
+    <string name="collection_details_quote_move">Move</string>
+    <string name="collection_details_quote_delete">Delete</string>
+    <string name="collection_details_quote_edit_title">Editing</string>
+    <string name="collection_details_move_title">Move to collection</string>
+    <string name="collection_details_move_add_cd">Add to collection</string>
+    <string name="collection_details_delete_quote_title">Delete quote?</string>
+    <string name="collection_details_delete_quote_message">The quote will be removed from this collection. This action can\'t be undone.</string>
+    <string name="collection_details_delete_quote_confirm">Delete quote</string>
+    <!-- Search -->
+    <string name="search_title">Search</string>
+    <string name="search_placeholder">Search a quote, author or tag</string>
+    <string name="search_clear_cd">Clear</string>
+    <string name="search_scope_quotes">Quotes</string>
+    <string name="search_scope_folders">Folders</string>
+    <string name="search_scope_tags">Tags</string>
+    <string name="search_scope_books">Books</string>
+    <string name="search_scope_authors">Authors</string>
+    <string name="search_empty_title">Nothing found</string>
+    <string name="search_empty_sub">Try another phrase or change the search scope</string>
+    <!-- Entity details -->
+    <string name="entity_menu_cd">Menu</string>
+    <string name="entity_rename_title">Rename</string>
+    <string name="entity_name_placeholder">Name</string>
+    <string name="entity_delete_title">Delete?</string>
+    <string name="entity_delete_message">This will remove it from all related quotes. This action can\'t be undone.</string>
+    <string name="entity_delete_confirm">Delete</string>
+    <string name="entity_delete_quote_message">The quote will be deleted forever. This action can\'t be undone.</string>
+    <string name="entity_remove_quote_message">The quote will be removed from this list. The quote itself is kept.</string>
 </resources>

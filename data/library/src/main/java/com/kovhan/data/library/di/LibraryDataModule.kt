@@ -1,5 +1,6 @@
 package com.kovhan.data.library.di
 
+import com.kovhan.data.library.connectivity.AndroidConnectivityRepository
 import com.kovhan.data.library.repository.AiUsageRepositoryImpl
 import com.kovhan.data.library.repository.CollectionRepositoryImpl
 import com.kovhan.data.library.repository.DailyQuoteRepositoryImpl
@@ -7,17 +8,20 @@ import com.kovhan.data.library.repository.QuoteRepositoryImpl
 import com.kovhan.data.library.repository.SavedAuthorRepositoryImpl
 import com.kovhan.data.library.repository.SavedBookRepositoryImpl
 import com.kovhan.data.library.repository.SavedTagRepositoryImpl
-import com.kovhan.data.library.repository.StubSubscriptionRepositoryImpl
+import com.kovhan.data.library.repository.SubscriptionRepositoryImpl
+import com.kovhan.data.library.sync.LibrarySynchronizerImpl
 import com.kovhan.data.library.util.UuidIdGenerator
 import com.kovhan.domain.ai.AiUsageRepository
 import com.kovhan.domain.ai.SubscriptionRepository
 import com.kovhan.domain.common.IdGenerator
+import com.kovhan.domain.connectivity.ConnectivityRepository
 import com.kovhan.domain.daily.DailyQuoteRepository
 import com.kovhan.domain.library.CollectionRepository
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository
 import com.kovhan.domain.library.SavedTagRepository
+import com.kovhan.domain.library.sync.LibrarySynchronizer
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -61,5 +65,15 @@ abstract class LibraryDataModule {
 
     @Binds
     @Singleton
-    abstract fun bindSubscriptionRepository(impl: StubSubscriptionRepositoryImpl): SubscriptionRepository
+    abstract fun bindSubscriptionRepository(impl: SubscriptionRepositoryImpl): SubscriptionRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindConnectivityRepository(
+        impl: AndroidConnectivityRepository,
+    ): ConnectivityRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindLibrarySynchronizer(impl: LibrarySynchronizerImpl): LibrarySynchronizer
 }

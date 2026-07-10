@@ -17,7 +17,7 @@ class SaveQuoteCollectionViewModel @Inject constructor(
     private val saveQuoteToCollection: SaveQuoteToCollectionUseCase,
 ) : BaseViewModel<SaveQuoteCollectionState, SaveQuoteCollectionEffect>(SaveQuoteCollectionState()) {
 
-    fun loadCollections(generalName: String) {
+    fun loadCollections(generalName: String, selectId: String? = null) {
         viewModelScope.launch {
             val collections = getCollections(withCount = true)
             val general = collections.firstOrNull { it.id == SavedCollection.GENERAL_ID }
@@ -26,7 +26,7 @@ class SaveQuoteCollectionViewModel @Inject constructor(
             publishState {
                 copy(
                     collections = ordered,
-                    chosenCollectionId = chosenCollectionId ?: ordered.firstOrNull()?.id,
+                    chosenCollectionId = selectId ?: chosenCollectionId ?: ordered.firstOrNull()?.id,
                 )
             }
         }

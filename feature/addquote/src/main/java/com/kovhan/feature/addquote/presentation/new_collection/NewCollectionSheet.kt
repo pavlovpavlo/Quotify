@@ -13,8 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +33,7 @@ import com.kovhan.core.ui.component.button.QuotifyIconButton
 import com.kovhan.core.ui.component.text_field.QuotifyTextField
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,6 +49,12 @@ internal fun NewCollectionSheet(
     val dimensions = QuotifyMaterialTheme.dimensions
     val typography = QuotifyMaterialTheme.typography
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        delay(150)
+        runCatching { focusRequester.requestFocus() }
+    }
 
     QuotifyBottomSheet(
         onDismiss = onClose,
@@ -112,6 +123,7 @@ internal fun NewCollectionSheet(
                 label = stringResource(R.string.details_new_collection_name),
                 placeholder = stringResource(R.string.details_new_collection_placeholder),
                 singleLine = true,
+                modifier = Modifier.focusRequester(focusRequester),
                 modifierContainer = Modifier.fillMaxWidth(),
             )
 

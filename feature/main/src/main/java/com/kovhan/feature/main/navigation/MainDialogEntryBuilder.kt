@@ -11,7 +11,7 @@ import com.kovhan.core.navigation.HideDailyQuoteDialogKey
 import com.kovhan.core.navigation.LogoutDialogKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.design.systems.R
-import com.kovhan.feature.main.presentation.edit_profile.component.ConfirmDialog
+import com.kovhan.feature.common.component.dialog.ConfirmDialog
 import com.kovhan.feature.main.presentation.quotes.component.HideDailyQuoteDialog
 import kotlinx.coroutines.launch
 import javax.inject.Inject

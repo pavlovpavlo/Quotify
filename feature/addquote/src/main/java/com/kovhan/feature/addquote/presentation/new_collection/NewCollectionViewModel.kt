@@ -23,13 +23,14 @@ class NewCollectionViewModel @Inject constructor(
         if (!state.canSave) return
         viewModelScope.launch {
             publishState { copy(isSaving = true) }
+            val id = idGenerator.generate()
             editCollection(
                 SavedCollection(
-                    id = idGenerator.generate(),
+                    id = id,
                     name = state.name.trim(),
                 ),
             )
-            publishEffect(NewCollectionEffect.Saved)
+            publishEffect(NewCollectionEffect.Saved(id))
         }
     }
 }

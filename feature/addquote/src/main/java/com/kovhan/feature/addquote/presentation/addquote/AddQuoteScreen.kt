@@ -73,11 +73,16 @@ fun AddQuoteScreen(
 
                     AddQuoteTab.SCAN -> AddQuoteScanTab(
                         mode = state.scanMode,
+                        pickedImage = state.pickedImage,
                         lines = state.scanLines,
                         noTextFound = state.scanNoTextFound,
+                        offline = state.scanOffline,
                         aiDenial = state.scanAiDenial,
                         onImagePicked = intent::onScanImagePicked,
+                        onCropConfirmed = intent::onScanCropConfirmed,
+                        onCropCancelled = intent::onScanCropCancelled,
                         onRetake = intent::onScanRetake,
+                        onRetry = intent::onScanRetry,
                         onProceed = intent::onScanProceed,
                     )
 

@@ -10,6 +10,7 @@ import com.kovhan.domain.daily.use_case.DismissDailyQuoteForTodayUseCase
 import com.kovhan.domain.daily.use_case.GetDailyQuoteUseCase
 import com.kovhan.domain.daily.use_case.RemoveDailyQuoteFromFavouritesUseCase
 import com.kovhan.domain.daily.use_case.SaveDailyQuoteToFavouritesUseCase
+import com.kovhan.domain.library.use_case.collection.ObserveCollectionsUseCase
 import com.kovhan.domain.library.use_case.quote.ObserveFilteredQuotesUseCase
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
@@ -30,6 +31,7 @@ class QuotesScreenViewModel @Inject constructor(
     private val getDailyQuote: GetDailyQuoteUseCase,
     private val getLanguage: GetLanguageUseCase,
     private val observeFavourites: ObserveFilteredQuotesUseCase,
+    private val observeCollections: ObserveCollectionsUseCase,
     private val saveToFavourites: SaveDailyQuoteToFavouritesUseCase,
     private val removeFromFavourites: RemoveDailyQuoteFromFavouritesUseCase,
     private val dismissForToday: DismissDailyQuoteForTodayUseCase,
@@ -39,6 +41,13 @@ class QuotesScreenViewModel @Inject constructor(
 
     init {
         publishState { copy(isLoading = true) }
+        observeCollections()
+            .onEach { collections ->
+                publishState {
+                    copy(folders = collections)
+                }
+            }
+            .launchIn(viewModelScope)
         combine(
             getDailyQuoteEnabled(),
             getLanguage(),

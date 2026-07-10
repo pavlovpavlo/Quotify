@@ -10,7 +10,6 @@ import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.feature.addquote.presentation.new_collection.NewCollectionSheet
 import com.kovhan.feature.addquote.presentation.new_collection.NewCollectionViewModel
 import com.kovhan.feature.addquote.presentation.new_collection.mvi.NewCollectionEffect
-import com.kovhan.feature.addquote.presentation.save_collection.navigation.KEY_COLLECTION_CREATED
 import kotlinx.coroutines.launch
 
 @Composable
@@ -25,9 +24,12 @@ internal fun NewCollectionSheetEntry(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                NewCollectionEffect.Saved -> {
+                is NewCollectionEffect.Saved -> {
                     scope.launch {
-                        coordinator.emitResult(KEY_COLLECTION_CREATED, true)
+                        coordinator.emitResult(
+                            NavigationCoordinator.KEY_COLLECTION_CREATED,
+                            effect.collectionId,
+                        )
                         coordinator.dismissBottomSheet()
                     }
                 }

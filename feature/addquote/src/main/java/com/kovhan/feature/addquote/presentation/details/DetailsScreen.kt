@@ -16,13 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
+import com.kovhan.core.ui.component.combobox.QuotifyComboboxField
+import com.kovhan.core.ui.component.playlist.QuotifyPlaylistOptions
+import com.kovhan.core.ui.component.quote.QuoteTextInputField
 import com.kovhan.design.systems.QuotifyMaterialTheme
-import com.kovhan.feature.addquote.presentation.details.component.AuthorField
-import com.kovhan.feature.addquote.presentation.details.component.BookField
+import com.kovhan.design.systems.R
 import com.kovhan.feature.addquote.presentation.details.component.DetailsFooter
-import com.kovhan.feature.addquote.presentation.details.component.DetailsQuoteField
 import com.kovhan.feature.addquote.presentation.details.component.DetailsTopBar
-import com.kovhan.feature.addquote.presentation.details.component.PlaylistOptions
 import com.kovhan.feature.addquote.presentation.details.component.tageditor.TagEditor
 import com.kovhan.feature.addquote.presentation.details.mvi.DetailsIntent
 import com.kovhan.feature.addquote.presentation.details.mvi.DetailsState
@@ -68,28 +69,35 @@ fun DetailsScreen(
                     .padding(top = dimensions.space2, bottom = dimensions.space6),
                 verticalArrangement = Arrangement.spacedBy(dimensions.space4),
             ) {
-                DetailsQuoteField(
+                QuoteTextInputField(
                     value = state.quote,
                     onValueChange = intent::onQuoteChanged,
+                    label = stringResource(R.string.details_field_quote),
+                    placeholder = stringResource(R.string.details_quote_ph),
+                    minHeight = dimensions.size96,
                 )
-                AuthorField(
-                    query = state.authorQuery,
-                    onQueryChange = intent::onAuthorQueryChanged,
-                    onPicked = intent::onAuthorPicked,
+                QuotifyComboboxField(
+                    label = stringResource(R.string.details_field_author),
+                    value = state.authorQuery,
+                    onValueChange = intent::onAuthorQueryChanged,
+                    onOptionSelected = intent::onAuthorPicked,
                     options = state.filteredAuthorNames,
+                    placeholder = stringResource(R.string.details_author_ph),
                 )
-                BookField(
-                    query = state.bookQuery,
-                    onQueryChange = intent::onBookQueryChanged,
-                    onPicked = intent::onBookPicked,
+                QuotifyComboboxField(
+                    label = stringResource(R.string.details_field_book),
+                    value = state.bookQuery,
+                    onValueChange = intent::onBookQueryChanged,
+                    onOptionSelected = intent::onBookPicked,
                     options = state.filteredBookNames,
+                    placeholder = stringResource(R.string.details_book_ph),
                 )
                 TagEditor(
                     tags = state.selectedTags,
                     onRemoveTag = intent::onRemoveTag,
                     onAddTag = intent::onOpenTagSheet,
                 )
-                PlaylistOptions(
+                QuotifyPlaylistOptions(
                     widgetEnabled = state.inWidgetPlaylist,
                     pushEnabled = state.inPushPlaylist,
                     onWidgetToggle = intent::onWidgetToggle,

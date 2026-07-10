@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kovhan.core.ui.component.quote.QuoteTextInputField
 import com.kovhan.design.systems.R
-import com.kovhan.feature.addquote.presentation.addquote.component.QuoteInputField
 
 @Composable
 internal fun AddQuoteTextTab(
@@ -14,7 +14,7 @@ internal fun AddQuoteTextTab(
     modifier: Modifier = Modifier,
     requestFocus: Boolean = false,
 ) {
-    QuoteInputField(
+    QuoteTextInputField(
         modifier = modifier,
         value = value,
         onValueChange = onValueChange,

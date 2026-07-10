@@ -12,5 +12,5 @@ data class NewCollectionState(
 }
 
 sealed class NewCollectionEffect : UiEffect {
-    data object Saved : NewCollectionEffect()
+    data class Saved(val collectionId: String) : NewCollectionEffect()
 }

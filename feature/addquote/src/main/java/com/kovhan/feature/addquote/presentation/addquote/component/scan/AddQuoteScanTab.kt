@@ -30,11 +30,16 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun AddQuoteScanTab(
     mode: ScanMode,
+    pickedImage: Uri?,
     lines: List<String>,
     noTextFound: Boolean,
+    offline: Boolean,
     aiDenial: AiDenialReason?,
     onImagePicked: (Uri) -> Unit,
+    onCropConfirmed: (Uri) -> Unit,
+    onCropCancelled: () -> Unit,
     onRetake: () -> Unit,
+    onRetry: () -> Unit,
     onProceed: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,6 +78,16 @@ internal fun AddQuoteScanTab(
     }
 
     Column(modifier = modifier.fillMaxSize()) {
+        if (mode == ScanMode.CROP && pickedImage != null) {
+            ScanCropStage(
+                imageUri = pickedImage,
+                onCancel = onCropCancelled,
+                onConfirm = onCropConfirmed,
+                modifier = Modifier.fillMaxSize(),
+            )
+            return@Column
+        }
+
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -84,16 +99,20 @@ internal fun AddQuoteScanTab(
                     imageCapture = imageCapture,
                     scanning = mode == ScanMode.SCANNING,
                     noTextFound = noTextFound,
+                    offline = offline,
                     aiDenial = aiDenial,
                     onRequestPermission = {
                         permissionLauncher.launch(Manifest.permission.CAMERA)
                     },
+                    onRetry = onRetry,
                 )
 
                 ScanMode.SELECT -> ScanTextSelector(
                     value = scanned,
                     onValueChange = { scanned = it },
                 )
+
+                ScanMode.CROP -> Unit
             }
         }
 

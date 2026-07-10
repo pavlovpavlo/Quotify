@@ -56,8 +56,10 @@ internal fun ScanStage(
     imageCapture: ImageCapture,
     scanning: Boolean,
     noTextFound: Boolean,
+    offline: Boolean,
     aiDenial: com.kovhan.domain.ai.AiDenialReason?,
     onRequestPermission: () -> Unit,
+    onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = QuotifyMaterialTheme.colors
@@ -80,7 +82,9 @@ internal fun ScanStage(
                 .background(FrameDark),
             contentAlignment = Alignment.Center,
         ) {
-            if (aiDenial != null) {
+            if (offline) {
+                ScanOfflinePrompt(onRetry = onRetry)
+            } else if (aiDenial != null) {
                 ScanAiGatePrompt(reason = aiDenial)
             } else if (hasCameraPermission) {
                 CameraPreview(imageCapture = imageCapture, modifier = Modifier.fillMaxSize())
@@ -110,12 +114,13 @@ internal fun ScanStage(
             text = stringResource(
                 when {
                     scanning -> R.string.add_quote_scan_caption_scanning
+                    offline -> R.string.add_quote_scan_offline_caption
                     noTextFound -> R.string.add_quote_scan_no_text
                     else -> R.string.add_quote_scan_caption_live
                 },
             ),
             style = typography.caption,
-            color = if (noTextFound && !scanning) colors.error else colors.textTertiary,
+            color = if (noTextFound && !scanning && !offline) colors.error else colors.textTertiary,
             textAlign = TextAlign.Center,
         )
     }
@@ -158,6 +163,39 @@ private fun CameraPreview(imageCapture: ImageCapture, modifier: Modifier = Modif
         )
 
         onDispose { provider?.unbindAll() }
+    }
+}
+
+@Composable
+private fun ScanOfflinePrompt(onRetry: () -> Unit) {
+    val dimensions = QuotifyMaterialTheme.dimensions
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = dimensions.space6),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(dimensions.space4),
+    ) {
+        Image(
+            modifier = Modifier.size(dimensions.iconXxl),
+            painter = painterResource(R.drawable.ic_camera),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(Color.White.copy(alpha = 0.7f)),
+        )
+        Text(
+            text = stringResource(R.string.add_quote_scan_offline),
+            style = QuotifyMaterialTheme.typography.body,
+            color = Color.White.copy(alpha = 0.85f),
+            textAlign = TextAlign.Center,
+        )
+        QuotifyButton(
+            text = stringResource(R.string.add_quote_scan_offline_action),
+            onClick = onRetry,
+            variant = QuotifyButtonVariant.Filled,
+            accent = QuotifyButtonAccent.Primary,
+            size = QuotifyButtonSize.Medium,
+        )
     }
 }
 

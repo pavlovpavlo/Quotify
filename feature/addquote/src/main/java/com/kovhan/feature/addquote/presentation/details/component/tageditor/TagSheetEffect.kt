@@ -5,4 +5,6 @@ import com.kovhan.domain.ai.AiDenialReason
 
 sealed class TagSheetEffect : UiEffect {
     data class ShowAiLimitDialog(val reason: AiDenialReason) : TagSheetEffect()
+
+    data object ShowOfflineDialog : TagSheetEffect()
 }

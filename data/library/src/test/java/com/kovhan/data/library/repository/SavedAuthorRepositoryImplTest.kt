@@ -2,12 +2,15 @@ package com.kovhan.data.library.repository
 
 import app.cash.turbine.test
 import com.kovhan.core.models.SavedAuthor
-import com.kovhan.data.library.dto.SavedAuthorDto
-import com.kovhan.data.library.remote.SavedAuthorRemoteDataSource
+import com.kovhan.data.library.local.library.PendingOperationDao
+import com.kovhan.data.library.local.library.PendingOperationEntity
+import com.kovhan.data.library.local.library.SavedAuthorDao
+import com.kovhan.data.library.local.library.SavedAuthorEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -19,38 +22,40 @@ import org.junit.jupiter.api.Test
 @DisplayName("SavedAuthorRepositoryImpl")
 class SavedAuthorRepositoryImplTest {
 
-    private lateinit var remote: SavedAuthorRemoteDataSource
+    private lateinit var dao: SavedAuthorDao
+    private lateinit var pendingDao: PendingOperationDao
     private lateinit var repository: SavedAuthorRepositoryImpl
 
-    private val dto = SavedAuthorDto("a1", "Camus")
+    private val entity = SavedAuthorEntity("a1", "Camus")
     private val domain = SavedAuthor("a1", "Camus")
 
     @BeforeEach
     fun setUp() {
-        remote = mockk(relaxed = true)
-        repository = SavedAuthorRepositoryImpl(remote)
+        dao = mockk(relaxed = true)
+        pendingDao = mockk(relaxed = true)
+        repository = SavedAuthorRepositoryImpl(dao, pendingDao)
     }
 
     @Test
-    @DisplayName("getAll maps the remote dtos into domain models")
+    @DisplayName("getAll maps the local entities into domain models")
     fun getAllMaps() = runTest {
-        coEvery { remote.getAll() } returns listOf(dto)
+        coEvery { dao.getAll() } returns listOf(entity)
 
         assertEquals(listOf(domain), repository.getAll())
     }
 
     @Test
-    @DisplayName("getById maps a found dto into a domain model")
+    @DisplayName("getById maps a found entity into a domain model")
     fun getByIdMaps() = runTest {
-        coEvery { remote.getById("a1") } returns dto
+        coEvery { dao.getById("a1") } returns entity
 
         assertEquals(domain, repository.getById("a1"))
     }
 
     @Test
-    @DisplayName("getById returns null when the dto is missing")
+    @DisplayName("getById returns null when the entity is missing")
     fun getByIdMissing() = runTest {
-        coEvery { remote.getById("a1") } returns null
+        coEvery { dao.getById("a1") } returns null
 
         assertNull(repository.getById("a1"))
     }
@@ -58,7 +63,7 @@ class SavedAuthorRepositoryImplTest {
     @Test
     @DisplayName("observeAll maps each emitted list into domain models")
     fun observeAllMaps() = runTest {
-        every { remote.observeAll() } returns flowOf(listOf(dto))
+        every { dao.observeAll() } returns flowOf(listOf(entity))
 
         repository.observeAll().test {
             assertEquals(listOf(domain), awaitItem())
@@ -67,18 +72,27 @@ class SavedAuthorRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("edit converts the domain model to a dto before writing")
-    fun editConverts() = runTest {
+    @DisplayName("edit writes to Room and enqueues an UPSERT pending op")
+    fun editEnqueues() = runTest {
+        val op = slot<PendingOperationEntity>()
+
         repository.edit(domain)
 
-        coVerify { remote.edit(dto) }
+        coVerify { dao.upsert(entity) }
+        coVerify { pendingDao.insert(capture(op)) }
+        assertEquals("AUTHOR:a1", op.captured.key)
+        assertEquals("UPSERT", op.captured.opType)
     }
 
     @Test
-    @DisplayName("deleteById forwards the id to the remote source")
-    fun deleteForwards() = runTest {
+    @DisplayName("deleteById removes from Room and enqueues a DELETE pending op")
+    fun deleteEnqueues() = runTest {
+        val op = slot<PendingOperationEntity>()
+
         repository.deleteById("a1")
 
-        coVerify { remote.deleteById("a1") }
+        coVerify { dao.deleteById("a1") }
+        coVerify { pendingDao.insert(capture(op)) }
+        assertEquals("DELETE", op.captured.opType)
     }
 }

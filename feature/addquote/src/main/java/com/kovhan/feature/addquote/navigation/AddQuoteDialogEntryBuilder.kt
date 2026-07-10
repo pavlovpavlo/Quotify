@@ -6,6 +6,8 @@ import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.core.navigation.DialogKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.TagSheetAiLimitDialogKey
+import com.kovhan.core.navigation.TagSheetOfflineDialogKey
+import com.kovhan.feature.addquote.presentation.common.OfflineNoticeDialog
 import com.kovhan.feature.addquote.presentation.details.component.tageditor.navigation.TagSheetAiLimitDialogEntry
 import javax.inject.Inject
 
@@ -21,6 +23,10 @@ class AddQuoteDialogEntryBuilder @Inject constructor() : DialogEntryBuilder {
                 key = key,
                 coordinator = coordinator,
             )
+        }
+
+        scope.entry<TagSheetOfflineDialogKey> {
+            OfflineNoticeDialog(onDismiss = coordinator::dismissDialog)
         }
     }
 }
