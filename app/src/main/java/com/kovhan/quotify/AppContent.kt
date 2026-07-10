@@ -51,6 +51,10 @@ fun AppContent(
         derivedStateOf { coordinator.shouldShowBottomBar() }
     }
 
+    LaunchedEffect(showDock) {
+        uiIntent.onDockVisibilityChanged(showDock)
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(modifier = modifier.fillMaxSize()) {
             if (coordinator.backStack.isNotEmpty()) {
@@ -119,7 +123,11 @@ fun AppContent(
                     enter = fadeIn(),
                     exit = fadeOut(),
                 ) {
-                    BottomDock(coordinator = coordinator)
+                    BottomDock(
+                        coordinator = coordinator,
+                        isFabTooltipVisible = uiState.isFabTooltipVisible,
+                        uiIntent = uiIntent,
+                    )
                 }
             }
         }

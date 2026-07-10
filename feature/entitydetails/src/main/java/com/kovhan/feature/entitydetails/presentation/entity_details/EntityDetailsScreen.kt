@@ -20,12 +20,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.ui.mapper.collectionColor
 import com.kovhan.design.systems.QuotifyMaterialTheme
+
+import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
 import com.kovhan.feature.entitydetails.presentation.entity_details.component.EntityQuoteCard
-import com.kovhan.feature.entitydetails.presentation.entity_details.component.EntityDetailsEmptyState
 import com.kovhan.feature.entitydetails.presentation.entity_details.component.EntityDetailsSummary
 import com.kovhan.feature.entitydetails.presentation.entity_details.component.EntityDetailsTopBar
 import com.kovhan.feature.entitydetails.presentation.entity_details.mvi.EntityDetailsScreenIntent
@@ -63,12 +64,10 @@ internal fun EntityDetailsScreen(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = dimensions.screenPadding),
+                .fillMaxSize(),
         ) {
             EntityDetailsTopBar(
                 title = state.displayTitle,
-                showCloseIcon = state.type == EntityType.COLLECTION,
                 menu = state.menu,
                 menuExpanded = menuExpanded,
                 onBack = navAction::onBack,
@@ -97,11 +96,12 @@ internal fun EntityDetailsScreen(
 
             if (state.quotes.isEmpty()) {
                 if (!state.isLoading) {
-                    EntityDetailsEmptyState(isCollection = state.type == EntityType.COLLECTION)
+                    DefaultEmptyState()
                 }
             } else {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
+                        .padding(horizontal = dimensions.size18),
                     contentPadding = PaddingValues(bottom = dimensions.size24),
                     verticalArrangement = Arrangement.spacedBy(dimensions.size12),
                 ) {

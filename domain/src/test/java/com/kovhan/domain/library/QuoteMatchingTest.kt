@@ -1,8 +1,8 @@
 package com.kovhan.domain.library
 
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.QuotePlaylist
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.quote.QuotePlaylist
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName

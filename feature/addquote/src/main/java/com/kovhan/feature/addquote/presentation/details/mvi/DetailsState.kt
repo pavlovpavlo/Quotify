@@ -1,8 +1,8 @@
 package com.kovhan.feature.addquote.presentation.details.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.kovhan.core.models.SavedAuthor
-import com.kovhan.core.models.SavedBook
+import com.kovhan.core.models.collections.SavedAuthor
+import com.kovhan.core.models.collections.SavedBook
 import com.kovhan.core.ui.UiState
 
 enum class AiState { IDLE, LOADING, DONE }

@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.mapper.CollectionIconMapper
 import com.kovhan.core.ui.mapper.collectionColor
 import com.kovhan.design.systems.QuotifyMaterialTheme

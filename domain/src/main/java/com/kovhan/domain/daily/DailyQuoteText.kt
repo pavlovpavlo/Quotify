@@ -1,6 +1,6 @@
 package com.kovhan.domain.daily
 
-import com.kovhan.core.models.DailyQuote
+import com.kovhan.core.models.quote.DailyQuote
 import com.kovhan.domain.settings.AppLanguage
 
 fun DailyQuote.localizedText(language: AppLanguage): String = when (language) {

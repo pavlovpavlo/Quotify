@@ -28,14 +28,12 @@ internal fun SearchEntry(
             }
 
             override fun openFolder(collectionId: String) {
-                // Opening a folder closes Search (per spec) — pop it, then push the folder.
                 coordinator.navigate(
                     key = EntityDetailsKey(
                         type = EntityType.COLLECTION,
                         entityId = collectionId,
                     ),
                     popUpTo = SearchKey,
-                    inclusive = true,
                 )
             }
 

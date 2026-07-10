@@ -1,6 +1,6 @@
 package com.kovhan.domain.library.use_case.tag
 
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.collections.SavedTag
 import com.kovhan.domain.library.SavedTagRepository
 import javax.inject.Inject
 

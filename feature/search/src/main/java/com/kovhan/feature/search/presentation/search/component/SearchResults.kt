@@ -3,11 +3,11 @@ package com.kovhan.feature.search.presentation.search.component
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.kovhan.core.models.EnrichedQuote
-import com.kovhan.core.models.SavedAuthor
-import com.kovhan.core.models.SavedBook
-import com.kovhan.core.models.SavedCollection
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.quote.EnrichedQuote
+import com.kovhan.core.models.collections.SavedAuthor
+import com.kovhan.core.models.collections.SavedBook
+import com.kovhan.core.models.collections.SavedCollection
+import com.kovhan.core.models.collections.SavedTag
 import com.kovhan.feature.search.presentation.search.mvi.SearchScope
 import com.kovhan.feature.search.presentation.search.navigation.SearchScreenNavAction
 

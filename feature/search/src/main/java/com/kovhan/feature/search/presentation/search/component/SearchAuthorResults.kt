@@ -1,7 +1,7 @@
 package com.kovhan.feature.search.presentation.search.component
 
 import androidx.compose.runtime.Composable
-import com.kovhan.core.models.SavedAuthor
+import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.core.navigation.EntityType
 import com.kovhan.design.systems.R as DsR
 import com.kovhan.feature.search.presentation.search.navigation.SearchScreenNavAction

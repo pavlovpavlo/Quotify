@@ -11,7 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.NavigationCoordinator
-import com.kovhan.core.navigation.OfflineBlockingDialogKey
+import com.kovhan.core.navigation.OfflineBlockingSheetKey
 import com.kovhan.core.navigation.OnboardingKey
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.SplashKey
@@ -53,7 +53,7 @@ internal fun SplashEntry(
                 SplashScreenEffect.NavigateToOnboarding -> navAction.navigateToOnboarding()
                 SplashScreenEffect.NavigateToAuth -> navAction.navigateToAuth()
                 SplashScreenEffect.NavigateToMain -> navAction.navigateToMain()
-                SplashScreenEffect.ShowOfflineBlock -> coordinator.showDialog(OfflineBlockingDialogKey)
+                SplashScreenEffect.ShowOfflineBlock -> coordinator.showBottomSheet(OfflineBlockingSheetKey)
             }
         }
     }

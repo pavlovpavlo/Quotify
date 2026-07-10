@@ -1,8 +1,9 @@
 package com.kovhan.data.library.repository
 
 import app.cash.turbine.test
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.QuotePlaylist
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.quote.QuotePlaylist
 import com.kovhan.data.library.local.library.PendingOperationDao
 import com.kovhan.data.library.local.library.PendingOperationEntity
 import com.kovhan.data.library.local.library.QuoteDao
@@ -172,7 +173,7 @@ class QuoteRepositoryImplTest {
         }
     }
 
-    private fun QuoteEntity.toDomainQuote() = com.kovhan.core.models.Quote(
+    private fun QuoteEntity.toDomainQuote() = Quote(
         id = id,
         text = text,
         authorId = authorId,

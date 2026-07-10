@@ -1,7 +1,7 @@
 package com.kovhan.domain.library.use_case.tag
 
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.collections.SavedTag
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedTagRepository
 import io.mockk.coEvery

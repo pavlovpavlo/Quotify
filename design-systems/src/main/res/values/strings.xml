@@ -13,6 +13,7 @@
     <string name="dock_tab_profile">Профіль</string>
     <string name="dock_fab_open">Додати цитату</string>
     <string name="dock_fab_close">Закрити меню</string>
+    <string name="dock_fab_tooltip">Натисніть, щоб додати першу цитату</string>
     <string name="dock_input_keyboard">Ввід з клавіатури</string>
     <string name="dock_input_scan">Сканування тексту</string>
     <string name="dock_input_voice">Голосовий ввід</string>
@@ -329,6 +330,8 @@
 
     <!-- Library screen -->
     <string name="library_title">Бібліотека</string>
+    <string name="library_empty_title">Бібліотека поки порожня</string>
+    <string name="library_empty_description">Зберігай цитати голосом, скануванням чи вручну — вони з’являться тут.</string>
     <string name="library_search_placeholder">Шукати цитату, автора або тег</string>
     <string name="library_search_cd">Пошук</string>
     <string name="library_folders_eyebrow">ПАПКИ</string>

@@ -1,6 +1,6 @@
 package com.kovhan.data.library.mapper
 
-import com.kovhan.core.models.DailyQuote
+import com.kovhan.core.models.quote.DailyQuote
 import com.kovhan.data.library.dto.DailyQuoteDto
 import com.kovhan.data.library.local.daily.DailyQuoteEntity
 

@@ -1,7 +1,7 @@
 package com.kovhan.domain.library.use_case.quote
 
-import com.kovhan.core.models.EnrichedQuote
-import com.kovhan.core.models.QuoteFilter
+import com.kovhan.core.models.quote.EnrichedQuote
+import com.kovhan.core.models.quote.QuoteFilter
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -3,34 +3,34 @@ package com.kovhan.feature.splash.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation3.runtime.EntryProviderScope
-import com.kovhan.core.navigation.DialogEntryBuilder
-import com.kovhan.core.navigation.DialogKey
+import com.kovhan.core.navigation.BottomSheetEntryBuilder
+import com.kovhan.core.navigation.BottomSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
-import com.kovhan.core.navigation.OfflineBlockingDialogKey
-import com.kovhan.feature.splash.presentation.splash.component.OfflineBlockingDialog
+import com.kovhan.core.navigation.OfflineBlockingSheetKey
+import com.kovhan.feature.splash.presentation.splash.component.OfflineBlockingSheet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SplashDialogEntryBuilder @Inject constructor() : DialogEntryBuilder {
+class SplashBottomSheetEntryBuilder @Inject constructor() : BottomSheetEntryBuilder {
 
     override fun build(
-        scope: EntryProviderScope<DialogKey>,
+        scope: EntryProviderScope<BottomSheetKey>,
         coordinator: NavigationCoordinator,
         paddingValues: PaddingValues,
     ) {
-        scope.entry<OfflineBlockingDialogKey> {
+        scope.entry<OfflineBlockingSheetKey> {
             val coroutineScope = rememberCoroutineScope()
-            OfflineBlockingDialog(
+            OfflineBlockingSheet(
                 onRetry = {
                     coroutineScope.launch {
                         coordinator.emitResult(NavigationCoordinator.KEY_OFFLINE_RETRY, true)
-                        coordinator.dismissDialog()
+                        coordinator.dismissBottomSheet()
                     }
                 },
                 onDismiss = {
                     coroutineScope.launch {
                         coordinator.emitResult(NavigationCoordinator.KEY_OFFLINE_DISMISS, true)
-                        coordinator.dismissDialog()
+                        coordinator.dismissBottomSheet()
                     }
                 },
             )

@@ -1,6 +1,6 @@
 package com.kovhan.feature.addquote.presentation.save_collection.mvi
 
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.UiEffect
 import com.kovhan.core.ui.UiState
 

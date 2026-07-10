@@ -1,7 +1,7 @@
 package com.kovhan.domain.library.use_case.quote
 
 import com.kovhan.core.models.LibraryEntityType
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
 import javax.inject.Inject
 
 class RemoveQuoteFromEntityUseCase @Inject constructor(

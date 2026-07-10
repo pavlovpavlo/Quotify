@@ -1,4 +1,4 @@
-package com.kovhan.core.models
+package com.kovhan.core.models.quote
 
 data class DailyQuote(
     val id: String,

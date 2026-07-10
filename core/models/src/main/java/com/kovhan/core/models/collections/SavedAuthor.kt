@@ -1,6 +1,6 @@
-package com.kovhan.core.models
+package com.kovhan.core.models.collections
 
-data class SavedTag(
+data class SavedAuthor(
     val id: String,
     val name: String,
     val quoteCount: Int? = null,

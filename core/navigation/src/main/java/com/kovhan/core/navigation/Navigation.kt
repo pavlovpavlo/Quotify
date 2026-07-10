@@ -217,9 +217,9 @@ data class ConfirmDialogKey(
     val payload: String? = null,
 ) : DialogKey
 
-/** Blocking startup dialog shown when the device is offline and has no subscription. */
+/** Blocking startup sheet shown when the device is offline and has no subscription. */
 @Serializable
-data object OfflineBlockingDialogKey : DialogKey
+data object OfflineBlockingSheetKey : BottomSheetKey
 
 /** Small "you're offline, this AI feature needs internet" dialog for the tag editor. */
 @Serializable

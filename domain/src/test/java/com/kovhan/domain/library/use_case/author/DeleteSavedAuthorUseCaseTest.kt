@@ -1,6 +1,6 @@
 package com.kovhan.domain.library.use_case.author
 
-import com.kovhan.core.models.Quote
+import com.kovhan.core.models.quote.Quote
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import io.mockk.coEvery

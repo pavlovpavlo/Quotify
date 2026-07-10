@@ -43,4 +43,10 @@ class SettingsLocalDataSource @Inject constructor(
 
     override suspend fun setCompleted(completed: Boolean) =
         dataStore.put(SettingsPreferences.Onboarding.COMPLETED, completed)
+
+    override fun isFabTooltipDismissed(): Flow<Boolean> =
+        dataStore.get(SettingsPreferences.Onboarding.FAB_TOOLTIP_DISMISSED, false)
+
+    override suspend fun setFabTooltipDismissed(dismissed: Boolean) =
+        dataStore.put(SettingsPreferences.Onboarding.FAB_TOOLTIP_DISMISSED, dismissed)
 }

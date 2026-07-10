@@ -1,5 +1,9 @@
-﻿package com.kovhan.quotify.navigation.dock
+package com.kovhan.quotify.navigation.dock
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,10 +24,13 @@ import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.TabEnum
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
+import com.kovhan.quotify.navigation.dock.mvi.DockIntent
 
 @Composable
 fun BottomDock(
     coordinator: NavigationCoordinator,
+    isFabTooltipVisible: Boolean,
+    uiIntent: DockIntent,
     modifier: Modifier = Modifier,
 ) {
     val currentTab = TabEnum.fromKey(coordinator.currentKey) ?: TabEnum.LIBRARY
@@ -46,6 +53,8 @@ fun BottomDock(
             openAddQuote(AddQuoteTab.VOICE)
         },
     )
+
+    val tipped = isFabTooltipVisible && !menuOpen
 
     Box(modifier = modifier.fillMaxSize()) {
         DimScrim(visible = menuOpen, onDismiss = { menuOpen = false })
@@ -76,7 +85,29 @@ fun BottomDock(
                     if (tab != currentTab) coordinator.navigate(tab.key)
                 },
             )
-            DockFab(menuOpen = menuOpen, onClick = { menuOpen = !menuOpen })
+            DockFab(
+                menuOpen = menuOpen,
+                tipped = tipped,
+                onClick = {
+                    uiIntent.onFabClicked()
+                    menuOpen = !menuOpen
+                },
+            )
+        }
+
+        AnimatedVisibility(
+            visible = tipped,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .navigationBarsPadding()
+                .padding(
+                    end = DockSideInset,
+                    bottom = DockBottomInset + FabSize + TooltipGap,
+                ),
+            enter = fadeIn(tween(TooltipFadeMs, easing = FolioEasing)),
+            exit = fadeOut(tween(TooltipFadeMs)),
+        ) {
+            DockFabTooltip()
         }
     }
 }

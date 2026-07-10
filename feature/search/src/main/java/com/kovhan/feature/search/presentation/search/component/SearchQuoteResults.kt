@@ -7,7 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.kovhan.core.models.EnrichedQuote
+import com.kovhan.core.models.quote.EnrichedQuote
+import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
 import com.kovhan.core.ui.component.quote.ReadOnlyQuoteCard
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
@@ -19,7 +20,7 @@ internal fun SearchQuoteResults(
     val dimensions = QuotifyMaterialTheme.dimensions
 
     if (quotes.isEmpty()) {
-        SearchEmptyState()
+        DefaultEmptyState()
         return
     }
 

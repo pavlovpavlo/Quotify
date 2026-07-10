@@ -1,11 +1,11 @@
 package com.kovhan.domain.library.use_case.quote
 
 import app.cash.turbine.test
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.SavedAuthor
-import com.kovhan.core.models.SavedBook
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.collections.SavedAuthor
+import com.kovhan.core.models.collections.SavedBook
+import com.kovhan.core.models.collections.SavedTag
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository

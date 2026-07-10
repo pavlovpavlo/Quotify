@@ -1,10 +1,10 @@
 package com.kovhan.domain.library.model
 
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.SavedAuthor
-import com.kovhan.core.models.SavedBook
-import com.kovhan.core.models.SavedCollection
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.collections.SavedAuthor
+import com.kovhan.core.models.collections.SavedBook
+import com.kovhan.core.models.collections.SavedCollection
+import com.kovhan.core.models.collections.SavedTag
 
 /**
  * An in-memory copy of the whole local library, captured before an auth switch that

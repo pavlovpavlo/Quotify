@@ -13,7 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
+import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 
@@ -31,43 +32,58 @@ internal fun LibraryFoldersSection(
     val typography = QuotifyMaterialTheme.typography
 
     Column(modifier = modifier.fillMaxWidth()) {
-        Text(
-            modifier = Modifier.padding(start = dimensions.size2, bottom = dimensions.size12),
-            text = stringResource(R.string.library_folders_eyebrow),
-            style = typography.eyebrow,
-            color = colors.textTertiary,
-        )
+        if (folders.isEmpty()) {
+            DefaultEmptyState(
+                imageResource = QuotifyMaterialTheme.images.imgLibraryEmpty,
+                titleResource = R.string.library_empty_title,
+                descriptionResource = R.string.library_empty_description,
+            )
+        } else {
+            Text(
+                modifier = Modifier.padding(
+                    start = dimensions.size2,
+                    bottom = dimensions.size12,
+                ),
+                text = stringResource(R.string.library_folders_eyebrow),
+                style = typography.eyebrow,
+                color = colors.textTertiary,
+            )
 
-        // Folder cards + the trailing "new folder" tile, laid out as a 2-column grid.
-        val cellCount = folders.size + 1
-        val rowCount = (cellCount + COLUMNS - 1) / COLUMNS
+            val cellCount = folders.size + 1
+            val rowCount = (cellCount + COLUMNS - 1) / COLUMNS
 
-        for (row in 0 until rowCount) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Min)
-                    .padding(top = if (row == 0) dimensions.space0 else dimensions.size12),
-                horizontalArrangement = Arrangement.spacedBy(dimensions.size12),
-            ) {
-                for (col in 0 until COLUMNS) {
-                    val index = row * COLUMNS + col
-                    when {
-                        index < folders.size -> {
-                            val folder = folders[index]
-                            FolderCard(
-                                collection = folder,
-                                onClick = { onOpenFolder(folder.id) },
-                                modifier = Modifier.weight(1f).fillMaxHeight(),
+            for (row in 0 until rowCount) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
+                        .padding(top = if (row == 0) dimensions.space0 else dimensions.size12),
+                    horizontalArrangement = Arrangement.spacedBy(dimensions.size12),
+                ) {
+                    for (col in 0 until COLUMNS) {
+                        val index = row * COLUMNS + col
+                        when {
+                            index < folders.size -> {
+                                val folder = folders[index]
+                                FolderCard(
+                                    collection =
+                                        folder,
+                                    onClick = { onOpenFolder(folder.id) },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight(),
+                                )
+                            }
+
+                            index == folders.size -> NewFolderTile(
+                                onClick = onCreateFolder,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                             )
+
+                            else -> Spacer(modifier = Modifier.weight(1f))
                         }
-
-                        index == folders.size -> NewFolderTile(
-                            onClick = onCreateFolder,
-                            modifier = Modifier.weight(1f).fillMaxHeight(),
-                        )
-
-                        else -> Spacer(modifier = Modifier.weight(1f))
                     }
                 }
             }

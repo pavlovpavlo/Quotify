@@ -1,8 +1,8 @@
 package com.kovhan.domain.library.use_case.author
 
 import app.cash.turbine.test
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.SavedAuthor
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import io.mockk.every

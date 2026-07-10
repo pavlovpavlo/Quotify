@@ -1,7 +1,7 @@
 package com.kovhan.feature.search.presentation.search.component
 
 import androidx.compose.runtime.Composable
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.mapper.CollectionIconMapper
 import com.kovhan.feature.search.presentation.search.navigation.SearchScreenNavAction
 

@@ -1,6 +1,6 @@
 package com.kovhan.domain.library
 
-import com.kovhan.core.models.SavedBook
+import com.kovhan.core.models.collections.SavedBook
 import kotlinx.coroutines.flow.Flow
 
 interface SavedBookRepository {

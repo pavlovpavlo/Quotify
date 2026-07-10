@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
 @Composable
@@ -18,7 +19,7 @@ internal fun <T> SearchEntityList(
     val dimensions = QuotifyMaterialTheme.dimensions
 
     if (items.isEmpty()) {
-        SearchEmptyState()
+        DefaultEmptyState()
         return
     }
 

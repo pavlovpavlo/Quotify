@@ -1,4 +1,4 @@
-package com.kovhan.core.models
+package com.kovhan.core.models.collections
 
 data class SavedCollection(
     val id: String,

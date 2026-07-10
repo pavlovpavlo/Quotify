@@ -1,6 +1,6 @@
 package com.kovhan.data.library.repository
 
-import com.kovhan.core.models.DailyQuote
+import com.kovhan.core.models.quote.DailyQuote
 import com.kovhan.data.library.local.daily.DailyQuoteDao
 import com.kovhan.data.library.local.daily.DailySeenDao
 import com.kovhan.data.library.local.daily.DailySeenEntity

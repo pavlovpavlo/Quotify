@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.component.bottomsheet.CollectionPickerSheet
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R

@@ -1,7 +1,7 @@
 package com.kovhan.domain.library.use_case.quote
 
-import com.kovhan.core.models.EnrichedQuote
-import com.kovhan.core.models.Quote
+import com.kovhan.core.models.quote.EnrichedQuote
+import com.kovhan.core.models.quote.Quote
 import com.kovhan.domain.library.CollectionRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository

@@ -4,22 +4,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.kovhan.core.ui.component.bottomsheet.QuotifyBottomSheet
 import com.kovhan.core.ui.component.button.QuotifyButton
 import com.kovhan.core.ui.component.button.QuotifyButtonAccent
 import com.kovhan.core.ui.component.button.QuotifyButtonSize
 import com.kovhan.core.ui.component.button.QuotifyButtonVariant
-import com.kovhan.core.ui.component.dialog.QuotifyDialog
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun OfflineBlockingDialog(
+internal fun OfflineBlockingSheet(
     onRetry: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -27,7 +29,7 @@ internal fun OfflineBlockingDialog(
     val dimensions = QuotifyMaterialTheme.dimensions
     val typography = QuotifyMaterialTheme.typography
 
-    QuotifyDialog(onDismissRequest = onDismiss) {
+    QuotifyBottomSheet(onDismiss = onDismiss) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

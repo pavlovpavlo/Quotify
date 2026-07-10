@@ -1,6 +1,6 @@
 package com.kovhan.domain.daily
 
-import com.kovhan.core.models.DailyQuote
+import com.kovhan.core.models.quote.DailyQuote
 import com.kovhan.domain.settings.AppLanguage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName

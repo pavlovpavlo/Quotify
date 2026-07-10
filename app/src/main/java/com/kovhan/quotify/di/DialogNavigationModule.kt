@@ -4,7 +4,6 @@ import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.feature.addquote.navigation.AddQuoteDialogEntryBuilder
 import com.kovhan.feature.entitydetails.navigation.EntityDetailsDialogEntryBuilder
 import com.kovhan.feature.main.navigation.MainDialogEntryBuilder
-import com.kovhan.feature.splash.navigation.SplashDialogEntryBuilder
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,8 +27,4 @@ abstract class DialogNavigationModule {
     abstract fun bindEntityDetailsDialogEntryBuilder(
         impl: EntityDetailsDialogEntryBuilder,
     ): DialogEntryBuilder
-
-    @Binds
-    @IntoSet
-    abstract fun bindSplashDialogEntryBuilder(impl: SplashDialogEntryBuilder): DialogEntryBuilder
 }

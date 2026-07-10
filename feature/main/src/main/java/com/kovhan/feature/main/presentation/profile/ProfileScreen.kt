@@ -87,10 +87,10 @@ fun ProfileScreen(
 
             ProfileStatsCard(
                 modifier = Modifier.fillMaxWidth(),
-                quotes = state.stats.quotes,
-                books = state.stats.books,
-                folders = state.stats.folders,
-                authors = state.stats.authors,
+                quotes = state.stats.countOfQuotes,
+                books = state.stats.countOfBooks,
+                folders = state.stats.countOfCollections,
+                authors = state.stats.countOfAuthors,
             )
 
             Spacer(Modifier.height(14.dp))

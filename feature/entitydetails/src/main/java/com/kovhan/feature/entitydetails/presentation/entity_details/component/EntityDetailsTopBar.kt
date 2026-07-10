@@ -22,9 +22,8 @@ import com.kovhan.design.systems.R as DsR
 import com.kovhan.feature.entitydetails.presentation.entity_details.mvi.EntityDetailsMenu
 
 @Composable
-internal fun EntityDetailsTopBar(
+fun EntityDetailsTopBar(
     title: String,
-    showCloseIcon: Boolean,
     menu: EntityDetailsMenu,
     menuExpanded: Boolean,
     onBack: () -> Unit,
@@ -49,17 +48,9 @@ internal fun EntityDetailsTopBar(
             ) {
                 CompositionLocalProvider(LocalContentColor provides colors.textSecondary) {
                     Image(
-                        modifier = Modifier.size(dimensions.size21),
-                        painter = painterResource(
-                            if (showCloseIcon) DsR.drawable.ic_close else DsR.drawable.ic_back,
-                        ),
-                        contentDescription = stringResource(
-                            if (showCloseIcon) {
-                                DsR.string.collection_details_close_cd
-                            } else {
-                                DsR.string.details_back_cd
-                            },
-                        ),
+                        modifier = Modifier.size(dimensions.size22),
+                        painter = painterResource(DsR.drawable.ic_back),
+                        contentDescription = stringResource(DsR.string.details_back_cd),
                         colorFilter = ColorFilter.tint(LocalContentColor.current),
                     )
                 }

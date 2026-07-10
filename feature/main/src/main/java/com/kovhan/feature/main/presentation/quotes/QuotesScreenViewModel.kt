@@ -1,7 +1,7 @@
 package com.kovhan.feature.main.presentation.quotes
 
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.daily.localizedAuthor
 import com.kovhan.domain.daily.localizedBook

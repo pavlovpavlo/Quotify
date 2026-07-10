@@ -1,6 +1,6 @@
 package com.kovhan.feature.addquote.presentation.save_collection
 
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.library.use_case.collection.GetCollectionsUseCase
 import com.kovhan.domain.library.use_case.quote.SaveQuoteToCollectionUseCase

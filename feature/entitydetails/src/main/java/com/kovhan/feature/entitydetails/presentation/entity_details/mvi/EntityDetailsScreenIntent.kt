@@ -1,6 +1,6 @@
 package com.kovhan.feature.entitydetails.presentation.entity_details.mvi
 
-import com.kovhan.core.models.EnrichedQuote
+import com.kovhan.core.models.quote.EnrichedQuote
 import com.kovhan.feature.entitydetails.presentation.entity_details.model.EntityQuoteDraft
 
 /** Intents raised by the entity-details screen. */

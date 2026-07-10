@@ -4,6 +4,7 @@ import com.kovhan.core.navigation.BottomSheetEntryBuilder
 import com.kovhan.feature.addquote.navigation.AddQuoteBottomSheetEntryBuilder
 import com.kovhan.feature.entitydetails.navigation.EntityDetailsBottomSheetEntryBuilder
 import com.kovhan.feature.main.navigation.MainBottomSheetEntryBuilder
+import com.kovhan.feature.splash.navigation.SplashBottomSheetEntryBuilder
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -30,5 +31,11 @@ abstract class BottomSheetNavigationModule {
     @IntoSet
     abstract fun bindAddQuoteBottomSheetEntryBuilder(
         impl: AddQuoteBottomSheetEntryBuilder,
+    ): BottomSheetEntryBuilder
+
+    @Binds
+    @IntoSet
+    abstract fun bindSplashBottomSheetEntryBuilder(
+        impl: SplashBottomSheetEntryBuilder,
     ): BottomSheetEntryBuilder
 }

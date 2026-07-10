@@ -1,6 +1,6 @@
 package com.kovhan.domain.daily
 
-import com.kovhan.core.models.DailyQuote
+import com.kovhan.core.models.quote.DailyQuote
 
 interface DailyQuoteRepository {
     suspend fun prefetch()

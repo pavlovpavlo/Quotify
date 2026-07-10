@@ -1,10 +1,10 @@
 package com.kovhan.domain.daily.use_case
 
-import com.kovhan.core.models.DailyQuote
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.SavedAuthor
-import com.kovhan.core.models.SavedBook
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.quote.DailyQuote
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.collections.SavedAuthor
+import com.kovhan.core.models.collections.SavedBook
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.domain.common.IdGenerator
 import com.kovhan.domain.library.CollectionRepository
 import com.kovhan.domain.library.QuoteRepository

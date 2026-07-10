@@ -1,7 +1,7 @@
 package com.kovhan.data.library.repository
 
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.QuoteFilter
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.quote.QuoteFilter
 import com.kovhan.data.library.local.library.PendingEntityType
 import com.kovhan.data.library.local.library.PendingOpType
 import com.kovhan.data.library.local.library.PendingOperationDao

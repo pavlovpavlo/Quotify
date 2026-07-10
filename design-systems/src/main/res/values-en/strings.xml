@@ -11,6 +11,7 @@
     <string name="dock_tab_profile">Profile</string>
     <string name="dock_fab_open">Add quote</string>
     <string name="dock_fab_close">Close menu</string>
+    <string name="dock_fab_tooltip">Tap to add your first quote</string>
     <string name="dock_input_keyboard">Keyboard input</string>
     <string name="dock_input_scan">Scan text</string>
     <string name="dock_input_voice">Voice input</string>
@@ -320,6 +321,9 @@
 
     <!-- Library screen -->
     <string name="library_title">Library</string>
+    <string name="library_empty_title">Your library is empty</string>
+    <string name="library_empty_description">Save quotes by voice, scan, or typing them in — they’ll show up here.</string>
+
     <string name="library_search_placeholder">Search a quote, author or tag</string>
     <string name="library_search_cd">Search</string>
     <string name="library_folders_eyebrow">FOLDERS</string>

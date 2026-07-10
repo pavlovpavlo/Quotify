@@ -1,7 +1,7 @@
 package com.kovhan.feature.main.presentation.quotes.mvi
 
-import com.kovhan.core.models.DailyQuote
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.quote.DailyQuote
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.UiState
 import com.kovhan.domain.settings.AppLanguage
 

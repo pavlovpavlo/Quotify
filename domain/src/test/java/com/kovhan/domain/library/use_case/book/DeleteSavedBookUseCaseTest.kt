@@ -1,6 +1,6 @@
 package com.kovhan.domain.library.use_case.book
 
-import com.kovhan.core.models.Quote
+import com.kovhan.core.models.quote.Quote
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedBookRepository
 import io.mockk.coEvery

@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.kovhan.core.models.EnrichedQuote
+import com.kovhan.core.models.quote.EnrichedQuote
 import com.kovhan.core.ui.component.button.QuotifyButtonAccent
 import com.kovhan.core.ui.component.button.QuotifyButtonVariant
 import com.kovhan.core.ui.component.button.QuotifyIconButton
@@ -29,7 +29,7 @@ import com.kovhan.design.systems.R as DsR
  * details.
  */
 @Composable
-internal fun EntityQuoteCard(
+fun EntityQuoteCard(
     quote: EnrichedQuote,
     railColor: Color,
     menuExpanded: Boolean,

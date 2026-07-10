@@ -16,6 +16,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.component.QuotifyTopBar
@@ -164,7 +165,7 @@ fun EditProfileScreen(
             Box(
                 modifier = Modifier
                     .matchParentSize()
-                    .background(colors.bgPrimary),
+                    .background(Color.Black.copy(alpha = 0.4f)),
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator(color = colors.accentPrimary)

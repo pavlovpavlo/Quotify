@@ -1,7 +1,7 @@
 package com.kovhan.data.library.repository
 
 import app.cash.turbine.test
-import com.kovhan.core.models.SavedBook
+import com.kovhan.core.models.collections.SavedBook
 import com.kovhan.data.library.local.library.PendingOperationDao
 import com.kovhan.data.library.local.library.PendingOperationEntity
 import com.kovhan.data.library.local.library.SavedBookDao

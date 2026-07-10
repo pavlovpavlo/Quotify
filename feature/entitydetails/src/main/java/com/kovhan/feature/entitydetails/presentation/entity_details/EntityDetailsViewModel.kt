@@ -1,12 +1,12 @@
 package com.kovhan.feature.entitydetails.presentation.entity_details
 
-import com.kovhan.core.models.EnrichedQuote
+import com.kovhan.core.models.quote.EnrichedQuote
 import com.kovhan.core.models.LibraryEntityType
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.SavedAuthor
-import com.kovhan.core.models.SavedBook
-import com.kovhan.core.models.SavedCollection
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.collections.SavedAuthor
+import com.kovhan.core.models.collections.SavedBook
+import com.kovhan.core.models.collections.SavedCollection
+import com.kovhan.core.models.collections.SavedTag
 import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.navigation.QuoteRemovalMode
 import com.kovhan.core.ui.view_model.BaseViewModel

@@ -1,8 +1,8 @@
 package com.kovhan.domain.library
 
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.QuotePlaylist
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.quote.QuotePlaylist
 
 fun Quote.matches(filter: QuoteFilter): Boolean {
     val playlist = filter.playlist

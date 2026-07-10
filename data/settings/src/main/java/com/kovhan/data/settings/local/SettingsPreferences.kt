@@ -12,5 +12,6 @@ internal object SettingsPreferences {
 
     object Onboarding {
         val COMPLETED = booleanPreferencesKey("onboarding_completed")
+        val FAB_TOOLTIP_DISMISSED = booleanPreferencesKey("fab_tooltip_dismissed")
     }
 }

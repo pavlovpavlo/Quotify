@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -24,7 +26,7 @@ import com.kovhan.design.systems.R as DsR
 import com.kovhan.feature.entitydetails.presentation.entity_details.mvi.EntityDetailsSummary as EntityDetailsSummaryModel
 
 @Composable
-internal fun EntityDetailsSummary(
+fun EntityDetailsSummary(
     type: EntityType,
     summary: EntityDetailsSummaryModel,
 ) {
@@ -48,6 +50,7 @@ internal fun EntityDetailsSummary(
     val iconColor = CollectionColorMapper.toIconColor(toneKey, colors)
 
     Row(
+        modifier = Modifier.padding(horizontal = dimensions.size18),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(dimensions.size9),
     ) {

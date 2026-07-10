@@ -1,7 +1,7 @@
 package com.kovhan.feature.entitydetails.presentation.entity_details.mvi
 
-import com.kovhan.core.models.EnrichedQuote
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.quote.EnrichedQuote
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.ui.UiState
 

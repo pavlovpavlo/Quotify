@@ -1,6 +1,6 @@
 package com.kovhan.data.library.repository
 
-import com.kovhan.core.models.SavedAuthor
+import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.data.library.local.library.PendingEntityType
 import com.kovhan.data.library.local.library.PendingOpType
 import com.kovhan.data.library.local.library.PendingOperationDao

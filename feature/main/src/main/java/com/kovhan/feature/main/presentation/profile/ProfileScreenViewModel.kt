@@ -8,6 +8,7 @@ import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
+import com.kovhan.domain.settings.use_case.GetProfileStatisticUseCase
 import com.kovhan.domain.settings.use_case.GetThemeUseCase
 import com.kovhan.domain.settings.use_case.SetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.SetLanguageUseCase
@@ -32,6 +33,7 @@ class ProfileScreenViewModel @Inject constructor(
     private val setDailyQuoteEnabled: SetDailyQuoteEnabledUseCase,
     private val signOut: SignOutUseCase,
     private val rateApp: RateAppUseCase,
+    getProfileStatisticUseCase: GetProfileStatisticUseCase
 ) : BaseViewModel<ProfileScreenState, ProfileScreenEffect>(ProfileScreenState()),
     ProfileScreenIntent {
 
@@ -50,6 +52,10 @@ class ProfileScreenViewModel @Inject constructor(
 
         getDailyQuoteEnabled()
             .onEach { enabled -> publishState { copy(showQuoteOfDay = enabled) } }
+            .launchIn(viewModelScope)
+
+        getProfileStatisticUseCase()
+            .onEach { statistic -> publishState { copy(stats = statistic) } }
             .launchIn(viewModelScope)
     }
 
@@ -74,7 +80,8 @@ class ProfileScreenViewModel @Inject constructor(
         viewModelScope.launch { setDailyQuoteEnabled(enabled) }
     }
 
-    override fun onNotificationsToggled(enabled: Boolean) = publishState { copy(notificationsEnabled = enabled) }
+    override fun onNotificationsToggled(enabled: Boolean) =
+        publishState { copy(notificationsEnabled = enabled) }
 
     override fun onReminderTimeClicked() = publishEffect(ProfileScreenEffect.OpenReminderSheet)
 

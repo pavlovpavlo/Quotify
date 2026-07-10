@@ -1,5 +1,6 @@
 package com.kovhan.core.models
 
+import com.kovhan.core.models.collections.SavedCollection
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

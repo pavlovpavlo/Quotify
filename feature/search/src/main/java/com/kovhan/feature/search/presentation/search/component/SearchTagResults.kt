@@ -18,8 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.collections.SavedTag
 import com.kovhan.core.navigation.EntityType
+import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.feature.search.presentation.search.navigation.SearchScreenNavAction
 
@@ -33,7 +34,7 @@ internal fun SearchTagResults(
     val typography = QuotifyMaterialTheme.typography
 
     if (tags.isEmpty()) {
-        SearchEmptyState()
+        DefaultEmptyState()
         return
     }
 
