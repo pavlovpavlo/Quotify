@@ -5,6 +5,7 @@ import com.kovhan.core.ui.UiEffect
 sealed class LoginScreenEffect : UiEffect {
     data object LaunchGoogleSignIn : LoginScreenEffect()
     data object NavigateToMain : LoginScreenEffect()
+    data object DeleteCompleted : LoginScreenEffect()
     data object NavigateToSignUp : LoginScreenEffect()
     data object NavigateToForgotPassword : LoginScreenEffect()
     data object NavigateBack : LoginScreenEffect()

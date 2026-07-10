@@ -18,5 +18,8 @@ interface UserRepository {
 
     suspend fun clearCustomPhoto()
 
+    /** Deletes the user's remote profile document and Cloudinary photo (used on account deletion). */
+    suspend fun purgeRemoteProfile()
+
     suspend fun clear()
 }

@@ -9,7 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kovhan.core.navigation.LoginKey
+import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.OfflineBlockingDialogKey
 import com.kovhan.core.navigation.OnboardingKey
@@ -43,7 +43,7 @@ internal fun SplashEntry(
         }
 
         override fun navigateToAuth() {
-            coordinator.navigate(LoginKey, popUpTo = SplashKey, inclusive = true)
+            coordinator.navigate(CompleteKey, popUpTo = SplashKey, inclusive = true)
         }
     }
 

@@ -19,6 +19,7 @@ private fun AuthError.stringRes(): Int = when (this) {
     AuthError.InvalidCredentials -> R.string.auth_error_invalid_credentials
     AuthError.InvalidEmail -> R.string.auth_error_invalid_email
     AuthError.EmailAlreadyInUse -> R.string.auth_error_email_in_use
+    AuthError.CredentialAlreadyInUse -> R.string.auth_error_email_in_use
     AuthError.WeakPassword -> R.string.auth_error_weak_password
     AuthError.UserNotFound -> R.string.auth_error_user_not_found
     AuthError.UserDisabled -> R.string.auth_error_user_disabled

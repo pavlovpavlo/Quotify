@@ -12,5 +12,6 @@ internal object AuthPreferences {
         val EMAIL_VERIFIED = booleanPreferencesKey("user_email_verified")
         val USERNAME = stringPreferencesKey("user_username")
         val IS_GOOGLE = booleanPreferencesKey("user_is_google")
+        val IS_ANONYMOUS = booleanPreferencesKey("user_is_anonymous")
     }
 }

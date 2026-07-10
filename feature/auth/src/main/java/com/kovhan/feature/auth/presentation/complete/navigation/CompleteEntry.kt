@@ -1,14 +1,17 @@
 package com.kovhan.feature.auth.presentation.complete.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.LoginKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.RegisterKey
+import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
 import com.kovhan.feature.auth.presentation.complete.CompleteScreen
 import com.kovhan.feature.auth.presentation.complete.CompleteScreenViewModel
 import com.kovhan.feature.auth.presentation.complete.mvi.CompleteScreenEffect
@@ -20,11 +23,14 @@ internal fun CompleteEntry(
 ) {
     val viewModel = hiltViewModel<CompleteScreenViewModel>()
     val state = viewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    SnackbarMessageEffect(viewModel.snackbar, snackbarHostState)
 
     val navAction = object : CompleteScreenNavAction {
         override fun navigateToSignUp() = coordinator.navigate(RegisterKey)
-        override fun navigateToSignIn() = coordinator.navigate(LoginKey)
-        override fun navigateToMain() = coordinator.navigate(QuotesKey)
+        override fun navigateToSignIn() = coordinator.navigate(LoginKey())
+        override fun navigateToMain() = coordinator.navigateAndClearBackStack(QuotesKey)
     }
 
     LaunchedEffect(Unit) {
@@ -42,5 +48,6 @@ internal fun CompleteEntry(
         intent = viewModel,
         navAction = navAction,
         paddingValues = paddingValues,
+        snackbarHostState = snackbarHostState,
     )
 }

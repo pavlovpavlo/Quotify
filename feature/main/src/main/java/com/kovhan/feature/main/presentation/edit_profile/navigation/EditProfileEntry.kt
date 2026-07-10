@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.ChangePhotoSheetKey
+import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.DeleteAccountDialogKey
 import com.kovhan.core.navigation.EditField
 import com.kovhan.core.navigation.EditFieldSheetKey
@@ -82,14 +83,20 @@ internal fun EditProfileEntry(
             coordinator.goBack()
         }
 
-        override fun navigateToAuth() = coordinator.navigateAndClearBackStack(LoginKey)
+        override fun navigateToAuth() = coordinator.navigateAndClearBackStack(CompleteKey)
     }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 EditProfileEffect.NavigateToAuth ->
-                    coordinator.navigateAndClearBackStack(LoginKey)
+                    coordinator.navigateAndClearBackStack(CompleteKey)
+
+                EditProfileEffect.NavigateToLogin ->
+                    coordinator.navigate(LoginKey())
+
+                EditProfileEffect.NavigateToConfirmDelete ->
+                    coordinator.navigate(LoginKey(confirmDelete = true))
 
                 EditProfileEffect.OpenPhotoSheet ->
                     coordinator.showBottomSheet(ChangePhotoSheetKey)

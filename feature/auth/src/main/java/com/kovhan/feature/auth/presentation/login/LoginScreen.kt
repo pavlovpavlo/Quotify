@@ -64,18 +64,24 @@ fun LoginScreen(
                 onPrivacyClick = intent::onPrivacyPolicyClicked,
             )
 
-            Spacer(Modifier.height(10.dp))
+            if (!state.confirmDelete) {
+                Spacer(Modifier.height(10.dp))
 
-            AuthAltRow(
-                question = stringResource(R.string.sign_in_alt_q),
-                action = stringResource(R.string.sign_in_alt_cta),
-                onActionClick = intent::onSignUpClicked,
-            )
+                AuthAltRow(
+                    question = stringResource(R.string.sign_in_alt_q),
+                    action = stringResource(R.string.sign_in_alt_cta),
+                    onActionClick = intent::onSignUpClicked,
+                )
+            }
         },
     ) {
         AuthTitleBlock(
-            title = stringResource(R.string.sign_in_title),
-            subtitle = stringResource(R.string.sign_in_subtitle),
+            title = stringResource(
+                if (state.confirmDelete) R.string.sign_in_confirm_delete_title else R.string.sign_in_title,
+            ),
+            subtitle = stringResource(
+                if (state.confirmDelete) R.string.sign_in_confirm_delete_subtitle else R.string.sign_in_subtitle,
+            ),
         )
 
         Spacer(Modifier.height(18.dp))
@@ -107,18 +113,20 @@ fun LoginScreen(
                 state.errorValidationMessage?.toSnackbar()?.messageRes else null
         )
 
-        Spacer(Modifier.height(10.dp))
+        if (!state.confirmDelete) {
+            Spacer(Modifier.height(10.dp))
 
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.CenterEnd,
-        ) {
-            AuthTextLink(
-                text = stringResource(R.string.sign_in_forgot),
-                onClick = intent::onForgotPasswordClicked,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.W500,
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.CenterEnd,
+            ) {
+                AuthTextLink(
+                    text = stringResource(R.string.sign_in_forgot),
+                    onClick = intent::onForgotPasswordClicked,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W500,
+                )
+            }
         }
 
         if (state.errorMessage != null) {
@@ -133,7 +141,9 @@ fun LoginScreen(
 
         QuotifyButton(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.sign_in_cta),
+            text = stringResource(
+                if (state.confirmDelete) R.string.sign_in_confirm_delete_cta else R.string.sign_in_cta,
+            ),
             onClick = intent::onSignInClicked,
             enabled = state.canSubmit,
             loading = state.isLoading,

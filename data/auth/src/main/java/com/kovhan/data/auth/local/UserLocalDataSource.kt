@@ -33,6 +33,7 @@ class UserLocalDataSource @Inject constructor(
                     photoUrl = prefs[AuthPreferences.User.PHOTO_URL],
                     username = prefs[AuthPreferences.User.USERNAME],
                     isGoogleAccount = prefs[AuthPreferences.User.IS_GOOGLE] ?: false,
+                    isAnonymous = prefs[AuthPreferences.User.IS_ANONYMOUS] ?: false,
                 )
             }
 
@@ -44,6 +45,7 @@ class UserLocalDataSource @Inject constructor(
             user.photoUrl?.let { prefs[AuthPreferences.User.PHOTO_URL] = it } ?: prefs.remove(AuthPreferences.User.PHOTO_URL)
             prefs[AuthPreferences.User.EMAIL_VERIFIED] = user.isEmailVerified
             prefs[AuthPreferences.User.IS_GOOGLE] = user.isGoogleAccount
+            prefs[AuthPreferences.User.IS_ANONYMOUS] = user.isAnonymous
             user.username?.let { prefs[AuthPreferences.User.USERNAME] = it }
         }
     }
@@ -72,6 +74,7 @@ class UserLocalDataSource @Inject constructor(
             prefs.remove(AuthPreferences.User.EMAIL_VERIFIED)
             prefs.remove(AuthPreferences.User.USERNAME)
             prefs.remove(AuthPreferences.User.IS_GOOGLE)
+            prefs.remove(AuthPreferences.User.IS_ANONYMOUS)
         }
     }
 }

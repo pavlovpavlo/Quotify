@@ -154,6 +154,9 @@
     <string name="sign_in_password_placeholder">your password</string>
     <string name="sign_in_forgot">Forgot password?</string>
     <string name="sign_in_cta">Sign in</string>
+    <string name="sign_in_confirm_delete_title">Confirm deletion</string>
+    <string name="sign_in_confirm_delete_subtitle">Sign in again to confirm deleting your account.</string>
+    <string name="sign_in_confirm_delete_cta">Confirm deletion</string>
     <string name="sign_in_alt_q">No account yet?</string>
     <string name="sign_in_alt_cta">Create one</string>
 
@@ -263,6 +266,7 @@
     <string name="edit_account_section">Account</string>
     <string name="edit_change_password">Change password</string>
     <string name="edit_sign_out">Sign out</string>
+    <string name="edit_sign_in_or_register">Sign in or register</string>
     <string name="edit_delete_account">Delete account</string>
     <string name="edit_field_save">Save</string>
 

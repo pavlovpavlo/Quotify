@@ -12,4 +12,6 @@ interface RemoteUserProfileSource {
     suspend fun setUsername(uid: String, username: String)
 
     suspend fun setPhoto(uid: String, url: String?, publicId: String?)
+
+    suspend fun deleteProfile(uid: String)
 }

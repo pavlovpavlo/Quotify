@@ -8,6 +8,7 @@ import com.kovhan.data.library.repository.QuoteRepositoryImpl
 import com.kovhan.data.library.repository.SavedAuthorRepositoryImpl
 import com.kovhan.data.library.repository.SavedBookRepositoryImpl
 import com.kovhan.data.library.repository.SavedTagRepositoryImpl
+import com.kovhan.data.library.merge.GuestLibraryMergerImpl
 import com.kovhan.data.library.repository.SubscriptionRepositoryImpl
 import com.kovhan.data.library.sync.LibrarySynchronizerImpl
 import com.kovhan.data.library.util.UuidIdGenerator
@@ -17,6 +18,7 @@ import com.kovhan.domain.common.IdGenerator
 import com.kovhan.domain.connectivity.ConnectivityRepository
 import com.kovhan.domain.daily.DailyQuoteRepository
 import com.kovhan.domain.library.CollectionRepository
+import com.kovhan.domain.library.GuestLibraryMerger
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository
@@ -76,4 +78,8 @@ abstract class LibraryDataModule {
     @Binds
     @Singleton
     abstract fun bindLibrarySynchronizer(impl: LibrarySynchronizerImpl): LibrarySynchronizer
+
+    @Binds
+    @Singleton
+    abstract fun bindGuestLibraryMerger(impl: GuestLibraryMergerImpl): GuestLibraryMerger
 }

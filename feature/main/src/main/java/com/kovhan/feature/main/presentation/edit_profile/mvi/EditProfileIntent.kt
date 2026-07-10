@@ -15,6 +15,7 @@ interface EditProfileIntent {
     fun onDeleteAccountClicked()
     fun onLogoutConfirmed()
     fun onDeleteConfirmed()
+    fun onSignInOrRegisterClicked()
 
     companion object {
         val Empty: EditProfileIntent = object : EditProfileIntent {
@@ -28,6 +29,7 @@ interface EditProfileIntent {
             override fun onDeleteAccountClicked() = Unit
             override fun onLogoutConfirmed() = Unit
             override fun onDeleteConfirmed() = Unit
+            override fun onSignInOrRegisterClicked() = Unit
         }
     }
 }

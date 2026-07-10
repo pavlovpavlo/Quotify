@@ -40,5 +40,11 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun clearCustomPhoto() = photoManager.clearPhoto()
 
+    override suspend fun purgeRemoteProfile() {
+        val id = uid ?: return
+        runCatching { photoManager.deletePhoto() }
+        runCatching { profile.deleteProfile(id) }
+    }
+
     override suspend fun clear() = cache.clear()
 }

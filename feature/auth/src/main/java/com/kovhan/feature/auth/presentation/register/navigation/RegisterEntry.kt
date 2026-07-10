@@ -43,7 +43,7 @@ internal fun RegisterEntry(
 
         override fun navigateToMain() = coordinator.navigateAndClearBackStack(QuotesKey)
         override fun navigateToLogin() =
-            coordinator.navigate(LoginKey, popUpTo = RegisterKey, inclusive = true)
+            coordinator.navigate(LoginKey(), popUpTo = RegisterKey, inclusive = true)
         override fun navigateToWebView(title: String, url: String) =
             coordinator.navigate(WebViewKey(title = title, url = url))
     }

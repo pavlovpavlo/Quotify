@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,6 +45,7 @@ fun CompleteScreen(
     intent: CompleteScreenIntent,
     navAction: CompleteScreenNavAction,
     paddingValues: PaddingValues,
+    snackbarHostState: SnackbarHostState,
 ) {
     val colors = QuotifyMaterialTheme.colors
     val typography = QuotifyMaterialTheme.typography
@@ -49,6 +53,7 @@ fun CompleteScreen(
 
     val pillSizeSpec = QuotifyButtonDefaults.pillSizeSpec(height = 52.dp)
 
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -141,6 +146,7 @@ fun CompleteScreen(
                 onClick = intent::onSignUpClicked,
                 variant = QuotifyButtonVariant.Filled,
                 accent = QuotifyButtonAccent.Primary,
+                enabled = !state.isGuestLoading,
                 sizeSpec = pillSizeSpec,
             )
             Spacer(Modifier.height(6.dp))
@@ -150,14 +156,35 @@ fun CompleteScreen(
                 onClick = intent::onSignInClicked,
                 variant = QuotifyButtonVariant.Outlined,
                 accent = QuotifyButtonAccent.Primary,
+                enabled = !state.isGuestLoading,
                 sizeSpec = pillSizeSpec,
             )
             Spacer(Modifier.height(6.dp))
             QuotifyTextBtn(
                 text = stringResource(R.string.complete_later),
                 onClick = intent::onLaterClicked,
+                enabled = !state.isGuestLoading,
                 accent = QuotifyButtonAccent.Neutral,
             )
+        }
+    }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = paddingValues.calculateBottomPadding()),
+        )
+
+        if (state.isGuestLoading) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(colors.bgPrimary),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator(color = colors.accentPrimary)
+            }
         }
     }
 }

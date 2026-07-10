@@ -56,6 +56,24 @@ class LibrarySynchronizerImpl @Inject constructor(
         runCatching { tagDao.replaceAll(tagRemote.getAll().map { it.toEntity() }) }
     }
 
+    override suspend fun clearLocal() {
+        runCatching { pendingDao.clear() }
+        runCatching { quoteDao.clear() }
+        runCatching { collectionDao.clear() }
+        runCatching { authorDao.clear() }
+        runCatching { bookDao.clear() }
+        runCatching { tagDao.clear() }
+    }
+
+    override suspend fun purgeRemote() {
+        if (auth.currentUser == null) return
+        runCatching { quoteRemote.getAll().forEach { quoteRemote.deleteById(it.id) } }
+        runCatching { collectionRemote.getAll().forEach { collectionRemote.deleteById(it.id) } }
+        runCatching { authorRemote.getAll().forEach { authorRemote.deleteById(it.id) } }
+        runCatching { bookRemote.getAll().forEach { bookRemote.deleteById(it.id) } }
+        runCatching { tagRemote.getAll().forEach { tagRemote.deleteById(it.id) } }
+    }
+
     private suspend fun push(op: PendingOperationEntity) {
         val isDelete = op.opType == PendingOpType.DELETE.name
         when (PendingEntityType.valueOf(op.entityType)) {

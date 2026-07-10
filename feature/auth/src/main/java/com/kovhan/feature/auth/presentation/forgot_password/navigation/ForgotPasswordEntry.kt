@@ -32,7 +32,7 @@ internal fun ForgotPasswordEntry(
         }
 
         override fun navigateToLogin() =
-            coordinator.navigate(LoginKey, popUpTo = ForgotPasswordKey, inclusive = true)
+            coordinator.navigate(LoginKey(), popUpTo = ForgotPasswordKey, inclusive = true)
     }
 
     LaunchedEffect(Unit) {

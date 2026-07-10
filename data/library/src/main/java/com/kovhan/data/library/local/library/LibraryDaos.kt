@@ -180,6 +180,9 @@ interface PendingOperationDao {
     @Query("DELETE FROM pending_operations WHERE `key` = :key")
     suspend fun deleteByKey(key: String)
 
+    @Query("DELETE FROM pending_operations")
+    suspend fun clear()
+
     @Query("SELECT COUNT(*) FROM pending_operations")
     suspend fun count(): Int
 }

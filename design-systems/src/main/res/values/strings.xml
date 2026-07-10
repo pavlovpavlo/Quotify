@@ -157,6 +157,9 @@
     <string name="sign_in_password_placeholder">твій пароль</string>
     <string name="sign_in_forgot">Забули пароль?</string>
     <string name="sign_in_cta">Увійти</string>
+    <string name="sign_in_confirm_delete_title">Підтвердження видалення</string>
+    <string name="sign_in_confirm_delete_subtitle">Увійди ще раз, щоб підтвердити видалення акаунта.</string>
+    <string name="sign_in_confirm_delete_cta">Підтвердити видалення</string>
     <string name="sign_in_alt_q">Немає акаунту?</string>
     <string name="sign_in_alt_cta">Створити</string>
 
@@ -277,6 +280,7 @@
     <string name="edit_account_section">Акаунт</string>
     <string name="edit_change_password">Змінити пароль</string>
     <string name="edit_sign_out">Вийти</string>
+    <string name="edit_sign_in_or_register">Вхід або реєстрація</string>
     <string name="edit_delete_account">Видалити акаунт</string>
     <string name="edit_field_save">Зберегти</string>
 

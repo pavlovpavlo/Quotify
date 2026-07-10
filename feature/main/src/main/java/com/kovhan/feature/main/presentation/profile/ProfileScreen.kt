@@ -57,11 +57,11 @@ fun ProfileScreen(
             return@Box
         }
 
-        val displayName = state.user?.displayName?.takeIf { it.isNotBlank() }
-            ?: stringResource(R.string.profile_no_name)
+        val displayName = state.user?.displayName?.takeIf { it.isNotBlank() }.orEmpty()
         val email = state.user?.email
+        val isGoogleAccount = state.user?.isGoogleAccount == true
         val usernameValue = state.user?.username?.takeIf { it.isNotBlank() }
-            ?: email?.substringBefore("@")?.takeIf { it.isNotBlank() }
+            ?: email?.takeIf { isGoogleAccount }?.substringBefore("@")?.takeIf { it.isNotBlank() }
         val username = usernameValue?.let { "@$it" } ?: ""
         val reminderTime = "%02d:%02d".format(state.reminderHour, state.reminderMinute)
         val appVersion = LocalContext.current.appVersionName()

@@ -9,6 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.ForgotPasswordKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.QuotesKey
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 internal fun LoginEntry(
     coordinator: NavigationCoordinator,
     paddingValues: PaddingValues,
+    confirmDelete: Boolean = false,
 ) {
     val viewModel = hiltViewModel<LoginScreenViewModel>()
     val state = viewModel.uiState.collectAsStateWithLifecycle()
@@ -35,6 +37,10 @@ internal fun LoginEntry(
     val snackbarHostState = remember { SnackbarHostState() }
 
     SnackbarMessageEffect(viewModel.snackbar, snackbarHostState)
+
+    LaunchedEffect(confirmDelete) {
+        if (confirmDelete) viewModel.enableConfirmDelete()
+    }
 
     val navAction = object : LoginScreenNavAction {
         override fun navigateBack() {
@@ -55,6 +61,7 @@ internal fun LoginEntry(
                     viewModel.onGoogleSignInResult(googleSignInClient.signIn(context))
                 }
                 LoginScreenEffect.NavigateToMain -> navAction.navigateToMain()
+                LoginScreenEffect.DeleteCompleted -> coordinator.navigateAndClearBackStack(CompleteKey)
                 LoginScreenEffect.NavigateToSignUp -> navAction.navigateToRegister()
                 LoginScreenEffect.NavigateToForgotPassword -> navAction.navigateToForgotPassword()
                 LoginScreenEffect.NavigateBack -> navAction.navigateBack()

@@ -37,6 +37,31 @@ class AuthRemoteDataSource @Inject constructor(
         return user.ensurePhotoFromProvider().toDomain()
     }
 
+    suspend fun signInAnonymously(): AuthUser =
+        auth.signInAnonymously().await().requireUser().toDomain()
+
+    suspend fun linkEmailPassword(
+        email: String,
+        password: String,
+        displayName: String?,
+    ): AuthUser {
+        val user = requireSignedIn()
+        val credential = EmailAuthProvider.getCredential(email, password)
+        user.linkWithCredential(credential).await()
+        if (!displayName.isNullOrBlank()) {
+            user.updateProfile(displayNameRequest(displayName)).await()
+        }
+        user.reload().await()
+        return (auth.currentUser ?: user).toDomain()
+    }
+
+    suspend fun linkGoogle(idToken: String): AuthUser {
+        val user = requireSignedIn()
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        user.linkWithCredential(credential).await()
+        return (auth.currentUser ?: user).ensurePhotoFromProvider().toDomain()
+    }
+
     suspend fun updateDisplayName(displayName: String): AuthUser {
         val user = requireSignedIn()
         user.updateProfile(displayNameRequest(displayName)).await()
@@ -60,6 +85,18 @@ class AuthRemoteDataSource @Inject constructor(
         val credential = EmailAuthProvider.getCredential(email, currentPassword)
         user.reauthenticate(credential).await()
         user.updatePassword(newPassword).await()
+    }
+
+    suspend fun reauthenticateWithPassword(email: String, password: String) {
+        val user = requireSignedIn()
+        val credential = EmailAuthProvider.getCredential(email, password)
+        user.reauthenticate(credential).await()
+    }
+
+    suspend fun reauthenticateWithGoogle(idToken: String) {
+        val user = requireSignedIn()
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        user.reauthenticate(credential).await()
     }
 
     suspend fun deleteAccount() {
@@ -102,5 +139,6 @@ class AuthRemoteDataSource @Inject constructor(
             isEmailVerified = isEmailVerified,
             photoUrl = photoUrl?.toString(),
             isGoogleAccount = providerData.any { it.providerId == GoogleAuthProvider.PROVIDER_ID },
+            isAnonymous = isAnonymous,
         )
 }

@@ -30,8 +30,13 @@ data object OnboardingKey : NavKey
 @Serializable
 data object CompleteKey : NavKey
 
+/**
+ * Sign-in screen. When [confirmDelete] is true the screen is shown as a re-authentication
+ * step to confirm account deletion: the copy becomes a confirmation and the sign-up link is
+ * hidden. On successful re-auth the account is deleted.
+ */
 @Serializable
-data object LoginKey : NavKey
+data class LoginKey(val confirmDelete: Boolean = false) : NavKey
 
 @Serializable
 data object RegisterKey : NavKey

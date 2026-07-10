@@ -43,4 +43,12 @@ class ProfilePhotoManager @Inject constructor(
         profile.setPhoto(id, url = null, publicId = null)
         cache.setPhotoUrl(remote.currentPhotoUrl())
     }
+
+    /** Deletes the Cloudinary image only (used during account deletion; the profile doc is removed separately). */
+    suspend fun deletePhoto() {
+        val id = uid ?: return
+        profile.fetchProfile(id)?.photoPublicId?.let { old ->
+            runCatching { uploader.delete(old) }
+        }
+    }
 }
