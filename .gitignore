@@ -15,8 +15,6 @@
 build/
 */build/
 **/build/
-**/release/
-**/debug/
 **/bin/
 **/gen/
 .cxx/
