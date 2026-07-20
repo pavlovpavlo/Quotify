@@ -6,7 +6,8 @@ import com.kovhan.core.ui.UiState
 import com.kovhan.domain.settings.AppLanguage
 
 data class QuotesScreenState(
-    val isLoading: Boolean = false,
+    val isDailyQuoteLoading: Boolean = true,
+    val areFoldersLoading: Boolean = true,
     val dailyQuote: DailyQuote? = null,
     val displayText: String = "",
     val displayAuthor: String? = null,
@@ -15,4 +16,7 @@ data class QuotesScreenState(
     val isDailyQuoteFavourite: Boolean = false,
     val isDailyQuoteFavouriteLoading: Boolean = false,
     val folders: List<SavedCollection> = emptyList(),
-) : UiState
+) : UiState {
+    val isLoading: Boolean
+        get() = isDailyQuoteLoading || areFoldersLoading
+}

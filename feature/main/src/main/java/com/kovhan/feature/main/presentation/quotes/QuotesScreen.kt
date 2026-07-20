@@ -49,6 +49,14 @@ fun QuotesScreen(
             .background(colors.bgPrimary)
             .padding(paddingValues),
     ) {
+        if (state.isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center),
+                color = colors.accentPrimary,
+            )
+            return@Box
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -90,13 +98,6 @@ fun QuotesScreen(
             )
 
             Spacer(Modifier.height(dimensions.size96 + dimensions.size12))
-        }
-
-        if (state.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center),
-                color = colors.accentPrimary,
-            )
         }
     }
 }

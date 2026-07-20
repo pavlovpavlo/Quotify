@@ -3,9 +3,6 @@ package com.kovhan.quotify.application
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import com.google.firebase.appcheck.FirebaseAppCheck
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.kovhan.core.ui.util.ContextUtils
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -19,13 +16,7 @@ class QuotifyApplication : Application() {
         if (debuggable) {
             Timber.plant(Timber.DebugTree())
         }
-        FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
-            if (debuggable) {
-                DebugAppCheckProviderFactory.getInstance()
-            } else {
-                PlayIntegrityAppCheckProviderFactory.getInstance()
-            },
-        )
+        AppCheckInstaller.install(this)
     }
 
     override fun attachBaseContext(base: Context) {

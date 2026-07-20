@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.feature.search.presentation.search.component.SearchField
@@ -61,19 +63,30 @@ internal fun SearchScreen(
                 ),
             )
 
-            SearchResults(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                scope = state.scope,
-                query = state.query.trim(),
-                quotes = results.quotes,
-                folders = results.folders,
-                books = results.books,
-                authors = results.authors,
-                tags = results.tags,
-                navAction = navAction,
-            )
+            if (state.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(color = colors.accentPrimary)
+                }
+            } else {
+                SearchResults(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    scope = state.scope,
+                    query = state.query.trim(),
+                    quotes = results.quotes,
+                    folders = results.folders,
+                    books = results.books,
+                    authors = results.authors,
+                    tags = results.tags,
+                    navAction = navAction,
+                )
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.ui.UiState
 
 data class EntityDetailsState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val type: EntityType = EntityType.COLLECTION,
     val title: String = "",
     val quotes: List<EnrichedQuote> = emptyList(),

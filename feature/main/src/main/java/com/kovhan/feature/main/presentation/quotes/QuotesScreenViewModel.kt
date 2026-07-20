@@ -40,11 +40,10 @@ class QuotesScreenViewModel @Inject constructor(
     QuotesScreenIntent {
 
     init {
-        publishState { copy(isLoading = true) }
         observeCollections()
             .onEach { collections ->
                 publishState {
-                    copy(folders = collections)
+                    copy(folders = collections, areFoldersLoading = false)
                 }
             }
             .launchIn(viewModelScope)
@@ -58,7 +57,7 @@ class QuotesScreenViewModel @Inject constructor(
         }.onEach { (quote, language, favourites) ->
                 publishState {
                     copy(
-                        isLoading = false,
+                        isDailyQuoteLoading = false,
                         dailyQuote = quote,
                         language = language,
                         displayText = quote?.localizedText(language).orEmpty(),

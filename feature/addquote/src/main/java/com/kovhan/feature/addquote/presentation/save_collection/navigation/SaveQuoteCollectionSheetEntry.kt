@@ -23,6 +23,15 @@ internal fun SaveQuoteCollectionSheetEntry(
     val state = viewModel.uiState.collectAsStateWithLifecycle()
     val generalName = stringResource(com.kovhan.design.systems.R.string.collection_general)
 
+    val draft = QuoteDraft(
+        text = key.text,
+        authorName = key.authorName,
+        bookName = key.bookName,
+        tagNames = key.tagNames,
+        inWidgetPlaylist = key.inWidgetPlaylist,
+        inPushPlaylist = key.inPushPlaylist,
+    )
+
     LaunchedEffect(Unit) {
         viewModel.loadCollections(generalName)
     }
@@ -31,6 +40,7 @@ internal fun SaveQuoteCollectionSheetEntry(
         coordinator.observeResult<String>(NavigationCoordinator.KEY_COLLECTION_CREATED).collect { createdId ->
             if (createdId != null) {
                 viewModel.loadCollections(generalName, selectId = createdId)
+                viewModel.saveToCollection(draft, collectionId = createdId, generalName = generalName)
             }
         }
     }
@@ -53,14 +63,7 @@ internal fun SaveQuoteCollectionSheetEntry(
         onChooseCollection = viewModel::onChooseCollection,
         onSaveToCollection = { collectionId ->
             viewModel.saveToCollection(
-                QuoteDraft(
-                    text = key.text,
-                    authorName = key.authorName,
-                    bookName = key.bookName,
-                    tagNames = key.tagNames,
-                    inWidgetPlaylist = key.inWidgetPlaylist,
-                    inPushPlaylist = key.inPushPlaylist,
-                ),
+                draft,
                 collectionId = collectionId,
                 generalName = generalName,
             )

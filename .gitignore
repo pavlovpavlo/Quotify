@@ -65,6 +65,11 @@ debug.keystore
 *.pepk
 *.aps
 
+# Extensionless signing keys (e.g. keytool output with no .jks/.keystore suffix)
+quotify_release_key
+*_release_key
+*.p12
+
 # Firebase configs are project-specific — decide per repo whether to commit.
 # Uncomment to keep them local-only:
 # **/google-services.json
