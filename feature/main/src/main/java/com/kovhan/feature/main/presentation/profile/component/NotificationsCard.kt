@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kovhan.core.ui.component.switch.QuotifySwitch
+import com.kovhan.core.ui.extensions.noRippleClickable
 import com.kovhan.design.systems.InterFamily
 import com.kovhan.design.systems.JetBrainsMonoFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
@@ -54,7 +55,10 @@ internal fun NotificationsCard(
             .clip(shape)
             .background(colors.bgElevated)
             .border(1.dp, colors.border, shape)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp)
+            .noRippleClickable{
+                onReminderTimeClick()
+            },
     ) {
         NotificationRow(
             iconRes = R.drawable.ic_home_line,
@@ -82,7 +86,7 @@ internal fun NotificationsCard(
                     title = stringResource(R.string.profile_notif_time_title),
                     subtitle = null,
                 ) {
-                    TimeChip(time = reminderTime, onClick = onReminderTimeClick)
+                    TimeChip(time = reminderTime)
                 }
             }
         }
@@ -150,7 +154,6 @@ private fun NotificationRow(
 @Composable
 private fun TimeChip(
     time: String,
-    onClick: () -> Unit,
 ) {
     val colors = QuotifyMaterialTheme.colors
     Box(
@@ -158,7 +161,6 @@ private fun TimeChip(
             .clip(RoundedCornerShape(QuotifyMaterialTheme.dimensions.radiusMd))
             .background(colors.bgSecondary)
             .border(1.dp, colors.border, RoundedCornerShape(QuotifyMaterialTheme.dimensions.radiusMd))
-            .clickable(onClick = onClick)
             .padding(vertical = 5.dp, horizontal = 10.dp),
     ) {
         Text(

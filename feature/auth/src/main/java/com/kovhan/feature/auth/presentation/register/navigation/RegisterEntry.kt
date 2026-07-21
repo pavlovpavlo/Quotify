@@ -1,10 +1,8 @@
 package com.kovhan.feature.auth.presentation.register.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,7 +12,6 @@ import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.RegisterKey
 import com.kovhan.core.navigation.WebViewKey
-import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
 import com.kovhan.design.systems.R
 import com.kovhan.feature.auth.presentation.google.rememberGoogleSignInClient
 import com.kovhan.feature.auth.presentation.register.RegisterScreen
@@ -32,9 +29,6 @@ internal fun RegisterEntry(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val googleSignInClient = rememberGoogleSignInClient()
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    SnackbarMessageEffect(viewModel.snackbar, snackbarHostState)
 
     val navAction = object : RegisterScreenNavAction {
         override fun navigateBack() {
@@ -74,6 +68,5 @@ internal fun RegisterEntry(
         intent = viewModel,
         navAction = navAction,
         paddingValues = paddingValues,
-        snackbarHostState = snackbarHostState,
     )
 }

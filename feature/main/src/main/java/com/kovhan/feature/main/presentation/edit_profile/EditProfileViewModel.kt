@@ -109,6 +109,9 @@ class EditProfileViewModel @Inject constructor(
         viewModelScope.launch { removePhoto() }
     }
 
+    override fun onCameraPermissionDenied() =
+        showSnackbar(SnackbarMessage.error(R.string.edit_photo_camera_permission))
+
     override fun onSignInOrRegisterClicked() = publishEffect(EditProfileEffect.NavigateToLogin)
 
     override fun onLogoutClicked() = publishEffect(EditProfileEffect.OpenLogoutDialog)

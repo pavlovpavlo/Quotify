@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,7 +44,6 @@ fun CompleteScreen(
     intent: CompleteScreenIntent,
     navAction: CompleteScreenNavAction,
     paddingValues: PaddingValues,
-    snackbarHostState: SnackbarHostState,
 ) {
     val colors = QuotifyMaterialTheme.colors
     val typography = QuotifyMaterialTheme.typography
@@ -169,13 +166,6 @@ fun CompleteScreen(
             )
         }
     }
-
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = paddingValues.calculateBottomPadding()),
-        )
 
         if (state.isGuestLoading) {
             Box(

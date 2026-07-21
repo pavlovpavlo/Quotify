@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -47,14 +45,12 @@ fun LoginScreen(
     intent: LoginScreenIntent,
     navAction: LoginScreenNavAction,
     paddingValues: PaddingValues,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val dimens = QuotifyMaterialTheme.dimensions
 
     AuthScreenScaffold(
         onBack = intent::onBackClicked,
         paddingValues = paddingValues,
-        snackbarHostState = snackbarHostState,
         footer = {
             LegalFooter(
                 modifier = Modifier

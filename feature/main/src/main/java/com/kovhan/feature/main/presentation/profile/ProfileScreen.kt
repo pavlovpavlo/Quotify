@@ -126,7 +126,6 @@ fun ProfileScreen(
                 appearanceMeta = stringResource(themeMetaRes(state.theme)),
                 languageMeta = stringResource(languageMetaRes(state.language)),
                 aboutMeta = appVersion.takeIf { it.isNotBlank() }?.let { "v$it" }.orEmpty(),
-                onFoldersClick = navAction::navigateToSettings,
                 onEditProfileClick = navAction::navigateToEditProfile,
                 onAppearanceClick = intent::onAppearanceClicked,
                 onLanguageClick = intent::onLanguageClicked,

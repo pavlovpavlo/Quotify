@@ -1,4 +1,4 @@
-package com.kovhan.feature.main.presentation.profile.component
+package com.kovhan.feature.main.presentation.theme
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +12,7 @@ import com.kovhan.core.ui.component.bottomsheet.QuotifyBottomSheet
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 import com.kovhan.domain.settings.AppTheme
+import com.kovhan.feature.main.presentation.profile.component.SettingsOptionRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

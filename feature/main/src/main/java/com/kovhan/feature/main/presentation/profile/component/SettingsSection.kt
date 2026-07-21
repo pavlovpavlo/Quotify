@@ -35,7 +35,6 @@ internal fun SettingsSection(
     appearanceMeta: String,
     languageMeta: String,
     aboutMeta: String,
-    onFoldersClick: () -> Unit,
     onEditProfileClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onLanguageClick: () -> Unit,
@@ -58,13 +57,6 @@ internal fun SettingsSection(
                 .background(colors.bgElevated)
                 .border(1.dp, colors.border, shape),
         ) {
-            SettingsRow(
-                iconRes = R.drawable.ic_folder,
-                label = stringResource(R.string.profile_settings_folders),
-                meta = stringResource(R.string.profile_settings_folders_meta),
-                onClick = onFoldersClick,
-                showDivider = true,
-            )
             SettingsRow(
                 iconRes = R.drawable.ic_pencil,
                 label = stringResource(R.string.profile_settings_edit_profile),

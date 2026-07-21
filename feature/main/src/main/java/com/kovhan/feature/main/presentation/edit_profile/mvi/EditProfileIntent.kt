@@ -10,6 +10,7 @@ interface EditProfileIntent {
     fun onFieldSaved(field: EditField, value: String)
     fun onPhotoPicked(uri: String)
     fun onPhotoRemoved()
+    fun onCameraPermissionDenied()
 
     fun onLogoutClicked()
     fun onDeleteAccountClicked()
@@ -25,6 +26,7 @@ interface EditProfileIntent {
             override fun onFieldSaved(field: EditField, value: String) = Unit
             override fun onPhotoPicked(uri: String) = Unit
             override fun onPhotoRemoved() = Unit
+            override fun onCameraPermissionDenied() = Unit
             override fun onLogoutClicked() = Unit
             override fun onDeleteAccountClicked() = Unit
             override fun onLogoutConfirmed() = Unit

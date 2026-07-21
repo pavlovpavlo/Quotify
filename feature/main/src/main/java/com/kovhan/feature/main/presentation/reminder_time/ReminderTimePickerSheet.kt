@@ -1,4 +1,4 @@
-package com.kovhan.feature.main.presentation.profile.component
+package com.kovhan.feature.main.presentation.reminder_time
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -40,6 +40,7 @@ import com.kovhan.core.ui.component.bottomsheet.QuotifyBottomSheet
 import com.kovhan.design.systems.JetBrainsMonoFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
+import com.kovhan.feature.main.presentation.profile.component.PrimaryActionButton
 
 private const val MINUTE_STEP = 5
 
@@ -98,8 +99,9 @@ internal fun ReminderTimePickerSheet(
 
             Spacer(Modifier.height(QuotifyMaterialTheme.dimensions.space5))
 
+            val buttonText = stringResource(R.string.profile_time_picker_select)
             PrimaryActionButton(
-                text = stringResource(R.string.profile_time_picker_select),
+                text = buttonText,
                 enabled = true,
                 onClick = { onConfirm(selectedHour, selectedMinute) },
                 modifier = Modifier.fillMaxWidth(),

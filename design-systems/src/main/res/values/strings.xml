@@ -237,7 +237,7 @@
     <string name="profile_notif_quote_subtitle">Цитата дня просто на головному екрані.</string>
     <string name="profile_notif_push_title">Нотифікація</string>
     <string name="profile_notif_push_subtitle">Щоденно пуш з новою цитатою з підбірки.</string>
-    <string name="profile_notif_time_title">Час нагадування</string>
+    <string name="profile_notif_time_title">Час сповіщення</string>
 
     <!-- Profile — time picker -->
     <string name="profile_time_picker_title">Час нагадування</string>
@@ -300,6 +300,7 @@
     <string name="edit_password_reset_sent">Ми надіслали лист з інструкціями на вашу пошту.</string>
     <string name="edit_email_verification_sent">Лист підтвердження надіслано на нову пошту. Email зміниться після підтвердження.</string>
     <string name="edit_photo_upload_failed">Не вдалося завантажити фото. Спробуй ще раз.</string>
+    <string name="edit_photo_camera_permission">Дозволь доступ до камери в налаштуваннях, щоб зробити фото.</string>
 
     <!-- Edit profile — confirm dialogs -->
     <string name="dialog_cancel">Скасувати</string>

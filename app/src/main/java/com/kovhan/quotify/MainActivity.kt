@@ -23,6 +23,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.kovhan.core.ui.activity.ActivityRequired
+import com.kovhan.core.ui.locale.LocalAppLocaleContext
 import com.kovhan.core.navigation.BottomSheetEntryBuilder
 import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.core.navigation.EntryBuilder
@@ -109,6 +110,7 @@ class MainActivity : AppCompatActivity() {
             CompositionLocalProvider(
                 LocalContext provides localizedContext,
                 LocalConfiguration provides localizedContext.resources.configuration,
+                LocalAppLocaleContext provides localizedContext,
                 LocalNavigationEventDispatcherOwner provides this@MainActivity,
             ) {
                 QuotifyAppTheme(
@@ -127,6 +129,7 @@ class MainActivity : AppCompatActivity() {
                             entryBuilders = entryBuilders,
                             bottomSheetEntryBuilders = bottomSheetEntryBuilders,
                             dialogEntryBuilders = dialogEntryBuilders,
+                            snackbarMessages = viewModel.snackbarMessages,
                         )
                     }
                 }

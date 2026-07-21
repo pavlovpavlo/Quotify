@@ -28,6 +28,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.view.WindowCompat
+import com.kovhan.core.ui.locale.ProvideAppLocale
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
 
@@ -46,7 +47,8 @@ fun QuotifyDialog(
 
     Dialog(
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
+        properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false
+        ),
     ) {
         val view = LocalView.current
         LaunchedEffect(view, isDarkTheme) {
@@ -67,38 +69,40 @@ fun QuotifyDialog(
             insetsController.isAppearanceLightStatusBars = !isDarkTheme
             insetsController.isAppearanceLightNavigationBars = !isDarkTheme
         }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colors.bgOverlay)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = onDismissRequest,
-                ),
-            contentAlignment = Alignment.Center,
-        ) {
-            Column(
-                modifier = modifier
-                    .then(
-                        if (maxWidth == null)
-                            Modifier.fillMaxWidth()
-                        else
-                            Modifier.widthIn(max = maxWidth)
-                    )
-                    .padding(dimensions.size24)
-                    .shadow(dimensions.size24, shape)
-                    .clip(shape)
-                    .background(colors.bgElevated)
-                    .border(dimensions.size1, colors.border, shape)
+        ProvideAppLocale {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colors.bgOverlay)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
-                        onClick = {},
+                        onClick = onDismissRequest,
                     ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                content = content,
-            )
+                contentAlignment = Alignment.Center,
+            ) {
+                Column(
+                    modifier = modifier
+                        .then(
+                            if (maxWidth == null)
+                                Modifier.fillMaxWidth()
+                            else
+                                Modifier.widthIn(max = maxWidth)
+                        )
+                        .padding(dimensions.size24)
+                        .shadow(dimensions.size24, shape)
+                        .clip(shape)
+                        .background(colors.bgElevated)
+                        .border(dimensions.size1, colors.border, shape)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {},
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    content = content,
+                )
+            }
         }
     }
 }

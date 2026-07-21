@@ -1,14 +1,14 @@
 ﻿package com.kovhan.feature.main.presentation.edit_profile.navigation
 
-import android.graphics.Bitmap
+import android.Manifest
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -21,11 +21,11 @@ import com.kovhan.core.navigation.LoginKey
 import com.kovhan.core.navigation.LogoutDialogKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PhotoAction
-import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
 import com.kovhan.feature.main.presentation.edit_profile.EditProfileScreen
 import com.kovhan.feature.main.presentation.edit_profile.EditProfileViewModel
 import com.kovhan.feature.main.presentation.edit_profile.mvi.EditProfileEffect
-import java.io.File
+import com.kovhan.feature.main.presentation.edit_profile.util.createCameraPhotoUri
+import com.kovhan.feature.main.presentation.edit_profile.util.hasCameraPermission
 
 @Composable
 internal fun EditProfileEntry(
@@ -35,30 +35,42 @@ internal fun EditProfileEntry(
     val viewModel = hiltViewModel<EditProfileViewModel>()
     val state = viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    SnackbarMessageEffect(viewModel.snackbar, snackbarHostState)
 
     val galleryLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
         uri?.let { viewModel.onPhotoPicked(it.toString()) }
     }
+
+    val pendingCameraUri = rememberSaveable { mutableStateOf<Uri?>(null) }
     val cameraLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.TakePicturePreview(),
-    ) { bitmap: Bitmap? ->
-        bitmap?.let {
-            val file = File(context.cacheDir, "camera_${System.currentTimeMillis()}.jpg")
-            file.outputStream().use { os -> it.compress(Bitmap.CompressFormat.JPEG, 90, os) }
-            viewModel.onPhotoPicked(Uri.fromFile(file).toString())
-        }
+        ActivityResultContracts.TakePicture(),
+    ) { saved: Boolean ->
+        val uri = pendingCameraUri.value
+        pendingCameraUri.value = null
+        if (saved && uri != null) viewModel.onPhotoPicked(uri.toString())
+    }
+
+    val launchCamera: () -> Unit = {
+        val uri = context.createCameraPhotoUri()
+        pendingCameraUri.value = uri
+        cameraLauncher.launch(uri)
+    }
+
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) launchCamera() else viewModel.onCameraPermissionDenied()
     }
 
     LaunchedEffect(Unit) {
         coordinator.observeResult<PhotoAction>(NavigationCoordinator.KEY_PHOTO_ACTION)
             .collect { action ->
                 when (action) {
-                    PhotoAction.TAKE -> cameraLauncher.launch(null)
+                    PhotoAction.TAKE ->
+                        if (hasCameraPermission(context)) launchCamera()
+                        else cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+
                     PhotoAction.GALLERY -> galleryLauncher.launch("image/*")
                     PhotoAction.REMOVE -> viewModel.onPhotoRemoved()
                     null -> Unit
@@ -120,6 +132,5 @@ internal fun EditProfileEntry(
         intent = viewModel,
         navAction = navAction,
         paddingValues = paddingValues,
-        snackbarHostState = snackbarHostState,
     )
 }

@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.component.QuotifyTopBar
-import com.kovhan.core.ui.snackbar.QuotifySnackbar
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 import com.kovhan.feature.main.presentation.edit_profile.component.EditAvatar
@@ -38,7 +35,6 @@ fun EditProfileScreen(
     intent: EditProfileIntent,
     navAction: EditProfileScreenNavAction,
     paddingValues: PaddingValues,
-    snackbarHostState: SnackbarHostState,
 ) {
     val colors = QuotifyMaterialTheme.colors
     val isGoogleAccount = state.user?.isGoogleAccount == true
@@ -150,15 +146,6 @@ fun EditProfileScreen(
                     )
                 }
             }
-        }
-
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 8.dp),
-        ) { data ->
-            QuotifySnackbar(snackbarData = data)
         }
 
         if (state.isProcessing) {

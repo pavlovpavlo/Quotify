@@ -9,13 +9,20 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
@@ -27,9 +34,16 @@ import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PlaceholderBottomSheetKey
 import com.kovhan.core.navigation.PlaceholderDialogKey
 import com.kovhan.core.navigation.SplashKey
+import com.kovhan.core.ui.snackbar.QuotifySnackbar
+import com.kovhan.core.ui.snackbar.SnackbarMessage
+import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
 import com.kovhan.quotify.mvi.MainActivityState
 import com.kovhan.quotify.mvi.MainIntent
 import com.kovhan.quotify.navigation.dock.BottomDock
+import kotlinx.coroutines.flow.Flow
+
+private val SnackbarBottomInset = 16.dp
+private val SnackbarDockInset = 90.dp
 
 @Composable
 fun AppContent(
@@ -40,7 +54,12 @@ fun AppContent(
     entryBuilders: Set<EntryBuilder>,
     bottomSheetEntryBuilders: Set<BottomSheetEntryBuilder>,
     dialogEntryBuilders: Set<DialogEntryBuilder>,
+    snackbarMessages: Flow<SnackbarMessage>,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    SnackbarMessageEffect(snackbarMessages, snackbarHostState)
+
     LaunchedEffect(Unit) {
         if (coordinator.backStack.isEmpty()) {
             coordinator.initialize(SplashKey)
@@ -129,6 +148,17 @@ fun AppContent(
                         uiIntent = uiIntent,
                     )
                 }
+            }
+
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .navigationBarsPadding()
+                    .imePadding()
+                    .padding(bottom = if (showDock) SnackbarDockInset else SnackbarBottomInset),
+            ) { data ->
+                QuotifySnackbar(snackbarData = data)
             }
         }
     }
