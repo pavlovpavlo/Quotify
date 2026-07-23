@@ -1,6 +1,6 @@
 package com.kovhan.domain.library.use_case.author
 
-import com.kovhan.core.models.SavedAuthor
+import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.domain.library.SavedAuthorRepository
 import javax.inject.Inject
 

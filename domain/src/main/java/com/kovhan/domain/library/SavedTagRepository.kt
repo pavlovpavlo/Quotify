@@ -1,6 +1,6 @@
 package com.kovhan.domain.library
 
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.collections.SavedTag
 import kotlinx.coroutines.flow.Flow
 
 interface SavedTagRepository {

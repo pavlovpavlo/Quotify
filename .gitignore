@@ -15,8 +15,6 @@
 build/
 */build/
 **/build/
-**/release/
-**/debug/
 **/bin/
 **/gen/
 .cxx/
@@ -64,6 +62,11 @@ release.keystore
 debug.keystore
 *.pepk
 *.aps
+
+# Extensionless signing keys (e.g. keytool output with no .jks/.keystore suffix)
+quotify_release_key
+*_release_key
+*.p12
 
 # Firebase configs are project-specific — decide per repo whether to commit.
 # Uncomment to keep them local-only:

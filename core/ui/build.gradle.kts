@@ -29,6 +29,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:models"))
     implementation(project(":design-systems"))
     apiSerialization()
     implementationAndroidX()

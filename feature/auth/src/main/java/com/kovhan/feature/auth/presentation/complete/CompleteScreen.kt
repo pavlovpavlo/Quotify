@@ -15,10 +15,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,6 +51,7 @@ fun CompleteScreen(
 
     val pillSizeSpec = QuotifyButtonDefaults.pillSizeSpec(height = 52.dp)
 
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -141,6 +144,7 @@ fun CompleteScreen(
                 onClick = intent::onSignUpClicked,
                 variant = QuotifyButtonVariant.Filled,
                 accent = QuotifyButtonAccent.Primary,
+                enabled = !state.isGuestLoading,
                 sizeSpec = pillSizeSpec,
             )
             Spacer(Modifier.height(6.dp))
@@ -150,14 +154,28 @@ fun CompleteScreen(
                 onClick = intent::onSignInClicked,
                 variant = QuotifyButtonVariant.Outlined,
                 accent = QuotifyButtonAccent.Primary,
+                enabled = !state.isGuestLoading,
                 sizeSpec = pillSizeSpec,
             )
             Spacer(Modifier.height(6.dp))
             QuotifyTextBtn(
                 text = stringResource(R.string.complete_later),
                 onClick = intent::onLaterClicked,
+                enabled = !state.isGuestLoading,
                 accent = QuotifyButtonAccent.Neutral,
             )
+        }
+    }
+
+        if (state.isGuestLoading) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(Color.Black.copy(alpha = 0.4f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator(color = colors.accentPrimary)
+            }
         }
     }
 }

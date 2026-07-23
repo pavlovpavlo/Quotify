@@ -8,4 +8,5 @@ data class AuthUser(
     val photoUrl: String? = null,
     val username: String? = null,
     val isGoogleAccount: Boolean = false,
+    val isAnonymous: Boolean = false,
 )

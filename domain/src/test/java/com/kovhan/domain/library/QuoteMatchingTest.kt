@@ -1,8 +1,8 @@
 package com.kovhan.domain.library
 
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.QuotePlaylist
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.quote.QuotePlaylist
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
@@ -16,6 +16,7 @@ class QuoteMatchingTest {
         text = "x",
         authorId = "a1",
         bookId = "b1",
+        collectionId = "c1",
         tagIds = listOf("t1", "t2"),
         inPushPlaylist = true,
         inWidgetPlaylist = false,
@@ -46,6 +47,13 @@ class QuoteMatchingTest {
     fun matchesByTag() {
         assertTrue(quote.matches(QuoteFilter(tagId = "t2")))
         assertFalse(quote.matches(QuoteFilter(tagId = "tX")))
+    }
+
+    @Test
+    @DisplayName("matches by collection membership")
+    fun matchesByCollection() {
+        assertTrue(quote.matches(QuoteFilter(collectionId = "c1")))
+        assertFalse(quote.matches(QuoteFilter(collectionId = "other")))
     }
 
     @Test

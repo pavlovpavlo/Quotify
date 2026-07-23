@@ -10,11 +10,13 @@ interface EditProfileIntent {
     fun onFieldSaved(field: EditField, value: String)
     fun onPhotoPicked(uri: String)
     fun onPhotoRemoved()
+    fun onCameraPermissionDenied()
 
     fun onLogoutClicked()
     fun onDeleteAccountClicked()
     fun onLogoutConfirmed()
     fun onDeleteConfirmed()
+    fun onSignInOrRegisterClicked()
 
     companion object {
         val Empty: EditProfileIntent = object : EditProfileIntent {
@@ -24,10 +26,12 @@ interface EditProfileIntent {
             override fun onFieldSaved(field: EditField, value: String) = Unit
             override fun onPhotoPicked(uri: String) = Unit
             override fun onPhotoRemoved() = Unit
+            override fun onCameraPermissionDenied() = Unit
             override fun onLogoutClicked() = Unit
             override fun onDeleteAccountClicked() = Unit
             override fun onLogoutConfirmed() = Unit
             override fun onDeleteConfirmed() = Unit
+            override fun onSignInOrRegisterClicked() = Unit
         }
     }
 }

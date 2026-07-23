@@ -6,9 +6,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.AboutKey
+import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.EditProfileKey
 import com.kovhan.core.navigation.LanguageSheetKey
-import com.kovhan.core.navigation.LoginKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.ReminderTimeSheetKey
 import com.kovhan.core.navigation.ThemeSheetKey
@@ -37,7 +37,7 @@ internal fun ProfileEntry(
 
         override fun navigateToAbout() = coordinator.navigate(AboutKey)
 
-        override fun navigateToAuth() = coordinator.navigateAndClearBackStack(LoginKey)
+        override fun navigateToAuth() = coordinator.navigateAndClearBackStack(CompleteKey)
     }
 
     LaunchedEffect(Unit) {
@@ -57,7 +57,7 @@ internal fun ProfileEntry(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 ProfileScreenEffect.NavigateToAuth ->
-                    coordinator.navigateAndClearBackStack(LoginKey)
+                    coordinator.navigateAndClearBackStack(CompleteKey)
 
                 ProfileScreenEffect.OpenThemeSheet ->
                     coordinator.showBottomSheet(ThemeSheetKey(viewModel.uiState.value.theme))

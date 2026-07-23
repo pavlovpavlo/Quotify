@@ -1,5 +1,6 @@
 package com.kovhan.core.models
 
+import com.kovhan.core.models.collections.SavedCollection
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -13,7 +14,7 @@ class SavedCollectionTest {
         val collection = SavedCollection(id = "c1", name = "Favorites")
 
         assertEquals("default", collection.iconId)
-        assertEquals("E8E2D5", collection.iconColor)
+        assertEquals("terra", collection.iconColor)
     }
 
     @Test
@@ -34,6 +35,6 @@ class SavedCollectionTest {
     @DisplayName("exposes the documented default constants")
     fun exposesConstants() {
         assertEquals("default", SavedCollection.DEFAULT_ICON_ID)
-        assertEquals("E8E2D5", SavedCollection.DEFAULT_ICON_COLOR)
+        assertEquals("terra", SavedCollection.DEFAULT_ICON_COLOR)
     }
 }

@@ -5,9 +5,9 @@ import com.kovhan.core.ui.constants.AppLinks
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.auth.model.AuthError
 import com.kovhan.domain.auth.model.AuthResult
-import com.kovhan.domain.auth.use_case.SignInWithGoogleUseCase
-import com.kovhan.domain.auth.use_case.SignUpUseCase
 import com.kovhan.domain.auth.use_case.ValidateAuthInputUseCase
+import com.kovhan.domain.auth.use_case.guest.GuestAwareGoogleSignInUseCase
+import com.kovhan.domain.auth.use_case.guest.GuestAwareSignUpUseCase
 import com.kovhan.core.models.onFailure
 import com.kovhan.core.models.onSuccess
 import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterScreenViewModel @Inject constructor(
-    private val signUp: SignUpUseCase,
-    private val signInWithGoogle: SignInWithGoogleUseCase,
+    private val signUp: GuestAwareSignUpUseCase,
+    private val signInWithGoogle: GuestAwareGoogleSignInUseCase,
     private val validateInput: ValidateAuthInputUseCase,
 ) : BaseViewModel<RegisterScreenState, RegisterScreenEffect>(RegisterScreenState()),
     RegisterScreenIntent {
@@ -49,7 +49,14 @@ class RegisterScreenViewModel @Inject constructor(
         publishState { copy(isLoading = true) }
         viewModelScope.launch {
             val displayName = current.fullName.text.ifBlank { current.username.text }
-            handleResult(signUp(current.email.text, current.password.text, displayName))
+            handleResult(
+                signUp(
+                    email = current.email.text,
+                    password = current.password.text,
+                    username = current.username.text,
+                    displayName = displayName,
+                ),
+            )
         }
     }
 
@@ -77,9 +84,7 @@ class RegisterScreenViewModel @Inject constructor(
         publishState { copy(isLoading = false, isGoogleLoading = false) }
         result
             .onSuccess { publishEffect(RegisterScreenEffect.NavigateToMain) }
-            .onFailure {
-                publishState { copy(errorMessage = it) }
-            }
+            .onFailure { publishState { copy(errorMessage = it) } }
     }
 
     override fun onSignInClicked() {

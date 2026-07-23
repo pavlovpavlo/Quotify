@@ -34,6 +34,10 @@ class FirestoreUserProfileDataSource @Inject constructor(
         ).await()
     }
 
+    override suspend fun deleteProfile(uid: String) {
+        userDoc(uid).delete().await()
+    }
+
     private fun userDoc(uid: String) = firestore.collection(COLLECTION_USERS).document(uid)
 
     private companion object {

@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,7 +44,6 @@ fun ForgotPasswordScreen(
     intent: ForgotPasswordScreenIntent,
     navAction: ForgotPasswordScreenNavAction,
     paddingValues: PaddingValues,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val colors = QuotifyMaterialTheme.colors
     val dimens = QuotifyMaterialTheme.dimensions
@@ -54,7 +51,6 @@ fun ForgotPasswordScreen(
     AuthScreenScaffold(
         onBack = intent::onBackClicked,
         paddingValues = paddingValues,
-        snackbarHostState = snackbarHostState,
         footer = {
             Box(
                 modifier = Modifier.fillMaxWidth(),

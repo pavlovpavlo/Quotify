@@ -5,6 +5,8 @@ import com.kovhan.core.navigation.EditField
 
 sealed class EditProfileEffect : UiEffect {
     data object NavigateToAuth : EditProfileEffect()
+    data object NavigateToLogin : EditProfileEffect()
+    data object NavigateToConfirmDelete : EditProfileEffect()
     data object OpenPhotoSheet : EditProfileEffect()
     data class OpenFieldSheet(val field: EditField, val initialValue: String) : EditProfileEffect()
     data object OpenLogoutDialog : EditProfileEffect()

@@ -47,6 +47,12 @@ object FolioLight {
     val accentPremiumHover  = Color(0xFFBE8E48)
     val accentPremiumSoft   = Color(0xFFF7EDDA)
 
+    // Accent — Plum (fixed hex, shared light/dark)
+    val accentPlum = Color(0xFF9A5C74)
+
+    // Accent — Teal (fixed hex, shared light/dark)
+    val accentTeal = Color(0xFF4E867B)
+
     // Status — error (not part of Folio spec, kept compatible with Quotify)
     val error     = Color(0xFFC7402F)
     val errorSoft = Color(0xFFF5E5DF)
@@ -89,6 +95,12 @@ object FolioDark {
     val accentPremium       = Color(0xFFE5B870)
     val accentPremiumHover  = Color(0xFFECC585)
     val accentPremiumSoft   = Color(0xFF3A3024)
+
+    // Accent — Plum (fixed hex, shared light/dark)
+    val accentPlum = Color(0xFF9A5C74)
+
+    // Accent — Teal (fixed hex, shared light/dark)
+    val accentTeal = Color(0xFF4E867B)
 
     // Status — error
     val error     = Color(0xFFE07659)

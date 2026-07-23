@@ -5,6 +5,7 @@ import com.kovhan.core.ui.snackbar.SnackbarType
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.design.systems.R
 import com.kovhan.core.models.Outcome
+import com.kovhan.domain.auth.model.AuthError
 import com.kovhan.domain.auth.use_case.DeleteAccountUseCase
 import com.kovhan.domain.auth.use_case.GetUserUseCase
 import com.kovhan.domain.auth.use_case.RefreshUserUseCase
@@ -57,7 +58,12 @@ class EditProfileViewModel @Inject constructor(
         val initialValue = when (field) {
             EditField.NAME -> user?.displayName.orEmpty()
             EditField.USERNAME ->
-                user?.username ?: email.substringBefore("@").takeIf { it.isNotBlank() }.orEmpty()
+                user?.username
+                    ?: if (user?.isGoogleAccount == true) {
+                        email.substringBefore("@").takeIf { it.isNotBlank() }.orEmpty()
+                    } else {
+                        ""
+                    }
             EditField.EMAIL -> email
         }
         publishEffect(EditProfileEffect.OpenFieldSheet(field, initialValue))
@@ -66,11 +72,11 @@ class EditProfileViewModel @Inject constructor(
     override fun onPasswordClicked() {
         val email = uiState.value.user?.email?.takeIf { it.isNotBlank() } ?: return
         viewModelScope.launch {
-            when (sendPasswordReset(email)) {
+            when (val result = sendPasswordReset(email)) {
                 is Outcome.Success ->
                     showSnackbar(R.string.edit_password_reset_sent, SnackbarType.Success)
                 is Outcome.Failure ->
-                    showSnackbar(SnackbarMessage.error(R.string.auth_error_generic))
+                    showSnackbar(result.error.toSnackbar())
             }
         }
     }
@@ -103,6 +109,11 @@ class EditProfileViewModel @Inject constructor(
         viewModelScope.launch { removePhoto() }
     }
 
+    override fun onCameraPermissionDenied() =
+        showSnackbar(SnackbarMessage.error(R.string.edit_photo_camera_permission))
+
+    override fun onSignInOrRegisterClicked() = publishEffect(EditProfileEffect.NavigateToLogin)
+
     override fun onLogoutClicked() = publishEffect(EditProfileEffect.OpenLogoutDialog)
 
     override fun onDeleteAccountClicked() = publishEffect(EditProfileEffect.OpenDeleteDialog)
@@ -121,10 +132,22 @@ class EditProfileViewModel @Inject constructor(
         if (uiState.value.isProcessing) return
         publishState { copy(isProcessing = true) }
         viewModelScope.launch {
-            deleteAccount()
-            signOut()
-            publishState { copy(isProcessing = false) }
-            publishEffect(EditProfileEffect.NavigateToAuth)
+            when (val result = deleteAccount()) {
+                is Outcome.Success -> {
+                    signOut()
+                    publishState { copy(isProcessing = false) }
+                    publishEffect(EditProfileEffect.NavigateToAuth)
+                }
+
+                is Outcome.Failure -> {
+                    publishState { copy(isProcessing = false) }
+                    if (result.error == AuthError.RecentLoginRequired) {
+                        publishEffect(EditProfileEffect.NavigateToConfirmDelete)
+                    } else {
+                        showSnackbar(result.error.toSnackbar())
+                    }
+                }
+            }
         }
     }
 }

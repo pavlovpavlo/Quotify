@@ -1,6 +1,6 @@
 package com.kovhan.data.library.mapper
 
-import com.kovhan.core.models.Quote
+import com.kovhan.core.models.quote.Quote
 import com.kovhan.data.library.dto.QuoteDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
@@ -17,6 +17,7 @@ class QuoteMappersTest {
         tagIds = listOf("t1", "t2"),
         inPushPlaylist = true,
         inWidgetPlaylist = false,
+        sourceDailyId = "d1",
     )
 
     private val dto = QuoteDto(
@@ -27,6 +28,7 @@ class QuoteMappersTest {
         tagIds = listOf("t1", "t2"),
         inPushPlaylist = true,
         inWidgetPlaylist = false,
+        sourceDailyId = "d1",
     )
 
     @Test

@@ -19,6 +19,16 @@ interface AuthRepository {
 
     suspend fun signInWithGoogle(idToken: String): AuthResult<AuthUser>
 
+    suspend fun signInAnonymously(): AuthResult<AuthUser>
+
+    suspend fun linkEmailPassword(
+        email: String,
+        password: String,
+        displayName: String?,
+    ): AuthResult<AuthUser>
+
+    suspend fun linkGoogle(idToken: String): AuthResult<AuthUser>
+
     suspend fun updateDisplayName(displayName: String): AuthResult<AuthUser>
 
     suspend fun updateEmail(newEmail: String): AuthResult<Unit>
@@ -26,6 +36,10 @@ interface AuthRepository {
     suspend fun reloadUser(): AuthResult<AuthUser>
 
     suspend fun changePassword(currentPassword: String, newPassword: String): AuthResult<Unit>
+
+    suspend fun reauthenticateWithPassword(email: String, password: String): AuthResult<Unit>
+
+    suspend fun reauthenticateWithGoogle(idToken: String): AuthResult<Unit>
 
     suspend fun deleteAccount(): AuthResult<Unit>
 

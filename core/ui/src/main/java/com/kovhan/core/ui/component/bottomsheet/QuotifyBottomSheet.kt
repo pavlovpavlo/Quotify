@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.view.WindowCompat
+import com.kovhan.core.ui.locale.ProvideAppLocale
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
 /**
@@ -46,6 +47,7 @@ fun QuotifyBottomSheet(
     cornerRadius: Dp = QuotifyMaterialTheme.dimensions.radius2xl,
     floatingBottomSpacing: Dp = QuotifyMaterialTheme.dimensions.space6,
     title: String? = null,
+    onBack: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     LaunchedEffect(Unit) {
@@ -105,10 +107,16 @@ fun QuotifyBottomSheet(
             .clip(shape)
             .background(containerColor)
 
-        Box(modifier = Modifier.wrapContentHeight()) {
-            Column(modifier = contentModifier.then(cardModifier)) {
-                BottomSheetHeader(title = title)
-                content()
+        ProvideAppLocale {
+            Box(modifier = Modifier.wrapContentHeight()) {
+                Column(modifier = contentModifier.then(cardModifier)) {
+                    BottomSheetHeader(
+                        title = title,
+                        onClose = onDismiss,
+                        onBack = onBack,
+                    )
+                    content()
+                }
             }
         }
     }

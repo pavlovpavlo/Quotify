@@ -23,8 +23,8 @@ internal fun CompleteEntry(
 
     val navAction = object : CompleteScreenNavAction {
         override fun navigateToSignUp() = coordinator.navigate(RegisterKey)
-        override fun navigateToSignIn() = coordinator.navigate(LoginKey)
-        override fun navigateToMain() = coordinator.navigate(QuotesKey)
+        override fun navigateToSignIn() = coordinator.navigate(LoginKey())
+        override fun navigateToMain() = coordinator.navigateAndClearBackStack(QuotesKey)
     }
 
     LaunchedEffect(Unit) {

@@ -1,6 +1,6 @@
 package com.kovhan.domain.library.use_case.quote
 
-import com.kovhan.core.models.EnrichedQuote
+import com.kovhan.core.models.quote.EnrichedQuote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

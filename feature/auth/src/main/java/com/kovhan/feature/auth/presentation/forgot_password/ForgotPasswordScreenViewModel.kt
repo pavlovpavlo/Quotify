@@ -1,7 +1,9 @@
 package com.kovhan.feature.auth.presentation.forgot_password
 
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kovhan.core.ui.snackbar.SnackbarType
 import com.kovhan.core.ui.view_model.BaseViewModel
+import com.kovhan.design.systems.R
 import com.kovhan.domain.auth.use_case.SendPasswordResetUseCase
 import com.kovhan.domain.auth.use_case.ValidateAuthInputUseCase
 import com.kovhan.core.models.onFailure
@@ -36,6 +38,7 @@ class ForgotPasswordScreenViewModel @Inject constructor(
             sendPasswordReset(current.email.text)
                 .onSuccess {
                     publishState { copy(isLoading = false, errorMessage = null) }
+                    showSnackbar(R.string.forgot_reset_sent, SnackbarType.Success)
                     publishEffect(ForgotPasswordScreenEffect.NavigateBack)
                 }
                 .onFailure {

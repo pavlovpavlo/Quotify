@@ -8,4 +8,7 @@ sealed class SplashScreenEffect : UiEffect {
     data object NavigateToAuth : SplashScreenEffect()
 
     data object NavigateToMain : SplashScreenEffect()
+
+    /** Offline with no subscription — show the blocking retry dialog. */
+    data object ShowOfflineBlock : SplashScreenEffect()
 }

@@ -23,7 +23,7 @@ class AuthEntryBuilder @Inject constructor() : EntryBuilder {
         paddingValues: PaddingValues,
     ) {
         scope.entry<CompleteKey> { CompleteEntry(coordinator, paddingValues) }
-        scope.entry<LoginKey> { LoginEntry(coordinator, paddingValues) }
+        scope.entry<LoginKey> { key -> LoginEntry(coordinator, paddingValues, key.confirmDelete) }
         scope.entry<RegisterKey> { RegisterEntry(coordinator, paddingValues) }
         scope.entry<ForgotPasswordKey> { ForgotPasswordEntry(coordinator, paddingValues) }
     }

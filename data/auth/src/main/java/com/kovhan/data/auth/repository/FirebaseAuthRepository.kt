@@ -1,11 +1,13 @@
 package com.kovhan.data.auth.repository
 
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.kovhan.core.models.AuthUser
 import com.kovhan.core.models.Outcome
 import com.kovhan.data.auth.mapper.toAuthError
 import com.kovhan.data.auth.remote.AuthRemoteDataSource
 import com.kovhan.domain.auth.AuthRepository
 import com.kovhan.domain.auth.UserRepository
+import com.kovhan.domain.auth.model.AuthError
 import com.kovhan.domain.auth.model.AuthResult
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,6 +35,19 @@ class FirebaseAuthRepository @Inject constructor(
     override suspend fun signInWithGoogle(idToken: String): AuthResult<AuthUser> =
         runAuth { remote.signInWithGoogle(idToken) }.cacheIfSuccess()
 
+    override suspend fun signInAnonymously(): AuthResult<AuthUser> =
+        runAuth { remote.signInAnonymously() }.cacheIfSuccess()
+
+    override suspend fun linkEmailPassword(
+        email: String,
+        password: String,
+        displayName: String?,
+    ): AuthResult<AuthUser> =
+        runLink { remote.linkEmailPassword(email, password, displayName) }.cacheIfSuccess()
+
+    override suspend fun linkGoogle(idToken: String): AuthResult<AuthUser> =
+        runLink { remote.linkGoogle(idToken) }.cacheIfSuccess()
+
     override suspend fun updateDisplayName(displayName: String): AuthResult<AuthUser> =
         runAuth { remote.updateDisplayName(displayName) }.cacheIfSuccess()
 
@@ -47,6 +62,15 @@ class FirebaseAuthRepository @Inject constructor(
         newPassword: String,
     ): AuthResult<Unit> =
         runAuthUnit { remote.changePassword(currentPassword, newPassword) }
+
+    override suspend fun reauthenticateWithPassword(
+        email: String,
+        password: String,
+    ): AuthResult<Unit> =
+        runAuthUnit { remote.reauthenticateWithPassword(email, password) }
+
+    override suspend fun reauthenticateWithGoogle(idToken: String): AuthResult<Unit> =
+        runAuthUnit { remote.reauthenticateWithGoogle(idToken) }
 
     override suspend fun deleteAccount(): AuthResult<Unit> =
         runAuthUnit {
@@ -68,6 +92,15 @@ class FirebaseAuthRepository @Inject constructor(
     private inline fun runAuth(block: () -> AuthUser): AuthResult<AuthUser> =
         try {
             Outcome.Success(block())
+        } catch (t: Throwable) {
+            Outcome.Failure(t.toAuthError())
+        }
+
+    private inline fun runLink(block: () -> AuthUser): AuthResult<AuthUser> =
+        try {
+            Outcome.Success(block())
+        } catch (t: FirebaseAuthUserCollisionException) {
+            Outcome.Failure(AuthError.CredentialAlreadyInUse)
         } catch (t: Throwable) {
             Outcome.Failure(t.toAuthError())
         }

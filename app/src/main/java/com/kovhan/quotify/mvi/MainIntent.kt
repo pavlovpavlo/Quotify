@@ -1,5 +1,5 @@
 package com.kovhan.quotify.mvi
 
-interface MainIntent {
+import com.kovhan.quotify.navigation.dock.mvi.DockIntent
 
-}
+interface MainIntent : DockIntent

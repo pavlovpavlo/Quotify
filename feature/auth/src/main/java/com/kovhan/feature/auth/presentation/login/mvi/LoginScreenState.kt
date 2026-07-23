@@ -12,6 +12,7 @@ data class LoginScreenState(
     val isGoogleLoading: Boolean = false,
     val errorMessage: AuthError? = null,
     val errorValidationMessage: ValidationError? = null,
+    val confirmDelete: Boolean = false,
 ) : UiState {
     val canSubmit: Boolean
         get() = !isLoading && !isGoogleLoading && email.text.isNotBlank() && password.text.isNotBlank()&&

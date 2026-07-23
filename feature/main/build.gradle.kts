@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":domain"))
     implementation(project(":design-systems"))
+    implementation(project(":feature:common"))
 
     implementationAndroidX()
     implementationCompose()

@@ -19,11 +19,28 @@ internal val SpeedDialIconSize = 20.dp
 internal val SpeedDialItemGap = 10.dp
 internal val SpeedDialBottomOffset = 88.dp
 
+internal val TooltipMaxWidth = 168.dp
+internal val TooltipHorizontalPadding = 12.dp
+internal val TooltipVerticalPadding = 9.dp
+internal val TooltipCorner = 12.dp
+internal val TooltipElevation = 10.dp
+internal val TooltipArrowSize = 10.dp
+internal val TooltipArrowEndInset = 22.dp
+internal val TooltipGap = 14.dp
+internal val TooltipBobOffset = 4.dp
+
 internal const val PillTweenMs = 440
 internal const val TabColorTweenMs = 300
 internal const val FabRotateMs = 300
 internal const val ScrimFadeMs = 180
 internal const val SpeedDialItemMs = 300
 internal const val SpeedDialStaggerMs = 55L
+internal const val TooltipFadeMs = 240
+internal const val TooltipBobMs = 1100
+internal const val FabPulseMs = 2200
+
+internal const val FabPulseMaxScale = 0.36f
+internal const val FabPulseMaxAlpha = 0.5f
 
 internal val WarmShadow = Color(0x294A3826)
+internal val TooltipShadow = Color(0x474A3826)

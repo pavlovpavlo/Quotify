@@ -1,9 +1,8 @@
 # Quotify ProGuard / R8 rules.
 #
-# Release uses `isMinifyEnabled = false`, so these rules are inert right now.
-# When you flip minify on, the sections below keep type-safe Navigation
-# routes, MVI contracts, Hilt-generated classes and Crashlytics line info
-# from being stripped.
+# Release runs with `isMinifyEnabled = true`. The sections below keep type-safe
+# Navigation routes, MVI contracts, Hilt-generated classes, Firestore DTOs and
+# Crashlytics line info from being stripped or renamed.
 
 # -- Stack traces ----------------------------------------------------------
 -keepattributes SourceFile,LineNumberTable
@@ -68,6 +67,19 @@
 # -- Firebase / Crashlytics ------------------------------------------------
 -keep class com.google.firebase.crashlytics.** { *; }
 -dontwarn com.google.firebase.**
+
+# -- Firestore DTOs --------------------------------------------------------
+# `toObject`/`toObjects` and `set(dto)` map documents by *field name* via
+# reflection. Renaming `textEn` to `a` silently yields default values instead
+# of failing, so every DTO and its no-arg constructor must survive R8.
+-keepclassmembers class com.kovhan.data.library.dto.** {
+    <init>();
+    <fields>;
+}
+-keep class com.kovhan.data.library.dto.** { *; }
+-keepclassmembers class * {
+    @com.google.firebase.firestore.PropertyName *;
+}
 
 # -- WebView JS bridge (uncomment when a JS interface is wired) ------------
 #-keepclassmembers class com.kovhan.feature.webview.* {

@@ -32,9 +32,21 @@ class SettingsLocalDataSource @Inject constructor(
     override suspend fun setLanguage(language: AppLanguage) =
         dataStore.put(SettingsPreferences.Settings.LANGUAGE, language.tag)
 
+    override fun observeDailyQuoteEnabled(): Flow<Boolean> =
+        dataStore.get(SettingsPreferences.Settings.DAILY_QUOTE_ENABLED, true)
+
+    override suspend fun setDailyQuoteEnabled(enabled: Boolean) =
+        dataStore.put(SettingsPreferences.Settings.DAILY_QUOTE_ENABLED, enabled)
+
     override fun isCompleted(): Flow<Boolean> =
         dataStore.get(SettingsPreferences.Onboarding.COMPLETED, false)
 
     override suspend fun setCompleted(completed: Boolean) =
         dataStore.put(SettingsPreferences.Onboarding.COMPLETED, completed)
+
+    override fun isFabTooltipDismissed(): Flow<Boolean> =
+        dataStore.get(SettingsPreferences.Onboarding.FAB_TOOLTIP_DISMISSED, false)
+
+    override suspend fun setFabTooltipDismissed(dismissed: Boolean) =
+        dataStore.put(SettingsPreferences.Onboarding.FAB_TOOLTIP_DISMISSED, dismissed)
 }

@@ -1,11 +1,11 @@
 package com.kovhan.domain.library.use_case.quote
 
 import app.cash.turbine.test
-import com.kovhan.core.models.Quote
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.SavedAuthor
-import com.kovhan.core.models.SavedBook
-import com.kovhan.core.models.SavedTag
+import com.kovhan.core.models.quote.Quote
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.collections.SavedAuthor
+import com.kovhan.core.models.collections.SavedBook
+import com.kovhan.core.models.collections.SavedTag
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository
@@ -26,6 +26,7 @@ class ObserveEnrichedQuotesUseCaseTest {
     private lateinit var authorRepository: SavedAuthorRepository
     private lateinit var bookRepository: SavedBookRepository
     private lateinit var tagRepository: SavedTagRepository
+    private lateinit var collectionRepository: com.kovhan.domain.library.CollectionRepository
     private lateinit var useCase: ObserveEnrichedQuotesUseCase
 
     private val quote = Quote(id = "q1", text = "x", authorId = "a1", bookId = "b1", tagIds = listOf("t1"))
@@ -36,12 +37,14 @@ class ObserveEnrichedQuotesUseCaseTest {
         authorRepository = mockk()
         bookRepository = mockk()
         tagRepository = mockk()
+        collectionRepository = mockk()
         every { authorRepository.observeAll() } returns flowOf(listOf(SavedAuthor("a1", "Camus")))
         every { bookRepository.observeAll() } returns flowOf(listOf(SavedBook("b1", "The Rebel")))
         every { tagRepository.observeAll() } returns flowOf(listOf(SavedTag("t1", "Absurdism")))
+        every { collectionRepository.observeAll() } returns flowOf(emptyList())
         useCase = ObserveEnrichedQuotesUseCase(
             ObserveFilteredQuotesUseCase(quoteRepository),
-            EnrichQuotesUseCase(authorRepository, bookRepository, tagRepository),
+            EnrichQuotesUseCase(authorRepository, bookRepository, tagRepository, collectionRepository),
         )
     }
 

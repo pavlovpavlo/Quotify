@@ -6,6 +6,7 @@ on:
     branches: [ dev, main ]          # будь-який PR у dev або main
   push:
     branches:
+      - main                         # реліз-збірка → Firebase App Distribution
       - dev
       - 'feature/**'                 # усі гілки feature/...
       - 'fix/**'                     # усі гілки fix/...
@@ -17,7 +18,7 @@ concurrency:
 
 jobs:
   build-and-test:
-    name: Lint, тести та збірка
+    name: Lint, тести та debug-збірка
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -45,15 +46,15 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      # 7. Юніт-тести (JUnit 5 + MockK)
+      # 6. Юніт-тести (JUnit 5 + MockK)
       - name: Unit tests
         run: ./gradlew test --stacktrace
 
-      # 8. Збірка debug-APK (переконатися, що застосунок взагалі збирається)
+      # 7. Збірка debug-APK (переконатися, що застосунок взагалі збирається)
       - name: Assemble debug
         run: ./gradlew assembleDebug --stacktrace
 
-      # 9. Зберегти звіти тестів навіть якщо щось упало
+      # 8. Зберегти звіти тестів навіть якщо щось упало
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -61,14 +62,17 @@ jobs:
           name: test-reports
           path: '**/build/reports/tests/'
 
-      # 10. Зберегти зібраний APK як артефакт
+      # 9. Зберегти зібраний debug-APK як артефакт
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug 
+          name: app-debug
           path: app/build/outputs/apk/debug/*.apk
-          
-      - name: Upload to Firebase App Distribution
+
+      # 10. Debug-збірку роздаємо тестерам для всіх гілок, ОКРІМ main
+      #     (main отримує підписаний release нижче — щоб не було дублю).
+      - name: Upload debug to Firebase App Distribution
+        if: github.ref != 'refs/heads/main'
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
@@ -76,7 +80,84 @@ jobs:
           groups: qa
           file: app/build/outputs/apk/debug/app-debug.apk
           releaseNotes: |
-              Автозбірка з гілки: ${{ github.ref_name }}
+              Debug-автозбірка з гілки: ${{ github.ref_name }}
+
+              Коміт:
+              ${{ github.sha }}
+
+              Автор коміту:
+              ${{ github.event.head_commit.author.name }}
+
+              Опис коміту:
+              ${{ github.event.head_commit.message }}
+
+              Запустив workflow:
+              ${{ github.actor }}
+
+              Репозиторій:
+              ${{ github.repository }}
+
+  distribute-release:
+    name: Release → Firebase App Distribution (main)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # ТІЛЬКИ для пуша в main (не для PR і не для feature/main тощо)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Роздаємо реліз лише якщо тести/збірка пройшли
+    needs: build-and-test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Decode google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+
+      # Відновлюємо keystore з секрету (base64) у корінь проекту
+      - name: Decode release keystore
+        run: echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > quotify_release_key
+
+      # Створюємо keystore.properties, який читає app/build.gradle.kts
+      - name: Create keystore.properties
+        run: |
+          cat > keystore.properties <<'EOF'
+          storeFile=quotify_release_key
+          storePassword=${{ secrets.RELEASE_STORE_PASSWORD }}
+          keyAlias=${{ secrets.RELEASE_KEY_ALIAS }}
+          keyPassword=${{ secrets.RELEASE_KEY_PASSWORD }}
+          EOF
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      # Підписаний release-APK (versionCode = номер запуску, щоб версії не збігалися)
+      - name: Assemble release
+        run: ./gradlew assembleRelease -PversionCode=${{ github.run_number }} --stacktrace
+
+      - name: Upload release APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
+
+      - name: Upload release to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: qa
+          file: app/build/outputs/apk/release/app-release.apk
+          releaseNotes: |
+              RELEASE-збірка з main (#${{ github.run_number }})
 
               Коміт:
               ${{ github.sha }}

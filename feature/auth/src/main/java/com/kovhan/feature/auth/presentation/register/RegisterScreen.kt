@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +42,6 @@ fun RegisterScreen(
     intent: RegisterScreenIntent,
     navAction: RegisterScreenNavAction,
     paddingValues: PaddingValues,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val dimens = QuotifyMaterialTheme.dimensions
     val errorValidationMessage = remember {
@@ -55,7 +53,6 @@ fun RegisterScreen(
     AuthScreenScaffold(
         onBack = intent::onBackClicked,
         paddingValues = paddingValues,
-        snackbarHostState = snackbarHostState,
         footer = {
             AuthAltRow(
                 question = stringResource(R.string.sign_up_alt_q),

@@ -6,4 +6,8 @@ interface OnboardingRepository {
     fun isCompleted(): Flow<Boolean>
 
     suspend fun setCompleted(completed: Boolean)
+
+    fun isFabTooltipDismissed(): Flow<Boolean>
+
+    suspend fun setFabTooltipDismissed(dismissed: Boolean)
 }

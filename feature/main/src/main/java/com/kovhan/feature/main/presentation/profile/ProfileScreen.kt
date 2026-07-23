@@ -57,11 +57,11 @@ fun ProfileScreen(
             return@Box
         }
 
-        val displayName = state.user?.displayName?.takeIf { it.isNotBlank() }
-            ?: stringResource(R.string.profile_no_name)
+        val displayName = state.user?.displayName?.takeIf { it.isNotBlank() }.orEmpty()
         val email = state.user?.email
+        val isGoogleAccount = state.user?.isGoogleAccount == true
         val usernameValue = state.user?.username?.takeIf { it.isNotBlank() }
-            ?: email?.substringBefore("@")?.takeIf { it.isNotBlank() }
+            ?: email?.takeIf { isGoogleAccount }?.substringBefore("@")?.takeIf { it.isNotBlank() }
         val username = usernameValue?.let { "@$it" } ?: ""
         val reminderTime = "%02d:%02d".format(state.reminderHour, state.reminderMinute)
         val appVersion = LocalContext.current.appVersionName()
@@ -87,10 +87,10 @@ fun ProfileScreen(
 
             ProfileStatsCard(
                 modifier = Modifier.fillMaxWidth(),
-                quotes = state.stats.quotes,
-                books = state.stats.books,
-                folders = state.stats.folders,
-                authors = state.stats.authors,
+                quotes = state.stats.countOfQuotes,
+                books = state.stats.countOfBooks,
+                folders = state.stats.countOfCollections,
+                authors = state.stats.countOfAuthors,
             )
 
             Spacer(Modifier.height(14.dp))
@@ -126,7 +126,6 @@ fun ProfileScreen(
                 appearanceMeta = stringResource(themeMetaRes(state.theme)),
                 languageMeta = stringResource(languageMetaRes(state.language)),
                 aboutMeta = appVersion.takeIf { it.isNotBlank() }?.let { "v$it" }.orEmpty(),
-                onFoldersClick = navAction::navigateToSettings,
                 onEditProfileClick = navAction::navigateToEditProfile,
                 onAppearanceClick = intent::onAppearanceClicked,
                 onLanguageClick = intent::onLanguageClicked,

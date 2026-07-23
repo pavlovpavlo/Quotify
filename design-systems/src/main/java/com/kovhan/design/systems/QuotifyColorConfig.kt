@@ -50,6 +50,12 @@ data class QuotifyColorPalette(
     val accentPremiumHover: Color,
     val accentPremiumSoft: Color,
 
+    // Accent — Plum (fixed hex, shared light/dark)
+    val accentPlum: Color,
+
+    // Accent — Teal (fixed hex, shared light/dark)
+    val accentTeal: Color,
+
     // Status
     val error: Color,
     val errorSoft: Color,
@@ -86,6 +92,9 @@ val quotifyLightPalette = QuotifyColorPalette(
     accentPremiumHover = FolioLight.accentPremiumHover,
     accentPremiumSoft  = FolioLight.accentPremiumSoft,
 
+    accentPlum = FolioLight.accentPlum,
+    accentTeal = FolioLight.accentTeal,
+
     error     = FolioLight.error,
     errorSoft = FolioLight.errorSoft,
 )
@@ -120,6 +129,9 @@ val quotifyDarkPalette = QuotifyColorPalette(
     accentPremium      = FolioDark.accentPremium,
     accentPremiumHover = FolioDark.accentPremiumHover,
     accentPremiumSoft  = FolioDark.accentPremiumSoft,
+
+    accentPlum = FolioDark.accentPlum,
+    accentTeal = FolioDark.accentTeal,
 
     error     = FolioDark.error,
     errorSoft = FolioDark.errorSoft,

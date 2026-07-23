@@ -10,4 +10,8 @@ interface SettingsRepository {
     fun observeLanguage(): Flow<AppLanguage>
 
     suspend fun setLanguage(language: AppLanguage)
+
+    fun observeDailyQuoteEnabled(): Flow<Boolean>
+
+    suspend fun setDailyQuoteEnabled(enabled: Boolean)
 }

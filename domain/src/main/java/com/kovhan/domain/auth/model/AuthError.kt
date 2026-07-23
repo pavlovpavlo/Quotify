@@ -7,6 +7,8 @@ sealed class AuthError {
 
     data object EmailAlreadyInUse : AuthError()
 
+    data object CredentialAlreadyInUse : AuthError()
+
     data object WeakPassword : AuthError()
 
     data object UserNotFound : AuthError()

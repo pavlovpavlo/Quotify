@@ -1,6 +1,6 @@
 package com.kovhan.data.library.dto
 
-import com.kovhan.core.models.SavedCollection
+import com.kovhan.core.models.collections.SavedCollection
 
 data class CollectionDto(
     val id: String = "",

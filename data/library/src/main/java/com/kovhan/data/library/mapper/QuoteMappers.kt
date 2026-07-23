@@ -1,6 +1,6 @@
 package com.kovhan.data.library.mapper
 
-import com.kovhan.core.models.Quote
+import com.kovhan.core.models.quote.Quote
 import com.kovhan.data.library.dto.QuoteDto
 
 fun QuoteDto.toDomain() = Quote(
@@ -8,9 +8,11 @@ fun QuoteDto.toDomain() = Quote(
     text = text,
     authorId = authorId,
     bookId = bookId,
+    collectionId = collectionId,
     tagIds = tagIds,
     inPushPlaylist = inPushPlaylist,
     inWidgetPlaylist = inWidgetPlaylist,
+    sourceDailyId = sourceDailyId,
 )
 
 fun Quote.toDto() = QuoteDto(
@@ -18,7 +20,9 @@ fun Quote.toDto() = QuoteDto(
     text = text,
     authorId = authorId,
     bookId = bookId,
+    collectionId = collectionId,
     tagIds = tagIds,
     inPushPlaylist = inPushPlaylist,
     inWidgetPlaylist = inWidgetPlaylist,
+    sourceDailyId = sourceDailyId,
 )

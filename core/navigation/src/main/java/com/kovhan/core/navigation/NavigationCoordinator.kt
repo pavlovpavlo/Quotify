@@ -66,6 +66,20 @@ class NavigationCoordinator @Inject constructor() {
         }.send(result)
     }
 
+    /**
+     * Drops any buffered value for [resultKey]. Result channels buffer the last
+     * emitted value (capacity 1), so a result emitted while nobody was observing
+     * — e.g. creating a collection from the library — would otherwise be
+     * delivered to the next observer that mounts. Consumers that only care about
+     * results produced during their own lifetime should drain first.
+     */
+    fun clearResult(resultKey: String) {
+        val channel = resultChannels[resultKey] ?: return
+        do {
+            val outcome = channel.tryReceive()
+        } while (outcome.isSuccess)
+    }
+
     // ----------------------------------------------------------------
     // REGISTRATION
     // ----------------------------------------------------------------
@@ -458,5 +472,11 @@ class NavigationCoordinator @Inject constructor() {
         const val KEY_EDIT_FIELD_VALUE = "edit_field_value"
         const val KEY_LOGOUT_CONFIRMED = "logout_confirmed"
         const val KEY_DELETE_CONFIRMED = "delete_confirmed"
+        const val KEY_DAILY_QUOTE_HIDE_FOREVER = "daily_quote_hide_forever"
+        const val KEY_DAILY_QUOTE_HIDE_TODAY = "daily_quote_hide_today"
+        const val KEY_COLLECTION_CREATED = "collection_created"
+        const val KEY_TAG_SHEET_RESULT = "addquote_tag_sheet_result"
+        const val KEY_OFFLINE_RETRY = "offline_retry"
+        const val KEY_OFFLINE_DISMISS = "offline_dismiss"
     }
 }

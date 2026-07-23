@@ -1,7 +1,7 @@
 package com.kovhan.domain.library.use_case.author
 
-import com.kovhan.core.models.QuoteFilter
-import com.kovhan.core.models.SavedAuthor
+import com.kovhan.core.models.quote.QuoteFilter
+import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.matches

@@ -49,18 +49,17 @@ fun QuotifyOutlinedTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = OutlinedTextFieldDefaults.shape,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
-) {
-    val textSelectionColors = TextSelectionColors(
+    selectionColors: TextSelectionColors = TextSelectionColors(
         handleColor = Color.Transparent,
-        backgroundColor = QuotifyMaterialTheme.colors.bgElevated
-    )
-
+        backgroundColor = QuotifyMaterialTheme.colors.bgElevated,
+    ),
+) {
     val textColor = textStyle.color.takeOrElse {
         if (isError) QuotifyMaterialTheme.colors.error else textStyle.color
     }
     val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
 
-    CompositionLocalProvider(LocalTextSelectionColors provides textSelectionColors) {
+    CompositionLocalProvider(LocalTextSelectionColors provides selectionColors) {
         BasicTextField(
             value = value,
             modifier = modifier,

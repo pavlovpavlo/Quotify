@@ -1,6 +1,6 @@
 package com.kovhan.domain.library.use_case.book
 
-import com.kovhan.core.models.SavedBook
+import com.kovhan.core.models.collections.SavedBook
 import com.kovhan.domain.library.SavedBookRepository
 import javax.inject.Inject
 

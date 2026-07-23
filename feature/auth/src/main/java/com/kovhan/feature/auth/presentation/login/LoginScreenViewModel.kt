@@ -5,9 +5,11 @@ import com.kovhan.core.ui.constants.AppLinks
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.auth.model.AuthError
 import com.kovhan.domain.auth.model.AuthResult
-import com.kovhan.domain.auth.use_case.SignInUseCase
-import com.kovhan.domain.auth.use_case.SignInWithGoogleUseCase
+import com.kovhan.domain.auth.use_case.ConfirmDeleteWithGoogleUseCase
+import com.kovhan.domain.auth.use_case.ConfirmDeleteWithPasswordUseCase
 import com.kovhan.domain.auth.use_case.ValidateAuthInputUseCase
+import com.kovhan.domain.auth.use_case.guest.GuestAwareGoogleSignInUseCase
+import com.kovhan.domain.auth.use_case.guest.GuestAwareSignInUseCase
 import com.kovhan.core.models.onFailure
 import com.kovhan.core.models.onSuccess
 import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
@@ -21,11 +23,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-    private val signIn: SignInUseCase,
-    private val signInWithGoogle: SignInWithGoogleUseCase,
+    private val signIn: GuestAwareSignInUseCase,
+    private val signInWithGoogle: GuestAwareGoogleSignInUseCase,
     private val validateInput: ValidateAuthInputUseCase,
+    private val confirmDeleteWithPassword: ConfirmDeleteWithPasswordUseCase,
+    private val confirmDeleteWithGoogle: ConfirmDeleteWithGoogleUseCase,
 ) : BaseViewModel<LoginScreenState, LoginScreenEffect>(LoginScreenState()),
     LoginScreenIntent {
+
+    /** Switches the screen into the re-authentication step for confirming account deletion. */
+    fun enableConfirmDelete() = publishState { copy(confirmDelete = true) }
 
     override fun onEmailChanged(value: TextFieldValue) = publishState { copy(email = value, errorMessage = null, errorValidationMessage = null) }
     override fun onPasswordChanged(value: TextFieldValue) = publishState { copy(password = value, errorMessage = null, errorValidationMessage = null) }
@@ -41,8 +48,11 @@ class LoginScreenViewModel @Inject constructor(
 
         publishState { copy(isLoading = true) }
         viewModelScope.launch {
-            val result = signIn(current.email.text, current.password.text)
-            handleResult(result)
+            if (current.confirmDelete) {
+                handleDeleteResult(confirmDeleteWithPassword(current.email.text, current.password.text))
+            } else {
+                handleResult(signIn(current.email.text, current.password.text))
+            }
         }
     }
 
@@ -55,7 +65,11 @@ class LoginScreenViewModel @Inject constructor(
     override fun onGoogleSignInResult(outcome: GoogleSignInOutcome) {
         when (outcome) {
             is GoogleSignInOutcome.Success -> viewModelScope.launch {
-                handleResult(signInWithGoogle(outcome.idToken))
+                if (uiState.value.confirmDelete) {
+                    handleDeleteResult(confirmDeleteWithGoogle(outcome.idToken))
+                } else {
+                    handleResult(signInWithGoogle(outcome.idToken))
+                }
             }
             is GoogleSignInOutcome.Failure -> {
                 publishState { copy(isGoogleLoading = false) }
@@ -70,9 +84,14 @@ class LoginScreenViewModel @Inject constructor(
         publishState { copy(isLoading = false, isGoogleLoading = false) }
         result
             .onSuccess { publishEffect(LoginScreenEffect.NavigateToMain) }
-            .onFailure {
-                publishState { copy(errorMessage = it) }
-            }
+            .onFailure { publishState { copy(errorMessage = it) } }
+    }
+
+    private fun handleDeleteResult(result: AuthResult<Unit>) {
+        publishState { copy(isLoading = false, isGoogleLoading = false) }
+        result
+            .onSuccess { publishEffect(LoginScreenEffect.DeleteCompleted) }
+            .onFailure { publishState { copy(errorMessage = it) } }
     }
 
     override fun onForgotPasswordClicked() {

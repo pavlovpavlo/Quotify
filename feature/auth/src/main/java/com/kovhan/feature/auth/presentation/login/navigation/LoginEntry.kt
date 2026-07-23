@@ -1,20 +1,18 @@
 package com.kovhan.feature.auth.presentation.login.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.ForgotPasswordKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.RegisterKey
 import com.kovhan.core.navigation.WebViewKey
-import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
 import com.kovhan.design.systems.R
 import com.kovhan.feature.auth.presentation.google.rememberGoogleSignInClient
 import com.kovhan.feature.auth.presentation.login.LoginScreen
@@ -26,15 +24,17 @@ import kotlinx.coroutines.launch
 internal fun LoginEntry(
     coordinator: NavigationCoordinator,
     paddingValues: PaddingValues,
+    confirmDelete: Boolean = false,
 ) {
     val viewModel = hiltViewModel<LoginScreenViewModel>()
     val state = viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val googleSignInClient = rememberGoogleSignInClient()
-    val snackbarHostState = remember { SnackbarHostState() }
 
-    SnackbarMessageEffect(viewModel.snackbar, snackbarHostState)
+    LaunchedEffect(confirmDelete) {
+        if (confirmDelete) viewModel.enableConfirmDelete()
+    }
 
     val navAction = object : LoginScreenNavAction {
         override fun navigateBack() {
@@ -55,6 +55,7 @@ internal fun LoginEntry(
                     viewModel.onGoogleSignInResult(googleSignInClient.signIn(context))
                 }
                 LoginScreenEffect.NavigateToMain -> navAction.navigateToMain()
+                LoginScreenEffect.DeleteCompleted -> coordinator.navigateAndClearBackStack(CompleteKey)
                 LoginScreenEffect.NavigateToSignUp -> navAction.navigateToRegister()
                 LoginScreenEffect.NavigateToForgotPassword -> navAction.navigateToForgotPassword()
                 LoginScreenEffect.NavigateBack -> navAction.navigateBack()
@@ -75,6 +76,5 @@ internal fun LoginEntry(
         intent = viewModel,
         navAction = navAction,
         paddingValues = paddingValues,
-        snackbarHostState = snackbarHostState,
     )
 }
