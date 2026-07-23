@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.kovhan.core.ui.component.bottomsheet.QuotifyBottomSheet
-import com.kovhan.core.ui.component.bottomsheet.SheetTitleBar
 import com.kovhan.core.ui.component.button.QuotifyButton
 import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
 import com.kovhan.core.ui.component.combobox.QuotifyComboboxField
@@ -44,21 +43,14 @@ internal fun EntityQuoteEditSheet(
 
     QuotifyBottomSheet(
         onDismiss = onDismiss,
-        title = null,
+        title = stringResource(DsR.string.collection_details_quote_edit_title),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensions.space5, vertical = dimensions.space4)
+                .padding(start = dimensions.space5, end = dimensions.space5, bottom = dimensions.space4)
                 .verticalScroll(rememberScrollState()),
         ) {
-            SheetTitleBar(
-                title = stringResource(DsR.string.collection_details_quote_edit_title),
-                onClose = onDismiss,
-            )
-
-            Spacer(modifier = Modifier.height(dimensions.space4))
-
             QuoteEditTextField(
                 value = draft.text,
                 onValueChange = { onDraftChange(draft.copy(text = it)) },

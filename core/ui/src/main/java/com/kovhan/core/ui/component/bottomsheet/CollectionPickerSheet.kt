@@ -40,7 +40,6 @@ import com.kovhan.design.systems.R as DsR
  * parameters:
  *
  * - [busyCollectionId] shows a loading spinner on that row's add button.
- * - [showSelectedCheck] renders a check mark on the selected row.
  * - [countText] formats the per-collection quote count.
  * - [footer] is the trailing "create collection" affordance.
  */
@@ -56,7 +55,6 @@ fun CollectionPickerSheet(
     onDismiss: () -> Unit,
     footer: @Composable () -> Unit,
     busyCollectionId: String? = null,
-    showSelectedCheck: Boolean = false,
     countText: @Composable (Int) -> String = { it.toString() },
 ) {
     val dimensions = QuotifyMaterialTheme.dimensions
@@ -65,17 +63,13 @@ fun CollectionPickerSheet(
     QuotifyBottomSheet(
         onDismiss = onDismiss,
         sheetState = sheetState,
-        title = null,
+        title = title,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensions.space5, vertical = dimensions.space4),
+                .padding(start = dimensions.space5, end = dimensions.space5, bottom = dimensions.space4),
         ) {
-            SheetTitleBar(title = title, onClose = onDismiss)
-
-            Spacer(modifier = Modifier.height(dimensions.space3))
-
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(dimensions.size2),
@@ -85,7 +79,6 @@ fun CollectionPickerSheet(
                         collection = collection,
                         selected = collection.id == selectedCollectionId,
                         loading = busyCollectionId == collection.id,
-                        showCheck = showSelectedCheck,
                         countText = countText,
                         addContentDescription = addContentDescription,
                         onSelect = { onSelectCollection(collection.id) },
@@ -106,7 +99,6 @@ private fun CollectionPickerRow(
     collection: SavedCollection,
     selected: Boolean,
     loading: Boolean,
-    showCheck: Boolean,
     countText: @Composable (Int) -> String,
     addContentDescription: String,
     onSelect: () -> Unit,
@@ -157,17 +149,6 @@ private fun CollectionPickerRow(
                 text = countText(collection.quoteCount ?: 0),
                 style = typography.caption,
                 color = colors.textTertiary,
-            )
-        }
-
-        if (showCheck && selected) {
-            Image(
-                modifier = Modifier
-                    .padding(end = dimensions.size6)
-                    .size(dimensions.size22),
-                painter = painterResource(DsR.drawable.ic_check),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(colors.accentSaved),
             )
         }
 

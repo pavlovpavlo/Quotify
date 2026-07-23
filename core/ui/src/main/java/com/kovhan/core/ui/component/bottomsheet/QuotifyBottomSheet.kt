@@ -47,6 +47,7 @@ fun QuotifyBottomSheet(
     cornerRadius: Dp = QuotifyMaterialTheme.dimensions.radius2xl,
     floatingBottomSpacing: Dp = QuotifyMaterialTheme.dimensions.space6,
     title: String? = null,
+    onBack: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     LaunchedEffect(Unit) {
@@ -109,7 +110,11 @@ fun QuotifyBottomSheet(
         ProvideAppLocale {
             Box(modifier = Modifier.wrapContentHeight()) {
                 Column(modifier = contentModifier.then(cardModifier)) {
-                    BottomSheetHeader(title = title)
+                    BottomSheetHeader(
+                        title = title,
+                        onClose = onDismiss,
+                        onBack = onBack,
+                    )
                     content()
                 }
             }

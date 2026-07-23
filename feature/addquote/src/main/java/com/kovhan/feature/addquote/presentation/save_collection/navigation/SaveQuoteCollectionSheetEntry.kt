@@ -37,6 +37,7 @@ internal fun SaveQuoteCollectionSheetEntry(
     }
 
     LaunchedEffect(Unit) {
+        coordinator.clearResult(NavigationCoordinator.KEY_COLLECTION_CREATED)
         coordinator.observeResult<String>(NavigationCoordinator.KEY_COLLECTION_CREATED).collect { createdId ->
             if (createdId != null) {
                 viewModel.loadCollections(generalName, selectId = createdId)

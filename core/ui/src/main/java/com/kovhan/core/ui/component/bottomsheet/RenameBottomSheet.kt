@@ -1,12 +1,9 @@
 package com.kovhan.core.ui.component.bottomsheet
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,21 +57,13 @@ fun RenameBottomSheet(
 
     QuotifyBottomSheet(
         onDismiss = onDismiss,
-        title = null,
+        title = title,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensions.space5, vertical = dimensions.space4),
+                .padding(start = dimensions.space5, end = dimensions.space5, bottom = dimensions.space4),
         ) {
-            Text(
-                text = title,
-                style = QuotifyMaterialTheme.typography.h4,
-                color = QuotifyMaterialTheme.colors.textPrimary,
-            )
-
-            Spacer(modifier = Modifier.height(dimensions.space4))
-
             QuotifyTextField(
                 value = field,
                 onValueChange = { field = it.copy(text = it.text.take(maxLength)) },

@@ -4,22 +4,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -51,27 +50,22 @@ internal fun EditCollectionStyleSheet(
 ) {
     val colors = QuotifyMaterialTheme.colors
     val dimensions = QuotifyMaterialTheme.dimensions
-    val typography = QuotifyMaterialTheme.typography
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     QuotifyBottomSheet(
         onDismiss = onDismiss,
         sheetState = sheetState,
-        title = null,
+        title = stringResource(DsR.string.collection_details_style_title),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensions.space5, vertical = dimensions.space4),
+                .padding(
+                    start = dimensions.space5,
+                    end = dimensions.space5,
+                    bottom = dimensions.space4
+                ),
         ) {
-            Text(
-                text = stringResource(DsR.string.collection_details_style_title),
-                style = typography.h4,
-                color = colors.textPrimary,
-            )
-
-            Spacer(modifier = Modifier.height(dimensions.space4))
-
             Column(
                 modifier = Modifier
                     .heightIn(max = 340.dp)
@@ -81,35 +75,62 @@ internal fun EditCollectionStyleSheet(
 
                 Spacer(modifier = Modifier.height(dimensions.space3))
 
+                val swatchShape = RoundedCornerShape(dimensions.radiusFull)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())
                         .padding(top = dimensions.size2, bottom = dimensions.size4),
-                    horizontalArrangement = Arrangement.spacedBy(dimensions.size14),
+                    horizontalArrangement = Arrangement.spacedBy(dimensions.size7),
                 ) {
                     CollectionColorMapper.tones.forEach { tone ->
                         val swatchColor = CollectionColorMapper.toColor(tone, colors)
+                        val selected = draft.tone == tone
                         Box(
                             modifier = Modifier
-                                .size(dimensions.size52)
-                                .clip(CircleShape)
-                                .background(swatchColor)
-                                .border(
-                                    width = if (draft.tone == tone) dimensions.size2 else dimensions.size1,
-                                    color = if (draft.tone == tone) colors.textPrimary else Color.Transparent,
-                                    shape = CircleShape,
-                                )
+                                .weight(1f)
+                                .clip(swatchShape)
                                 .clickable { onToneChange(tone) },
                             contentAlignment = Alignment.Center,
                         ) {
-                            if (draft.tone == tone) {
-                                Image(
-                                    modifier = Modifier.size(dimensions.size22),
-                                    painter = painterResource(DsR.drawable.ic_check),
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(colors.textOnAccent),
-                                )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .then(
+                                        Modifier.border(
+                                            dimensions.size2,
+                                            if (selected) {
+                                                swatchColor.copy(alpha = 0.2f)
+                                            } else {
+                                                swatchColor.copy(alpha = 0f)
+                                            },
+                                            swatchShape
+                                        )
+                                    )
+                                    .padding(dimensions.size5)
+                                    .height(dimensions.size52)
+                                    .clip(swatchShape)
+                                    .background(swatchColor)
+                                    .then(
+                                        if (selected) {
+                                            Modifier.border(
+                                                dimensions.size2,
+                                                colors.textPrimary,
+                                                swatchShape
+                                            )
+                                        } else {
+                                            Modifier
+                                        },
+                                    ),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                if (selected) {
+                                    Image(
+                                        modifier = Modifier.size(dimensions.size22),
+                                        painter = painterResource(DsR.drawable.ic_check),
+                                        contentDescription = null,
+                                        colorFilter = ColorFilter.tint(Color.White),
+                                    )
+                                }
                             }
                         }
                     }

@@ -81,6 +81,7 @@ class EntityMoveQuoteSheetViewModel @Inject constructor(
 
         return (listOf(general) + collections.filterNot { it.id == SavedCollection.GENERAL_ID })
             .distinctBy { it.id }
+            .filterNot { it.id == SavedCollection.FAVOURITES_ID }
             .filterNot { it.id == excludedCollectionId }
     }
 }

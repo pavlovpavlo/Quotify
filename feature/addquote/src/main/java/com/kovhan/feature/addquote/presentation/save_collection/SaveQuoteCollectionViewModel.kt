@@ -22,7 +22,9 @@ class SaveQuoteCollectionViewModel @Inject constructor(
             val collections = getCollections(withCount = true)
             val general = collections.firstOrNull { it.id == SavedCollection.GENERAL_ID }
                 ?: SavedCollection(id = SavedCollection.GENERAL_ID, name = generalName)
-            val ordered = listOf(general) + collections.filterNot { it.id == SavedCollection.GENERAL_ID }
+            val ordered = listOf(general) + collections.filterNot {
+                it.id == SavedCollection.GENERAL_ID || it.id == SavedCollection.FAVOURITES_ID
+            }
             publishState {
                 copy(
                     collections = ordered,

@@ -69,14 +69,16 @@ fun EntityDetailsSummary(
             )
         }
 
-        Text(
-            text = pluralStringResource(
-                DsR.plurals.library_folder_quote_count,
-                summary.quoteCount,
-                summary.quoteCount,
-            ),
-            style = typography.caption.copy(fontWeight = FontWeight.W600),
-            color = colors.textTertiary,
-        )
+        if (summary.quoteCount > 0) {
+            Text(
+                text = pluralStringResource(
+                    DsR.plurals.library_folder_quote_count,
+                    summary.quoteCount,
+                    summary.quoteCount,
+                ),
+                style = typography.caption.copy(fontWeight = FontWeight.W600),
+                color = colors.textTertiary,
+            )
+        }
     }
 }

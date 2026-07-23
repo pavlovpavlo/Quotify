@@ -29,6 +29,7 @@ internal fun EntityMoveQuoteSheetEntry(
     }
 
     LaunchedEffect(Unit) {
+        coordinator.clearResult(NavigationCoordinator.KEY_COLLECTION_CREATED)
         coordinator.observeResult<String>(NavigationCoordinator.KEY_COLLECTION_CREATED)
             .collect { createdId ->
                 createdId ?: return@collect

@@ -66,6 +66,20 @@ class NavigationCoordinator @Inject constructor() {
         }.send(result)
     }
 
+    /**
+     * Drops any buffered value for [resultKey]. Result channels buffer the last
+     * emitted value (capacity 1), so a result emitted while nobody was observing
+     * — e.g. creating a collection from the library — would otherwise be
+     * delivered to the next observer that mounts. Consumers that only care about
+     * results produced during their own lifetime should drain first.
+     */
+    fun clearResult(resultKey: String) {
+        val channel = resultChannels[resultKey] ?: return
+        do {
+            val outcome = channel.tryReceive()
+        } while (outcome.isSuccess)
+    }
+
     // ----------------------------------------------------------------
     // REGISTRATION
     // ----------------------------------------------------------------

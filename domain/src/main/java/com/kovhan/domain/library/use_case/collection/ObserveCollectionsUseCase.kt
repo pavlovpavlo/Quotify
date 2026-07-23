@@ -24,5 +24,12 @@ class ObserveCollectionsUseCase @Inject constructor(
                     )
                 }
                 .filterNot { it.id == SavedCollection.GENERAL_ID && it.quoteCount == 0 }
+                .sortedBy { collection ->
+                    when (collection.id) {
+                        SavedCollection.FAVOURITES_ID -> 0
+                        SavedCollection.GENERAL_ID -> 1
+                        else -> 2
+                    }
+                }
         }
 }

@@ -35,7 +35,6 @@ internal fun EntityMoveQuoteSheet(
         onSelectCollection = onSelectCollection,
         onAddToCollection = onAddToCollection,
         onDismiss = onDismiss,
-        showSelectedCheck = true,
         countText = { count ->
             pluralStringResource(DsR.plurals.library_folder_quote_count, count, count)
         },
