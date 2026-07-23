@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -103,13 +101,11 @@ private fun SheetHeaderIconButton(
         size = dimensions.size44,
         debounceInterval = 0L,
     ) {
-        CompositionLocalProvider(LocalContentColor provides colors.textSecondary) {
-            Image(
-                modifier = Modifier.size(dimensions.iconLg),
-                painter = painterResource(icon),
-                contentDescription = contentDescription,
-                colorFilter = ColorFilter.tint(LocalContentColor.current),
-            )
-        }
+        Image(
+            modifier = Modifier.size(dimensions.iconLg),
+            painter = painterResource(icon),
+            contentDescription = contentDescription,
+            colorFilter = ColorFilter.tint(colors.textSecondary),
+        )
     }
 }

@@ -11,10 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -118,14 +116,12 @@ internal fun SearchField(
                     size = dimensions.size30,
                     debounceInterval = 0L,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides colors.textTertiary) {
-                        Image(
-                            modifier = Modifier.size(dimensions.size18),
-                            painter = painterResource(DsR.drawable.ic_close),
-                            contentDescription = stringResource(DsR.string.search_clear_cd),
-                            colorFilter = ColorFilter.tint(LocalContentColor.current),
-                        )
-                    }
+                    Image(
+                        modifier = Modifier.size(dimensions.size18),
+                        painter = painterResource(DsR.drawable.ic_close),
+                        contentDescription = stringResource(DsR.string.search_clear_cd),
+                        colorFilter = ColorFilter.tint(colors.textTertiary),
+                    )
                 }
             }
         }

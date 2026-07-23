@@ -2,9 +2,7 @@ package com.kovhan.feature.search.presentation.search.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -35,14 +33,12 @@ internal fun SearchTopBar(
                 size = dimensions.size38,
                 debounceInterval = 0L,
             ) {
-                CompositionLocalProvider(LocalContentColor provides colors.textSecondary) {
-                    Image(
-                        modifier = Modifier.size(dimensions.size22),
-                        painter = painterResource(DsR.drawable.ic_back),
-                        contentDescription = stringResource(DsR.string.details_back_cd),
-                        colorFilter = ColorFilter.tint(LocalContentColor.current),
-                    )
-                }
+                Image(
+                    modifier = Modifier.size(dimensions.size22),
+                    painter = painterResource(DsR.drawable.ic_back),
+                    contentDescription = stringResource(DsR.string.details_back_cd),
+                    colorFilter = ColorFilter.tint(colors.textSecondary),
+                )
             }
         },
     )

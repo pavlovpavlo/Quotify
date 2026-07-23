@@ -14,11 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -160,14 +158,12 @@ private fun CollectionPickerRow(
             size = dimensions.size40,
             debounceInterval = 0L,
         ) {
-            CompositionLocalProvider(LocalContentColor provides colors.accentPrimary) {
-                Image(
-                    modifier = Modifier.size(dimensions.size18),
-                    painter = painterResource(DsR.drawable.ic_plus),
-                    contentDescription = addContentDescription,
-                    colorFilter = ColorFilter.tint(LocalContentColor.current),
-                )
-            }
+            Image(
+                modifier = Modifier.size(dimensions.size18),
+                painter = painterResource(DsR.drawable.ic_plus),
+                contentDescription = addContentDescription,
+                colorFilter = ColorFilter.tint(colors.accentPrimary),
+            )
         }
     }
 }

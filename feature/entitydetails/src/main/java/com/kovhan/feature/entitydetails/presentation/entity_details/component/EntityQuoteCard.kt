@@ -3,9 +3,7 @@ package com.kovhan.feature.entitydetails.presentation.entity_details.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,14 +54,12 @@ fun EntityQuoteCard(
                     size = dimensions.size30,
                     debounceInterval = 0L,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides colors.textTertiary) {
-                        Image(
-                            modifier = Modifier.size(dimensions.size18),
-                            painter = painterResource(DsR.drawable.ic_more_vert),
-                            contentDescription = stringResource(DsR.string.collection_details_quote_menu_cd),
-                            colorFilter = ColorFilter.tint(LocalContentColor.current),
-                        )
-                    }
+                    Image(
+                        modifier = Modifier.size(dimensions.size18),
+                        painter = painterResource(DsR.drawable.ic_more_vert),
+                        contentDescription = stringResource(DsR.string.collection_details_quote_menu_cd),
+                        colorFilter = ColorFilter.tint(colors.textTertiary),
+                    )
                 }
 
                 ActionMenu(
