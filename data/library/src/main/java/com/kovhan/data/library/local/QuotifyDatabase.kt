@@ -24,6 +24,13 @@ import com.kovhan.data.library.local.library.SavedTagEntity
 import com.kovhan.data.library.local.library.StringListConverter
 import com.kovhan.data.library.local.library.SubscriptionDao
 import com.kovhan.data.library.local.library.SubscriptionEntity
+import com.kovhan.data.library.local.widget.PlaylistDao
+import com.kovhan.data.library.local.widget.PlaylistEntity
+import com.kovhan.data.library.local.widget.PlaylistSourceEntity
+import com.kovhan.data.library.local.widget.WidgetContentDao
+import com.kovhan.data.library.local.widget.WidgetQuoteEntity
+import com.kovhan.data.library.local.widget.WidgetSeenEntity
+import com.kovhan.data.library.local.widget.WidgetStateEntity
 
 @Database(
     entities = [
@@ -37,8 +44,13 @@ import com.kovhan.data.library.local.library.SubscriptionEntity
         SavedTagEntity::class,
         PendingOperationEntity::class,
         SubscriptionEntity::class,
+        PlaylistEntity::class,
+        PlaylistSourceEntity::class,
+        WidgetQuoteEntity::class,
+        WidgetSeenEntity::class,
+        WidgetStateEntity::class,
     ],
-    version = 5,
+    version = 7,
     exportSchema = false,
 )
 @TypeConverters(StringListConverter::class)
@@ -53,4 +65,6 @@ abstract class QuotifyDatabase : RoomDatabase() {
     abstract fun savedTagDao(): SavedTagDao
     abstract fun pendingOperationDao(): PendingOperationDao
     abstract fun subscriptionDao(): SubscriptionDao
+    abstract fun playlistDao(): PlaylistDao
+    abstract fun widgetContentDao(): WidgetContentDao
 }

@@ -4,12 +4,14 @@ import com.kovhan.data.library.connectivity.AndroidConnectivityRepository
 import com.kovhan.data.library.repository.AiUsageRepositoryImpl
 import com.kovhan.data.library.repository.CollectionRepositoryImpl
 import com.kovhan.data.library.repository.DailyQuoteRepositoryImpl
+import com.kovhan.data.library.repository.PlaylistRepositoryImpl
 import com.kovhan.data.library.repository.QuoteRepositoryImpl
 import com.kovhan.data.library.repository.SavedAuthorRepositoryImpl
 import com.kovhan.data.library.repository.SavedBookRepositoryImpl
 import com.kovhan.data.library.repository.SavedTagRepositoryImpl
 import com.kovhan.data.library.merge.GuestLibraryMergerImpl
 import com.kovhan.data.library.repository.SubscriptionRepositoryImpl
+import com.kovhan.data.library.repository.WidgetContentRepositoryImpl
 import com.kovhan.data.library.sync.LibrarySynchronizerImpl
 import com.kovhan.data.library.util.UuidIdGenerator
 import com.kovhan.domain.ai.AiUsageRepository
@@ -24,6 +26,8 @@ import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository
 import com.kovhan.domain.library.SavedTagRepository
 import com.kovhan.domain.library.sync.LibrarySynchronizer
+import com.kovhan.domain.widget.PlaylistRepository
+import com.kovhan.domain.widget.WidgetContentRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -82,4 +86,14 @@ abstract class LibraryDataModule {
     @Binds
     @Singleton
     abstract fun bindGuestLibraryMerger(impl: GuestLibraryMergerImpl): GuestLibraryMerger
+
+    @Binds
+    @Singleton
+    abstract fun bindPlaylistRepository(impl: PlaylistRepositoryImpl): PlaylistRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindWidgetContentRepository(
+        impl: WidgetContentRepositoryImpl,
+    ): WidgetContentRepository
 }

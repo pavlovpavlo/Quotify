@@ -35,6 +35,6 @@ data class PendingOperationEntity(
     }
 }
 
-enum class PendingEntityType { QUOTE, COLLECTION, AUTHOR, BOOK, TAG }
+enum class PendingEntityType { QUOTE, COLLECTION, AUTHOR, BOOK, TAG, PLAYLIST }
 
 enum class PendingOpType { UPSERT, DELETE }

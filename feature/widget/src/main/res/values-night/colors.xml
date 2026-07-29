@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Folio widget palette (dark). Mirrors folio-tokens.css dark theme. -->
+    <color name="widget_bg">#3A3024</color>
+    <color name="widget_text_primary">#F0EBE0</color>
+    <color name="widget_text_secondary">#8A8278</color>
+    <color name="widget_text_tertiary">#5F584F</color>
+    <color name="widget_eyebrow">#ECC585</color>
+</resources>

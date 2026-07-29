@@ -7,4 +7,5 @@ sealed class ProfileScreenEffect : UiEffect {
     data object OpenThemeSheet : ProfileScreenEffect()
     data object OpenLanguageSheet : ProfileScreenEffect()
     data object OpenReminderSheet : ProfileScreenEffect()
+    data object OpenWidgetSettings : ProfileScreenEffect()
 }

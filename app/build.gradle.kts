@@ -103,6 +103,7 @@ dependencies {
     implementation(project(":feature:auth"))
     implementation(project(":feature:webview"))
     implementation(project(":feature:addquote"))
+    implementation(project(":feature:widget"))
     implementationAndroidX()
     implementationCompose()
     implementationHilt()

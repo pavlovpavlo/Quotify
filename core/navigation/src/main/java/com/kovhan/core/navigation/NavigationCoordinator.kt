@@ -1,6 +1,9 @@
 package com.kovhan.core.navigation
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation3.runtime.NavKey
 import dagger.hilt.android.scopes.ActivityRetainedScoped
@@ -15,6 +18,14 @@ import kotlin.reflect.KClass
 class NavigationCoordinator @Inject constructor() {
 
     val backStack: SnapshotStateList<NavKey> = mutableStateListOf()
+
+    /**
+     * A destination requested from outside the app (e.g. the home-screen widget).
+     * Consumed once the back stack reaches a top-level key so the deep link never
+     * interrupts splash / auth. Observable so it fires even when the app is
+     * already foregrounded on a top-level screen.
+     */
+    var pendingDeepLink: NavKey? by mutableStateOf(null)
     val bottomSheetStack: SnapshotStateList<BottomSheetKey> =
         mutableStateListOf(PlaceholderBottomSheetKey)
     val dialogStack: SnapshotStateList<DialogKey> = mutableStateListOf(PlaceholderDialogKey)
@@ -478,5 +489,11 @@ class NavigationCoordinator @Inject constructor() {
         const val KEY_TAG_SHEET_RESULT = "addquote_tag_sheet_result"
         const val KEY_OFFLINE_RETRY = "offline_retry"
         const val KEY_OFFLINE_DISMISS = "offline_dismiss"
+        const val KEY_WIDGET_FREQUENCY = "widget_frequency"
+        const val KEY_PLAYLIST_NAME = "playlist_name"
+        const val KEY_PLAYLIST_SAVED = "playlist_saved"
+        const val KEY_PLAYLIST_DELETE = "playlist_delete"
+        const val KEY_WIDGET_QUOTE_DELETE = "widget_quote_delete"
+        const val KEY_QUOTE_EDIT_RESULT = "quote_edit_result"
     }
 }

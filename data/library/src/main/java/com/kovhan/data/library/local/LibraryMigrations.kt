@@ -44,3 +44,49 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
         )
     }
 }
+
+/**
+ * Adds the local-only widget playlist tables (playlists + playlist_sources).
+ * Additive only — no existing data is touched.
+ */
+val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `playlists` (" +
+                "`id` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `playlist_sources` (" +
+                "`playlistId` TEXT NOT NULL, `type` TEXT NOT NULL, `refId` TEXT NOT NULL, " +
+                "PRIMARY KEY(`playlistId`, `type`, `refId`), " +
+                "FOREIGN KEY(`playlistId`) REFERENCES `playlists`(`id`) " +
+                "ON UPDATE NO ACTION ON DELETE CASCADE)",
+        )
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS `index_playlist_sources_playlistId` " +
+                "ON `playlist_sources` (`playlistId`)",
+        )
+    }
+}
+
+/**
+ * Adds the widget-content tables: the resolved quote snapshot, the rotation
+ * "seen" set and the single-row current-quote state. Additive only.
+ */
+val MIGRATION_6_7 = object : Migration(6, 7) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `widget_quotes` (" +
+                "`quoteId` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`quoteId`))",
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `widget_seen` (" +
+                "`quoteId` TEXT NOT NULL, `shownAt` INTEGER NOT NULL, PRIMARY KEY(`quoteId`))",
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `widget_state` (" +
+                "`id` INTEGER NOT NULL, `currentQuoteId` TEXT, `lastRotatedAt` INTEGER NOT NULL, " +
+                "PRIMARY KEY(`id`))",
+        )
+    }
+}

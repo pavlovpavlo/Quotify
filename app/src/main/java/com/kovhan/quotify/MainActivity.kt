@@ -1,6 +1,7 @@
 ﻿package com.kovhan.quotify
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -27,7 +28,11 @@ import com.kovhan.core.ui.locale.LocalAppLocaleContext
 import com.kovhan.core.navigation.BottomSheetEntryBuilder
 import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.core.navigation.EntryBuilder
+import com.kovhan.core.navigation.EXTRA_OPEN_WIDGET_QUOTE
+import com.kovhan.core.navigation.EXTRA_OPEN_WIDGET_SETTINGS
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.WidgetQuoteKey
+import com.kovhan.core.navigation.WidgetSettingsKey
 import com.kovhan.core.ui.util.ContextUtils
 import com.kovhan.design.systems.QuotifyAppTheme
 import com.kovhan.domain.settings.AppTheme
@@ -79,6 +84,8 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         systemInDarkTheme.value = resources.configuration.isSystemInDarkTheme()
+
+        handleWidgetDeepLink(intent)
 
         activityRequired.forEach { it.onCreated(this) }
 
@@ -134,6 +141,24 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleWidgetDeepLink(intent)
+    }
+
+    private fun handleWidgetDeepLink(intent: Intent?) {
+        intent ?: return
+        val quoteId = intent.getStringExtra(EXTRA_OPEN_WIDGET_QUOTE)
+        when {
+            !quoteId.isNullOrBlank() ->
+                navigationCoordinator.pendingDeepLink = WidgetQuoteKey(quoteId)
+
+            intent.getBooleanExtra(EXTRA_OPEN_WIDGET_SETTINGS, false) ->
+                navigationCoordinator.pendingDeepLink = WidgetSettingsKey
         }
     }
 

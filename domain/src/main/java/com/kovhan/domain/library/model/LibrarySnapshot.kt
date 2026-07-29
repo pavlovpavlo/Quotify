@@ -5,6 +5,7 @@ import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.core.models.collections.SavedBook
 import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.models.collections.SavedTag
+import com.kovhan.core.models.widget.Playlist
 
 /**
  * An in-memory copy of the whole local library, captured before an auth switch that
@@ -18,4 +19,5 @@ data class LibrarySnapshot(
     val authors: List<SavedAuthor>,
     val books: List<SavedBook>,
     val tags: List<SavedTag>,
+    val playlists: List<Playlist> = emptyList(),
 )

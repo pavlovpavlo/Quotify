@@ -80,6 +80,28 @@ data object EditProfileKey : NavKey
 @Serializable
 data object AboutKey : NavKey
 
+/**
+ * Launch-intent extras set by the home-screen widget so [MainActivity] deep-links
+ * once the app reaches a top-level destination: to the settings screen, or to the
+ * read view of the shown quote (extra value = quote id).
+ */
+const val EXTRA_OPEN_WIDGET_SETTINGS = "com.kovhan.quotify.OPEN_WIDGET_SETTINGS"
+const val EXTRA_OPEN_WIDGET_QUOTE = "com.kovhan.quotify.OPEN_WIDGET_QUOTE"
+
+@Serializable
+data object WidgetSettingsKey : NavKey
+
+/** Simple read view for a single quote — opened by tapping the widget's quote. */
+@Serializable
+data class WidgetQuoteKey(val quoteId: String) : NavKey
+
+/**
+ * Playlist builder screen. In create mode [playlistId] is null; in edit mode it
+ * carries the id of the playlist being edited.
+ */
+@Serializable
+data class PlaylistPickerKey(val playlistId: String? = null) : NavKey
+
 @Serializable
 data class AddQuoteKey(val tab: AddQuoteTab = AddQuoteTab.TEXT) : NavKey
 
@@ -151,6 +173,17 @@ data class NewCollectionSheetKey(
 @Serializable
 data class RenameEntitySheetKey(
     val type: EntityType,
+    val initialName: String,
+) : BottomSheetKey
+
+/** Frequency picker for how often the home-screen widget rotates its quote. */
+@Serializable
+data class WidgetFrequencySheetKey(val hours: Int) : BottomSheetKey
+
+/** Name entry for a widget playlist — create or rename. */
+@Serializable
+data class PlaylistNameSheetKey(
+    val mode: PlaylistNameMode,
     val initialName: String,
 ) : BottomSheetKey
 
@@ -234,6 +267,9 @@ enum class EditField { NAME, USERNAME, EMAIL }
 
 @Serializable
 enum class AddQuoteTab { TEXT, SCAN, VOICE }
+
+@Serializable
+enum class PlaylistNameMode { CREATE, RENAME }
 
 @Serializable
 enum class AiLimitDialogReason {

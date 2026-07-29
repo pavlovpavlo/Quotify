@@ -207,6 +207,7 @@
     <string name="profile_widget_title">Add a quote widget</string>
     <string name="profile_widget_subtitle">A random quote from your library on your screen every day.</string>
     <string name="profile_widget_cta">Create widget</string>
+    <string name="profile_widget_cta_configure">Configure widget</string>
     <string name="profile_widget_preview_quote">“We are what we repeatedly do.”</string>
     <string name="profile_widget_preview_brand">Quotify</string>
 
@@ -388,4 +389,64 @@
     <string name="entity_delete_confirm">Delete</string>
     <string name="entity_delete_quote_message">The quote will be deleted forever. This action can\'t be undone.</string>
     <string name="entity_remove_quote_message">The quote will be removed from this list. The quote itself is kept.</string>
+
+    <!-- Widget settings -->
+    <string name="widget_settings_title">Widget settings</string>
+    <string name="widget_sources_label">Quote source</string>
+    <string name="widget_source_all">All quotes</string>
+    <string name="widget_source_favorites">Favorites</string>
+    <string name="widget_source_select_cd">Select source</string>
+    <string name="widget_create_playlist">Create playlist</string>
+    <plurals name="widget_quote_count">
+        <item quantity="one">%d quote</item>
+        <item quantity="other">%d quotes</item>
+    </plurals>
+    <string name="widget_display_label">Display</string>
+    <string name="widget_daily_quote_title">Add quote of the day</string>
+    <string name="widget_daily_quote_subtitle">The new daily quote will also appear in the rotation.</string>
+    <string name="widget_update_title">Refresh widget</string>
+    <string name="widget_update_subtitle">How often the quote on the widget changes.</string>
+    <string name="widget_frequency_hourly">Every hour</string>
+    <plurals name="widget_frequency_hours">
+        <item quantity="one">Every %d hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
+    <string name="widget_style_label">Widget style</string>
+    <string name="widget_style_minimal">Minimal</string>
+    <string name="widget_style_classic">Classic</string>
+    <string name="widget_style_cover">Cover</string>
+    <string name="widget_style_image_cd">Style preview</string>
+    <string name="widget_settings_cta">Add to home screen</string>
+    <string name="widget_settings_cta_update">Update</string>
+    <string name="widget_added_message">Widget added to your home screen</string>
+    <string name="widget_updated_message">Widget updated</string>
+
+    <!-- Widget frequency picker -->
+    <string name="widget_frequency_title">Change frequency</string>
+    <string name="widget_frequency_column">HOURS</string>
+    <string name="widget_frequency_confirm">Done</string>
+
+    <!-- Widget playlist picker -->
+    <string name="playlist_new_title">New playlist</string>
+    <string name="playlist_rename_title">Rename playlist</string>
+    <string name="playlist_name_label">Name</string>
+    <string name="playlist_name_placeholder">Playlist name</string>
+    <string name="playlist_create_confirm">Create playlist</string>
+    <string name="playlist_rename_confirm">Save</string>
+    <string name="playlist_save">Save</string>
+    <string name="playlist_search_placeholder">Search a quote, folder, tag, book or author</string>
+    <string name="playlist_menu_cd">Playlist menu</string>
+    <string name="playlist_menu_rename">Rename</string>
+    <string name="playlist_menu_delete">Delete</string>
+    <string name="playlist_delete_title">Delete playlist?</string>
+    <string name="playlist_delete_message">The playlist will be deleted. The quotes themselves are kept.</string>
+    <string name="playlist_delete_confirm">Delete</string>
+    <string name="playlist_picked_cd">Selected</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_quote_title">Quote</string>
+    <string name="widget_quote_edit">Edit</string>
+    <string name="widget_empty_title">Set up the widget</string>
+    <string name="widget_empty_hint">Tap to choose a quote source</string>
+    <string name="widget_pin_unsupported">Add the widget manually from the widget menu</string>
 </resources>

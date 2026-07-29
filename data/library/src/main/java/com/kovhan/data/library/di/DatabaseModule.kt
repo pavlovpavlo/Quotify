@@ -3,6 +3,8 @@ package com.kovhan.data.library.di
 import android.content.Context
 import androidx.room.Room
 import com.kovhan.data.library.local.MIGRATION_4_5
+import com.kovhan.data.library.local.MIGRATION_5_6
+import com.kovhan.data.library.local.MIGRATION_6_7
 import com.kovhan.data.library.local.QuotifyDatabase
 import com.kovhan.data.library.local.daily.DailyQuoteDao
 import com.kovhan.data.library.local.daily.DailySeenDao
@@ -14,6 +16,8 @@ import com.kovhan.data.library.local.library.SavedAuthorDao
 import com.kovhan.data.library.local.library.SavedBookDao
 import com.kovhan.data.library.local.library.SavedTagDao
 import com.kovhan.data.library.local.library.SubscriptionDao
+import com.kovhan.data.library.local.widget.PlaylistDao
+import com.kovhan.data.library.local.widget.WidgetContentDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +33,7 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): QuotifyDatabase =
         Room.databaseBuilder(context, QuotifyDatabase::class.java, DATABASE_NAME)
-            .addMigrations(MIGRATION_4_5)
+            .addMigrations(MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
             .build()
 
     @Provides
@@ -64,6 +68,13 @@ object DatabaseModule {
     @Provides
     fun provideSubscriptionDao(database: QuotifyDatabase): SubscriptionDao =
         database.subscriptionDao()
+
+    @Provides
+    fun providePlaylistDao(database: QuotifyDatabase): PlaylistDao = database.playlistDao()
+
+    @Provides
+    fun provideWidgetContentDao(database: QuotifyDatabase): WidgetContentDao =
+        database.widgetContentDao()
 
     private const val DATABASE_NAME = "quotify.db"
 }

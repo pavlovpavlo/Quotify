@@ -73,7 +73,7 @@ class ProfileScreenViewModel @Inject constructor(
 
     override fun onRateClicked() = rateApp()
 
-    override fun onCreateWidgetClicked() = Unit
+    override fun onCreateWidgetClicked() = publishEffect(ProfileScreenEffect.OpenWidgetSettings)
 
     override fun onShowQuoteOfDayToggled(enabled: Boolean) {
         publishState { copy(showQuoteOfDay = enabled) }

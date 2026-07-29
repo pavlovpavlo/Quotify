@@ -5,6 +5,8 @@ import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.core.models.collections.SavedBook
 import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.models.collections.SavedTag
+import com.kovhan.core.models.widget.Playlist
+import com.kovhan.core.models.widget.PlaylistSourceType
 import com.kovhan.data.library.local.library.PendingOperationDao
 import com.kovhan.domain.library.CollectionRepository
 import com.kovhan.domain.library.GuestLibraryMerger
@@ -13,6 +15,7 @@ import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository
 import com.kovhan.domain.library.SavedTagRepository
 import com.kovhan.domain.library.model.LibrarySnapshot
+import com.kovhan.domain.widget.PlaylistRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +26,7 @@ class GuestLibraryMergerImpl @Inject constructor(
     private val authorRepository: SavedAuthorRepository,
     private val bookRepository: SavedBookRepository,
     private val tagRepository: SavedTagRepository,
+    private val playlistRepository: PlaylistRepository,
     private val pendingDao: PendingOperationDao,
 ) : GuestLibraryMerger {
 
@@ -32,6 +36,7 @@ class GuestLibraryMergerImpl @Inject constructor(
         authors = authorRepository.getAll(),
         books = bookRepository.getAll(),
         tags = tagRepository.getAll(),
+        playlists = playlistRepository.getAll(),
     )
 
     override suspend fun clearPending() {
@@ -44,6 +49,7 @@ class GuestLibraryMergerImpl @Inject constructor(
         val bookRemap = mergeBooks(snapshot.books)
         val tagRemap = mergeTags(snapshot.tags)
         mergeQuotes(snapshot.quotes, collectionRemap, authorRemap, bookRemap, tagRemap)
+        mergePlaylists(snapshot.playlists, collectionRemap, authorRemap, bookRemap, tagRemap)
     }
 
     private suspend fun mergeCollections(guests: List<SavedCollection>): Map<String, String> {
@@ -143,6 +149,37 @@ class GuestLibraryMergerImpl @Inject constructor(
                     ),
                 )
             }
+        }
+    }
+
+    /**
+     * Keeps the guest's playlists, remapping each source id through the same
+     * remaps as quotes so FOLDER/TAG/BOOK/AUTHOR sources point at the merged
+     * target entities (QUOTE ids are preserved by [mergeQuotes]). A target
+     * playlist with the same name wins — the guest copy is dropped.
+     */
+    private suspend fun mergePlaylists(
+        guests: List<Playlist>,
+        collectionRemap: Map<String, String>,
+        authorRemap: Map<String, String>,
+        bookRemap: Map<String, String>,
+        tagRemap: Map<String, String>,
+    ) {
+        if (guests.isEmpty()) return
+        val existingByName = playlistRepository.getAll().associateBy { norm(it.name) }
+        for (guest in guests) {
+            if (existingByName.containsKey(norm(guest.name))) continue
+            val remappedSources = guest.sources.map { source ->
+                val newRef = when (source.type) {
+                    PlaylistSourceType.FOLDER -> collectionRemap[source.refId] ?: source.refId
+                    PlaylistSourceType.AUTHOR -> authorRemap[source.refId] ?: source.refId
+                    PlaylistSourceType.BOOK -> bookRemap[source.refId] ?: source.refId
+                    PlaylistSourceType.TAG -> tagRemap[source.refId] ?: source.refId
+                    PlaylistSourceType.QUOTE -> source.refId
+                }
+                source.copy(refId = newRef)
+            }.distinct()
+            playlistRepository.update(guest.copy(sources = remappedSources))
         }
     }
 

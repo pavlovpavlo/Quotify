@@ -12,6 +12,7 @@ import com.kovhan.core.navigation.LanguageSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.ReminderTimeSheetKey
 import com.kovhan.core.navigation.ThemeSheetKey
+import com.kovhan.core.navigation.WidgetSettingsKey
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import com.kovhan.feature.main.presentation.profile.ProfileScreen
@@ -72,6 +73,9 @@ internal fun ProfileEntry(
                             minute = viewModel.uiState.value.reminderMinute,
                         ),
                     )
+
+                ProfileScreenEffect.OpenWidgetSettings ->
+                    coordinator.navigate(WidgetSettingsKey)
             }
         }
     }

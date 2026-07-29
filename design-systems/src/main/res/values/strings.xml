@@ -228,6 +228,7 @@
     <string name="profile_widget_title">Постав віджет із цитатою</string>
     <string name="profile_widget_subtitle">Випадкова цитата з бібліотеки щодня просто на екрані.</string>
     <string name="profile_widget_cta">Створити віджет</string>
+    <string name="profile_widget_cta_configure">Налаштувати віджет</string>
     <string name="profile_widget_preview_quote">«Ми те, що ми постійно робимо.»</string>
     <string name="profile_widget_preview_brand">Quotify</string>
 
@@ -398,4 +399,68 @@
     <string name="entity_delete_confirm">Видалити</string>
     <string name="entity_delete_quote_message">Цитату буде видалено назавжди. Цю дію не можна скасувати.</string>
     <string name="entity_remove_quote_message">Цитату буде прибрано з цього списку. Саму цитату не видалено.</string>
+
+    <!-- Widget settings -->
+    <string name="widget_settings_title">Налаштування віджета</string>
+    <string name="widget_sources_label">Джерело цитат</string>
+    <string name="widget_source_all">Усі цитати</string>
+    <string name="widget_source_favorites">Улюблені</string>
+    <string name="widget_source_select_cd">Обрати джерело</string>
+    <string name="widget_create_playlist">Створити плейлист</string>
+    <plurals name="widget_quote_count">
+        <item quantity="one">%d цитата</item>
+        <item quantity="few">%d цитати</item>
+        <item quantity="many">%d цитат</item>
+        <item quantity="other">%d цитати</item>
+    </plurals>
+    <string name="widget_display_label">Показ</string>
+    <string name="widget_daily_quote_title">Додавати цитату дня</string>
+    <string name="widget_daily_quote_subtitle">Нова щоденна цитата теж потраплятиме у показ.</string>
+    <string name="widget_update_title">Оновлювати віджет</string>
+    <string name="widget_update_subtitle">Як часто цитата на віджеті змінюється.</string>
+    <string name="widget_frequency_hourly">Щогодини</string>
+    <plurals name="widget_frequency_hours">
+        <item quantity="one">Кожні %d годину</item>
+        <item quantity="few">Кожні %d години</item>
+        <item quantity="many">Кожні %d годин</item>
+        <item quantity="other">Кожні %d години</item>
+    </plurals>
+    <string name="widget_style_label">Вигляд віджета</string>
+    <string name="widget_style_minimal">Мінімальний</string>
+    <string name="widget_style_classic">Класичний</string>
+    <string name="widget_style_cover">Обкладинка</string>
+    <string name="widget_style_image_cd">Прев\'ю стилю</string>
+    <string name="widget_settings_cta">Додати на екран</string>
+    <string name="widget_settings_cta_update">Оновити</string>
+    <string name="widget_added_message">Віджет додано на головний екран</string>
+    <string name="widget_updated_message">Віджет оновлено</string>
+
+    <!-- Widget frequency picker -->
+    <string name="widget_frequency_title">Частота зміни</string>
+    <string name="widget_frequency_column">ГОДИНИ</string>
+    <string name="widget_frequency_confirm">Готово</string>
+
+    <!-- Widget playlist picker -->
+    <string name="playlist_new_title">Новий плейліст</string>
+    <string name="playlist_rename_title">Перейменувати плейлист</string>
+    <string name="playlist_name_label">Назва</string>
+    <string name="playlist_name_placeholder">Назва плейлиста</string>
+    <string name="playlist_create_confirm">Створити плейліст</string>
+    <string name="playlist_rename_confirm">Зберегти</string>
+    <string name="playlist_save">Зберегти</string>
+    <string name="playlist_search_placeholder">Шукати цитату, папку, тег, книгу чи автора</string>
+    <string name="playlist_menu_cd">Меню плейлиста</string>
+    <string name="playlist_menu_rename">Перейменувати</string>
+    <string name="playlist_menu_delete">Видалити</string>
+    <string name="playlist_delete_title">Видалити плейлист?</string>
+    <string name="playlist_delete_message">Плейлист буде видалено. Самі цитати залишаться недоторканими.</string>
+    <string name="playlist_delete_confirm">Видалити</string>
+    <string name="playlist_picked_cd">Обрано</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_quote_title">Цитата</string>
+    <string name="widget_quote_edit">Редагувати</string>
+    <string name="widget_empty_title">Налаштуйте віджет</string>
+    <string name="widget_empty_hint">Торкніться, щоб обрати джерело цитат</string>
+    <string name="widget_pin_unsupported">Додайте віджет вручну з меню віджетів</string>
 </resources>

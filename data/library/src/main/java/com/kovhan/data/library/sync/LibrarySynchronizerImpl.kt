@@ -10,9 +10,13 @@ import com.kovhan.data.library.local.library.QuoteDao
 import com.kovhan.data.library.local.library.SavedAuthorDao
 import com.kovhan.data.library.local.library.SavedBookDao
 import com.kovhan.data.library.local.library.SavedTagDao
+import com.kovhan.data.library.local.widget.PlaylistDao
 import com.kovhan.data.library.mapper.toDto
 import com.kovhan.data.library.mapper.toEntity
+import com.kovhan.data.library.mapper.toPlaylistEntity
+import com.kovhan.data.library.mapper.toSourceEntities
 import com.kovhan.data.library.remote.CollectionRemoteDataSource
+import com.kovhan.data.library.remote.PlaylistRemoteDataSource
 import com.kovhan.data.library.remote.QuoteRemoteDataSource
 import com.kovhan.data.library.remote.SavedAuthorRemoteDataSource
 import com.kovhan.data.library.remote.SavedBookRemoteDataSource
@@ -30,11 +34,13 @@ class LibrarySynchronizerImpl @Inject constructor(
     private val authorDao: SavedAuthorDao,
     private val bookDao: SavedBookDao,
     private val tagDao: SavedTagDao,
+    private val playlistDao: PlaylistDao,
     private val quoteRemote: QuoteRemoteDataSource,
     private val collectionRemote: CollectionRemoteDataSource,
     private val authorRemote: SavedAuthorRemoteDataSource,
     private val bookRemote: SavedBookRemoteDataSource,
     private val tagRemote: SavedTagRemoteDataSource,
+    private val playlistRemote: PlaylistRemoteDataSource,
 ) : LibrarySynchronizer {
 
     override suspend fun syncPendingChanges(): Boolean {
@@ -54,6 +60,13 @@ class LibrarySynchronizerImpl @Inject constructor(
         runCatching { authorDao.replaceAll(authorRemote.getAll().map { it.toEntity() }) }
         runCatching { bookDao.replaceAll(bookRemote.getAll().map { it.toEntity() }) }
         runCatching { tagDao.replaceAll(tagRemote.getAll().map { it.toEntity() }) }
+        runCatching {
+            val dtos = playlistRemote.getAll()
+            playlistDao.replaceAll(
+                playlists = dtos.map { it.toPlaylistEntity() },
+                sources = dtos.flatMap { it.toSourceEntities() },
+            )
+        }
     }
 
     override suspend fun clearLocal() {
@@ -63,6 +76,7 @@ class LibrarySynchronizerImpl @Inject constructor(
         runCatching { authorDao.clear() }
         runCatching { bookDao.clear() }
         runCatching { tagDao.clear() }
+        runCatching { playlistDao.clear() }
     }
 
     override suspend fun purgeRemote() {
@@ -72,6 +86,7 @@ class LibrarySynchronizerImpl @Inject constructor(
         runCatching { authorRemote.getAll().forEach { authorRemote.deleteById(it.id) } }
         runCatching { bookRemote.getAll().forEach { bookRemote.deleteById(it.id) } }
         runCatching { tagRemote.getAll().forEach { tagRemote.deleteById(it.id) } }
+        runCatching { playlistRemote.getAll().forEach { playlistRemote.deleteById(it.id) } }
     }
 
     private suspend fun push(op: PendingOperationEntity) {
@@ -96,6 +111,10 @@ class LibrarySynchronizerImpl @Inject constructor(
             PendingEntityType.TAG ->
                 if (isDelete) tagRemote.deleteById(op.entityId)
                 else tagDao.getById(op.entityId)?.let { tagRemote.edit(it.toDto()) }
+
+            PendingEntityType.PLAYLIST ->
+                if (isDelete) playlistRemote.deleteById(op.entityId)
+                else playlistDao.getById(op.entityId)?.let { playlistRemote.edit(it.toDto()) }
         }
     }
 }

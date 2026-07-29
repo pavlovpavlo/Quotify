@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kovhan.core.ui.widget.rememberHomeWidgetPlaced
 import com.kovhan.design.systems.InterFamily
 import com.kovhan.design.systems.NewsreaderFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
@@ -50,6 +51,7 @@ internal fun WidgetSection(
 ) {
     val colors = QuotifyMaterialTheme.colors
     val shape = RoundedCornerShape(QuotifyMaterialTheme.dimensions.radiusXl)
+    val widgetPlaced = rememberHomeWidgetPlaced()
 
     Column(modifier = modifier) {
         ProfileSectionTitle(stringResource(R.string.profile_widget_section))
@@ -101,7 +103,13 @@ internal fun WidgetSection(
                         colorFilter = ColorFilter.tint(colors.textOnAccent),
                     )
                     Text(
-                        text = stringResource(R.string.profile_widget_cta),
+                        text = stringResource(
+                            if (widgetPlaced) {
+                                R.string.profile_widget_cta_configure
+                            } else {
+                                R.string.profile_widget_cta
+                            },
+                        ),
                         color = colors.textOnAccent,
                         style = TextStyle(
                             fontFamily = InterFamily,

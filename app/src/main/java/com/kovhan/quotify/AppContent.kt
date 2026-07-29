@@ -33,6 +33,7 @@ import com.kovhan.core.navigation.EntryBuilder
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PlaceholderBottomSheetKey
 import com.kovhan.core.navigation.PlaceholderDialogKey
+import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.SplashKey
 import com.kovhan.core.ui.snackbar.QuotifySnackbar
 import com.kovhan.core.ui.snackbar.SnackbarMessage
@@ -63,6 +64,19 @@ fun AppContent(
     LaunchedEffect(Unit) {
         if (coordinator.backStack.isEmpty()) {
             coordinator.initialize(SplashKey)
+        }
+    }
+
+    // Deep link from the home-screen widget — held until the app reaches the main
+    // graph (so splash / onboarding / auth run first), then opened over the
+    // library tab so back leads there.
+    LaunchedEffect(coordinator.pendingDeepLink, coordinator.currentKey) {
+        val pending = coordinator.pendingDeepLink ?: return@LaunchedEffect
+        val reachedMain = coordinator.backStack.any { coordinator.isTopLevelKey(it) }
+        if (reachedMain) {
+            coordinator.pendingDeepLink = null
+            coordinator.navigate(QuotesKey)
+            coordinator.navigate(pending)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.kovhan.data.settings.local
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 internal object SettingsPreferences {
@@ -13,5 +14,12 @@ internal object SettingsPreferences {
     object Onboarding {
         val COMPLETED = booleanPreferencesKey("onboarding_completed")
         val FAB_TOOLTIP_DISMISSED = booleanPreferencesKey("fab_tooltip_dismissed")
+    }
+
+    object Widget {
+        val SOURCE = stringPreferencesKey("widget_source")
+        val INCLUDE_DAILY_QUOTE = booleanPreferencesKey("widget_include_daily_quote")
+        val FREQUENCY_HOURS = intPreferencesKey("widget_frequency_hours")
+        val STYLE = stringPreferencesKey("widget_style")
     }
 }
