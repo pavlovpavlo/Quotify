@@ -95,12 +95,14 @@ fun ProfileScreen(
 
             Spacer(Modifier.height(14.dp))
 
-            PremiumBanner(
-                modifier = Modifier.fillMaxWidth(),
-                onUpgradeClick = intent::onUpgradeClicked,
-            )
+            if (!state.isPremium) {
+                PremiumBanner(
+                    modifier = Modifier.fillMaxWidth(),
+                    onUpgradeClick = intent::onUpgradeClicked,
+                )
 
-            Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(14.dp))
+            }
 
             WidgetSection(
                 modifier = Modifier.fillMaxWidth(),
@@ -126,12 +128,17 @@ fun ProfileScreen(
                 appearanceMeta = stringResource(themeMetaRes(state.theme)),
                 languageMeta = stringResource(languageMetaRes(state.language)),
                 aboutMeta = appVersion.takeIf { it.isNotBlank() }?.let { "v$it" }.orEmpty(),
+                subscriptionMeta = if (state.isPremium) {
+                    stringResource(R.string.profile_settings_subscription_meta_premium)
+                } else {
+                    stringResource(R.string.profile_settings_subscription_meta)
+                },
                 onEditProfileClick = navAction::navigateToEditProfile,
                 onAppearanceClick = intent::onAppearanceClicked,
                 onLanguageClick = intent::onLanguageClicked,
                 onSubscriptionClick = intent::onUpgradeClicked,
                 onRateClick = intent::onRateClicked,
-                onSupportClick = navAction::navigateToSettings,
+                onSupportClick = intent::onSupportClicked,
                 onAboutClick = navAction::navigateToAbout,
             )
         }

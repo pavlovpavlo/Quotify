@@ -14,4 +14,5 @@ data class EnrichedQuote(
     val tags: List<SavedTag>,
     val inPushPlaylist: Boolean = false,
     val inWidgetPlaylist: Boolean = false,
+    val page: Int? = null,
 )

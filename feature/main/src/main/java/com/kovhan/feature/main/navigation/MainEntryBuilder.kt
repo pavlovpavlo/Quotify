@@ -9,14 +9,18 @@ import com.kovhan.core.navigation.EntryBuilder
 import com.kovhan.core.navigation.FavoritesKey
 import com.kovhan.core.navigation.HomeKey
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.ProfileKey
 import com.kovhan.core.navigation.QuotesKey
+import com.kovhan.core.navigation.SubscriptionKey
 import com.kovhan.feature.main.presentation.about.navigation.AboutEntry
 import com.kovhan.feature.main.presentation.edit_profile.navigation.EditProfileEntry
 import com.kovhan.feature.main.presentation.favorites.navigation.FavoritesEntry
 import com.kovhan.feature.main.presentation.home.navigation.HomeEntry
 import com.kovhan.feature.main.presentation.profile.navigation.ProfileEntry
 import com.kovhan.feature.main.presentation.quotes.navigation.QuotesEntry
+import com.kovhan.feature.main.presentation.subscription.navigation.CurrentSubscriptionEntry
+import com.kovhan.feature.main.presentation.subscription.navigation.PaywallEntry
 import javax.inject.Inject
 
 class MainEntryBuilder @Inject constructor() : EntryBuilder {
@@ -32,5 +36,7 @@ class MainEntryBuilder @Inject constructor() : EntryBuilder {
         scope.entry<ProfileKey> { ProfileEntry(coordinator, paddingValues) }
         scope.entry<EditProfileKey> { EditProfileEntry(coordinator, paddingValues) }
         scope.entry<AboutKey> { AboutEntry(coordinator, paddingValues) }
+        scope.entry<PaywallKey> { PaywallEntry(coordinator, paddingValues) }
+        scope.entry<SubscriptionKey> { CurrentSubscriptionEntry(coordinator, paddingValues) }
     }
 }

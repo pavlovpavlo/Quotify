@@ -26,6 +26,7 @@ class EntityQuoteEditSheetViewModel @Inject constructor() :
                     aiTags = key.aiTags,
                     inWidgetPlaylist = key.inWidgetPlaylist,
                     inPushPlaylist = key.inPushPlaylist,
+                    page = key.page,
                 ),
                 authorOptions = key.authorOptions,
                 bookOptions = key.bookOptions,

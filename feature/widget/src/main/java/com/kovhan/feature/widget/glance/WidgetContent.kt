@@ -42,6 +42,8 @@ internal data class WidgetStrings(
     val emptyHint: String,
 )
 
+private val COMPACT_HEIGHT = 90.dp
+
 @Composable
 internal fun WidgetContent(
     quote: WidgetQuote?,
@@ -51,6 +53,10 @@ internal fun WidgetContent(
     val primaryIntent =
         if (quote != null) openQuoteIntent(context, quote.id) else openSettingsIntent(context)
 
+    // Below two cells tall there is no room for the settings affordance next to
+    // the text, so the chrome collapses and the padding tightens.
+    val compact = LocalSize.current.height < COMPACT_HEIGHT
+
     Box(
         modifier = GlanceModifier
             .fillMaxSize()
@@ -59,28 +65,33 @@ internal fun WidgetContent(
             .cornerRadius(16.dp)
             .clickable(actionStartActivity(primaryIntent)),
     ) {
-        Box(modifier = GlanceModifier.fillMaxSize().padding(16.dp)) {
-            if (quote == null) EmptyState(strings) else QuoteState(quote)
+        Box(modifier = GlanceModifier.fillMaxSize().padding(if (compact) 8.dp else 16.dp)) {
+            if (quote == null) EmptyState(strings, compact) else QuoteState(quote, compact)
         }
 
-        Box(
-            modifier = GlanceModifier.fillMaxSize().padding(8.dp),
-            contentAlignment = Alignment.TopEnd,
-        ) {
-            Image(
-                provider = ImageProvider(DsR.drawable.ic_settings),
-                contentDescription = null,
-                modifier = GlanceModifier
-                    .size(20.dp)
-                    .clickable(actionStartActivity(openSettingsIntent(context))),
-                colorFilter = ColorFilter.tint(ColorProvider(R.color.widget_text_secondary)),
-            )
+        if (!compact) {
+            Box(
+                modifier = GlanceModifier.fillMaxSize().padding(8.dp),
+                contentAlignment = Alignment.TopEnd,
+            ) {
+                Image(
+                    provider = ImageProvider(DsR.drawable.ic_settings),
+                    contentDescription = null,
+                    modifier = GlanceModifier
+                        .size(20.dp)
+                        .clickable(actionStartActivity(openSettingsIntent(context))),
+                    colorFilter = ColorFilter.tint(ColorProvider(R.color.widget_text_secondary)),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun QuoteState(quote: WidgetQuote) {
+private fun QuoteState(
+    quote: WidgetQuote,
+    compact: Boolean,
+) {
     val meta = listOfNotNull(
         quote.authorName?.takeIf { it.isNotBlank() },
         quote.bookName?.takeIf { it.isNotBlank() },
@@ -88,6 +99,8 @@ private fun QuoteState(quote: WidgetQuote) {
 
     val height = LocalSize.current.height
     val maxLines = when {
+        height < 60.dp -> 1
+        height < 90.dp -> 2
         height < 120.dp -> 3
         height < 190.dp -> 5
         else -> 9
@@ -100,13 +113,13 @@ private fun QuoteState(quote: WidgetQuote) {
             modifier = GlanceModifier.fillMaxWidth().defaultWeight(),
             style = TextStyle(
                 color = ColorProvider(R.color.widget_text_primary),
-                fontSize = 16.sp,
+                fontSize = if (compact) 14.sp else 16.sp,
                 fontStyle = FontStyle.Italic,
                 fontFamily = FontFamily.Serif,
             ),
         )
 
-        if (meta.isNotEmpty()) {
+        if (meta.isNotEmpty() && !compact) {
             Text(
                 text = meta,
                 maxLines = 1,
@@ -122,7 +135,10 @@ private fun QuoteState(quote: WidgetQuote) {
 }
 
 @Composable
-private fun EmptyState(strings: WidgetStrings) {
+private fun EmptyState(
+    strings: WidgetStrings,
+    compact: Boolean,
+) {
     Column(
         modifier = GlanceModifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
@@ -130,21 +146,24 @@ private fun EmptyState(strings: WidgetStrings) {
     ) {
         Text(
             text = strings.emptyTitle,
+            maxLines = 1,
             style = TextStyle(
                 color = ColorProvider(R.color.widget_text_primary),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
             ),
         )
-        Spacer(GlanceModifier.height(4.dp))
-        Text(
-            text = strings.emptyHint,
-            maxLines = 2,
-            style = TextStyle(
-                color = ColorProvider(R.color.widget_text_secondary),
-                fontSize = 12.sp,
-            ),
-        )
+        if (!compact) {
+            Spacer(GlanceModifier.height(4.dp))
+            Text(
+                text = strings.emptyHint,
+                maxLines = 2,
+                style = TextStyle(
+                    color = ColorProvider(R.color.widget_text_secondary),
+                    fontSize = 12.sp,
+                ),
+            )
+        }
     }
 }
 

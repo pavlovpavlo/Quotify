@@ -3,6 +3,7 @@ package com.kovhan.quotify
 import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.core.ui.snackbar.SnackbarMessageSource
 import com.kovhan.core.ui.view_model.BaseViewModel
+import com.kovhan.domain.billing.use_case.InitializeBillingUseCase
 import com.kovhan.domain.onboarding.use_case.GetFabTooltipDismissedUseCase
 import com.kovhan.domain.onboarding.use_case.SetFabTooltipDismissedUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
@@ -21,6 +22,7 @@ class MainActivityViewModel @Inject constructor(
     getLanguage: GetLanguageUseCase,
     getFabTooltipDismissed: GetFabTooltipDismissedUseCase,
     private val setFabTooltipDismissed: SetFabTooltipDismissedUseCase,
+    private val initializeBilling: InitializeBillingUseCase,
     snackbarMessageSource: SnackbarMessageSource,
 ) : BaseViewModel<MainActivityState, MainActivityEffect>(MainActivityState()), MainIntent {
 
@@ -40,6 +42,9 @@ class MainActivityViewModel @Inject constructor(
         getFabTooltipDismissed()
             .onEach { dismissed -> publishState { copy(isFabTooltipVisible = !dismissed) } }
             .launchIn(viewModelScope)
+
+        // Без RTDN статус оновлюється при вході: перепитуємо Play і верифікуємо активні підписки.
+        viewModelScope.launch { runCatching { initializeBilling() } }
     }
 
     override fun onFabClicked() = dismissFabTooltip()

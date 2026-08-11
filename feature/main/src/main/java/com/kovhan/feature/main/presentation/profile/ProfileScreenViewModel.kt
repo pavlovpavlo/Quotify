@@ -1,9 +1,14 @@
 package com.kovhan.feature.main.presentation.profile
 
+import com.kovhan.core.ui.activity.ContactSupportUseCase
 import com.kovhan.core.ui.activity.RateAppUseCase
+import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.core.ui.view_model.BaseViewModel
+import com.kovhan.design.systems.R
 import com.kovhan.domain.auth.use_case.GetUserUseCase
 import com.kovhan.domain.auth.use_case.SignOutUseCase
+import com.kovhan.domain.billing.use_case.IsSubscribedUseCase
+import com.kovhan.domain.billing.use_case.ObservePurchaseVerificationsUseCase
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
@@ -33,11 +38,21 @@ class ProfileScreenViewModel @Inject constructor(
     private val setDailyQuoteEnabled: SetDailyQuoteEnabledUseCase,
     private val signOut: SignOutUseCase,
     private val rateApp: RateAppUseCase,
+    private val contactSupport: ContactSupportUseCase,
+    private val isSubscribed: IsSubscribedUseCase,
+    observePurchaseVerifications: ObservePurchaseVerificationsUseCase,
     getProfileStatisticUseCase: GetProfileStatisticUseCase
 ) : BaseViewModel<ProfileScreenState, ProfileScreenEffect>(ProfileScreenState()),
     ProfileScreenIntent {
 
     init {
+        refreshSubscription()
+
+        // Після успішної верифікації покупки бекенд уже переписав статус — перечитуємо його.
+        observePurchaseVerifications()
+            .onEach { refreshSubscription() }
+            .launchIn(viewModelScope)
+
         getUser()
             .onEach { user -> publishState { copy(user = user) } }
             .launchIn(viewModelScope)
@@ -69,9 +84,28 @@ class ProfileScreenViewModel @Inject constructor(
         }
     }
 
-    override fun onUpgradeClicked() = Unit
+    override fun onUpgradeClicked() = publishEffect(
+        if (uiState.value.isPremium) {
+            ProfileScreenEffect.OpenSubscription
+        } else {
+            ProfileScreenEffect.OpenPaywall
+        },
+    )
+
+    fun refreshSubscription() {
+        viewModelScope.launch {
+            val premium = runCatching { isSubscribed() }.getOrDefault(false)
+            publishState { copy(isPremium = premium) }
+        }
+    }
 
     override fun onRateClicked() = rateApp()
+
+    override fun onSupportClicked() {
+        if (!contactSupport()) {
+            showSnackbar(SnackbarMessage.error(R.string.support_email_no_app))
+        }
+    }
 
     override fun onCreateWidgetClicked() = publishEffect(ProfileScreenEffect.OpenWidgetSettings)
 

@@ -91,3 +91,12 @@ hs_err_pid*
 
 # === Tooling caches ===
 .claude/
+
+# === Cloudflare Worker (worker/) ===
+node_modules/
+.wrangler/
+.dev.vars
+# Приватний ключ сервісного акаунта Google (Play API + Firestore) — лише локально,
+# у Cloudflare він живе як secret GOOGLE_SA_KEY.
+worker/quotify-sa.json
+*-sa.json

@@ -51,6 +51,7 @@ class SaveQuoteCollectionViewModel @Inject constructor(
                 inWidgetPlaylist = draft.inWidgetPlaylist,
                 inPushPlaylist = draft.inPushPlaylist,
                 generalName = generalName,
+                page = draft.page,
             )
             publishEffect(SaveQuoteCollectionEffect.Saved)
         }

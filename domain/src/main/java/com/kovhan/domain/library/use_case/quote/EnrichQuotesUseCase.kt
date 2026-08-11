@@ -38,6 +38,7 @@ class EnrichQuotesUseCase @Inject constructor(
                     tags = quote.tagIds.mapNotNull { tagsById[it] },
                     inPushPlaylist = quote.inPushPlaylist,
                     inWidgetPlaylist = quote.inWidgetPlaylist,
+                    page = quote.page,
                 )
             }
         }

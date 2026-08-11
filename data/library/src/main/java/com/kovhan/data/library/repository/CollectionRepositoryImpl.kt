@@ -1,6 +1,7 @@
 package com.kovhan.data.library.repository
 
 import com.kovhan.core.models.collections.SavedCollection
+import com.kovhan.core.models.collections.withPinnedIcon
 import com.kovhan.data.library.local.library.CollectionDao
 import com.kovhan.data.library.local.library.PendingEntityType
 import com.kovhan.data.library.local.library.PendingOpType
@@ -21,13 +22,13 @@ class CollectionRepositoryImpl @Inject constructor(
 ) : CollectionRepository {
 
     override suspend fun getAll(): List<SavedCollection> =
-        dao.getAll().map { it.toDomain() }
+        dao.getAll().map { it.toDomain().withPinnedIcon() }
 
     override suspend fun getById(id: String): SavedCollection? =
-        dao.getById(id)?.toDomain()
+        dao.getById(id)?.toDomain()?.withPinnedIcon()
 
     override fun observeAll(): Flow<List<SavedCollection>> =
-        dao.observeAll().map { list -> list.map { it.toDomain() } }
+        dao.observeAll().map { list -> list.map { it.toDomain().withPinnedIcon() } }
 
     override suspend fun deleteById(id: String) {
         dao.deleteById(id)
@@ -35,7 +36,7 @@ class CollectionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun edit(item: SavedCollection) {
-        dao.upsert(item.toEntity())
+        dao.upsert(item.withPinnedIcon().toEntity())
         enqueue(item.id, PendingOpType.UPSERT)
     }
 

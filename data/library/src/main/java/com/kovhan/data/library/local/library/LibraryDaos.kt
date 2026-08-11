@@ -193,6 +193,9 @@ interface SubscriptionDao {
     @Query("SELECT isSubscribed FROM subscription_status WHERE id = :id")
     suspend fun get(id: Int = SubscriptionEntity.SINGLE_ROW_ID): Boolean?
 
+    @Query("SELECT * FROM subscription_status WHERE id = :id")
+    suspend fun getStatus(id: Int = SubscriptionEntity.SINGLE_ROW_ID): SubscriptionEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun set(entity: SubscriptionEntity)
 }

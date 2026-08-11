@@ -39,8 +39,10 @@ android {
         applicationId = "com.kovhan.quotify"
         minSdk = AppConfig.minSdk
         targetSdk = AppConfig.targetSdk
-        versionCode = (project.findProperty("versionCode") as String?)?.toInt() ?: 1
-        versionName = (project.findProperty("versionName") as String?) ?: "1.0"
+        versionCode = (project.findProperty("versionCode") as String?)?.toInt()
+            ?: AppConfig.AppVersion.getCode()
+        versionName = (project.findProperty("versionName") as String?)
+            ?: AppConfig.AppVersion.getName()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -52,6 +54,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -85,13 +88,22 @@ android {
 }
 
 dependencies {
+    constraints {
+        implementation(SoLoader.SO_LOADER_PATH) {
+            because("Play Console: SoLoader < 0.10.4 crashes on 64-bit devices")
+        }
+    }
+
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
     implementation(project(":domain"))
     implementation(project(":core:firebase"))
+    implementation(project(":core:network"))
+    implementation(project(":core:billing"))
     implementation(project(":data:auth"))
     implementation(project(":data:settings"))
     implementation(project(":data:library"))
+    implementation(project(":data:billing"))
     implementation(project(":data:voice"))
     implementation(project(":data:scan"))
     implementation(project(":design-systems"))

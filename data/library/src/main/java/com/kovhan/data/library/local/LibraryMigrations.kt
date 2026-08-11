@@ -90,3 +90,28 @@ val MIGRATION_6_7 = object : Migration(6, 7) {
         )
     }
 }
+
+/**
+ * Widens the subscription cache from a bare boolean to the full status, so the
+ * management UI can show "expires on" and "auto-renewing" while offline. Additive only.
+ */
+val MIGRATION_7_8 = object : Migration(7, 8) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `subscription_status` ADD COLUMN `status` TEXT")
+        db.execSQL("ALTER TABLE `subscription_status` ADD COLUMN `expiresAt` INTEGER")
+        db.execSQL(
+            "ALTER TABLE `subscription_status` ADD COLUMN `autoRenewing` INTEGER NOT NULL DEFAULT 0",
+        )
+        db.execSQL("ALTER TABLE `subscription_status` ADD COLUMN `productId` TEXT")
+    }
+}
+
+/**
+ * Adds the optional page number a quote was taken from. Nullable, so existing
+ * rows keep NULL and simply render without a page.
+ */
+val MIGRATION_8_9 = object : Migration(8, 9) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `quotes` ADD COLUMN `page` INTEGER")
+    }
+}

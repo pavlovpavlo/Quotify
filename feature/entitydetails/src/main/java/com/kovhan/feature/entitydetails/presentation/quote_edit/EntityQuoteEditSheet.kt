@@ -17,6 +17,7 @@ import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
 import com.kovhan.core.ui.component.combobox.QuotifyComboboxField
 import com.kovhan.core.ui.component.playlist.QuotifyPlaylistOptions
 import com.kovhan.core.ui.component.quote.EditableTagChips
+import com.kovhan.core.ui.component.quote.QuotePageInputField
 import com.kovhan.core.ui.component.text.QuotifyFieldLabel
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.feature.entitydetails.presentation.entity_details.model.EntityQuoteDraft
@@ -76,6 +77,14 @@ internal fun EntityQuoteEditSheet(
                 onOptionSelected = { onDraftChange(draft.copy(bookName = it)) },
                 options = bookOptions.matching(draft.bookName),
                 placeholder = stringResource(DsR.string.details_book_ph),
+            )
+
+            Spacer(modifier = Modifier.height(dimensions.space4))
+
+            QuotePageInputField(
+                value = draft.page,
+                onValueChange = { onDraftChange(draft.copy(page = it)) },
+                label = stringResource(DsR.string.details_field_page),
             )
 
             Spacer(modifier = Modifier.height(dimensions.space4))

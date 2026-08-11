@@ -15,4 +15,5 @@ data class QuoteDraft(
     val tagNames: List<String>,
     val inWidgetPlaylist: Boolean,
     val inPushPlaylist: Boolean,
+    val page: Int? = null,
 )

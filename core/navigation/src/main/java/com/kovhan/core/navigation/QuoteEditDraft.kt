@@ -10,4 +10,5 @@ data class QuoteEditDraft(
     val aiTags: List<String> = emptyList(),
     val inWidgetPlaylist: Boolean,
     val inPushPlaylist: Boolean,
+    val page: String = "",
 )

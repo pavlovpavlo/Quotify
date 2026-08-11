@@ -10,6 +10,7 @@ interface DetailsIntent {
     fun onAuthorPicked(name: String)
     fun onBookQueryChanged(value: String)
     fun onBookPicked(name: String)
+    fun onPageChanged(value: String)
 
     fun onOpenTagSheet()
     fun onRemoveTag(tag: String)
@@ -29,6 +30,7 @@ interface DetailsIntent {
             override fun onAuthorPicked(name: String) = Unit
             override fun onBookQueryChanged(value: String) = Unit
             override fun onBookPicked(name: String) = Unit
+            override fun onPageChanged(value: String) = Unit
             override fun onOpenTagSheet() = Unit
             override fun onRemoveTag(tag: String) = Unit
             override fun onWidgetToggle(enabled: Boolean) = Unit

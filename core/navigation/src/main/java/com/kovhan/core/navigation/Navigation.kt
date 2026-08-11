@@ -80,6 +80,14 @@ data object EditProfileKey : NavKey
 @Serializable
 data object AboutKey : NavKey
 
+/** Тимчасовий екран покупки підписки: список оферів, купівля, відновлення покупок. */
+@Serializable
+data object PaywallKey : NavKey
+
+/** Тимчасовий екран поточної підписки: статус, план, дата завершення. */
+@Serializable
+data object SubscriptionKey : NavKey
+
 /**
  * Launch-intent extras set by the home-screen widget so [MainActivity] deep-links
  * once the app reaches a top-level destination: to the settings screen, or to the
@@ -203,6 +211,7 @@ data class EditQuoteSheetKey(
     val aiTags: List<String>,
     val inWidgetPlaylist: Boolean,
     val inPushPlaylist: Boolean,
+    val page: String,
     val authorOptions: List<String>,
     val bookOptions: List<String>,
     val tagPool: List<String>,

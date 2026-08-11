@@ -64,7 +64,11 @@ class SaveDailyQuoteToFavouritesUseCaseTest {
 
         coVerify {
             collectionRepository.edit(
-                SavedCollection(id = SavedCollection.FAVOURITES_ID, name = "Favourites"),
+                SavedCollection(
+                    id = SavedCollection.FAVOURITES_ID,
+                    name = "Favourites",
+                    iconId = SavedCollection.FAVOURITES_ICON_ID,
+                ),
             )
         }
     }

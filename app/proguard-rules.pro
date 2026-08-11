@@ -81,6 +81,16 @@
     @com.google.firebase.firestore.PropertyName *;
 }
 
+# -- Credential Manager / Google Sign-In -----------------------------------
+# Required by the Credential Manager docs: the Play Services provider is loaded
+# reflectively, and the googleid option/credential travel through Bundles keyed
+# by class-derived type strings.
+-if class androidx.credentials.CredentialManager
+-keep class androidx.credentials.playservices.** {
+    *;
+}
+-keep class com.google.android.libraries.identity.googleid.** { *; }
+
 # -- WebView JS bridge (uncomment when a JS interface is wired) ------------
 #-keepclassmembers class com.kovhan.feature.webview.* {
 #    public *;

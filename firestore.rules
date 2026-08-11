@@ -1,0 +1,41 @@
+rules_version = '2';
+
+// Ключове правило платежів: клієнт НЕ має права писати `premium`.
+// Цю мапу пише лише бекенд (Cloudflare Worker) через Firestore REST з токеном
+// сервісного акаунта — такі запити правила обходять, як і Admin SDK.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // Дозволяємо запис профілю, доки мапа premium лишається незмінною.
+    function premiumUnchanged() {
+      return !('premium' in request.resource.data)
+        || (resource != null && request.resource.data.premium == resource.data.premium);
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create, update: if isOwner(uid) && premiumUnchanged();
+      allow delete: if isOwner(uid);
+
+      // Бібліотека користувача: quotes, collections, saved_*, playlists, ai_usage.
+      match /{document=**} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // Цитата дня — спільна колекція, лише для читання.
+    match /daily_quotes/{quoteId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // Службовий індекс purchase_tokens — виключно бекенд.
+    match /purchase_tokens/{token} {
+      allow read, write: if false;
+    }
+  }
+}

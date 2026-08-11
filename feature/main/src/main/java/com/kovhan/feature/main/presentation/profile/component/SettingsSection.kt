@@ -35,6 +35,7 @@ internal fun SettingsSection(
     appearanceMeta: String,
     languageMeta: String,
     aboutMeta: String,
+    subscriptionMeta: String,
     onEditProfileClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onLanguageClick: () -> Unit,
@@ -81,7 +82,7 @@ internal fun SettingsSection(
             SettingsRow(
                 iconRes = R.drawable.ic_card,
                 label = stringResource(R.string.profile_settings_subscription),
-                meta = stringResource(R.string.profile_settings_subscription_meta),
+                meta = subscriptionMeta,
                 onClick = onSubscriptionClick,
                 showDivider = true,
             )

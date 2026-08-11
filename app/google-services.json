@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "870530768225-4mjg2giksp4kp5u1lalhu5poeitfvf5c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kovhan.quotify",
+            "certificate_hash": "329e4d8290289d6b5d107439a12ced5d0aadb534"
+          }
+        },
+        {
           "client_id": "870530768225-7iln445dagm8m70ibl5guiahtd85t0hq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

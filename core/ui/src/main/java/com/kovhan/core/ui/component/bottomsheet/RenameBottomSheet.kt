@@ -25,6 +25,9 @@ import kotlinx.coroutines.delay
  * Reusable "rename" bottom sheet: a single autofocused text field capped at
  * [maxLength] plus a confirm button. All labels are passed in so the same sheet
  * works for collections, tags, books, authors and any other named entity.
+ *
+ * [onBack] adds the leading back chevron — pass it only when the sheet is a step
+ * inside a longer flow, not when it edits something that already exists.
  */
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +40,9 @@ fun RenameBottomSheet(
     onSave: (String) -> Unit,
     onDismiss: () -> Unit,
     maxLength: Int = 60,
+    onBack: (() -> Unit)? = null,
 ) {
+
     val dimensions = QuotifyMaterialTheme.dimensions
     var field by remember {
         mutableStateOf(TextFieldValue(initialName, TextRange(initialName.length)))
@@ -58,6 +63,7 @@ fun RenameBottomSheet(
     QuotifyBottomSheet(
         onDismiss = onDismiss,
         title = title,
+        onBack = onBack,
     ) {
         Column(
             modifier = Modifier

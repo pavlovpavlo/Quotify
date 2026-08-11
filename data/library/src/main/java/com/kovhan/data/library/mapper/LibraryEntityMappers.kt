@@ -28,6 +28,7 @@ fun QuoteEntity.toDomain() = Quote(
     inPushPlaylist = inPushPlaylist,
     inWidgetPlaylist = inWidgetPlaylist,
     sourceDailyId = sourceDailyId,
+    page = page,
 )
 
 fun Quote.toEntity() = QuoteEntity(
@@ -40,6 +41,7 @@ fun Quote.toEntity() = QuoteEntity(
     inPushPlaylist = inPushPlaylist,
     inWidgetPlaylist = inWidgetPlaylist,
     sourceDailyId = sourceDailyId,
+    page = page,
 )
 
 fun QuoteEntity.toDto() = QuoteDto(
@@ -52,6 +54,7 @@ fun QuoteEntity.toDto() = QuoteDto(
     inPushPlaylist = inPushPlaylist,
     inWidgetPlaylist = inWidgetPlaylist,
     sourceDailyId = sourceDailyId,
+    page = page,
 )
 
 fun QuoteDto.toEntity() = QuoteEntity(
@@ -64,6 +67,7 @@ fun QuoteDto.toEntity() = QuoteEntity(
     inPushPlaylist = inPushPlaylist,
     inWidgetPlaylist = inWidgetPlaylist,
     sourceDailyId = sourceDailyId,
+    page = page,
 )
 
 // endregion

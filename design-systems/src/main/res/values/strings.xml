@@ -62,6 +62,7 @@
     <string name="details_field_quote">Цитата</string>
     <string name="details_field_author">Автор</string>
     <string name="details_field_book">Книга</string>
+    <string name="details_field_page">Сторінка</string>
     <string name="details_field_tags">Теги</string>
     <string name="details_quote_ph">Впиши тут цитату…</string>
     <string name="details_author_ph">Автор або джерело</string>
@@ -258,9 +259,12 @@
     <string name="profile_settings_language_meta">Українська</string>
     <string name="profile_settings_subscription">Підписка</string>
     <string name="profile_settings_subscription_meta">Free</string>
+    <string name="profile_settings_subscription_meta_premium">Premium</string>
     <string name="profile_settings_rate">Оцінити застосунок</string>
     <string name="profile_settings_support">Підтримка</string>
     <string name="profile_settings_about">Про застосунок</string>
+    <string name="support_email_subject">%1$s — підтримка (v%2$s)</string>
+    <string name="support_email_no_app">Не знайдено застосунок для надсилання пошти</string>
     <string name="profile_settings_about_meta">v2.4</string>
     <string name="profile_version">Версія %1$s</string>
 

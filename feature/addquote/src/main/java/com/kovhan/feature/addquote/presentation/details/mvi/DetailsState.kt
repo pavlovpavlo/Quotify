@@ -11,6 +11,7 @@ data class DetailsState(
     val quote: TextFieldValue = TextFieldValue(),
     val authorQuery: String = "",
     val bookQuery: String = "",
+    val page: String = "",
     val authors: List<SavedAuthor> = emptyList(),
     val books: List<SavedBook> = emptyList(),
     val selectedTags: List<String> = emptyList(),

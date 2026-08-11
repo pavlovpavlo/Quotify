@@ -12,7 +12,9 @@ import com.kovhan.data.library.local.library.QuoteEntity
 import com.kovhan.data.library.local.library.SavedAuthorDao
 import com.kovhan.data.library.local.library.SavedBookDao
 import com.kovhan.data.library.local.library.SavedTagDao
+import com.kovhan.data.library.local.widget.PlaylistDao
 import com.kovhan.data.library.remote.CollectionRemoteDataSource
+import com.kovhan.data.library.remote.PlaylistRemoteDataSource
 import com.kovhan.data.library.remote.QuoteRemoteDataSource
 import com.kovhan.data.library.remote.SavedAuthorRemoteDataSource
 import com.kovhan.data.library.remote.SavedBookRemoteDataSource
@@ -38,11 +40,13 @@ class LibrarySynchronizerImplTest {
     private val authorDao: SavedAuthorDao = mockk(relaxed = true)
     private val bookDao: SavedBookDao = mockk(relaxed = true)
     private val tagDao: SavedTagDao = mockk(relaxed = true)
+    private val playlistDao: PlaylistDao = mockk(relaxed = true)
     private val quoteRemote: QuoteRemoteDataSource = mockk(relaxed = true)
     private val collectionRemote: CollectionRemoteDataSource = mockk(relaxed = true)
     private val authorRemote: SavedAuthorRemoteDataSource = mockk(relaxed = true)
     private val bookRemote: SavedBookRemoteDataSource = mockk(relaxed = true)
     private val tagRemote: SavedTagRemoteDataSource = mockk(relaxed = true)
+    private val playlistRemote: PlaylistRemoteDataSource = mockk(relaxed = true)
 
     private lateinit var synchronizer: LibrarySynchronizerImpl
 
@@ -54,8 +58,8 @@ class LibrarySynchronizerImplTest {
     @BeforeEach
     fun setUp() {
         synchronizer = LibrarySynchronizerImpl(
-            auth, pendingDao, quoteDao, collectionDao, authorDao, bookDao, tagDao,
-            quoteRemote, collectionRemote, authorRemote, bookRemote, tagRemote,
+            auth, pendingDao, quoteDao, collectionDao, authorDao, bookDao, tagDao, playlistDao,
+            quoteRemote, collectionRemote, authorRemote, bookRemote, tagRemote, playlistRemote,
         )
     }
 

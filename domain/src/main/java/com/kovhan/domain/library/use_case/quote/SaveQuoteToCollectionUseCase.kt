@@ -15,6 +15,7 @@ class SaveQuoteToCollectionUseCase @Inject constructor(
         inWidgetPlaylist: Boolean,
         inPushPlaylist: Boolean,
         generalName: String,
+        page: Int? = null,
     ) {
         upsertQuote(
             text = text,
@@ -25,6 +26,7 @@ class SaveQuoteToCollectionUseCase @Inject constructor(
             inWidgetPlaylist = inWidgetPlaylist,
             inPushPlaylist = inPushPlaylist,
             generalName = generalName,
+            page = page,
         )
     }
 }

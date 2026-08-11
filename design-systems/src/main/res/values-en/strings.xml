@@ -60,6 +60,7 @@
     <string name="details_field_quote">Quote</string>
     <string name="details_field_author">Author</string>
     <string name="details_field_book">Book</string>
+    <string name="details_field_page">Page</string>
     <string name="details_field_tags">Tags</string>
     <string name="details_quote_ph">Type the quote here…</string>
     <string name="details_author_ph">Author or source</string>
@@ -237,9 +238,12 @@
     <string name="profile_settings_language_meta">English</string>
     <string name="profile_settings_subscription">Subscription</string>
     <string name="profile_settings_subscription_meta">Free</string>
+    <string name="profile_settings_subscription_meta_premium">Premium</string>
     <string name="profile_settings_rate">Rate the app</string>
     <string name="profile_settings_support">Support</string>
     <string name="profile_settings_about">About</string>
+    <string name="support_email_subject">%1$s — support (v%2$s)</string>
+    <string name="support_email_no_app">No mail app found</string>
     <string name="profile_settings_about_meta">v2.4</string>
     <string name="profile_version">Version %1$s</string>
     <string name="about_title">About</string>

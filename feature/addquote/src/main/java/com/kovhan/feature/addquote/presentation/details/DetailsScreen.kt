@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import com.kovhan.core.ui.component.combobox.QuotifyComboboxField
 import com.kovhan.core.ui.component.playlist.QuotifyPlaylistOptions
+import com.kovhan.core.ui.component.quote.QuotePageInputField
 import com.kovhan.core.ui.component.quote.QuoteTextInputField
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
@@ -91,6 +92,11 @@ fun DetailsScreen(
                     onOptionSelected = intent::onBookPicked,
                     options = state.filteredBookNames,
                     placeholder = stringResource(R.string.details_book_ph),
+                )
+                QuotePageInputField(
+                    value = state.page,
+                    onValueChange = intent::onPageChanged,
+                    label = stringResource(R.string.details_field_page),
                 )
                 TagEditor(
                     tags = state.selectedTags,

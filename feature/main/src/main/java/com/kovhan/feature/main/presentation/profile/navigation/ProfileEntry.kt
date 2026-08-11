@@ -10,7 +10,9 @@ import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.EditProfileKey
 import com.kovhan.core.navigation.LanguageSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.ReminderTimeSheetKey
+import com.kovhan.core.navigation.SubscriptionKey
 import com.kovhan.core.navigation.ThemeSheetKey
 import com.kovhan.core.navigation.WidgetSettingsKey
 import com.kovhan.domain.settings.AppLanguage
@@ -31,8 +33,6 @@ internal fun ProfileEntry(
         override fun navigateBack() {
             coordinator.goBack()
         }
-
-        override fun navigateToSettings() = Unit
 
         override fun navigateToEditProfile() = coordinator.navigate(EditProfileKey)
 
@@ -76,6 +76,10 @@ internal fun ProfileEntry(
 
                 ProfileScreenEffect.OpenWidgetSettings ->
                     coordinator.navigate(WidgetSettingsKey)
+
+                ProfileScreenEffect.OpenPaywall -> coordinator.navigate(PaywallKey)
+
+                ProfileScreenEffect.OpenSubscription -> coordinator.navigate(SubscriptionKey)
             }
         }
     }

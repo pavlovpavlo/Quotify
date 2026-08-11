@@ -13,6 +13,7 @@ fun QuoteDto.toDomain() = Quote(
     inPushPlaylist = inPushPlaylist,
     inWidgetPlaylist = inWidgetPlaylist,
     sourceDailyId = sourceDailyId,
+    page = page,
 )
 
 fun Quote.toDto() = QuoteDto(
@@ -25,4 +26,5 @@ fun Quote.toDto() = QuoteDto(
     inPushPlaylist = inPushPlaylist,
     inWidgetPlaylist = inWidgetPlaylist,
     sourceDailyId = sourceDailyId,
+    page = page,
 )

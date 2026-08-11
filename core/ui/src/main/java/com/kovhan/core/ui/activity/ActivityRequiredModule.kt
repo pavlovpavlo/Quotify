@@ -13,4 +13,8 @@ class ActivityRequiredModule {
     @Provides
     @IntoSet
     fun provideRateAppUseCase(useCase: RateAppUseCase): ActivityRequired = useCase
+
+    @Provides
+    @IntoSet
+    fun provideContactSupportUseCase(useCase: ContactSupportUseCase): ActivityRequired = useCase
 }

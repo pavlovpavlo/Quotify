@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -28,7 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
-import coil.compose.AsyncImage
+import com.kovhan.core.ui.component.UserAvatarImage
 import com.kovhan.design.systems.JetBrainsMonoFamily
 import com.kovhan.design.systems.NewsreaderFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
@@ -66,26 +65,11 @@ internal fun ProfileHeader(
                     .border(1.dp, colors.border, CircleShape),
                 contentAlignment = Alignment.Center,
             ) {
-                if (photoUrl != null) {
-                    AsyncImage(
-                        model = photoUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape),
-                    )
-                } else {
-                    Text(
-                        text = displayName.take(1).uppercase(),
-                        color = colors.accentPrimary,
-                        style = TextStyle(
-                            fontFamily = NewsreaderFamily,
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.W600,
-                        ),
-                    )
-                }
+                UserAvatarImage(
+                    photoUrl = photoUrl,
+                    iconSize = 38.dp,
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
 
             Box(

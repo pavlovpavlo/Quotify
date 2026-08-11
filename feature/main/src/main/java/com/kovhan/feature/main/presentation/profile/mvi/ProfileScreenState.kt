@@ -11,6 +11,7 @@ data class ProfileScreenState(
     val isLoading: Boolean = false,
     val isSigningOut: Boolean = false,
     val stats: ProfileStatistic = ProfileStatistic(),
+    val isPremium: Boolean = false,
     val showQuoteOfDay: Boolean = true,
     val notificationsEnabled: Boolean = true,
     val reminderHour: Int = 9,

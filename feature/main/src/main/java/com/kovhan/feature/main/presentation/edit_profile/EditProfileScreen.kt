@@ -70,7 +70,6 @@ fun EditProfileScreen(
             ) {
                 EditAvatar(
                     photoUrl = state.user?.photoUrl,
-                    initialLetter = displayName.take(1).uppercase(),
                     onCameraClick = intent::onPhotoClicked,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)

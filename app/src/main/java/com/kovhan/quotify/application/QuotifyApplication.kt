@@ -13,9 +13,7 @@ class QuotifyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         val debuggable = applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
-        if (debuggable) {
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(if (debuggable) Timber.DebugTree() else CrashlyticsTree())
         AppCheckInstaller.install(this)
     }
 

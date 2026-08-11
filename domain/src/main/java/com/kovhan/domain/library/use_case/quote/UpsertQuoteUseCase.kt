@@ -29,6 +29,7 @@ class UpsertQuoteUseCase @Inject constructor(
         generalName: String,
         id: String = idGenerator.generate(),
         sourceDailyId: String? = null,
+        page: Int? = null,
     ) {
         val authorId = resolveAuthorId(authorName)
         val bookId = resolveBookId(bookName)
@@ -45,6 +46,7 @@ class UpsertQuoteUseCase @Inject constructor(
                 inWidgetPlaylist = inWidgetPlaylist,
                 inPushPlaylist = inPushPlaylist,
                 sourceDailyId = sourceDailyId,
+                page = page,
             ),
             generalName = generalName,
         )

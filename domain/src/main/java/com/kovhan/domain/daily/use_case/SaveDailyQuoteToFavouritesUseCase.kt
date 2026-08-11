@@ -30,7 +30,11 @@ class SaveDailyQuoteToFavouritesUseCase @Inject constructor(
     ) {
         if (collectionRepository.getById(SavedCollection.FAVOURITES_ID) == null) {
             collectionRepository.edit(
-                SavedCollection(id = SavedCollection.FAVOURITES_ID, name = favouritesName),
+                SavedCollection(
+                    id = SavedCollection.FAVOURITES_ID,
+                    name = favouritesName,
+                    iconId = SavedCollection.FAVOURITES_ICON_ID,
+                ),
             )
         }
 

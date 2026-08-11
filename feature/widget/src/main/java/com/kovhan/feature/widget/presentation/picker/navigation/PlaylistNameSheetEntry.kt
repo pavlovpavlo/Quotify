@@ -25,6 +25,10 @@ internal fun PlaylistNameSheetEntry(
         PlaylistNameMode.CREATE -> DsR.string.playlist_create_confirm
         PlaylistNameMode.RENAME -> DsR.string.playlist_rename_confirm
     }
+    val onBack: (() -> Unit)? = when (key.mode) {
+        PlaylistNameMode.CREATE -> ({ coordinator.dismissBottomSheet() })
+        PlaylistNameMode.RENAME -> null
+    }
 
     RenameBottomSheet(
         title = stringResource(titleRes),
@@ -39,5 +43,6 @@ internal fun PlaylistNameSheetEntry(
             }
         },
         onDismiss = coordinator::dismissBottomSheet,
+        onBack = onBack,
     )
 }

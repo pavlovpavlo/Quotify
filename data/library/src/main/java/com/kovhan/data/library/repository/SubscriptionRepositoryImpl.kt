@@ -1,5 +1,7 @@
 package com.kovhan.data.library.repository
 
+import com.kovhan.core.models.billing.SubscriptionStatus
+import com.kovhan.core.models.billing.isEntitled
 import com.kovhan.data.library.local.library.SubscriptionDao
 import com.kovhan.data.library.local.library.SubscriptionEntity
 import com.kovhan.data.library.remote.SubscriptionRemoteDataSource
@@ -19,16 +21,37 @@ class SubscriptionRepositoryImpl @Inject constructor(
     private val cacheDao: SubscriptionDao,
 ) : SubscriptionRepository {
 
-    override suspend fun isSubscribed(): Boolean {
+    override suspend fun isSubscribed(): Boolean = getStatus().isEntitled()
+
+    override suspend fun getStatus(): SubscriptionStatus {
         if (connectivity.isOnline()) {
-            return runCatching {
-                val subscribed = remote.isSubscribed()
-                cacheDao.set(SubscriptionEntity(isSubscribed = subscribed))
-                subscribed
-            }.getOrElse { cachedStatus() }
+            return runCatching { refresh() }.getOrElse { cachedStatus() }
         }
         return cachedStatus()
     }
 
-    private suspend fun cachedStatus(): Boolean = cacheDao.get() ?: false
+    override suspend fun refresh(): SubscriptionStatus {
+        val status = remote.getStatus()
+        cacheDao.set(
+            SubscriptionEntity(
+                isSubscribed = status.isEntitled(),
+                status = status.status,
+                expiresAt = status.expiresAt,
+                autoRenewing = status.autoRenewing,
+                productId = status.productId,
+            ),
+        )
+        return status
+    }
+
+    private suspend fun cachedStatus(): SubscriptionStatus {
+        val cached = cacheDao.getStatus() ?: return SubscriptionStatus.None
+        return SubscriptionStatus(
+            isActive = cached.isSubscribed,
+            status = cached.status,
+            expiresAt = cached.expiresAt,
+            autoRenewing = cached.autoRenewing,
+            productId = cached.productId,
+        )
+    }
 }

@@ -8,4 +8,6 @@ sealed class ProfileScreenEffect : UiEffect {
     data object OpenLanguageSheet : ProfileScreenEffect()
     data object OpenReminderSheet : ProfileScreenEffect()
     data object OpenWidgetSettings : ProfileScreenEffect()
+    data object OpenPaywall : ProfileScreenEffect()
+    data object OpenSubscription : ProfileScreenEffect()
 }

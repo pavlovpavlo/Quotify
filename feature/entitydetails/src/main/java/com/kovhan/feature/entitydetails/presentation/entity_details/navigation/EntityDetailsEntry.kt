@@ -120,6 +120,7 @@ internal fun EntityDetailsEntry(
                             aiTags = effect.draft.aiTags,
                             inWidgetPlaylist = effect.draft.inWidgetPlaylist,
                             inPushPlaylist = effect.draft.inPushPlaylist,
+                            page = effect.draft.page,
                             authorOptions = effect.authorOptions,
                             bookOptions = effect.bookOptions,
                             tagPool = effect.tagPool,

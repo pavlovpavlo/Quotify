@@ -79,6 +79,7 @@ class WidgetQuoteViewModel @Inject constructor(
                     tags = quote.tags.map { it.name },
                     inWidgetPlaylist = quote.inWidgetPlaylist,
                     inPushPlaylist = quote.inPushPlaylist,
+                    page = quote.page?.toString().orEmpty(),
                 ),
                 authorOptions = authorOptions,
                 bookOptions = bookOptions,
@@ -102,6 +103,7 @@ class WidgetQuoteViewModel @Inject constructor(
                 inPushPlaylist = draft.inPushPlaylist,
                 generalName = generalName,
                 sourceDailyId = existing?.sourceDailyId,
+                page = draft.page.toIntOrNull(),
             )
             publishEffect(WidgetQuoteEffect.Edited)
         }

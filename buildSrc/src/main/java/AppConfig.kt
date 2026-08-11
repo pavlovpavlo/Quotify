@@ -3,7 +3,7 @@ object AppConfig {
 
     const val compileSdk = 36
     const val minSdk = 28
-    const val targetSdk = 35
+    const val targetSdk = 36
 
     const val proguardConsumerRules =  "consumer-rules.pro"
     const val dimension = "environment"
@@ -17,7 +17,8 @@ object AppConfig {
     object AppVersion {
         private const val MAJOR = 1
         private const val MINOR = 0 // Maximum value 99
-        private const val PATCH = 3 // Maximum value 99
+        private const val PATCH = 6
+        // Maximum value 99
 
         fun getName(): String {
             return "$MAJOR.$MINOR.$PATCH"

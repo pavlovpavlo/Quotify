@@ -47,6 +47,7 @@ class DetailsViewModel @Inject constructor(
     override fun onAuthorPicked(name: String) = publishState { copy(authorQuery = name) }
     override fun onBookQueryChanged(value: String) = publishState { copy(bookQuery = value) }
     override fun onBookPicked(name: String) = publishState { copy(bookQuery = name) }
+    override fun onPageChanged(value: String) = publishState { copy(page = value) }
 
     override fun onOpenTagSheet() = publishEffect(DetailsEffect.OpenTagSheet)
 
@@ -74,6 +75,7 @@ class DetailsViewModel @Inject constructor(
             tagNames = state.selectedTags,
             inWidgetPlaylist = state.inWidgetPlaylist,
             inPushPlaylist = state.inPushPlaylist,
+            page = state.page.toIntOrNull(),
         )
         publishEffect(DetailsEffect.ProceedToSave(draft))
     }

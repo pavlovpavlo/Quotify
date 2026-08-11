@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.kovhan.data.library.local.MIGRATION_4_5
 import com.kovhan.data.library.local.MIGRATION_5_6
 import com.kovhan.data.library.local.MIGRATION_6_7
+import com.kovhan.data.library.local.MIGRATION_7_8
+import com.kovhan.data.library.local.MIGRATION_8_9
 import com.kovhan.data.library.local.QuotifyDatabase
 import com.kovhan.data.library.local.daily.DailyQuoteDao
 import com.kovhan.data.library.local.daily.DailySeenDao
@@ -33,7 +35,13 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): QuotifyDatabase =
         Room.databaseBuilder(context, QuotifyDatabase::class.java, DATABASE_NAME)
-            .addMigrations(MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+            .addMigrations(
+                MIGRATION_4_5,
+                MIGRATION_5_6,
+                MIGRATION_6_7,
+                MIGRATION_7_8,
+                MIGRATION_8_9,
+            )
             .build()
 
     @Provides
