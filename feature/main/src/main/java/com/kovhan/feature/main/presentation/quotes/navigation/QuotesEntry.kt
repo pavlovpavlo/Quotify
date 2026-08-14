@@ -10,9 +10,11 @@ import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.navigation.HideDailyQuoteDialogKey
 import com.kovhan.core.navigation.NewCollectionSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.SearchKey
 import com.kovhan.feature.main.presentation.quotes.QuotesScreen
 import com.kovhan.feature.main.presentation.quotes.QuotesScreenViewModel
+import com.kovhan.feature.main.presentation.quotes.mvi.QuotesScreenEffect
 
 @Composable
 internal fun QuotesEntry(
@@ -29,6 +31,14 @@ internal fun QuotesEntry(
     LaunchedEffect(Unit) {
         coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_DAILY_QUOTE_HIDE_TODAY)
             .collect { confirmed -> if (confirmed == true) viewModel.onHideDailyQuoteToday() }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                QuotesScreenEffect.OpenPaywall -> coordinator.navigate(PaywallKey)
+                QuotesScreenEffect.None -> Unit
+            }
+        }
     }
 
     QuotesScreen(

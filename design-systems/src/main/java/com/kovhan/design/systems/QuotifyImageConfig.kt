@@ -21,6 +21,8 @@ class QuotifyImagePalette(
     val onboardingSlide3Eng: Int = R.drawable.ic_onboarding_3_eng,
     val imgLibraryEmpty: Int = R.drawable.img_library_empty,
     val imgSearchEmpty: Int = R.drawable.img_search_empty,
+    val imgPremiumReader: Int = R.drawable.img_premium_reader,
+    val imgSpecialOffer: Int = R.drawable.img_special_offer,
     val welcomeIllustration: Int = R.drawable.complete_image,
     val googleLogo: Int = R.drawable.ic_google,
     val dockTabLibrary: Int = R.drawable.ic_tab_library,

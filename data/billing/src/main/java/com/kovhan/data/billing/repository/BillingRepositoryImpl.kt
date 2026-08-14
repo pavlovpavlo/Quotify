@@ -4,6 +4,7 @@ import com.kovhan.core.billing.BillingService
 import com.kovhan.core.models.Outcome
 import com.kovhan.core.models.billing.BillingError
 import com.kovhan.core.models.billing.PremiumProduct
+import com.kovhan.core.models.billing.PurchaseFlowFailure
 import com.kovhan.core.models.billing.SubscriptionStatus
 import com.kovhan.data.billing.remote.BillingDataSource
 import com.kovhan.domain.ai.SubscriptionRepository
@@ -35,6 +36,9 @@ class BillingRepositoryImpl @Inject constructor(
     override val verifications: SharedFlow<Outcome<SubscriptionStatus, BillingError>> =
         _verifications.asSharedFlow()
 
+    override val purchaseFlowFailures: SharedFlow<PurchaseFlowFailure> =
+        billingService.purchaseFlowFailures
+
     override suspend fun connect(): Boolean = billingService.connect()
 
     override suspend fun getPremiumProduct(productId: String): PremiumProduct? =
@@ -43,11 +47,7 @@ class BillingRepositoryImpl @Inject constructor(
     override fun launchPurchase(offerToken: String): Boolean =
         billingService.launchPurchase(offerToken)
 
-    /**
-     * Єдина точка верифікації: сюди зливаються і нові покупки, і відновлені.
-     * Acknowledge робить бекенд одразу після перевірки, тому тут його немає —
-     * підтвердження не має залежати від того, чи дожив застосунок до відповіді.
-     */
+
     override fun observePurchases() {
         if (!observing.compareAndSet(false, true)) return
         scope.launch {
@@ -64,8 +64,6 @@ class BillingRepositoryImpl @Inject constructor(
                         result.data.status,
                     )
                 }
-                // Бекенд щойно переписав users/{uid}.premium — перечитуємо його,
-                // щоб оновився Room-кеш, з якого читають офлайн-гейт і ліміти AI.
                 if (result is Outcome.Success) {
                     runCatching { subscriptionRepository.refresh() }
                 }

@@ -3,8 +3,12 @@ package com.kovhan.data.settings.local
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.kovhan.core.datastore.get
+import com.kovhan.core.datastore.getOnes
 import com.kovhan.core.datastore.put
 import com.kovhan.domain.onboarding.OnboardingRepository
+import com.kovhan.domain.premium.OfferPromptRepository
+import com.kovhan.domain.premium.OfferTrigger
+import com.kovhan.domain.premium.PaywallPromptRepository
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import com.kovhan.domain.settings.SettingsRepository
@@ -16,7 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class SettingsLocalDataSource @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-) : SettingsRepository, OnboardingRepository {
+) : SettingsRepository, OnboardingRepository, PaywallPromptRepository, OfferPromptRepository {
 
     override fun observeTheme(): Flow<AppTheme> =
         dataStore.get(SettingsPreferences.Settings.THEME).map { stored ->
@@ -49,4 +53,28 @@ class SettingsLocalDataSource @Inject constructor(
 
     override suspend fun setFabTooltipDismissed(dismissed: Boolean) =
         dataStore.put(SettingsPreferences.Onboarding.FAB_TOOLTIP_DISMISSED, dismissed)
+
+    override suspend fun lastShownAt(): Long =
+        dataStore.getOnes(SettingsPreferences.Paywall.LAST_SHOWN_AT, 0L)
+
+    override suspend fun markShown(timestamp: Long) =
+        dataStore.put(SettingsPreferences.Paywall.LAST_SHOWN_AT, timestamp)
+
+    override suspend fun firstLaunchAt(): Long =
+        dataStore.getOnes(SettingsPreferences.Offer.FIRST_LAUNCH_AT, 0L)
+
+    override suspend fun rememberFirstLaunch(timestamp: Long) =
+        dataStore.put(SettingsPreferences.Offer.FIRST_LAUNCH_AT, timestamp)
+
+    override suspend fun isShown(trigger: OfferTrigger): Boolean =
+        dataStore.getOnes(trigger.shownKey(), false)
+
+    override suspend fun markShown(trigger: OfferTrigger) =
+        dataStore.put(trigger.shownKey(), true)
+
+    private fun OfferTrigger.shownKey(): Preferences.Key<Boolean> = when (this) {
+        OfferTrigger.WELCOME -> SettingsPreferences.Offer.SHOWN_WELCOME
+        OfferTrigger.CANCELED -> SettingsPreferences.Offer.SHOWN_CANCELED
+        OfferTrigger.TENURE -> SettingsPreferences.Offer.SHOWN_TENURE
+    }
 }

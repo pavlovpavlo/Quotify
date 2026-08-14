@@ -1,6 +1,7 @@
 package com.kovhan.domain.ai
 
 import com.kovhan.core.models.billing.SubscriptionStatus
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Paid subscription status, which also raises the AI usage limits. Written
@@ -17,4 +18,10 @@ interface SubscriptionRepository {
 
     /** Forces a Firestore read and refreshes the local cache. */
     suspend fun refresh(): SubscriptionStatus
+
+    /**
+     * Local cache as a stream. The cache is the only place every purchase path
+     * converges on, so UI can bind to this instead of polling Firestore.
+     */
+    fun observeStatus(): Flow<SubscriptionStatus>
 }

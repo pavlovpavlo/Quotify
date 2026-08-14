@@ -83,6 +83,7 @@ fun AddQuoteScreen(
                         onCropCancelled = intent::onScanCropCancelled,
                         onRetake = intent::onScanRetake,
                         onRetry = intent::onScanRetry,
+                        onUpgrade = intent::onUpgradeClicked,
                         onProceed = intent::onScanProceed,
                     )
 

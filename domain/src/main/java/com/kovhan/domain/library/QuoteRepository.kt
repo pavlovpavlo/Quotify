@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.Flow
 interface QuoteRepository {
     suspend fun getAll(): List<Quote>
 
+    /** Кількість збережених цитат — для ліміту безкоштовного плану. */
+    suspend fun count(): Int
+
     suspend fun getById(id: String): Quote?
 
     fun observeAll(): Flow<List<Quote>>

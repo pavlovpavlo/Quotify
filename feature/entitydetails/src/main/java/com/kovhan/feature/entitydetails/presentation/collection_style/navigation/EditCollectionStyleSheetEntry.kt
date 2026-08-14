@@ -6,9 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.EditCollectionStyleSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.feature.entitydetails.presentation.collection_style.EditCollectionStyleSheet
+import com.kovhan.feature.entitydetails.presentation.collection_style.EditCollectionStyleViewModel
 import com.kovhan.feature.entitydetails.presentation.collection_style.model.CollectionStyleDraft
 import com.kovhan.feature.entitydetails.navigation.EntityCollectionStyleResult
 import com.kovhan.feature.entitydetails.navigation.KEY_ENTITY_STYLE_RESULT
@@ -20,6 +24,8 @@ internal fun EditCollectionStyleSheetEntry(
     coordinator: NavigationCoordinator,
 ) {
     val scope = rememberCoroutineScope()
+    val viewModel = hiltViewModel<EditCollectionStyleViewModel>()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     var draft by remember(key) {
         mutableStateOf(
             CollectionStyleDraft(
@@ -31,6 +37,7 @@ internal fun EditCollectionStyleSheetEntry(
 
     EditCollectionStyleSheet(
         draft = draft,
+        locked = !state.isPremium,
         onToneChange = { draft = draft.copy(tone = it) },
         onIconChange = { draft = draft.copy(iconId = it) },
         onSave = {
@@ -44,6 +51,9 @@ internal fun EditCollectionStyleSheetEntry(
                 )
             }
         },
+        // Пейвол відкриваємо поверх — шит лишається в збережених оверлеях
+        // власника екрана, тож після покупки повернення відкриє його вже без замка.
+        onUnlock = { coordinator.navigate(PaywallKey) },
         onDismiss = coordinator::dismissBottomSheet,
     )
 }

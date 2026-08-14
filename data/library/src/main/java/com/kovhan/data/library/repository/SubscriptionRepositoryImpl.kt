@@ -7,6 +7,9 @@ import com.kovhan.data.library.local.library.SubscriptionEntity
 import com.kovhan.data.library.remote.SubscriptionRemoteDataSource
 import com.kovhan.domain.ai.SubscriptionRepository
 import com.kovhan.domain.connectivity.ConnectivityRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,19 +42,29 @@ class SubscriptionRepositoryImpl @Inject constructor(
                 expiresAt = status.expiresAt,
                 autoRenewing = status.autoRenewing,
                 productId = status.productId,
+                basePlanId = status.basePlanId,
+                startedAt = status.startedAt,
             ),
         )
         return status
     }
 
-    private suspend fun cachedStatus(): SubscriptionStatus {
-        val cached = cacheDao.getStatus() ?: return SubscriptionStatus.None
+    override fun observeStatus(): Flow<SubscriptionStatus> = cacheDao.observeStatus()
+        .map { it.toStatus() }
+        .distinctUntilChanged()
+
+    private suspend fun cachedStatus(): SubscriptionStatus = cacheDao.getStatus().toStatus()
+
+    private fun SubscriptionEntity?.toStatus(): SubscriptionStatus {
+        if (this == null) return SubscriptionStatus.None
         return SubscriptionStatus(
-            isActive = cached.isSubscribed,
-            status = cached.status,
-            expiresAt = cached.expiresAt,
-            autoRenewing = cached.autoRenewing,
-            productId = cached.productId,
+            isActive = isSubscribed,
+            status = status,
+            expiresAt = expiresAt,
+            autoRenewing = autoRenewing,
+            productId = productId,
+            basePlanId = basePlanId,
+            startedAt = startedAt,
         )
     }
 }

@@ -31,6 +31,7 @@ import com.kovhan.core.navigation.BottomSheetEntryBuilder
 import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.core.navigation.EntryBuilder
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.OfferKey
 import com.kovhan.core.navigation.PlaceholderBottomSheetKey
 import com.kovhan.core.navigation.PlaceholderDialogKey
 import com.kovhan.core.navigation.QuotesKey
@@ -67,9 +68,6 @@ fun AppContent(
         }
     }
 
-    // Deep link from the home-screen widget — held until the app reaches the main
-    // graph (so splash / onboarding / auth run first), then opened over the
-    // library tab so back leads there.
     LaunchedEffect(coordinator.pendingDeepLink, coordinator.currentKey) {
         val pending = coordinator.pendingDeepLink ?: return@LaunchedEffect
         val reachedMain = coordinator.backStack.any { coordinator.isTopLevelKey(it) }
@@ -78,6 +76,15 @@ fun AppContent(
             coordinator.navigate(QuotesKey)
             coordinator.navigate(pending)
         }
+    }
+
+    LaunchedEffect(uiState.pendingOfferTrigger, coordinator.currentKey) {
+        if (uiState.pendingOfferTrigger == null) return@LaunchedEffect
+        val current = coordinator.currentKey ?: return@LaunchedEffect
+        if (!coordinator.isTopLevelKey(current)) return@LaunchedEffect
+
+        uiIntent.onOfferShown()
+        coordinator.navigate(OfferKey)
     }
 
     val showDock by remember {

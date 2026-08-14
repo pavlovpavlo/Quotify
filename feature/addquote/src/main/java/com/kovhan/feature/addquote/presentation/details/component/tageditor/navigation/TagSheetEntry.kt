@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.rememberCoroutineScope
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.TagSheetResult
 import com.kovhan.core.navigation.TagSheetAiLimitDialogKey
 import com.kovhan.core.navigation.TagSheetKey
@@ -46,6 +47,8 @@ internal fun TagSheetEntry(
                 TagSheetEffect.ShowOfflineDialog -> {
                     coordinator.showDialog(TagSheetOfflineDialogKey)
                 }
+
+                TagSheetEffect.OpenPaywall -> coordinator.navigate(PaywallKey)
             }
         }
     }
@@ -68,6 +71,7 @@ internal fun TagSheetEntry(
         tagQuery = state.value.tagQuery,
         aiState = state.value.aiState,
         aiTags = state.value.filteredAiTags,
+        aiLocked = !state.value.isPremium,
         recentTags = state.value.recentTags,
         canCreate = state.value.canCreateTag,
         selectedCount = state.value.selectedTags.size,

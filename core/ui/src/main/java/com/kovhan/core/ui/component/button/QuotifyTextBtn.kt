@@ -14,6 +14,7 @@ fun QuotifyTextBtn(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    loading: Boolean = false,
     accent: QuotifyButtonAccent = QuotifyButtonAccent.Neutral,
     size: QuotifyButtonSize = QuotifyButtonSize.Small,
     withRipple: Boolean = false,
@@ -26,6 +27,7 @@ fun QuotifyTextBtn(
         size = size,
         accent = accent,
         enabled = enabled,
+        loading = loading,
         withRipple = withRipple,
     )
 }

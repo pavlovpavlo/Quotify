@@ -18,6 +18,7 @@ interface AddQuoteScreenIntent {
     fun onScanProceed(text: String)
     fun onNextClicked()
     fun onCloseClicked()
+    fun onUpgradeClicked()
 
     companion object {
         val Empty: AddQuoteScreenIntent = object : AddQuoteScreenIntent {
@@ -34,6 +35,7 @@ interface AddQuoteScreenIntent {
             override fun onScanProceed(text: String) = Unit
             override fun onNextClicked() = Unit
             override fun onCloseClicked() = Unit
+            override fun onUpgradeClicked() = Unit
         }
     }
 }

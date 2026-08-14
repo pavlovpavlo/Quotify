@@ -108,6 +108,48 @@ object FolioDark {
 }
 
 /**
+ * Premium surfaces — the olive gradient card and CTA. Fixed hex, shared
+ * light/dark: the surface stays olive in both themes and always carries white
+ * text, so theme-aware roles would break its contrast.
+ */
+object FolioPremium {
+    // Gradient stops
+    val gradientStart  = Color(0xFF84956A)
+    val gradientMiddle = Color(0xFF7A8B5C)
+    val gradientEnd    = Color(0xFF66794B)
+
+    // Content on the gradient
+    val onGradient       = Color(0xFFFFFFFF)
+    val onGradientMuted  = Color(0xD9FFFFFF)
+    val onGradientSubtle = Color(0xB3FFFFFF)
+
+    // Inner white card nested on the gradient
+    val card           = Color(0xFFFFFFFF)
+    val cardDivider    = Color(0xFFEFEAE0)
+    val cardText       = Color(0xFF1A1714)
+    val iconBackground = Color(0xFFEAEEDF)
+    val iconTint       = Color(0xFF66794B)
+}
+
+/**
+ * Special-offer screen. The warm hero stays identical in both themes — the
+ * illustration on it carries its own light, so a dark variant would break it.
+ * Only the close button, which sits on top of the artwork, flips.
+ */
+object FolioOffer {
+    val heroGradientStart = Color(0xFFF3E4CF)
+    val heroGradientEnd   = Color(0xFFEBCBA8)
+
+    /** Deep terracotta the CTA gradient runs into, from `accentPrimary`. */
+    val ctaGradientEnd = Color(0xFFA8442F)
+
+    val closeScrimLight = Color(0xB3FFFFFF)
+    val closeScrimDark  = Color(0x59000000)
+    val closeIconLight  = Color(0xFF3A2A20)
+    val closeIconDark   = Color(0xFFFAF7F2)
+}
+
+/**
  * Legacy alias retained only for [com.kovhan.core.ui.extensions.ComposeExtension]
  * skeleton gradient. New code should use [QuotifyMaterialTheme.colors] instead.
  */

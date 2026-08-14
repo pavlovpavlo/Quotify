@@ -2,9 +2,75 @@ package com.kovhan.design.systems
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val LocaleQuotifyColors = compositionLocalOf { quotifyLightPalette }
+
+/**
+ * Premium surface roles — grouped because they only make sense together, on the
+ * olive gradient card and CTA. Identical in light and dark: see [FolioPremium].
+ */
+@Immutable
+data class QuotifyPremiumColors(
+    val gradient: Brush,
+    val onGradient: Color,
+    val onGradientMuted: Color,
+    val onGradientSubtle: Color,
+    val card: Color,
+    val cardDivider: Color,
+    val cardText: Color,
+    val iconBackground: Color,
+    val iconTint: Color,
+)
+
+/**
+ * Special-offer roles. [heroGradient] is fixed in both themes (see [FolioOffer]);
+ * the rest follow the theme, so this group is built per palette.
+ */
+@Immutable
+data class QuotifyOfferColors(
+    val heroGradient: Brush,
+    val ctaGradient: Brush,
+    val closeScrim: Color,
+    val closeIcon: Color,
+)
+
+private val offerHeroGradient = Gradients.offerHero(
+    start = FolioOffer.heroGradientStart,
+    end = FolioOffer.heroGradientEnd,
+)
+
+val quotifyLightOfferColors = QuotifyOfferColors(
+    heroGradient = offerHeroGradient,
+    ctaGradient = Gradients.offerCta(FolioLight.accentPrimary, FolioOffer.ctaGradientEnd),
+    closeScrim = FolioOffer.closeScrimLight,
+    closeIcon = FolioOffer.closeIconLight,
+)
+
+val quotifyDarkOfferColors = QuotifyOfferColors(
+    heroGradient = offerHeroGradient,
+    ctaGradient = Gradients.offerCta(FolioDark.accentPrimary, FolioOffer.ctaGradientEnd),
+    closeScrim = FolioOffer.closeScrimDark,
+    closeIcon = FolioOffer.closeIconDark,
+)
+
+val quotifyPremiumColors = QuotifyPremiumColors(
+    gradient = Gradients.premium(
+        start = FolioPremium.gradientStart,
+        middle = FolioPremium.gradientMiddle,
+        end = FolioPremium.gradientEnd,
+    ),
+    onGradient       = FolioPremium.onGradient,
+    onGradientMuted  = FolioPremium.onGradientMuted,
+    onGradientSubtle = FolioPremium.onGradientSubtle,
+
+    card           = FolioPremium.card,
+    cardDivider    = FolioPremium.cardDivider,
+    cardText       = FolioPremium.cardText,
+    iconBackground = FolioPremium.iconBackground,
+    iconTint       = FolioPremium.iconTint,
+)
 
 /**
  * Folio semantic color palette. Switch is light/dark aware via
@@ -56,6 +122,12 @@ data class QuotifyColorPalette(
     // Accent — Teal (fixed hex, shared light/dark)
     val accentTeal: Color,
 
+    // Premium surfaces (fixed hex, shared light/dark)
+    val premium: QuotifyPremiumColors,
+
+    // Special-offer screen
+    val offer: QuotifyOfferColors,
+
     // Status
     val error: Color,
     val errorSoft: Color,
@@ -95,6 +167,9 @@ val quotifyLightPalette = QuotifyColorPalette(
     accentPlum = FolioLight.accentPlum,
     accentTeal = FolioLight.accentTeal,
 
+    premium = quotifyPremiumColors,
+    offer   = quotifyLightOfferColors,
+
     error     = FolioLight.error,
     errorSoft = FolioLight.errorSoft,
 )
@@ -132,6 +207,9 @@ val quotifyDarkPalette = QuotifyColorPalette(
 
     accentPlum = FolioDark.accentPlum,
     accentTeal = FolioDark.accentTeal,
+
+    premium = quotifyPremiumColors,
+    offer   = quotifyDarkOfferColors,
 
     error     = FolioDark.error,
     errorSoft = FolioDark.errorSoft,

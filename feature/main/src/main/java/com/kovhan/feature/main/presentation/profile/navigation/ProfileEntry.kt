@@ -9,6 +9,7 @@ import com.kovhan.core.navigation.AboutKey
 import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.EditProfileKey
 import com.kovhan.core.navigation.LanguageSheetKey
+import com.kovhan.core.navigation.DevToolsKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.ReminderTimeSheetKey
@@ -39,6 +40,8 @@ internal fun ProfileEntry(
         override fun navigateToAbout() = coordinator.navigate(AboutKey)
 
         override fun navigateToAuth() = coordinator.navigateAndClearBackStack(CompleteKey)
+
+        override fun navigateToDevTools() = coordinator.navigate(DevToolsKey)
     }
 
     LaunchedEffect(Unit) {

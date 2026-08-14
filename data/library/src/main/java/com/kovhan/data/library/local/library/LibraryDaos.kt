@@ -16,6 +16,9 @@ interface QuoteDao {
     @Query("SELECT * FROM quotes")
     suspend fun getAll(): List<QuoteEntity>
 
+    @Query("SELECT COUNT(*) FROM quotes")
+    suspend fun count(): Int
+
     @Query("SELECT * FROM quotes WHERE id = :id")
     suspend fun getById(id: String): QuoteEntity?
 
@@ -195,6 +198,9 @@ interface SubscriptionDao {
 
     @Query("SELECT * FROM subscription_status WHERE id = :id")
     suspend fun getStatus(id: Int = SubscriptionEntity.SINGLE_ROW_ID): SubscriptionEntity?
+
+    @Query("SELECT * FROM subscription_status WHERE id = :id")
+    fun observeStatus(id: Int = SubscriptionEntity.SINGLE_ROW_ID): Flow<SubscriptionEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun set(entity: SubscriptionEntity)

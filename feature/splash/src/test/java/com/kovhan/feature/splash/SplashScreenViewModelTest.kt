@@ -8,6 +8,8 @@ import com.kovhan.domain.daily.use_case.PrefetchDailyQuotesUseCase
 import com.kovhan.domain.library.use_case.sync.RefreshLibraryUseCase
 import com.kovhan.domain.library.use_case.sync.SyncPendingChangesUseCase
 import com.kovhan.domain.onboarding.use_case.GetOnboardingCompletedUseCase
+import com.kovhan.domain.premium.use_case.MarkStartupPaywallShownUseCase
+import com.kovhan.domain.premium.use_case.ShouldShowStartupPaywallUseCase
 import com.kovhan.feature.splash.presentation.splash.SplashScreenViewModel
 import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenEffect
 import io.mockk.coEvery
@@ -28,6 +30,8 @@ class SplashScreenViewModelTest {
     private val subscriptionRepository: SubscriptionRepository = mockk()
     private val syncPendingChanges: SyncPendingChangesUseCase = mockk(relaxed = true)
     private val refreshLibrary: RefreshLibraryUseCase = mockk(relaxed = true)
+    private val shouldShowStartupPaywall: ShouldShowStartupPaywallUseCase = mockk(relaxed = true)
+    private val markStartupPaywallShown: MarkStartupPaywallShownUseCase = mockk(relaxed = true)
 
     private fun viewModel() = SplashScreenViewModel(
         getOnboardingCompleted,
@@ -37,6 +41,8 @@ class SplashScreenViewModelTest {
         subscriptionRepository,
         syncPendingChanges,
         refreshLibrary,
+        shouldShowStartupPaywall,
+        markStartupPaywallShown,
     )
 
     @Test

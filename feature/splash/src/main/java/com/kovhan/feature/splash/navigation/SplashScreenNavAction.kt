@@ -7,6 +7,7 @@ interface SplashScreenNavAction {
     fun onBack()
     fun navigateToOnboarding()
     fun navigateToMain()
+    fun navigateToMainWithPaywall()
     fun navigateToAuth()
 
     companion object {
@@ -18,5 +19,6 @@ private object EmptySplashScreenNavAction : SplashScreenNavAction {
     override fun onBack() = Unit
     override fun navigateToOnboarding() = Unit
     override fun navigateToMain() = Unit
+    override fun navigateToMainWithPaywall() = Unit
     override fun navigateToAuth() = Unit
 }

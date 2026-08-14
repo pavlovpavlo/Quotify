@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.AddQuoteKey
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.QuoteDetailsKey
 import com.kovhan.feature.addquote.presentation.addquote.AddQuoteScreen
 import com.kovhan.feature.addquote.presentation.addquote.AddQuoteScreenViewModel
@@ -29,6 +30,10 @@ internal fun AddQuoteEntry(
         override fun proceedToDetails(quote: String) {
             coordinator.navigate(QuoteDetailsKey(quote = quote))
         }
+
+        override fun openPaywall() {
+            coordinator.navigate(PaywallKey)
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -40,6 +45,7 @@ internal fun AddQuoteEntry(
             when (effect) {
                 AddQuoteScreenEffect.Close -> navAction.close()
                 is AddQuoteScreenEffect.ProceedToDetails -> navAction.proceedToDetails(effect.quote)
+                AddQuoteScreenEffect.OpenPaywall -> navAction.openPaywall()
             }
         }
     }

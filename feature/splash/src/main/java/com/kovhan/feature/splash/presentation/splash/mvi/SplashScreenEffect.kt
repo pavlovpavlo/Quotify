@@ -9,6 +9,9 @@ sealed class SplashScreenEffect : UiEffect {
 
     data object NavigateToMain : SplashScreenEffect()
 
+    /** Те саме, що [NavigateToMain], але з екраном підписки поверх бібліотеки. */
+    data object NavigateToMainWithPaywall : SplashScreenEffect()
+
     /** Offline with no subscription — show the blocking retry dialog. */
     data object ShowOfflineBlock : SplashScreenEffect()
 }

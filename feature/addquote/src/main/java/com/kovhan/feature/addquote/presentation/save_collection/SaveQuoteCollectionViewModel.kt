@@ -4,6 +4,7 @@ import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.library.use_case.collection.GetCollectionsUseCase
 import com.kovhan.domain.library.use_case.quote.SaveQuoteToCollectionUseCase
+import com.kovhan.domain.premium.use_case.CheckQuoteLimitUseCase
 import com.kovhan.feature.addquote.presentation.details.mvi.QuoteDraft
 import com.kovhan.feature.addquote.presentation.save_collection.mvi.SaveQuoteCollectionEffect
 import com.kovhan.feature.addquote.presentation.save_collection.mvi.SaveQuoteCollectionState
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class SaveQuoteCollectionViewModel @Inject constructor(
     private val getCollections: GetCollectionsUseCase,
     private val saveQuoteToCollection: SaveQuoteToCollectionUseCase,
+    private val checkQuoteLimit: CheckQuoteLimitUseCase,
 ) : BaseViewModel<SaveQuoteCollectionState, SaveQuoteCollectionEffect>(SaveQuoteCollectionState()) {
 
     fun loadCollections(generalName: String, selectId: String? = null) {
@@ -42,6 +44,11 @@ class SaveQuoteCollectionViewModel @Inject constructor(
         if (uiState.value.savingCollectionId != null) return
         viewModelScope.launch {
             publishState { copy(savingCollectionId = collectionId) }
+            if (!checkQuoteLimit()) {
+                publishState { copy(savingCollectionId = null) }
+                publishEffect(SaveQuoteCollectionEffect.ShowPaywall)
+                return@launch
+            }
             saveQuoteToCollection(
                 text = draft.text,
                 authorName = draft.authorName,

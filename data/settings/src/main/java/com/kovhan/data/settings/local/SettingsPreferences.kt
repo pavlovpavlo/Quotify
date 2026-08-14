@@ -2,6 +2,7 @@ package com.kovhan.data.settings.local
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 internal object SettingsPreferences {
@@ -14,6 +15,17 @@ internal object SettingsPreferences {
     object Onboarding {
         val COMPLETED = booleanPreferencesKey("onboarding_completed")
         val FAB_TOOLTIP_DISMISSED = booleanPreferencesKey("fab_tooltip_dismissed")
+    }
+
+    object Paywall {
+        val LAST_SHOWN_AT = longPreferencesKey("paywall_last_shown_at")
+    }
+
+    object Offer {
+        val FIRST_LAUNCH_AT = longPreferencesKey("offer_first_launch_at")
+        val SHOWN_WELCOME = booleanPreferencesKey("offer_shown_welcome")
+        val SHOWN_CANCELED = booleanPreferencesKey("offer_shown_canceled")
+        val SHOWN_TENURE = booleanPreferencesKey("offer_shown_tenure")
     }
 
     object Widget {

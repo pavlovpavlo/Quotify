@@ -17,6 +17,7 @@ import com.android.billingclient.api.QueryPurchasesParams
 import com.kovhan.core.billing.mapper.toPremiumProduct
 import com.kovhan.core.billing.model.PlayPurchase
 import com.kovhan.core.models.billing.PremiumProduct
+import com.kovhan.core.models.billing.PurchaseFlowFailure
 import com.kovhan.core.ui.activity.ActivityRequired
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,10 +30,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
 
-/**
- * Тонка обгортка над Play Billing Library. Нічого не вирішує про доступ:
- * лише емітить покупки в [purchases], а верифікує їх уже репозиторій через бекенд.
- */
 @Singleton
 class BillingService @Inject constructor(
     @ApplicationContext context: Context,
@@ -40,14 +37,21 @@ class BillingService @Inject constructor(
 
     private var activity: Activity? = null
 
-    /**
-     * launchBillingFlow вимагає ProductDetails, але домен оперує лише offerToken,
-     * тому тримаємо тут результат останнього queryPremiumProduct.
-     */
     private val offerTokenToProduct = ConcurrentHashMap<String, ProductDetails>()
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { result, purchases ->
-        if (result.responseCode == BillingClient.BillingResponseCode.OK) emitPurchases(purchases)
+        if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+            emitPurchases(purchases)
+            return@PurchasesUpdatedListener
+        }
+        Timber.i("Billing: флоу оплати закрито без покупки, code=%d", result.responseCode)
+        _purchaseFlowFailures.tryEmit(
+            if (result.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+                PurchaseFlowFailure.CANCELLED
+            } else {
+                PurchaseFlowFailure.FAILED
+            },
+        )
     }
 
     private val billingClient = BillingClient.newBuilder(context)
@@ -60,14 +64,16 @@ class BillingService @Inject constructor(
         .enableAutoServiceReconnection()
         .build()
 
-    // replay, бо колектор репозиторію стартує в окремій корутині: без нього
-    // покупки, віддані refreshActiveSubscriptions одразу після observePurchases,
-    // емітяться в потік без підписників і мовчки зникають.
     private val _purchases = MutableSharedFlow<PlayPurchase>(
         replay = 8,
         extraBufferCapacity = 8,
     )
     val purchases: SharedFlow<PlayPurchase> = _purchases.asSharedFlow()
+
+    private val _purchaseFlowFailures =
+        MutableSharedFlow<PurchaseFlowFailure>(extraBufferCapacity = 4)
+    val purchaseFlowFailures: SharedFlow<PurchaseFlowFailure> =
+        _purchaseFlowFailures.asSharedFlow()
 
     suspend fun connect(): Boolean {
         if (billingClient.isReady) return true
@@ -121,7 +127,6 @@ class BillingService @Inject constructor(
         }
     }
 
-    /** @return false, якщо offerToken невідомий (не було queryPremiumProduct) або немає Activity. */
     fun launchPurchase(offerToken: String): Boolean {
         val currentActivity = activity ?: return false
         val details = offerTokenToProduct[offerToken] ?: return false
@@ -139,7 +144,6 @@ class BillingService @Inject constructor(
         return result.responseCode == BillingClient.BillingResponseCode.OK
     }
 
-    /** Відновлення покупок: Play віддає активні підписки цього акаунта на пристрої. */
     suspend fun refreshActiveSubscriptions() {
         if (!connect()) return
         val params = QueryPurchasesParams.newBuilder()
@@ -175,8 +179,6 @@ class BillingService @Inject constructor(
         all.forEach { purchase ->
             val productId = purchase.products.firstOrNull()
             if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) {
-                // PENDING тут не помилка, але й доступу не дає — інакше це виглядає
-                // як "купив, а нічого не сталося".
                 Timber.w(
                     "Billing: покупку %s пропущено, state=%d",
                     productId,

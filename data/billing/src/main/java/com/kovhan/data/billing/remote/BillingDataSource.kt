@@ -27,17 +27,12 @@ class BillingDataSource @Inject constructor(
     ): Outcome<SubscriptionStatus, BillingError> {
         val idToken = currentIdToken()
         if (idToken == null) {
-            // Без ID-токена HTTP-запит навіть не виходить — ззовні це не відрізнити
-            // від "бекенд не відповів", тому фіксуємо окремо.
-            Timber.e("Verify purchase: немає Firebase ID-токена, запит не надіслано")
             return Outcome.Failure(BillingError.NOT_AUTHENTICATED)
         }
 
         return when (val result = api.verifyPurchase(idToken, productId, purchaseToken)) {
             is Outcome.Success -> Outcome.Success(result.data.toSubscriptionStatus())
             is Outcome.Failure -> {
-                // Код бекенду ("play_api_failed", "unknown_purchase_token", …) —
-                // єдина підказка, чому покупка не перетворилась на premium.
                 Timber.e(
                     "Verify purchase failed: code=%s http=%s message=%s",
                     result.error.code,

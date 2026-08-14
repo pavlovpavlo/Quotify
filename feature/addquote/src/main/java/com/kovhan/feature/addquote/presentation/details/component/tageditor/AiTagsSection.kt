@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,14 +30,21 @@ import com.kovhan.feature.addquote.presentation.details.mvi.AiState
 internal fun AiTagsSection(
     aiState: AiState,
     tags: List<String>,
+    locked: Boolean,
     isSelected: (String) -> Boolean,
     onToggle: (String) -> Unit,
     onGenerate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (aiState) {
-        AiState.IDLE -> AiGenerateButton(loading = false, onClick = onGenerate, modifier = modifier)
-        AiState.LOADING -> AiGenerateButton(loading = true, onClick = {}, modifier = modifier)
+        AiState.IDLE -> AiGenerateButton(
+            loading = false,
+            locked = locked,
+            onClick = onGenerate,
+            modifier = modifier,
+        )
+
+        AiState.LOADING -> AiGenerateButton(loading = true, locked = false, onClick = {}, modifier = modifier)
         AiState.DONE -> AiResults(
             tags = tags,
             isSelected = isSelected,
@@ -49,6 +57,7 @@ internal fun AiTagsSection(
 @Composable
 private fun AiGenerateButton(
     loading: Boolean,
+    locked: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -57,38 +66,54 @@ private fun AiGenerateButton(
     val typography = QuotifyMaterialTheme.typography
     val shape = RoundedCornerShape(dimensions.size12)
 
-    Row(
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .height(dimensions.size52)
             .clip(shape)
             .background(colors.accentAiSoft)
             .then(if (loading) Modifier else Modifier.clickable(onClick = onClick)),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(dimensions.space2, Alignment.CenterHorizontally),
+        contentAlignment = Alignment.Center,
     ) {
-        if (loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(dimensions.iconMd),
-                color = colors.accentAi,
-                strokeWidth = 2.dp,
-            )
-            Text(
-                text = stringResource(R.string.details_ai_loading),
-                style = typography.bodyStrong,
-                color = colors.accentAi,
-            )
-        } else {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(dimensions.space2),
+        ) {
+            if (loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(dimensions.iconMd),
+                    color = colors.accentAi,
+                    strokeWidth = 2.dp,
+                )
+                Text(
+                    text = stringResource(R.string.details_ai_loading),
+                    style = typography.bodyStrong,
+                    color = colors.accentAi,
+                )
+            } else {
+                Image(
+                    modifier = Modifier.size(dimensions.iconMd),
+                    painter = painterResource(R.drawable.ic_sparkles),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(colors.accentAi),
+                )
+                Text(
+                    text = stringResource(R.string.details_ai_generate),
+                    style = typography.bodyStrong,
+                    color = colors.accentAi,
+                )
+            }
+        }
+
+        if (locked && !loading) {
             Image(
-                modifier = Modifier.size(dimensions.iconMd),
-                painter = painterResource(R.drawable.ic_sparkles),
-                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = dimensions.space4)
+                    .size(dimensions.iconMd),
+                painter = painterResource(R.drawable.ic_lock),
+                contentDescription = stringResource(R.string.ai_tags_locked_cd),
                 colorFilter = ColorFilter.tint(colors.accentAi),
-            )
-            Text(
-                text = stringResource(R.string.details_ai_generate),
-                style = typography.bodyStrong,
-                color = colors.accentAi,
             )
         }
     }

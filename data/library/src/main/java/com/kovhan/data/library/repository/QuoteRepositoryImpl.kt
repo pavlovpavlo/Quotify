@@ -25,6 +25,8 @@ class QuoteRepositoryImpl @Inject constructor(
     override suspend fun getAll(): List<Quote> =
         dao.getAll().map { it.toDomain() }
 
+    override suspend fun count(): Int = dao.count()
+
     override suspend fun getById(id: String): Quote? =
         dao.getById(id)?.toDomain()
 

@@ -26,6 +26,7 @@ internal fun TagSheet(
     tagQuery: String,
     aiState: AiState,
     aiTags: List<String>,
+    aiLocked: Boolean,
     recentTags: List<String>,
     canCreate: Boolean,
     selectedCount: Int,
@@ -78,6 +79,7 @@ internal fun TagSheet(
                 AiTagsSection(
                     aiState = aiState,
                     tags = aiTags,
+                    locked = aiLocked,
                     isSelected = isSelected,
                     onToggle = onToggle,
                     onGenerate = onGenerate,

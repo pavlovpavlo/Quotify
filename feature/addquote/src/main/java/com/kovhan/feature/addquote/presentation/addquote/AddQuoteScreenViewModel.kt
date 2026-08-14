@@ -7,6 +7,7 @@ import com.kovhan.core.models.Outcome
 import com.kovhan.core.navigation.AddQuoteTab
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.ai.AiAccess
+import com.kovhan.domain.ai.AiFeature
 import com.kovhan.domain.ai.use_case.CheckAiAccessUseCase
 import com.kovhan.domain.ai.use_case.RecordAiRequestUseCase
 import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
@@ -61,7 +62,7 @@ class AddQuoteScreenViewModel @Inject constructor(
                 publishState { copy(scanOffline = true, scanAiDenial = null) }
                 return@launch
             }
-            val denial = (checkAiAccess() as? AiAccess.Denied)?.reason
+            val denial = (checkAiAccess(AiFeature.SCAN) as? AiAccess.Denied)?.reason
             publishState { copy(scanOffline = false, scanAiDenial = denial) }
         }
     }
@@ -96,7 +97,7 @@ class AddQuoteScreenViewModel @Inject constructor(
 
     override fun onScanImagePicked(image: Uri) {
         viewModelScope.launch {
-            when (val access = checkAiAccess()) {
+            when (val access = checkAiAccess(AiFeature.SCAN)) {
                 is AiAccess.Denied -> publishState { copy(pickedImage = null, scanAiDenial = access.reason) }
                 AiAccess.Allowed -> publishState { copy(scanAiDenial = null, pickedImage = image) }
             }
@@ -167,6 +168,8 @@ class AddQuoteScreenViewModel @Inject constructor(
     }
 
     override fun onCloseClicked() = publishEffect(AddQuoteScreenEffect.Close)
+
+    override fun onUpgradeClicked() = publishEffect(AddQuoteScreenEffect.OpenPaywall)
 
     private companion object {
         val WHITESPACE = Regex("\\s+")

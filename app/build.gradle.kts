@@ -52,8 +52,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -116,6 +116,7 @@ dependencies {
     implementation(project(":feature:webview"))
     implementation(project(":feature:addquote"))
     implementation(project(":feature:widget"))
+    implementation(project(":feature:subscription"))
     implementationAndroidX()
     implementationCompose()
     implementationHilt()

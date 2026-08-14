@@ -5,12 +5,16 @@ import com.kovhan.core.models.Outcome
 import com.kovhan.core.ui.UiState
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.ai.AiAccess
+import com.kovhan.domain.ai.AiFeature
 import com.kovhan.domain.ai.use_case.CheckAiAccessUseCase
 import com.kovhan.domain.ai.use_case.RecordAiRequestUseCase
 import com.kovhan.domain.ai.use_case.SuggestTagsUseCase
+import com.kovhan.domain.billing.use_case.ObserveIsSubscribedUseCase
 import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
 import com.kovhan.feature.addquote.presentation.details.mvi.AiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +25,7 @@ data class TagSheetUiState(
     val tagQuery: String = "",
     val aiState: AiState = AiState.IDLE,
     val aiTags: List<String> = emptyList(),
+    val isPremium: Boolean = false,
 ) : UiState {
     val recentTags: List<String>
         get() = (tagPool + selectedTags).distinctBy { it.lowercase() }.matching(tagQuery)
@@ -49,7 +54,16 @@ class TagSheetViewModel @Inject constructor(
     private val checkAiAccess: CheckAiAccessUseCase,
     private val recordAiRequest: RecordAiRequestUseCase,
     private val checkConnectivity: CheckConnectivityUseCase,
+    observeIsSubscribed: ObserveIsSubscribedUseCase,
 ) : BaseViewModel<TagSheetUiState, TagSheetEffect>(TagSheetUiState()) {
+
+    init {
+        // Слухаємо, а не читаємо разово: якщо підписку куплять із цього ж шита,
+        // замок на плашці зникне без перевідкриття.
+        observeIsSubscribed()
+            .onEach { premium -> publishState { copy(isPremium = premium) } }
+            .launchIn(viewModelScope)
+    }
 
     fun initialize(
         quoteText: String,
@@ -89,13 +103,18 @@ class TagSheetViewModel @Inject constructor(
     fun onGenerateAiTags() {
         val quote = uiState.value.quoteText.trim()
         if (quote.isBlank() || uiState.value.aiState == AiState.LOADING) return
+        // Замок на плашці веде прямо на пейвол — без модалки про ліміт і без мережі.
+        if (!uiState.value.isPremium) {
+            publishEffect(TagSheetEffect.OpenPaywall)
+            return
+        }
         viewModelScope.launch {
             // Offline is a distinct case: show the offline notice, not the quota dialog.
             if (!checkConnectivity()) {
                 publishEffect(TagSheetEffect.ShowOfflineDialog)
                 return@launch
             }
-            when (val access = checkAiAccess()) {
+            when (val access = checkAiAccess(AiFeature.TAGS)) {
                 is AiAccess.Denied -> publishEffect(TagSheetEffect.ShowAiLimitDialog(access.reason))
                 AiAccess.Allowed -> {
                     publishState { copy(aiState = AiState.LOADING) }

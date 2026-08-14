@@ -4,6 +4,7 @@ import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.common.IdGenerator
 import com.kovhan.domain.library.use_case.collection.EditCollectionUseCase
+import com.kovhan.domain.premium.use_case.CheckCollectionLimitUseCase
 import com.kovhan.feature.addquote.presentation.new_collection.mvi.NewCollectionEffect
 import com.kovhan.feature.addquote.presentation.new_collection.mvi.NewCollectionState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NewCollectionViewModel @Inject constructor(
     private val editCollection: EditCollectionUseCase,
+    private val checkCollectionLimit: CheckCollectionLimitUseCase,
     private val idGenerator: IdGenerator,
 ) : BaseViewModel<NewCollectionState, NewCollectionEffect>(NewCollectionState()) {
 
@@ -23,6 +25,12 @@ class NewCollectionViewModel @Inject constructor(
         if (!state.canSave) return
         viewModelScope.launch {
             publishState { copy(isSaving = true) }
+            // Єдина точка створення колекції — покриває всі три входи в цей шит.
+            if (!checkCollectionLimit()) {
+                publishState { copy(isSaving = false) }
+                publishEffect(NewCollectionEffect.ShowPaywall)
+                return@launch
+            }
             val id = idGenerator.generate()
             editCollection(
                 SavedCollection(

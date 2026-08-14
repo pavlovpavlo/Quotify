@@ -15,6 +15,8 @@ data class SubscriptionEntity(
     val expiresAt: Long? = null,
     val autoRenewing: Boolean = false,
     val productId: String? = null,
+    val basePlanId: String? = null,
+    val startedAt: Long? = null,
 ) {
     companion object {
         const val SINGLE_ROW_ID = 0

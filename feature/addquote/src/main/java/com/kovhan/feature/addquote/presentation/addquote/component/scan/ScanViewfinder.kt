@@ -60,6 +60,7 @@ internal fun ScanStage(
     aiDenial: com.kovhan.domain.ai.AiDenialReason?,
     onRequestPermission: () -> Unit,
     onRetry: () -> Unit,
+    onUpgrade: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = QuotifyMaterialTheme.colors
@@ -85,7 +86,7 @@ internal fun ScanStage(
             if (offline) {
                 ScanOfflinePrompt(onRetry = onRetry)
             } else if (aiDenial != null) {
-                ScanAiGatePrompt(reason = aiDenial)
+                ScanAiGatePrompt(reason = aiDenial, onUpgrade = onUpgrade)
             } else if (hasCameraPermission) {
                 CameraPreview(imageCapture = imageCapture, modifier = Modifier.fillMaxSize())
                 Box(modifier = Modifier.fillMaxSize().vignette())

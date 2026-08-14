@@ -1,20 +1,24 @@
 package com.kovhan.feature.addquote
 
 import app.cash.turbine.test
-import com.kovhan.core.models.AiError
 import com.kovhan.core.models.Outcome
 import com.kovhan.domain.ai.AiAccess
 import com.kovhan.domain.ai.AiDenialReason
+import com.kovhan.domain.ai.AiFeature
 import com.kovhan.domain.ai.use_case.CheckAiAccessUseCase
 import com.kovhan.domain.ai.use_case.RecordAiRequestUseCase
 import com.kovhan.domain.ai.use_case.SuggestTagsUseCase
+import com.kovhan.domain.billing.use_case.ObserveIsSubscribedUseCase
 import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
 import com.kovhan.feature.addquote.presentation.details.component.tageditor.TagSheetEffect
 import com.kovhan.feature.addquote.presentation.details.component.tageditor.TagSheetViewModel
 import com.kovhan.feature.addquote.presentation.details.mvi.AiState
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
@@ -27,13 +31,37 @@ class TagSheetViewModelTest {
     private val checkAiAccess: CheckAiAccessUseCase = mockk()
     private val recordAiRequest: RecordAiRequestUseCase = mockk(relaxed = true)
     private val checkConnectivity: CheckConnectivityUseCase = mockk()
+    private val observeIsSubscribed: ObserveIsSubscribedUseCase = mockk()
 
-    private fun viewModel() = TagSheetViewModel(
-        suggestTags,
-        checkAiAccess,
-        recordAiRequest,
-        checkConnectivity,
-    ).apply { initialize("a quote", emptyList(), emptyList(), emptyList()) }
+    /**
+     * Стан підписки приїжджає потоком у init, тому чекаємо на нього — інакше
+     * тест міг би стартувати генерацію ще до того, як VM дізнався про преміум.
+     */
+    private fun viewModel(premium: Boolean = true): TagSheetViewModel {
+        every { observeIsSubscribed() } returns flowOf(premium)
+        return TagSheetViewModel(
+            suggestTags,
+            checkAiAccess,
+            recordAiRequest,
+            checkConnectivity,
+            observeIsSubscribed,
+        ).apply {
+            initialize("a quote", emptyList(), emptyList(), emptyList())
+            runBlocking { uiState.first { it.isPremium == premium } }
+        }
+    }
+
+    @Test
+    @DisplayName("free plan goes straight to the paywall without touching the network")
+    fun freePlanOpensPaywall() = runBlocking {
+        val vm = viewModel(premium = false)
+        vm.uiEffect.test {
+            vm.onGenerateAiTags()
+            assertEquals(TagSheetEffect.OpenPaywall, awaitItem())
+        }
+        coVerify(exactly = 0) { checkConnectivity() }
+        coVerify(exactly = 0) { recordAiRequest() }
+    }
 
     @Test
     @DisplayName("offline shows the offline dialog and does not record a request")
@@ -52,7 +80,7 @@ class TagSheetViewModelTest {
     @DisplayName("a successful suggestion records the request and shows the tags")
     fun successRecords() = runBlocking {
         coEvery { checkConnectivity() } returns true
-        coEvery { checkAiAccess() } returns AiAccess.Allowed
+        coEvery { checkAiAccess(AiFeature.TAGS) } returns AiAccess.Allowed
         coEvery { suggestTags("a quote") } returns Outcome.Success(listOf("hope", "time"))
 
         val vm = viewModel()
@@ -70,13 +98,14 @@ class TagSheetViewModelTest {
     @DisplayName("a quota denial shows the AI limit dialog, not the offline dialog")
     fun denialShowsLimitDialog() = runBlocking {
         coEvery { checkConnectivity() } returns true
-        coEvery { checkAiAccess() } returns AiAccess.Denied(AiDenialReason.FREE_LIMIT_REACHED)
+        coEvery { checkAiAccess(AiFeature.TAGS) } returns
+            AiAccess.Denied(AiDenialReason.DAILY_LIMIT_REACHED)
 
         val vm = viewModel()
         vm.uiEffect.test {
             vm.onGenerateAiTags()
             assertEquals(
-                TagSheetEffect.ShowAiLimitDialog(AiDenialReason.FREE_LIMIT_REACHED),
+                TagSheetEffect.ShowAiLimitDialog(AiDenialReason.DAILY_LIMIT_REACHED),
                 awaitItem(),
             )
         }

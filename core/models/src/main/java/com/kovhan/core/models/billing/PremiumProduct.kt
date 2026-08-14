@@ -10,4 +10,11 @@ data class PremiumOffer(
     val basePlanId: String,
     val offerId: String?,
     val formattedPrice: String,
+    val priceAmountMicros: Long,
+    val priceCurrencyCode: String,
+    val billingPeriod: String,
+    val freeTrialDays: Int?,
+    val introFormattedPrice: String? = null,
+    val introAmountMicros: Long? = null,
+    val introCycleCount: Int? = null,
 )

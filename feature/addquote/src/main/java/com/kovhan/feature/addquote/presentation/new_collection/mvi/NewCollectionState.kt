@@ -13,4 +13,7 @@ data class NewCollectionState(
 
 sealed class NewCollectionEffect : UiEffect {
     data class Saved(val collectionId: String) : NewCollectionEffect()
+
+    /** Безкоштовний план вичерпав ліміт колекцій. */
+    data object ShowPaywall : NewCollectionEffect()
 }

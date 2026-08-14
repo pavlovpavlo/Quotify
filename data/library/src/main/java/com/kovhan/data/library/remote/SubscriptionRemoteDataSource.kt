@@ -28,6 +28,8 @@ class SubscriptionRemoteDataSource @Inject constructor(
             expiresAt = (premium[FIELD_EXPIRES_AT] as? Number)?.toLong(),
             autoRenewing = premium[FIELD_AUTO_RENEWING] as? Boolean ?: false,
             productId = premium[FIELD_PRODUCT_ID] as? String,
+            basePlanId = (premium[FIELD_BASE_PLAN_ID] as? String)?.takeIf { it.isNotBlank() },
+            startedAt = (premium[FIELD_STARTED_AT] as? Number)?.toLong()?.takeIf { it > 0L },
         )
     }
 
@@ -40,5 +42,7 @@ class SubscriptionRemoteDataSource @Inject constructor(
         const val FIELD_EXPIRES_AT = "expiresAt"
         const val FIELD_AUTO_RENEWING = "autoRenewing"
         const val FIELD_PRODUCT_ID = "productId"
+        const val FIELD_BASE_PLAN_ID = "basePlanId"
+        const val FIELD_STARTED_AT = "startedAt"
     }
 }

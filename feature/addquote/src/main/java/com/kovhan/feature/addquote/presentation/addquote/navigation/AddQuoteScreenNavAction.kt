@@ -8,10 +8,13 @@ interface AddQuoteScreenNavAction {
 
     fun proceedToDetails(quote: String)
 
+    fun openPaywall()
+
     companion object {
         val Empty: AddQuoteScreenNavAction = object : AddQuoteScreenNavAction {
             override fun close() = Unit
             override fun proceedToDetails(quote: String) = Unit
+            override fun openPaywall() = Unit
         }
     }
 }

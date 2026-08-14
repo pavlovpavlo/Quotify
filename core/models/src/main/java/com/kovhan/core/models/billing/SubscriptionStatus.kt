@@ -1,12 +1,15 @@
 package com.kovhan.core.models.billing
 
-
 data class SubscriptionStatus(
     val isActive: Boolean,
     val status: String?,
     val expiresAt: Long?,
     val autoRenewing: Boolean,
     val productId: String?,
+    /** base plan із Play Console (weekly/monthly/yearly); null, поки бекенд його не записав. */
+    val basePlanId: String? = null,
+    /** Коли підписку оформили вперше, ms epoch; null якщо невідомо. */
+    val startedAt: Long? = null,
 ) {
     companion object {
         const val ACTIVE = "active"

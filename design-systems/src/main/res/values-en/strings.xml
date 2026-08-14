@@ -95,6 +95,10 @@
     <string name="ai_gate_upsell_message">AI features are part of a Quotify subscription. Subscribe to scan text and get tag suggestions without limits.</string>
     <string name="ai_gate_upsell_cta">Subscribe</string>
     <string name="ai_gate_review_cta">Review subscriptions</string>
+    <string name="ai_gate_free_daily_title">Daily limit reached</string>
+    <string name="ai_gate_free_daily_message">You\'ve used all of today\'s free-plan AI requests. Subscribe to Premium to get more.</string>
+    <string name="ai_gate_free_monthly_title">Monthly limit reached</string>
+    <string name="ai_gate_free_monthly_message">You\'ve used all of this month\'s free-plan AI requests. Subscribe to Premium to get more.</string>
     <string name="ai_gate_daily_title">Daily limit reached</string>
     <string name="ai_gate_daily_message">You\'ve used all of today\'s AI requests. Try again tomorrow.</string>
     <string name="ai_gate_monthly_title">Monthly limit reached</string>
@@ -103,6 +107,7 @@
     <string name="ai_gate_not_now">Not now</string>
     <string name="ai_dialog_cta">View plans</string>
     <string name="ai_dialog_dismiss">Not now</string>
+    <string name="ai_tags_locked_cd">AI tags are a Premium feature</string>
 
     <!-- Onboarding — common -->
     <string name="onboarding_skip">Skip</string>
@@ -453,4 +458,98 @@
     <string name="widget_empty_title">Set up the widget</string>
     <string name="widget_empty_hint">Tap to choose a quote source</string>
     <string name="widget_pin_unsupported">Add the widget manually from the widget menu</string>
+
+    <!-- Paywall -->
+    <string name="paywall_restore">Restore</string>
+    <string name="paywall_close_cd">Close</string>
+    <string name="paywall_plan_gets">This plan gets</string>
+    <string name="paywall_feature_offline">&lt;b&gt;Full offline access&lt;/b&gt;.</string>
+    <string name="paywall_feature_quotes">&lt;b&gt;Unlimited quotes and collections&lt;/b&gt;.</string>
+    <string name="paywall_feature_style">&lt;b&gt;Custom colors and icons&lt;/b&gt;.</string>
+    <string name="paywall_feature_ai">&lt;b&gt;More scans&lt;/b&gt; and AI tag suggestions.</string>
+    <string name="paywall_plan_yearly">Annual</string>
+    <string name="paywall_plan_monthly">Monthly</string>
+    <string name="paywall_plan_weekly">Weekly</string>
+    <string name="paywall_plan_yearly_name">Annual plan</string>
+    <string name="paywall_plan_monthly_name">Monthly plan</string>
+    <string name="paywall_plan_weekly_name">Weekly plan</string>
+    <string name="paywall_plan_yearly_desc">Complete access to every Quotify feature for a full year.</string>
+    <string name="paywall_plan_monthly_desc">Complete access to every Quotify feature. Cancel anytime.</string>
+    <string name="paywall_plan_weekly_desc">Full access to Quotify for a week. A good way to try it out.</string>
+    <string name="paywall_plan_tag_popular">Popular</string>
+    <string name="paywall_plan_meta_yearly">Yearly</string>
+    <string name="paywall_plan_meta_monthly">Monthly</string>
+    <string name="paywall_plan_meta_weekly">Weekly</string>
+    <string name="paywall_period_year">/yr</string>
+    <string name="paywall_period_month">/mo</string>
+    <string name="paywall_period_week">/wk</string>
+    <string name="paywall_cta_subscribe">Subscribe</string>
+    <plurals name="paywall_cta_trial">
+        <item quantity="one">Start %1$d-day free trial</item>
+        <item quantity="other">Start %1$d-day free trial</item>
+    </plurals>
+    <string name="paywall_note_plain">%1$s. Cancel anytime.</string>
+    <plurals name="paywall_note_trial">
+        <item quantity="one">Free for %1$d day, then %2$s. Cancel anytime.</item>
+        <item quantity="other">Free for %1$d days, then %2$s. Cancel anytime.</item>
+    </plurals>
+    <string name="paywall_legal_terms">Terms of Use</string>
+    <string name="paywall_legal_privacy">Privacy Policy</string>
+    <string name="paywall_legal_subscription">Subscription Policy</string>
+
+    <string name="offer_badge">SPECIAL OFFER</string>
+    <string name="offer_title">An exclusive offer just for you</string>
+    <string name="offer_subtitle">Right now only: a full year, unlimited, at a reduced price.</string>
+    <string name="offer_discount">− %1$d%%</string>
+    <string name="offer_per_month">just %1$s/mo</string>
+    <string name="offer_cta">Get it for %1$s</string>
+    <string name="offer_dismiss">Not now</string>
+    <string name="offer_note">Billed yearly. Cancel anytime.</string>
+    <string name="offer_close_cd">Dismiss offer</string>
+
+    <string name="dev_tools_title">DEV TOOLS</string>
+    <string name="dev_tools_open_offer">Open special offer</string>
+    <string name="paywall_success_title">Welcome to Premium</string>
+    <string name="paywall_success_message">Your whole library is unlocked. Enjoy the read.</string>
+    <string name="paywall_success_cta">Done</string>
+    <string name="paywall_load_error_title">Couldn\'t load the plans</string>
+    <string name="paywall_load_error_message">Check your connection and Google Play, then try again.</string>
+    <string name="paywall_retry">Try again</string>
+    <string name="paywall_purchase_failed">Couldn\'t open the payment dialog</string>
+    <string name="paywall_verification_failed">Couldn\'t verify the purchase</string>
+    <string name="paywall_restore_empty">No active purchases found</string>
+
+    <!-- Current subscription -->
+    <string name="subscription_current_title">Subscription</string>
+    <string name="subscription_eyebrow">QUOTIFY PREMIUM</string>
+    <string name="subscription_plan_fallback">Quotify Premium</string>
+    <string name="subscription_status_active">Active</string>
+    <string name="subscription_status_canceled">Canceled</string>
+    <string name="subscription_status_grace">Grace period</string>
+    <string name="subscription_status_on_hold">On hold</string>
+    <string name="subscription_status_paused">Paused</string>
+    <string name="subscription_status_expired">Expired</string>
+    <string name="subscription_next_billing">Next billing</string>
+    <string name="subscription_valid_until">Valid until</string>
+    <string name="subscription_start_date">Start date</string>
+    <string name="subscription_manage_cta">Manage subscription</string>
+    <string name="subscription_empty_title">No active subscription</string>
+    <string name="subscription_empty_message">Subscribe to Premium to lift the library and AI limits.</string>
+    <string name="subscription_empty_cta">View plans</string>
+
+    <!-- Manage subscription sheet -->
+    <string name="subscription_manage_sheet_title">Manage subscription</string>
+    <string name="subscription_cancel_title">Do you want to cancel a subscription?</string>
+    <string name="subscription_cancel_intro">Please note that as developers, we cannot manage your subscriptions. To cancel your subscription or free trial, please follow these steps:</string>
+    <string name="subscription_cancel_step_1">Open the &lt;b&gt;Google Play Store&lt;/b&gt; app on your Android device.</string>
+    <string name="subscription_cancel_step_2">Tap your &lt;b&gt;profile icon&lt;/b&gt; in the top-right corner.</string>
+    <string name="subscription_cancel_step_3">Tap &lt;b&gt;Payments &amp; subscriptions&lt;/b&gt;.</string>
+    <string name="subscription_cancel_step_4">Tap &lt;b&gt;Subscriptions&lt;/b&gt;.</string>
+    <string name="subscription_cancel_step_5">Select the subscription you wish to cancel.</string>
+    <string name="subscription_cancel_step_6">Tap &lt;b&gt;Cancel subscription&lt;/b&gt; and follow the on-screen instructions.</string>
+    <string name="subscription_cancel_note">Please note: deleting the app does not cancel your subscription. You need to cancel it through your Google Play account.</string>
+
+    <!-- Premium limits -->
+    <string name="premium_locked_cd">Available with Premium</string>
+    <string name="premium_unlock_cta">Unlock</string>
 </resources>

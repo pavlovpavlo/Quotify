@@ -32,6 +32,7 @@ import com.kovhan.feature.addquote.presentation.common.toGateContent
 @Composable
 internal fun ScanAiGatePrompt(
     reason: AiDenialReason,
+    onUpgrade: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val dimensions = QuotifyMaterialTheme.dimensions
@@ -66,7 +67,7 @@ internal fun ScanAiGatePrompt(
         if (content.isUpsell) {
             QuotifyButton(
                 text = stringResource(R.string.ai_gate_upsell_cta),
-                onClick = {},
+                onClick = onUpgrade,
                 variant = QuotifyButtonVariant.Filled,
                 accent = QuotifyButtonAccent.Premium,
                 size = QuotifyButtonSize.Medium,

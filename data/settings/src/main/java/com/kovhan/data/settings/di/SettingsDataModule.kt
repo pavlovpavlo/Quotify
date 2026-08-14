@@ -3,6 +3,8 @@ package com.kovhan.data.settings.di
 import com.kovhan.data.settings.local.SettingsLocalDataSource
 import com.kovhan.data.settings.local.WidgetSettingsLocalDataSource
 import com.kovhan.domain.onboarding.OnboardingRepository
+import com.kovhan.domain.premium.OfferPromptRepository
+import com.kovhan.domain.premium.PaywallPromptRepository
 import com.kovhan.domain.settings.SettingsRepository
 import com.kovhan.domain.widget.WidgetSettingsRepository
 import dagger.Binds
@@ -21,6 +23,18 @@ abstract class SettingsDataModule {
     @Binds
     @Singleton
     abstract fun bindOnboardingRepository(impl: SettingsLocalDataSource): OnboardingRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindPaywallPromptRepository(
+        impl: SettingsLocalDataSource,
+    ): PaywallPromptRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindOfferPromptRepository(
+        impl: SettingsLocalDataSource,
+    ): OfferPromptRepository
 
     @Binds
     @Singleton

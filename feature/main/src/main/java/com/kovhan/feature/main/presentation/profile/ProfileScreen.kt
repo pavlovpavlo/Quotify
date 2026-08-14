@@ -140,6 +140,7 @@ fun ProfileScreen(
                 onRateClick = intent::onRateClicked,
                 onSupportClick = intent::onSupportClicked,
                 onAboutClick = navAction::navigateToAbout,
+                onDevToolsClick = navAction::navigateToDevTools,
             )
         }
     }

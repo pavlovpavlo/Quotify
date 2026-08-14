@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.AddQuoteKey
 import com.kovhan.core.navigation.NewCollectionSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.SaveQuoteCollectionSheetKey
 import com.kovhan.feature.addquote.presentation.details.mvi.QuoteDraft
 import com.kovhan.feature.addquote.presentation.save_collection.SaveQuoteCollectionSheet
@@ -52,6 +53,11 @@ internal fun SaveQuoteCollectionSheetEntry(
                 SaveQuoteCollectionEffect.Saved -> {
                     coordinator.clearBottomSheets()
                     coordinator.popBackTo(AddQuoteKey::class, inclusive = true, restoreOverlays = false)
+                }
+
+                SaveQuoteCollectionEffect.ShowPaywall -> {
+                    coordinator.dismissBottomSheet()
+                    coordinator.navigate(PaywallKey)
                 }
             }
         }

@@ -165,6 +165,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         activityRequired.forEach { it.onStarted() }
+        viewModel.onAppForegrounded()
     }
 
     override fun onResume() {

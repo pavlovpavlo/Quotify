@@ -43,6 +43,7 @@ internal fun SettingsSection(
     onRateClick: () -> Unit,
     onSupportClick: () -> Unit,
     onAboutClick: () -> Unit,
+    onDevToolsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = QuotifyMaterialTheme.colors
@@ -105,6 +106,13 @@ internal fun SettingsSection(
                 label = stringResource(R.string.profile_settings_about),
                 meta = aboutMeta,
                 onClick = onAboutClick,
+                showDivider = true,
+            )
+            SettingsRow(
+                iconRes = R.drawable.ic_settings,
+                label = stringResource(R.string.dev_tools_title),
+                meta = null,
+                onClick = onDevToolsClick,
                 showDivider = false,
             )
         }

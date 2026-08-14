@@ -14,6 +14,7 @@ import com.kovhan.domain.library.use_case.collection.ObserveCollectionsUseCase
 import com.kovhan.domain.library.use_case.quote.ObserveFilteredQuotesUseCase
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
+import com.kovhan.domain.premium.use_case.CheckQuoteLimitUseCase
 import com.kovhan.domain.settings.use_case.SetDailyQuoteEnabledUseCase
 import com.kovhan.feature.main.presentation.quotes.mvi.QuotesScreenEffect
 import com.kovhan.feature.main.presentation.quotes.mvi.QuotesScreenIntent
@@ -36,6 +37,7 @@ class QuotesScreenViewModel @Inject constructor(
     private val removeFromFavourites: RemoveDailyQuoteFromFavouritesUseCase,
     private val dismissForToday: DismissDailyQuoteForTodayUseCase,
     private val setDailyQuoteEnabled: SetDailyQuoteEnabledUseCase,
+    private val checkQuoteLimit: CheckQuoteLimitUseCase,
 ) : BaseViewModel<QuotesScreenState, QuotesScreenEffect>(QuotesScreenState()),
     QuotesScreenIntent {
 
@@ -80,6 +82,12 @@ class QuotesScreenViewModel @Inject constructor(
         val wasFavourite = uiState.value.isDailyQuoteFavourite
         publishState { copy(isDailyQuoteFavouriteLoading = true) }
         viewModelScope.launch {
+            // Додавання в обране створює нову цитату, тому впирається в той самий ліміт.
+            if (!wasFavourite && !checkQuoteLimit()) {
+                publishState { copy(isDailyQuoteFavouriteLoading = false) }
+                publishEffect(QuotesScreenEffect.OpenPaywall)
+                return@launch
+            }
             val success = runCatching {
                 if (wasFavourite) removeFromFavourites(quote)
                 else saveToFavourites(quote, favouritesName, language)

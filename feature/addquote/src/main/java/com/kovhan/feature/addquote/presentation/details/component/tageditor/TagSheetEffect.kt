@@ -7,4 +7,7 @@ sealed class TagSheetEffect : UiEffect {
     data class ShowAiLimitDialog(val reason: AiDenialReason) : TagSheetEffect()
 
     data object ShowOfflineDialog : TagSheetEffect()
+
+    /** Плашка з замком: безкоштовному плану AI-теги закриті цілком. */
+    data object OpenPaywall : TagSheetEffect()
 }

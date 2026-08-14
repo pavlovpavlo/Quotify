@@ -8,6 +8,8 @@ import com.kovhan.domain.daily.use_case.PrefetchDailyQuotesUseCase
 import com.kovhan.domain.library.use_case.sync.RefreshLibraryUseCase
 import com.kovhan.domain.library.use_case.sync.SyncPendingChangesUseCase
 import com.kovhan.domain.onboarding.use_case.GetOnboardingCompletedUseCase
+import com.kovhan.domain.premium.use_case.MarkStartupPaywallShownUseCase
+import com.kovhan.domain.premium.use_case.ShouldShowStartupPaywallUseCase
 import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenEffect
 import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenIntent
 import com.kovhan.feature.splash.presentation.splash.mvi.SplashScreenState
@@ -25,6 +27,8 @@ class SplashScreenViewModel @Inject constructor(
     private val subscriptionRepository: SubscriptionRepository,
     private val syncPendingChanges: SyncPendingChangesUseCase,
     private val refreshLibrary: RefreshLibraryUseCase,
+    private val shouldShowStartupPaywall: ShouldShowStartupPaywallUseCase,
+    private val markStartupPaywallShown: MarkStartupPaywallShownUseCase,
 ) : BaseViewModel<SplashScreenState, SplashScreenEffect>(SplashScreenState()), SplashScreenIntent {
 
     private val createdAt = System.currentTimeMillis()
@@ -60,10 +64,17 @@ class SplashScreenViewModel @Inject constructor(
     private suspend fun navigateOnward() {
         val effect = when {
             !getOnboardingCompleted.await() -> SplashScreenEffect.NavigateToOnboarding
-            isLoggedIn() -> SplashScreenEffect.NavigateToMain
+            isLoggedIn() -> mainEffect()
             else -> SplashScreenEffect.NavigateToAuth
         }
         publishEffect(effect)
+    }
+
+    private suspend fun mainEffect(): SplashScreenEffect {
+        val show = runCatching { shouldShowStartupPaywall() }.getOrDefault(false)
+        if (!show) return SplashScreenEffect.NavigateToMain
+        runCatching { markStartupPaywallShown() }
+        return SplashScreenEffect.NavigateToMainWithPaywall
     }
 
     /** Keep the intro on screen for at least [SPLASH_MIN_DURATION_MS] on the first pass. */

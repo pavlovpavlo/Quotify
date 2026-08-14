@@ -115,3 +115,15 @@ val MIGRATION_8_9 = object : Migration(8, 9) {
         db.execSQL("ALTER TABLE `quotes` ADD COLUMN `page` INTEGER")
     }
 }
+
+/**
+ * Кешує base plan і дату оформлення підписки — екран підписки показує назву
+ * конкретного тарифу та дату початку. Обидва nullable: наявні рядки лишаються
+ * з NULL, поки бекенд не перезапише статус.
+ */
+val MIGRATION_9_10 = object : Migration(9, 10) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `subscription_status` ADD COLUMN `basePlanId` TEXT")
+        db.execSQL("ALTER TABLE `subscription_status` ADD COLUMN `startedAt` INTEGER")
+    }
+}

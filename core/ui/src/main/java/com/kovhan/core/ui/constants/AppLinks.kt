@@ -12,4 +12,5 @@
 object AppLinks {
     const val PRIVACY_POLICY = "https://www.google.com"
     const val TERMS_OF_SERVICE = "https://www.google.com"
+    const val SUBSCRIPTION_POLICY = "https://www.google.com"
 }

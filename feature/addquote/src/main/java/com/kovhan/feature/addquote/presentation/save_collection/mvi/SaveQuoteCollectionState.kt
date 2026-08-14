@@ -12,4 +12,7 @@ data class SaveQuoteCollectionState(
 
 sealed class SaveQuoteCollectionEffect : UiEffect {
     data object Saved : SaveQuoteCollectionEffect()
+
+    /** Безкоштовний план вичерпав ліміт збережених цитат. */
+    data object ShowPaywall : SaveQuoteCollectionEffect()
 }

@@ -13,6 +13,7 @@ import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.OfflineBlockingSheetKey
 import com.kovhan.core.navigation.OnboardingKey
+import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.SplashKey
 import com.kovhan.feature.splash.navigation.SplashScreenNavAction
@@ -42,6 +43,12 @@ internal fun SplashEntry(
             coordinator.navigate(QuotesKey, popUpTo = SplashKey, inclusive = true)
         }
 
+        override fun navigateToMainWithPaywall() {
+            // Спершу бібліотека, потім пейвол поверх — щоб «назад» повертало в застосунок.
+            coordinator.navigate(QuotesKey, popUpTo = SplashKey, inclusive = true)
+            coordinator.navigate(PaywallKey)
+        }
+
         override fun navigateToAuth() {
             coordinator.navigate(CompleteKey, popUpTo = SplashKey, inclusive = true)
         }
@@ -53,6 +60,7 @@ internal fun SplashEntry(
                 SplashScreenEffect.NavigateToOnboarding -> navAction.navigateToOnboarding()
                 SplashScreenEffect.NavigateToAuth -> navAction.navigateToAuth()
                 SplashScreenEffect.NavigateToMain -> navAction.navigateToMain()
+                SplashScreenEffect.NavigateToMainWithPaywall -> navAction.navigateToMainWithPaywall()
                 SplashScreenEffect.ShowOfflineBlock -> coordinator.showBottomSheet(OfflineBlockingSheetKey)
             }
         }

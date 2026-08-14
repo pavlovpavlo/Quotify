@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.component.bottomsheet.QuotifyBottomSheet
 import com.kovhan.core.ui.component.button.QuotifyButton
 import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
+import com.kovhan.core.ui.component.premium.PremiumLockOverlay
+import com.kovhan.core.ui.component.premium.premiumBlur
 import com.kovhan.core.ui.component.text.QuotifyFieldLabel
 import com.kovhan.core.ui.mapper.CollectionColorMapper
 import com.kovhan.design.systems.QuotifyMaterialTheme
@@ -43,9 +45,11 @@ import com.kovhan.design.systems.R as DsR
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun EditCollectionStyleSheet(
     draft: CollectionStyleDraft,
+    locked: Boolean,
     onToneChange: (String) -> Unit,
     onIconChange: (String) -> Unit,
     onSave: () -> Unit,
+    onUnlock: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     val colors = QuotifyMaterialTheme.colors
@@ -57,9 +61,11 @@ internal fun EditCollectionStyleSheet(
         sheetState = sheetState,
         title = stringResource(DsR.string.collection_details_style_title),
     ) {
+        Box(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .then(if (locked) Modifier.premiumBlur() else Modifier)
                 .padding(
                     start = dimensions.space5,
                     end = dimensions.space5,
@@ -157,6 +163,9 @@ internal fun EditCollectionStyleSheet(
                 onClick = onSave,
                 sizeSpec = QuotifyButtonDefaults.pillSizeSpec(height = dimensions.size52),
             )
+        }
+
+            if (locked) PremiumLockOverlay(onUnlock = onUnlock)
         }
     }
 }

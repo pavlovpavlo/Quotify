@@ -6,6 +6,7 @@ import app.cash.turbine.test
 import com.kovhan.core.models.AiError
 import com.kovhan.core.models.Outcome
 import com.kovhan.domain.ai.AiAccess
+import com.kovhan.domain.ai.AiFeature
 import com.kovhan.domain.ai.use_case.CheckAiAccessUseCase
 import com.kovhan.domain.ai.use_case.RecordAiRequestUseCase
 import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
@@ -54,7 +55,7 @@ class AddQuoteScreenViewModelTest {
     @DisplayName("successful recognition records the AI request and shows the lines")
     fun successRecords() = runBlocking {
         val uri = mockk<Uri>()
-        coEvery { checkAiAccess() } returns AiAccess.Allowed
+        coEvery { checkAiAccess(AiFeature.SCAN) } returns AiAccess.Allowed
         coEvery { recognizeText(uri) } returns Outcome.Success(listOf(RecognizedTextLine("hello")))
 
         val vm = viewModel()
@@ -71,7 +72,7 @@ class AddQuoteScreenViewModelTest {
     @DisplayName("offline recognition flags the offline prompt and does not record a request")
     fun offlineDoesNotRecord() = runBlocking {
         val uri = mockk<Uri>()
-        coEvery { checkAiAccess() } returns AiAccess.Allowed
+        coEvery { checkAiAccess(AiFeature.SCAN) } returns AiAccess.Allowed
         coEvery { recognizeText(uri) } returns Outcome.Failure(AiError.Offline)
 
         val vm = viewModel()

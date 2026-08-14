@@ -3,14 +3,18 @@ package com.kovhan.quotify
 import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.core.ui.snackbar.SnackbarMessageSource
 import com.kovhan.core.ui.view_model.BaseViewModel
-import com.kovhan.domain.billing.use_case.InitializeBillingUseCase
 import com.kovhan.domain.onboarding.use_case.GetFabTooltipDismissedUseCase
+import com.kovhan.domain.billing.use_case.GetSpecialOfferUseCase
 import com.kovhan.domain.onboarding.use_case.SetFabTooltipDismissedUseCase
+import com.kovhan.domain.premium.use_case.MarkOfferShownUseCase
+import com.kovhan.domain.premium.use_case.ResolveOfferTriggerUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
 import com.kovhan.domain.settings.use_case.GetThemeUseCase
 import com.kovhan.quotify.mvi.MainActivityEffect
 import com.kovhan.quotify.mvi.MainActivityState
 import com.kovhan.quotify.mvi.MainIntent
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,13 +26,16 @@ class MainActivityViewModel @Inject constructor(
     getLanguage: GetLanguageUseCase,
     getFabTooltipDismissed: GetFabTooltipDismissedUseCase,
     private val setFabTooltipDismissed: SetFabTooltipDismissedUseCase,
-    private val initializeBilling: InitializeBillingUseCase,
+    private val resolveOfferTrigger: ResolveOfferTriggerUseCase,
+    private val getSpecialOffer: GetSpecialOfferUseCase,
+    private val markOfferShown: MarkOfferShownUseCase,
     snackbarMessageSource: SnackbarMessageSource,
 ) : BaseViewModel<MainActivityState, MainActivityEffect>(MainActivityState()), MainIntent {
 
     val snackbarMessages: Flow<SnackbarMessage> = snackbarMessageSource.messages
 
     private var wasDockVisible = false
+    private var autoDismissJob: Job? = null
 
     init {
         getTheme()
@@ -40,22 +47,52 @@ class MainActivityViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         getFabTooltipDismissed()
-            .onEach { dismissed -> publishState { copy(isFabTooltipVisible = !dismissed) } }
+            .onEach { dismissed ->
+                publishState { copy(isFabTooltipVisible = !dismissed) }
+                if (!dismissed && wasDockVisible) scheduleFabTooltipAutoDismiss()
+            }
             .launchIn(viewModelScope)
+    }
 
-        // Без RTDN статус оновлюється при вході: перепитуємо Play і верифікуємо активні підписки.
-        viewModelScope.launch { runCatching { initializeBilling() } }
+    override fun onAppForegrounded() {
+        viewModelScope.launch {
+            val trigger = resolveOfferTrigger() ?: return@launch
+            if (getSpecialOffer() == null) return@launch
+            publishState { copy(pendingOfferTrigger = trigger) }
+        }
+    }
+
+    override fun onOfferShown() {
+        val trigger = uiState.value.pendingOfferTrigger ?: return
+        publishState { copy(pendingOfferTrigger = null) }
+        viewModelScope.launch { markOfferShown(trigger) }
     }
 
     override fun onFabClicked() = dismissFabTooltip()
 
     override fun onDockVisibilityChanged(visible: Boolean) {
         if (wasDockVisible && !visible) dismissFabTooltip()
+        if (!wasDockVisible && visible && uiState.value.isFabTooltipVisible) {
+            scheduleFabTooltipAutoDismiss()
+        }
         wasDockVisible = visible
+    }
+
+    private fun scheduleFabTooltipAutoDismiss() {
+        autoDismissJob?.cancel()
+        autoDismissJob = viewModelScope.launch {
+            delay(FAB_TOOLTIP_VISIBLE_MS)
+            dismissFabTooltip()
+        }
     }
 
     private fun dismissFabTooltip() {
         if (!uiState.value.isFabTooltipVisible) return
+        autoDismissJob?.cancel()
         viewModelScope.launch { setFabTooltipDismissed() }
+    }
+
+    private companion object {
+        const val FAB_TOOLTIP_VISIBLE_MS = 5_000L
     }
 }

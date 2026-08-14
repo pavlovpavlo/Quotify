@@ -9,6 +9,8 @@ interface ProfileScreenNavAction {
     fun navigateToAbout()
     fun navigateToAuth()
 
+    fun navigateToDevTools()
+
     companion object {
         val Empty: ProfileScreenNavAction = EmptyProfileScreenNavAction
     }
@@ -19,4 +21,5 @@ private object EmptyProfileScreenNavAction : ProfileScreenNavAction {
     override fun navigateToEditProfile() = Unit
     override fun navigateToAbout() = Unit
     override fun navigateToAuth() = Unit
+    override fun navigateToDevTools() = Unit
 }

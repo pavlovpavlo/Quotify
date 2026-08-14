@@ -97,6 +97,10 @@
     <string name="ai_gate_upsell_message">AI-функції — частина підписки Quotify. Оформіть її, щоб сканувати текст і отримувати підказки тегів без обмежень.</string>
     <string name="ai_gate_upsell_cta">Оформити підписку</string>
     <string name="ai_gate_review_cta">Переглянути підписки</string>
+    <string name="ai_gate_free_daily_title">Ліміт на сьогодні вичерпано</string>
+    <string name="ai_gate_free_daily_message">Ви використали всі AI-запити безкоштовного плану на сьогодні. Оформіть Premium, щоб отримати більше.</string>
+    <string name="ai_gate_free_monthly_title">Ліміт на місяць вичерпано</string>
+    <string name="ai_gate_free_monthly_message">Ви використали всі AI-запити безкоштовного плану цього місяця. Оформіть Premium, щоб отримати більше.</string>
     <string name="ai_gate_daily_title">Ліміт на сьогодні вичерпано</string>
     <string name="ai_gate_daily_message">Ви використали всі AI-запити на сьогодні. Спробуйте знову завтра.</string>
     <string name="ai_gate_monthly_title">Ліміт на місяць вичерпано</string>
@@ -105,6 +109,7 @@
     <string name="ai_gate_not_now">Не зараз</string>
     <string name="ai_dialog_cta">Переглянути підписки</string>
     <string name="ai_dialog_dismiss">Не зараз</string>
+    <string name="ai_tags_locked_cd">AI-теги доступні з Premium</string>
 
     <!-- Onboarding — common -->
     <string name="onboarding_skip">Пропустити</string>
@@ -467,4 +472,102 @@
     <string name="widget_empty_title">Налаштуйте віджет</string>
     <string name="widget_empty_hint">Торкніться, щоб обрати джерело цитат</string>
     <string name="widget_pin_unsupported">Додайте віджет вручну з меню віджетів</string>
+
+    <!-- Paywall -->
+    <string name="paywall_restore">Відновити</string>
+    <string name="paywall_close_cd">Закрити</string>
+    <string name="paywall_plan_gets">Цей план відкриває</string>
+    <string name="paywall_feature_offline">&lt;b&gt;Повний доступ офлайн&lt;/b&gt;.</string>
+    <string name="paywall_feature_quotes">&lt;b&gt;Безліч цитат і колекцій&lt;/b&gt; без обмежень.</string>
+    <string name="paywall_feature_style">&lt;b&gt;Власні кольори та іконки&lt;/b&gt;.</string>
+    <string name="paywall_feature_ai">&lt;b&gt;Більше сканувань&lt;/b&gt; і AI-підказки тегів.</string>
+    <string name="paywall_plan_yearly">Річна</string>
+    <string name="paywall_plan_monthly">Місячна</string>
+    <string name="paywall_plan_weekly">Тижнева</string>
+    <string name="paywall_plan_yearly_name">Річний план</string>
+    <string name="paywall_plan_monthly_name">Місячний план</string>
+    <string name="paywall_plan_weekly_name">Тижневий план</string>
+    <string name="paywall_plan_yearly_desc">Повний доступ до всіх можливостей Quotify на цілий рік.</string>
+    <string name="paywall_plan_monthly_desc">Повний доступ до всіх можливостей Quotify. Скасуйте будь-коли.</string>
+    <string name="paywall_plan_weekly_desc">Повний доступ до Quotify на тиждень. Ідеально, щоб спробувати.</string>
+    <string name="paywall_plan_tag_popular">Популярний</string>
+    <string name="paywall_plan_meta_yearly">Щороку</string>
+    <string name="paywall_plan_meta_monthly">Щомісяцю</string>
+    <string name="paywall_plan_meta_weekly">Щотижня</string>
+    <string name="paywall_period_year">/рік</string>
+    <string name="paywall_period_month">/міс</string>
+    <string name="paywall_period_week">/тиж</string>
+    <string name="paywall_cta_subscribe">Оформити підписку</string>
+    <plurals name="paywall_cta_trial">
+        <item quantity="one">Почати %1$d день безкоштовно</item>
+        <item quantity="few">Почати %1$d дні безкоштовно</item>
+        <item quantity="many">Почати %1$d днів безкоштовно</item>
+        <item quantity="other">Почати %1$d дня безкоштовно</item>
+    </plurals>
+    <string name="paywall_note_plain">%1$s. Скасувати можна будь-коли.</string>
+    <plurals name="paywall_note_trial">
+        <item quantity="one">Безкоштовно %1$d день, далі %2$s. Скасувати можна будь-коли.</item>
+        <item quantity="few">Безкоштовно %1$d дні, далі %2$s. Скасувати можна будь-коли.</item>
+        <item quantity="many">Безкоштовно %1$d днів, далі %2$s. Скасувати можна будь-коли.</item>
+        <item quantity="other">Безкоштовно %1$d дня, далі %2$s. Скасувати можна будь-коли.</item>
+    </plurals>
+    <string name="paywall_legal_terms">Умови використання</string>
+    <string name="paywall_legal_privacy">Політика конфіденційності</string>
+    <string name="paywall_legal_subscription">Політика підписки</string>
+
+    <string name="offer_badge">СПЕЦІАЛЬНА ПРОПОЗИЦІЯ</string>
+    <string name="offer_title">Ексклюзивна пропозиція саме для тебе</string>
+    <string name="offer_subtitle">Тільки зараз: цілий рік без обмежень за зниженою ціною.</string>
+    <string name="offer_discount">− %1$d%%</string>
+    <string name="offer_per_month">всього %1$s/міс</string>
+    <string name="offer_cta">Отримати за %1$s</string>
+    <string name="offer_dismiss">Не зараз</string>
+    <string name="offer_note">Списується щорічно. Скасувати можна будь-коли.</string>
+    <string name="offer_close_cd">Закрити пропозицію</string>
+
+    <string name="dev_tools_title">DEV TOOLS</string>
+    <string name="dev_tools_open_offer">Відкрити спеціальну пропозицію</string>
+    <string name="paywall_success_title">Вітаємо з Premium</string>
+    <string name="paywall_success_message">Тепер уся бібліотека без обмежень. Приємного читання.</string>
+    <string name="paywall_success_cta">Готово</string>
+    <string name="paywall_load_error_title">Не вдалося завантажити плани</string>
+    <string name="paywall_load_error_message">Перевірте з\'єднання та Google Play і спробуйте ще раз.</string>
+    <string name="paywall_retry">Спробувати ще раз</string>
+    <string name="paywall_purchase_failed">Не вдалося відкрити оплату</string>
+    <string name="paywall_verification_failed">Не вдалося підтвердити покупку</string>
+    <string name="paywall_restore_empty">Активних покупок не знайдено</string>
+
+    <!-- Current subscription -->
+    <string name="subscription_current_title">Підписка</string>
+    <string name="subscription_eyebrow">QUOTIFY PREMIUM</string>
+    <string name="subscription_plan_fallback">Quotify Premium</string>
+    <string name="subscription_status_active">Активна</string>
+    <string name="subscription_status_canceled">Скасована</string>
+    <string name="subscription_status_grace">Пільговий період</string>
+    <string name="subscription_status_on_hold">Призупинена</string>
+    <string name="subscription_status_paused">На паузі</string>
+    <string name="subscription_status_expired">Завершена</string>
+    <string name="subscription_next_billing">Наступне списання</string>
+    <string name="subscription_valid_until">Діє до</string>
+    <string name="subscription_start_date">Дата початку</string>
+    <string name="subscription_manage_cta">Керувати підпискою</string>
+    <string name="subscription_empty_title">Активної підписки немає</string>
+    <string name="subscription_empty_message">Оформіть Premium, щоб зняти обмеження бібліотеки та AI.</string>
+    <string name="subscription_empty_cta">Переглянути плани</string>
+
+    <!-- Manage subscription sheet -->
+    <string name="subscription_manage_sheet_title">Керувати підпискою</string>
+    <string name="subscription_cancel_title">Хочете скасувати підписку?</string>
+    <string name="subscription_cancel_intro">Зверніть увагу: як розробники, ми не можемо керувати вашими підписками. Щоб скасувати підписку чи безкоштовний період, виконайте ці кроки:</string>
+    <string name="subscription_cancel_step_1">Відкрийте застосунок &lt;b&gt;Google Play Store&lt;/b&gt; на своєму Android-пристрої.</string>
+    <string name="subscription_cancel_step_2">Торкніться &lt;b&gt;іконки профілю&lt;/b&gt; у верхньому правому куті.</string>
+    <string name="subscription_cancel_step_3">Виберіть &lt;b&gt;Платежі та підписки&lt;/b&gt;.</string>
+    <string name="subscription_cancel_step_4">Виберіть &lt;b&gt;Підписки&lt;/b&gt;.</string>
+    <string name="subscription_cancel_step_5">Оберіть підписку, яку хочете скасувати.</string>
+    <string name="subscription_cancel_step_6">Натисніть &lt;b&gt;Скасувати підписку&lt;/b&gt; та дотримуйтесь інструкцій на екрані.</string>
+    <string name="subscription_cancel_note">Зверніть увагу: видалення застосунку не скасовує підписку. Її потрібно скасувати через ваш акаунт Google Play.</string>
+
+    <!-- Premium limits -->
+    <string name="premium_locked_cd">Доступно з Premium</string>
+    <string name="premium_unlock_cta">Розблокувати</string>
 </resources>

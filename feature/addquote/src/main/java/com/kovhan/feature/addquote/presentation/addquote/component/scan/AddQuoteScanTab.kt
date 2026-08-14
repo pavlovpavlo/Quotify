@@ -40,6 +40,7 @@ internal fun AddQuoteScanTab(
     onCropCancelled: () -> Unit,
     onRetake: () -> Unit,
     onRetry: () -> Unit,
+    onUpgrade: () -> Unit,
     onProceed: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -105,6 +106,7 @@ internal fun AddQuoteScanTab(
                         permissionLauncher.launch(Manifest.permission.CAMERA)
                     },
                     onRetry = onRetry,
+                    onUpgrade = onUpgrade,
                 )
 
                 ScanMode.SELECT -> ScanTextSelector(

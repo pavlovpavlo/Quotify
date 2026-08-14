@@ -7,8 +7,7 @@ import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.design.systems.R
 import com.kovhan.domain.auth.use_case.GetUserUseCase
 import com.kovhan.domain.auth.use_case.SignOutUseCase
-import com.kovhan.domain.billing.use_case.IsSubscribedUseCase
-import com.kovhan.domain.billing.use_case.ObservePurchaseVerificationsUseCase
+import com.kovhan.domain.billing.use_case.ObserveIsSubscribedUseCase
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
@@ -39,18 +38,15 @@ class ProfileScreenViewModel @Inject constructor(
     private val signOut: SignOutUseCase,
     private val rateApp: RateAppUseCase,
     private val contactSupport: ContactSupportUseCase,
-    private val isSubscribed: IsSubscribedUseCase,
-    observePurchaseVerifications: ObservePurchaseVerificationsUseCase,
+    observeIsSubscribed: ObserveIsSubscribedUseCase,
     getProfileStatisticUseCase: GetProfileStatisticUseCase
 ) : BaseViewModel<ProfileScreenState, ProfileScreenEffect>(ProfileScreenState()),
     ProfileScreenIntent {
 
     init {
-        refreshSubscription()
-
-        // Після успішної верифікації покупки бекенд уже переписав статус — перечитуємо його.
-        observePurchaseVerifications()
-            .onEach { refreshSubscription() }
+        // Профіль лише слухає кеш — синком займається SubscriptionSyncManager.
+        observeIsSubscribed()
+            .onEach { premium -> publishState { copy(isPremium = premium) } }
             .launchIn(viewModelScope)
 
         getUser()
@@ -91,13 +87,6 @@ class ProfileScreenViewModel @Inject constructor(
             ProfileScreenEffect.OpenPaywall
         },
     )
-
-    fun refreshSubscription() {
-        viewModelScope.launch {
-            val premium = runCatching { isSubscribed() }.getOrDefault(false)
-            publishState { copy(isPremium = premium) }
-        }
-    }
 
     override fun onRateClicked() = rateApp()
 
