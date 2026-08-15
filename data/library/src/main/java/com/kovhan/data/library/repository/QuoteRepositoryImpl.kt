@@ -27,6 +27,8 @@ class QuoteRepositoryImpl @Inject constructor(
 
     override suspend fun count(): Int = dao.count()
 
+    override suspend fun countWithoutFavourite(): Int = dao.countWithoutFavourite()
+
     override suspend fun getById(id: String): Quote? =
         dao.getById(id)?.toDomain()
 

@@ -14,6 +14,7 @@ interface WidgetSettingsIntent {
     fun onEditStyleClicked(style: WidgetStyle)
     fun onFeedbackSelected(feedback: WidgetFeedback)
     fun onAddToHomeClicked()
+    fun onBackClicked(widgetPlaced: Boolean)
 
     companion object {
         val Empty: WidgetSettingsIntent = object : WidgetSettingsIntent {
@@ -26,6 +27,7 @@ interface WidgetSettingsIntent {
             override fun onEditStyleClicked(style: WidgetStyle) = Unit
             override fun onFeedbackSelected(feedback: WidgetFeedback) = Unit
             override fun onAddToHomeClicked() = Unit
+            override fun onBackClicked(widgetPlaced: Boolean) = Unit
         }
     }
 }

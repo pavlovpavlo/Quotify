@@ -473,6 +473,35 @@
     <string name="widget_appearance_preview_author">Марк Аврелій</string>
     <string name="widget_appearance_preview_book">Роздуми</string>
 
+    <!-- Widget promo dialog -->
+    <string name="widget_promo_title">Постав віджет із цитатою</string>
+    <string name="widget_promo_text">У тебе вже три збережені цитати. Винеси їх на головний екран, щоб бачити улюблені думки щодня.</string>
+    <string name="widget_promo_confirm">Спробувати зараз</string>
+    <string name="widget_promo_later">Пізніше</string>
+    <string name="widget_promo_close_cd">Закрити</string>
+
+    <!-- Widget settings exit dialog -->
+    <string name="widget_exit_title">Зміни ще не застосовані</string>
+    <string name="widget_exit_text">Налаштування збережено, але віджет на головному екрані досі показує попередній вигляд.</string>
+    <string name="widget_exit_apply">Застосувати й вийти</string>
+    <string name="widget_exit_leave">Вийти без застосування</string>
+    <string name="widget_exit_close_cd">Залишитися</string>
+
+    <!-- Feedback dialog -->
+    <string name="feedback_title">Допоможи нам стати кращими.</string>
+    <string name="feedback_text">Поділися враженнями від Quotify — це допомагає нам розвивати застосунок.</string>
+    <string name="feedback_like">Подобається</string>
+    <string name="feedback_dislike">Не те</string>
+    <string name="feedback_comment_label">Поділіться думкою</string>
+    <string name="feedback_comment_label_optional">Поділіться думкою — необов\'язково</string>
+    <string name="feedback_comment_hint_positive">Що сподобалось найбільше?</string>
+    <string name="feedback_comment_hint_negative">Що можна покращити?</string>
+    <string name="feedback_send">Надіслати відгук</string>
+    <string name="feedback_done_title">Дякуємо за відгук</string>
+    <string name="feedback_done_text">Ми врахуємо це, коли готуватимемо наступні оновлення.</string>
+    <string name="feedback_done_confirm">Готово</string>
+    <string name="feedback_close_cd">Закрити</string>
+
     <!-- Colour picker -->
     <string name="color_picker_title">Колір тексту</string>
     <string name="color_picker_confirm">Готово</string>
@@ -561,6 +590,7 @@
 
     <string name="dev_tools_title">DEV TOOLS</string>
     <string name="dev_tools_open_offer">Відкрити спеціальну пропозицію</string>
+    <string name="dev_tools_dialogs_section">Діалоги</string>
     <string name="paywall_success_title">Вітаємо з Premium</string>
     <string name="paywall_success_message">Тепер уся бібліотека без обмежень. Приємного читання.</string>
     <string name="paywall_success_cta">Готово</string>

@@ -5,11 +5,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kovhan.core.models.quote.AddQuoteAction
 import com.kovhan.core.navigation.AddQuoteKey
-import com.kovhan.core.navigation.NewCollectionSheetKey
+import com.kovhan.core.navigation.FeedbackDialogKey
 import com.kovhan.core.navigation.NavigationCoordinator
+import com.kovhan.core.navigation.NewCollectionSheetKey
 import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.SaveQuoteCollectionSheetKey
+import com.kovhan.core.navigation.WidgetPromoKey
 import com.kovhan.feature.addquote.presentation.details.mvi.QuoteDraft
 import com.kovhan.feature.addquote.presentation.save_collection.SaveQuoteCollectionSheet
 import com.kovhan.feature.addquote.presentation.save_collection.SaveQuoteCollectionViewModel
@@ -39,20 +42,33 @@ internal fun SaveQuoteCollectionSheetEntry(
 
     LaunchedEffect(Unit) {
         coordinator.clearResult(NavigationCoordinator.KEY_COLLECTION_CREATED)
-        coordinator.observeResult<String>(NavigationCoordinator.KEY_COLLECTION_CREATED).collect { createdId ->
-            if (createdId != null) {
-                viewModel.loadCollections(generalName, selectId = createdId)
-                viewModel.saveToCollection(draft, collectionId = createdId, generalName = generalName)
+        coordinator.observeResult<String>(NavigationCoordinator.KEY_COLLECTION_CREATED)
+            .collect { createdId ->
+                if (createdId != null) {
+                    viewModel.loadCollections(generalName, selectId = createdId)
+                    viewModel.saveToCollection(
+                        draft,
+                        collectionId = createdId,
+                        generalName = generalName
+                    )
+                }
             }
-        }
     }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                SaveQuoteCollectionEffect.Saved -> {
+                is SaveQuoteCollectionEffect.Saved -> {
                     coordinator.clearBottomSheets()
-                    coordinator.popBackTo(AddQuoteKey::class, inclusive = true, restoreOverlays = false)
+                    coordinator.popBackTo(
+                        AddQuoteKey::class,
+                        inclusive = true,
+                        restoreOverlays = false
+                    )
+                    if (effect.action == AddQuoteAction.Feedback)
+                        coordinator.showDialog(FeedbackDialogKey())
+                    if (effect.action == AddQuoteAction.Widget)
+                        coordinator.showDialog(WidgetPromoKey)
                 }
 
                 SaveQuoteCollectionEffect.ShowPaywall -> {
@@ -68,6 +84,7 @@ internal fun SaveQuoteCollectionSheetEntry(
         chosenCollectionId = state.value.chosenCollectionId,
         savingCollectionId = state.value.savingCollectionId,
         onChooseCollection = viewModel::onChooseCollection,
+        onSaveWidgetPlaced = viewModel::onSaveWidgetPlaced,
         onSaveToCollection = { collectionId ->
             viewModel.saveToCollection(
                 draft,

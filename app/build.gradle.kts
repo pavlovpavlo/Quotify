@@ -106,6 +106,7 @@ dependencies {
     implementation(project(":data:billing"))
     implementation(project(":data:voice"))
     implementation(project(":data:scan"))
+    implementation(project(":data:feedback"))
     implementation(project(":design-systems"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:onboarding"))

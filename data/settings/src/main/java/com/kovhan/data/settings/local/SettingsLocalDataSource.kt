@@ -60,11 +60,11 @@ class SettingsLocalDataSource @Inject constructor(
     override suspend fun markShown(timestamp: Long) =
         dataStore.put(SettingsPreferences.Paywall.LAST_SHOWN_AT, timestamp)
 
-    override suspend fun firstLaunchAt(): Long =
-        dataStore.getOnes(SettingsPreferences.Offer.FIRST_LAUNCH_AT, 0L)
+    override suspend fun freeSinceAt(): Long =
+        dataStore.getOnes(SettingsPreferences.Offer.FREE_SINCE_AT, 0L)
 
-    override suspend fun rememberFirstLaunch(timestamp: Long) =
-        dataStore.put(SettingsPreferences.Offer.FIRST_LAUNCH_AT, timestamp)
+    override suspend fun rememberFreeSince(timestamp: Long) =
+        dataStore.put(SettingsPreferences.Offer.FREE_SINCE_AT, timestamp)
 
     override suspend fun isShown(trigger: OfferTrigger): Boolean =
         dataStore.getOnes(trigger.shownKey(), false)
@@ -72,8 +72,10 @@ class SettingsLocalDataSource @Inject constructor(
     override suspend fun markShown(trigger: OfferTrigger) =
         dataStore.put(trigger.shownKey(), true)
 
+    override suspend fun clearShown(trigger: OfferTrigger) =
+        dataStore.put(trigger.shownKey(), false)
+
     private fun OfferTrigger.shownKey(): Preferences.Key<Boolean> = when (this) {
-        OfferTrigger.WELCOME -> SettingsPreferences.Offer.SHOWN_WELCOME
         OfferTrigger.CANCELED -> SettingsPreferences.Offer.SHOWN_CANCELED
         OfferTrigger.TENURE -> SettingsPreferences.Offer.SHOWN_TENURE
     }

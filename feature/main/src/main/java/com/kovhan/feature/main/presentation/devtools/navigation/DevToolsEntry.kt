@@ -14,6 +14,7 @@ internal fun DevToolsEntry(
     DevToolsScreen(
         onBack = coordinator::goBack,
         onOpenOffer = { coordinator.navigate(OfferKey) },
+        onOpenDialog = coordinator::showDialog,
         paddingValues = paddingValues,
     )
 }

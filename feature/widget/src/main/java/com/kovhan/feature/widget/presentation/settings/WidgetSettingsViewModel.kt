@@ -1,9 +1,16 @@
 package com.kovhan.feature.widget.presentation.settings
 
+import com.kovhan.core.models.feedback.FeedbackSource
 import com.kovhan.core.models.widget.WidgetFeedback
+import com.kovhan.core.models.widget.WidgetSettings
 import com.kovhan.core.models.widget.WidgetSource
 import com.kovhan.core.models.widget.WidgetStyle
+import com.kovhan.core.navigation.WidgetExitAction
 import com.kovhan.core.ui.view_model.BaseViewModel
+import com.kovhan.domain.feedback.use_case.ObserveFeedbackGivenUseCase
+import com.kovhan.domain.widget.use_case.settings.GetAppliedWidgetSourceUseCase
+import com.kovhan.domain.widget.use_case.settings.IsWidgetSettingsAppliedUseCase
+import com.kovhan.domain.widget.use_case.settings.MarkWidgetSettingsAppliedUseCase
 import com.kovhan.domain.widget.use_case.settings.ObserveWidgetSettingsUseCase
 import com.kovhan.domain.widget.use_case.settings.ObserveWidgetSourcesUseCase
 import com.kovhan.domain.widget.use_case.settings.SetWidgetDailyQuoteUseCase
@@ -17,6 +24,7 @@ import com.kovhan.feature.widget.presentation.settings.mvi.WidgetSettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,21 +33,36 @@ import javax.inject.Inject
 class WidgetSettingsViewModel @Inject constructor(
     observeWidgetSettings: ObserveWidgetSettingsUseCase,
     observeWidgetSources: ObserveWidgetSourcesUseCase,
+    observeFeedbackGiven: ObserveFeedbackGivenUseCase,
     private val setSource: SetWidgetSourceUseCase,
     private val setDailyQuote: SetWidgetDailyQuoteUseCase,
     private val setFrequency: SetWidgetFrequencyUseCase,
     private val setStyle: SetWidgetStyleUseCase,
+    private val isWidgetSettingsApplied: IsWidgetSettingsAppliedUseCase,
+    private val markWidgetSettingsApplied: MarkWidgetSettingsAppliedUseCase,
+    private val getAppliedWidgetSource: GetAppliedWidgetSourceUseCase,
     private val widgetRefresher: WidgetRefresher,
 ) : BaseViewModel<WidgetSettingsState, WidgetSettingsEffect>(WidgetSettingsState()),
     WidgetSettingsIntent {
 
+    private var currentSettings: WidgetSettings? = null
+    private var pendingWrite: Job? = null
+
     init {
-        combine(observeWidgetSettings(), observeWidgetSources()) { settings, sources ->
-            settings to sources
-        }.onEach { (settings, sources) ->
+        combine(
+            observeWidgetSettings(),
+            observeWidgetSources(),
+            observeFeedbackGiven(FeedbackSource.WIDGET),
+        ) { settings, sources, feedbackGiven ->
+            Triple(settings, sources, feedbackGiven)
+        }.onEach { (settings, sources, feedbackGiven) ->
+            currentSettings = settings
+            val applied = isWidgetSettingsApplied(settings)
             publishState {
                 copy(
                     isLoading = false,
+                    feedbackGiven = feedbackGiven,
+                    hasPendingChanges = !applied,
                     selectedSource = settings.source,
                     includeDailyQuote = settings.includeDailyQuote,
                     frequencyHours = settings.frequencyHours,
@@ -53,12 +76,21 @@ class WidgetSettingsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun persist(write: suspend () -> Unit) {
+        pendingWrite = viewModelScope.launch { write() }
+    }
+
+    suspend fun applyToWidget() {
+        pendingWrite?.join()
+        val current = currentSettings ?: return
+        widgetRefresher.refresh(rotate = getAppliedWidgetSource() != current.source)
+        markWidgetSettingsApplied(current)
+        publishState { copy(hasPendingChanges = false) }
+    }
+
     override fun onSourceSelected(source: WidgetSource) {
         publishState { copy(selectedSource = source) }
-        viewModelScope.launch {
-            setSource(source)
-            widgetRefresher.refresh(rotate = true)
-        }
+        persist { setSource(source) }
     }
 
     override fun onCreatePlaylistClicked() = publishEffect(WidgetSettingsEffect.OpenCreatePlaylist)
@@ -68,10 +100,7 @@ class WidgetSettingsViewModel @Inject constructor(
 
     override fun onDailyQuoteToggled(enabled: Boolean) {
         publishState { copy(includeDailyQuote = enabled) }
-        viewModelScope.launch {
-            setDailyQuote(enabled)
-            widgetRefresher.refresh()
-        }
+        persist { setDailyQuote(enabled) }
     }
 
     override fun onFrequencyClicked() =
@@ -79,26 +108,34 @@ class WidgetSettingsViewModel @Inject constructor(
 
     override fun onStyleSelected(style: WidgetStyle) {
         publishState { copy(style = style) }
-        viewModelScope.launch {
-            setStyle(style)
-            widgetRefresher.refresh()
-        }
+        persist { setStyle(style) }
     }
 
     override fun onEditStyleClicked(style: WidgetStyle) =
         publishEffect(WidgetSettingsEffect.OpenAppearanceEditor(style))
 
     override fun onFeedbackSelected(feedback: WidgetFeedback) =
-        publishState { copy(feedback = feedback) }
+        publishEffect(WidgetSettingsEffect.OpenFeedback(liked = feedback == WidgetFeedback.LIKE))
 
     override fun onAddToHomeClicked() = publishEffect(WidgetSettingsEffect.WidgetAdded)
 
-    /** Called from the entry when the frequency sheet returns a value. */
+    override fun onBackClicked(widgetPlaced: Boolean) = publishEffect(
+        if (widgetPlaced && uiState.value.hasPendingChanges) {
+            WidgetSettingsEffect.ConfirmExit
+        } else {
+            WidgetSettingsEffect.Close
+        },
+    )
+
+    fun onExitAction(action: WidgetExitAction) = publishEffect(
+        when (action) {
+            WidgetExitAction.APPLY -> WidgetSettingsEffect.ApplyAndClose
+            WidgetExitAction.LEAVE -> WidgetSettingsEffect.Close
+        },
+    )
+
     fun applyFrequency(hours: Int) {
         publishState { copy(frequencyHours = hours) }
-        viewModelScope.launch {
-            setFrequency(hours)
-            widgetRefresher.refresh()
-        }
+        persist { setFrequency(hours) }
     }
 }

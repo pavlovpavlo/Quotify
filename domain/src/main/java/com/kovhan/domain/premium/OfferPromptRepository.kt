@@ -1,8 +1,6 @@
 package com.kovhan.domain.premium
 
 enum class OfferTrigger {
-    WELCOME,
-
     CANCELED,
 
     TENURE,
@@ -10,11 +8,13 @@ enum class OfferTrigger {
 
 interface OfferPromptRepository {
 
-    suspend fun firstLaunchAt(): Long
+    suspend fun freeSinceAt(): Long
 
-    suspend fun rememberFirstLaunch(timestamp: Long)
+    suspend fun rememberFreeSince(timestamp: Long)
 
     suspend fun isShown(trigger: OfferTrigger): Boolean
 
     suspend fun markShown(trigger: OfferTrigger)
+
+    suspend fun clearShown(trigger: OfferTrigger)
 }

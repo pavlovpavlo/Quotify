@@ -2,6 +2,7 @@ package com.kovhan.data.settings.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.kovhan.core.datastore.get
 import com.kovhan.core.datastore.put
 import com.kovhan.core.models.widget.WidgetAppearance
 import com.kovhan.core.models.widget.WidgetSettings
@@ -61,6 +62,29 @@ class WidgetSettingsLocalDataSource @Inject constructor(
             json.encodeToString(WidgetAppearanceDto.serializer(), updated.toDto()),
         )
     }
+
+    override suspend fun isApplied(settings: WidgetSettings): Boolean =
+        dataStore.get(SettingsPreferences.Widget.APPLIED_SNAPSHOT).first() == snapshot(settings)
+
+    override suspend fun appliedSource(): WidgetSource? =
+        dataStore.get(SettingsPreferences.Widget.APPLIED_SOURCE).first()?.let(::decodeSource)
+
+    override suspend fun rememberApplied(settings: WidgetSettings) {
+        dataStore.put(SettingsPreferences.Widget.APPLIED_SNAPSHOT, snapshot(settings))
+        dataStore.put(SettingsPreferences.Widget.APPLIED_SOURCE, encodeSource(settings.source))
+    }
+
+    /**
+     * Only what the widget actually draws: the appearance of the other two styles
+     * can change without the home screen ever looking different.
+     */
+    private fun snapshot(settings: WidgetSettings): String = listOf(
+        encodeSource(settings.source),
+        settings.includeDailyQuote.toString(),
+        settings.frequencyHours.toString(),
+        settings.style.name,
+        settings.activeStyleSettings.toString(),
+    ).joinToString("|")
 
     private fun decodeAppearance(stored: String?): WidgetAppearance {
         val dto = stored

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.component.bottomsheet.CollectionPickerSheet
+import com.kovhan.core.ui.widget.rememberHomeWidgetPlaced
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 
@@ -28,10 +30,16 @@ internal fun SaveQuoteCollectionSheet(
     chosenCollectionId: String?,
     savingCollectionId: String?,
     onChooseCollection: (String) -> Unit,
+    onSaveWidgetPlaced: (Boolean) -> Unit,
     onSaveToCollection: (String) -> Unit,
     onCreateCollection: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val widgetPlaced = rememberHomeWidgetPlaced()
+    LaunchedEffect(widgetPlaced) {
+        onSaveWidgetPlaced(widgetPlaced)
+    }
+
     CollectionPickerSheet(
         title = stringResource(R.string.details_save_collection_title),
         collections = collections,

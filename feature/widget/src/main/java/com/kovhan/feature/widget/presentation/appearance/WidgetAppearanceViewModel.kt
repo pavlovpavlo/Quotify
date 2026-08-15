@@ -6,11 +6,11 @@ import com.kovhan.core.models.widget.WidgetStyle
 import com.kovhan.core.models.widget.WidgetStyleSettings
 import com.kovhan.core.models.widget.WidgetTextAlign
 import com.kovhan.core.models.widget.WidgetTextColor
-import com.kovhan.core.ui.UiEffect
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.widget.use_case.settings.ObserveWidgetSettingsUseCase
 import com.kovhan.domain.widget.use_case.settings.SetWidgetStyleSettingsUseCase
-import com.kovhan.feature.widget.glance.WidgetRefresher
+import com.kovhan.domain.widget.use_case.settings.SetWidgetStyleUseCase
+import com.kovhan.feature.widget.presentation.appearance.mvi.WidgetAppearanceEffect
 import com.kovhan.feature.widget.presentation.appearance.mvi.WidgetAppearanceIntent
 import com.kovhan.feature.widget.presentation.appearance.mvi.WidgetAppearanceState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +22,8 @@ import javax.inject.Inject
 class WidgetAppearanceViewModel @Inject constructor(
     private val observeWidgetSettings: ObserveWidgetSettingsUseCase,
     private val setStyleSettings: SetWidgetStyleSettingsUseCase,
-    private val widgetRefresher: WidgetRefresher,
-) : BaseViewModel<WidgetAppearanceState, UiEffect>(WidgetAppearanceState()),
+    private val setStyle: SetWidgetStyleUseCase,
+) : BaseViewModel<WidgetAppearanceState, WidgetAppearanceEffect>(WidgetAppearanceState()),
     WidgetAppearanceIntent {
 
     private var style: WidgetStyle? = null
@@ -34,6 +34,18 @@ class WidgetAppearanceViewModel @Inject constructor(
         viewModelScope.launch {
             val settings = observeWidgetSettings().first().appearance[style]
             publishState { copy(isLoading = false, settings = settings) }
+        }
+    }
+
+    fun onDoneClicked() {
+        val style = style
+        if (style == null) {
+            publishEffect(WidgetAppearanceEffect.Saved)
+            return
+        }
+        viewModelScope.launch {
+            setStyle(style)
+            publishEffect(WidgetAppearanceEffect.Saved)
         }
     }
 
@@ -115,9 +127,6 @@ class WidgetAppearanceViewModel @Inject constructor(
         val updated = transform(uiState.value.settings)
         if (updated == uiState.value.settings) return
         publishState { copy(settings = updated) }
-        viewModelScope.launch {
-            setStyleSettings(updated)
-            widgetRefresher.refresh()
-        }
+        viewModelScope.launch { setStyleSettings(updated) }
     }
 }

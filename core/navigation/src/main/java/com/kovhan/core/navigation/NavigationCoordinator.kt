@@ -495,5 +495,6 @@ class NavigationCoordinator @Inject constructor() {
         const val KEY_PLAYLIST_DELETE = "playlist_delete"
         const val KEY_WIDGET_QUOTE_DELETE = "widget_quote_delete"
         const val KEY_QUOTE_EDIT_RESULT = "quote_edit_result"
+        const val KEY_WIDGET_SETTINGS_EXIT = "widget_settings_exit"
     }
 }

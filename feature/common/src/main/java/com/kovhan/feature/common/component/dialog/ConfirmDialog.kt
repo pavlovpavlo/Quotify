@@ -2,8 +2,6 @@ package com.kovhan.feature.common.component.dialog
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,32 +10,31 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.DialogWindowProvider
-import androidx.core.view.WindowCompat
+import com.kovhan.core.ui.component.button.QuotifyButton
+import com.kovhan.core.ui.component.button.QuotifyButtonAccent
+import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
+import com.kovhan.core.ui.component.button.QuotifyButtonSize
+import com.kovhan.core.ui.component.button.QuotifyButtonVariant
+import com.kovhan.core.ui.component.dialog.QuotifyDialog
 import com.kovhan.design.systems.InterFamily
 import com.kovhan.design.systems.NewsreaderFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
+import com.kovhan.design.systems.QuotifyMaterialTheme.dimensions
+import com.kovhan.design.systems.R
 
 @Composable
 fun ConfirmDialog(
@@ -50,34 +47,22 @@ fun ConfirmDialog(
     onDismiss: () -> Unit,
 ) {
     val colors = QuotifyMaterialTheme.colors
-    val shape = RoundedCornerShape(QuotifyMaterialTheme.dimensions.radius2xl)
 
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
+    val roundedSpec = QuotifyButtonDefaults.sizeSpec(QuotifyButtonSize.Medium)
+        .copy(shape = RoundedCornerShape(4.dp))
+
+    QuotifyDialog(
+        onDismissRequest = onDismiss
     ) {
-        val view = LocalView.current
-        val isDarkTheme = QuotifyMaterialTheme.system.isDarkTheme
-        LaunchedEffect(view, isDarkTheme) {
-            val dialogWindow = (view.parent as? DialogWindowProvider)?.window
-            if (dialogWindow != null) {
-                WindowCompat.setDecorFitsSystemWindows(dialogWindow, false)
-                val insetsController = WindowCompat.getInsetsController(dialogWindow, view)
-                insetsController.isAppearanceLightStatusBars = !isDarkTheme
-                insetsController.isAppearanceLightNavigationBars = !isDarkTheme
-            }
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .widthIn(max = 360.dp)
-                .padding(horizontal = 24.dp)
-                .shadow(16.dp, shape)
-                .clip(shape)
-                .background(colors.bgElevated)
-                .border(1.dp, colors.border, shape)
-                .padding(22.dp),
+                .padding(
+                    start = dimensions.size22,
+                    end = dimensions.size22,
+                    top = dimensions.size22,
+                    bottom = dimensions.size18,
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
@@ -127,57 +112,32 @@ fun ConfirmDialog(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                DialogButton(
+                QuotifyButton(
                     text = confirmText,
-                    danger = true,
                     onClick = onConfirm,
                     modifier = Modifier.fillMaxWidth(),
+                    variant = QuotifyButtonVariant.Filled,
+                    accent = QuotifyButtonAccent.Primary,
+                    size = QuotifyButtonSize.Medium,
+                    sizeSpec = roundedSpec,
                 )
-                DialogButton(
+
+                Spacer(Modifier.height(dimensions.size9))
+
+                QuotifyButton(
                     text = cancelText,
-                    danger = false,
                     onClick = onDismiss,
                     modifier = Modifier.fillMaxWidth(),
+                    variant = QuotifyButtonVariant.Outlined,
+                    accent = QuotifyButtonAccent.Neutral,
+                    size = QuotifyButtonSize.Medium,
+                    colors = QuotifyButtonDefaults.colors(
+                        variant = QuotifyButtonVariant.Outlined,
+                        accent = QuotifyButtonAccent.Neutral,
+                    ).copy(border = colors.borderStrong),
+                    sizeSpec = roundedSpec,
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun DialogButton(
-    text: String,
-    danger: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val colors = QuotifyMaterialTheme.colors
-    val shape = RoundedCornerShape(QuotifyMaterialTheme.dimensions.radiusMd)
-    Box(
-        modifier = modifier
-            .height(46.dp)
-            .clip(shape)
-            .then(
-                if (danger) {
-                    Modifier.background(colors.accentPrimary)
-                } else {
-                    Modifier.border(1.dp, colors.borderStrong, shape)
-                },
-            )
-            .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = text,
-            color = if (danger) colors.textOnAccent else colors.textPrimary,
-            maxLines = 1,
-            softWrap = false,
-            overflow = TextOverflow.Ellipsis,
-            style = TextStyle(
-                fontFamily = InterFamily,
-                fontSize = 14.5.sp,
-                fontWeight = FontWeight.W600,
-            ),
-        )
     }
 }

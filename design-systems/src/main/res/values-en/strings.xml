@@ -459,6 +459,35 @@
     <string name="widget_appearance_preview_author">Marcus Aurelius</string>
     <string name="widget_appearance_preview_book">Meditations</string>
 
+    <!-- Widget promo dialog -->
+    <string name="widget_promo_title">Add a quote widget</string>
+    <string name="widget_promo_text">You already have three saved quotes. Put them on your home screen to see your favourite thoughts every day.</string>
+    <string name="widget_promo_confirm">Try it now</string>
+    <string name="widget_promo_later">Later</string>
+    <string name="widget_promo_close_cd">Close</string>
+
+    <!-- Widget settings exit dialog -->
+    <string name="widget_exit_title">Changes are not applied yet</string>
+    <string name="widget_exit_text">Your settings are saved, but the widget on the home screen still shows the previous look.</string>
+    <string name="widget_exit_apply">Apply and leave</string>
+    <string name="widget_exit_leave">Leave without applying</string>
+    <string name="widget_exit_close_cd">Stay</string>
+
+    <!-- Feedback dialog -->
+    <string name="feedback_title">Help us get better.</string>
+    <string name="feedback_text">Share your impressions of Quotify — it helps us grow the app.</string>
+    <string name="feedback_like">Like it</string>
+    <string name="feedback_dislike">Not quite</string>
+    <string name="feedback_comment_label">Share your thoughts</string>
+    <string name="feedback_comment_label_optional">Share your thoughts — optional</string>
+    <string name="feedback_comment_hint_positive">What did you like most?</string>
+    <string name="feedback_comment_hint_negative">What could be better?</string>
+    <string name="feedback_send">Send feedback</string>
+    <string name="feedback_done_title">Thanks for the feedback</string>
+    <string name="feedback_done_text">We will keep it in mind while preparing the next updates.</string>
+    <string name="feedback_done_confirm">Done</string>
+    <string name="feedback_close_cd">Close</string>
+
     <!-- Colour picker -->
     <string name="color_picker_title">Text colour</string>
     <string name="color_picker_confirm">Done</string>
@@ -543,6 +572,7 @@
 
     <string name="dev_tools_title">DEV TOOLS</string>
     <string name="dev_tools_open_offer">Open special offer</string>
+    <string name="dev_tools_dialogs_section">Dialogs</string>
     <string name="paywall_success_title">Welcome to Premium</string>
     <string name="paywall_success_message">Your whole library is unlocked. Enjoy the read.</string>
     <string name="paywall_success_cta">Done</string>

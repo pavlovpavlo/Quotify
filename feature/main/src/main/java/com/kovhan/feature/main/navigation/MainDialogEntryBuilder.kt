@@ -7,11 +7,13 @@ import androidx.navigation3.runtime.EntryProviderScope
 import com.kovhan.core.navigation.DeleteAccountDialogKey
 import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.core.navigation.DialogKey
+import com.kovhan.core.navigation.FeedbackDialogKey
 import com.kovhan.core.navigation.HideDailyQuoteDialogKey
 import com.kovhan.core.navigation.LogoutDialogKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.design.systems.R
 import com.kovhan.feature.common.component.dialog.ConfirmDialog
+import com.kovhan.feature.common.component.dialog.FeedbackDialogEntry
 import com.kovhan.feature.main.presentation.quotes.component.HideDailyQuoteDialog
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -76,6 +78,10 @@ class MainDialogEntryBuilder @Inject constructor() : DialogEntryBuilder {
                 },
                 onKeep = coordinator::dismissDialog,
             )
+        }
+
+        scope.entry<FeedbackDialogKey> { key ->
+            FeedbackDialogEntry(key = key, coordinator = coordinator)
         }
     }
 }

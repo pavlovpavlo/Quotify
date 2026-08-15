@@ -9,6 +9,7 @@ interface QuoteRepository {
 
     /** Кількість збережених цитат — для ліміту безкоштовного плану. */
     suspend fun count(): Int
+    suspend fun countWithoutFavourite(): Int
 
     suspend fun getById(id: String): Quote?
 

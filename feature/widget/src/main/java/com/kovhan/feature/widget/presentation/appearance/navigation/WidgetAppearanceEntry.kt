@@ -10,6 +10,7 @@ import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.WidgetAppearanceKey
 import com.kovhan.feature.widget.presentation.appearance.WidgetAppearanceScreen
 import com.kovhan.feature.widget.presentation.appearance.WidgetAppearanceViewModel
+import com.kovhan.feature.widget.presentation.appearance.mvi.WidgetAppearanceEffect
 
 @Composable
 internal fun WidgetAppearanceEntry(
@@ -25,11 +26,19 @@ internal fun WidgetAppearanceEntry(
         viewModel.initialize(style)
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                WidgetAppearanceEffect.Saved -> coordinator.goBack()
+            }
+        }
+    }
+
     WidgetAppearanceScreen(
         state = state.value,
         intent = viewModel,
         onBack = coordinator::goBack,
-        onSave = coordinator::goBack,
+        onSave = viewModel::onDoneClicked,
         paddingValues = paddingValues,
     )
 }

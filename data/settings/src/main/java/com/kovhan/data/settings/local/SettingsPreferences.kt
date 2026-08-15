@@ -22,10 +22,13 @@ internal object SettingsPreferences {
     }
 
     object Offer {
-        val FIRST_LAUNCH_AT = longPreferencesKey("offer_first_launch_at")
-        val SHOWN_WELCOME = booleanPreferencesKey("offer_shown_welcome")
+        val FREE_SINCE_AT = longPreferencesKey("offer_first_launch_at")
         val SHOWN_CANCELED = booleanPreferencesKey("offer_shown_canceled")
         val SHOWN_TENURE = booleanPreferencesKey("offer_shown_tenure")
+    }
+
+    object Review {
+        val ASKED = booleanPreferencesKey("review_prompt_asked")
     }
 
     object Widget {
@@ -34,5 +37,7 @@ internal object SettingsPreferences {
         val FREQUENCY_HOURS = intPreferencesKey("widget_frequency_hours")
         val STYLE = stringPreferencesKey("widget_style")
         val APPEARANCE = stringPreferencesKey("widget_appearance")
+        val APPLIED_SNAPSHOT = stringPreferencesKey("widget_applied_snapshot")
+        val APPLIED_SOURCE = stringPreferencesKey("widget_applied_source")
     }
 }

@@ -74,10 +74,9 @@ internal fun WidgetSettingsScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 WidgetSourceSection(state = state, intent = intent)
-                WidgetFeedbackSection(
-                    feedback = state.feedback,
-                    onFeedback = intent::onFeedbackSelected,
-                )
+                if (widgetPlaced && !state.feedbackGiven) {
+                    WidgetFeedbackSection(onFeedback = intent::onFeedbackSelected)
+                }
                 WidgetOptionsSection(state = state, intent = intent)
                 WidgetStyleSection(state = state, intent = intent)
             }

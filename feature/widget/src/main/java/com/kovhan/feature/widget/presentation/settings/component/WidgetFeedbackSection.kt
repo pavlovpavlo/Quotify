@@ -1,7 +1,5 @@
 package com.kovhan.feature.widget.presentation.settings.component
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,11 +26,8 @@ import com.kovhan.core.models.widget.WidgetFeedback
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R as DsR
 
-private const val ANIM_MS = 160
-
 @Composable
 internal fun WidgetFeedbackSection(
-    feedback: WidgetFeedback?,
     onFeedback: (WidgetFeedback) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -47,13 +41,7 @@ internal fun WidgetFeedbackSection(
         verticalArrangement = Arrangement.spacedBy(dimensions.space4),
     ) {
         Text(
-            text = stringResource(
-                if (feedback == null) {
-                    DsR.string.widget_feedback_question
-                } else {
-                    DsR.string.widget_feedback_thanks
-                },
-            ),
+            text = stringResource(DsR.string.widget_feedback_question),
             style = typography.bodyStrong,
             color = colors.textPrimary,
             textAlign = TextAlign.Center,
@@ -64,16 +52,12 @@ internal fun WidgetFeedbackSection(
                 iconRes = DsR.drawable.ic_thumb_down,
                 contentDescription = stringResource(DsR.string.widget_feedback_dislike_cd),
                 tint = colors.accentPrimary,
-                activeBackground = colors.accentPrimarySoft,
-                active = feedback == WidgetFeedback.DISLIKE,
                 onClick = { onFeedback(WidgetFeedback.DISLIKE) },
             )
             FeedbackButton(
                 iconRes = DsR.drawable.ic_thumb_up,
                 contentDescription = stringResource(DsR.string.widget_feedback_like_cd),
                 tint = colors.accentSaved,
-                activeBackground = colors.accentSavedSoft,
-                active = feedback == WidgetFeedback.LIKE,
                 onClick = { onFeedback(WidgetFeedback.LIKE) },
             )
         }
@@ -85,24 +69,16 @@ private fun FeedbackButton(
     iconRes: Int,
     contentDescription: String,
     tint: Color,
-    activeBackground: Color,
-    active: Boolean,
     onClick: () -> Unit,
 ) {
     val colors = QuotifyMaterialTheme.colors
     val dimensions = QuotifyMaterialTheme.dimensions
 
-    val background by animateColorAsState(
-        targetValue = if (active) activeBackground else colors.bgSecondary,
-        animationSpec = tween(ANIM_MS),
-        label = "feedback-bg",
-    )
-
     Box(
         modifier = Modifier
             .size(dimensions.size44)
             .clip(RoundedCornerShape(dimensions.radiusFull))
-            .background(background)
+            .background(colors.bgSecondary)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,

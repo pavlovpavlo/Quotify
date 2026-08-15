@@ -2,6 +2,8 @@ plugins {
     AndroidLibrary
     KotlinAndroid
     Compose
+    KotlinKapt
+    Hilt
     Ktlint
 }
 
@@ -12,7 +14,11 @@ android {
 dependencies {
     implementation(project(":design-systems"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:ui"))
+    implementation(project(":domain"))
     implementationAndroidX()
     implementationCompose()
+    implementationHilt()
+    implementationCoroutines()
     implementationTests()
 }

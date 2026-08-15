@@ -5,6 +5,7 @@ import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.library.use_case.collection.GetCollectionsUseCase
 import com.kovhan.domain.library.use_case.quote.SaveQuoteToCollectionUseCase
 import com.kovhan.domain.premium.use_case.CheckQuoteLimitUseCase
+import com.kovhan.domain.quote.CheckAddQuoteActionUseCase
 import com.kovhan.feature.addquote.presentation.details.mvi.QuoteDraft
 import com.kovhan.feature.addquote.presentation.save_collection.mvi.SaveQuoteCollectionEffect
 import com.kovhan.feature.addquote.presentation.save_collection.mvi.SaveQuoteCollectionState
@@ -16,9 +17,11 @@ import javax.inject.Inject
 class SaveQuoteCollectionViewModel @Inject constructor(
     private val getCollections: GetCollectionsUseCase,
     private val saveQuoteToCollection: SaveQuoteToCollectionUseCase,
+    private val checkAddQuoteActionUseCase: CheckAddQuoteActionUseCase,
     private val checkQuoteLimit: CheckQuoteLimitUseCase,
 ) : BaseViewModel<SaveQuoteCollectionState, SaveQuoteCollectionEffect>(SaveQuoteCollectionState()) {
 
+    private var widgetPlaced = false
     fun loadCollections(generalName: String, selectId: String? = null) {
         viewModelScope.launch {
             val collections = getCollections(withCount = true)
@@ -34,6 +37,10 @@ class SaveQuoteCollectionViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun onSaveWidgetPlaced(placed: Boolean){
+        widgetPlaced = placed
     }
 
     fun onChooseCollection(collectionId: String) = publishState {
@@ -60,7 +67,7 @@ class SaveQuoteCollectionViewModel @Inject constructor(
                 generalName = generalName,
                 page = draft.page,
             )
-            publishEffect(SaveQuoteCollectionEffect.Saved)
+            publishEffect(SaveQuoteCollectionEffect.Saved(checkAddQuoteActionUseCase.invoke(widgetPlaced)))
         }
     }
 }

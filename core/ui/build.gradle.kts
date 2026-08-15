@@ -39,5 +39,6 @@ dependencies {
     implementationLogs()
     implementationGson()
     implementationHilt()
+    implementationReview()
     implementationTests()
 }

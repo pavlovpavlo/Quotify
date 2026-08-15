@@ -19,4 +19,14 @@ interface WidgetSettingsRepository {
 
     /** Persists one style's appearance; the other two stay as they were. */
     suspend fun setStyleSettings(settings: WidgetStyleSettings)
+
+    /**
+     * Whether [settings] is what the placed widget was last redrawn with. Kept on
+     * disk so leaving the screen without applying still nags on the next visit.
+     */
+    suspend fun isApplied(settings: WidgetSettings): Boolean
+
+    suspend fun appliedSource(): WidgetSource?
+
+    suspend fun rememberApplied(settings: WidgetSettings)
 }

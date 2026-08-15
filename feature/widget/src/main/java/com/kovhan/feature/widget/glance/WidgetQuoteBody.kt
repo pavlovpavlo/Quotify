@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceModifier
+import androidx.glance.LocalContext
 import androidx.glance.LocalSize
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
@@ -115,16 +116,27 @@ internal fun WidgetEmptyBody(
 internal data class WidgetLayoutMetrics(
     val available: Dp,
     val compact: Boolean,
+    val fontScale: Float,
 ) {
     fun quoteFontSize(settings: WidgetStyleSettings): Float =
         (if (compact) COMPACT_QUOTE_SIZE else BASE_QUOTE_SIZE) * settings.fontSize.scale
 
+    /**
+     * Font sizes are in sp, so the budget has to be measured in scaled units too —
+     * a dp estimate silently misses the user's font-size setting entirely.
+     */
     fun quoteMaxLines(quoteSize: Float, showMeta: Boolean): Int {
-        val chrome = (if (compact) 0.dp else ICON_ROW_HEIGHT) +
-            (if (showMeta) META_SPACING + META_FONT_SIZE.dp * META_LINE_RATIO else 0.dp)
-        val forQuote = available - chrome
-        val lineHeight = quoteSize.dp * QUOTE_LINE_RATIO
-        return (forQuote / lineHeight).toInt().coerceIn(1, MAX_QUOTE_LINES)
+        val metaBlock = if (showMeta) {
+            META_SPACING.value + META_FONT_SIZE * fontScale * META_LINE_RATIO
+        } else {
+            0f
+        }
+        val chrome = (if (compact) 0f else ICON_ROW_HEIGHT.value) + metaBlock
+        val forQuote = available.value - chrome
+        val lineHeight = quoteSize * fontScale * QUOTE_LINE_RATIO
+        val fits = forQuote / lineHeight + LINE_ROUNDING
+        val minLines = if (compact) 1 else MIN_QUOTE_LINES
+        return fits.toInt().coerceIn(minLines, MAX_QUOTE_LINES)
     }
 
     companion object {
@@ -132,6 +144,7 @@ internal data class WidgetLayoutMetrics(
         fun of(compact: Boolean, padding: Dp): WidgetLayoutMetrics = WidgetLayoutMetrics(
             available = LocalSize.current.height - padding * 2,
             compact = compact,
+            fontScale = LocalContext.current.resources.configuration.fontScale,
         )
     }
 }
@@ -147,6 +160,8 @@ private const val META_FONT_SIZE = 12f
 private const val META_ALPHA = 0.82f
 private const val QUOTE_LINE_RATIO = 1.35f
 private const val META_LINE_RATIO = 1.35f
+private const val LINE_ROUNDING = 0.15f
+private const val MIN_QUOTE_LINES = 2
 private const val MAX_QUOTE_LINES = 9
 private val META_SPACING = 4.dp
 private val ICON_ROW_HEIGHT = 16.dp

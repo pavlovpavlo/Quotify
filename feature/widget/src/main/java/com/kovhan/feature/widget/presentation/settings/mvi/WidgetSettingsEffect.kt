@@ -8,5 +8,9 @@ sealed interface WidgetSettingsEffect : UiEffect {
     data class OpenEditPlaylist(val playlistId: String) : WidgetSettingsEffect
     data class OpenFrequencyPicker(val hours: Int) : WidgetSettingsEffect
     data class OpenAppearanceEditor(val style: WidgetStyle) : WidgetSettingsEffect
+    data class OpenFeedback(val liked: Boolean) : WidgetSettingsEffect
     data object WidgetAdded : WidgetSettingsEffect
+    data object ApplyAndClose : WidgetSettingsEffect
+    data object ConfirmExit : WidgetSettingsEffect
+    data object Close : WidgetSettingsEffect
 }

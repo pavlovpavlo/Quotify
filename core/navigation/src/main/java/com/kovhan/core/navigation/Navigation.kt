@@ -3,6 +3,7 @@ package com.kovhan.core.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.navigation3.runtime.NavKey
+import com.kovhan.core.models.feedback.FeedbackSource
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import kotlinx.serialization.Serializable
@@ -215,6 +216,20 @@ data class ConfirmDialogKey(
     val payload: String? = null,
 ) : DialogKey
 
+@Serializable
+data object WidgetPromoKey: DialogKey
+
+@Serializable
+data object WidgetSettingsExitDialogKey : DialogKey
+
+@Serializable
+enum class WidgetExitAction { APPLY, LEAVE }
+
+@Serializable
+data class FeedbackDialogKey(
+    val source: FeedbackSource = FeedbackSource.GENERAL,
+    val liked: Boolean? = null,
+) : DialogKey
 @Serializable
 data object OfflineBlockingSheetKey : BottomSheetKey
 

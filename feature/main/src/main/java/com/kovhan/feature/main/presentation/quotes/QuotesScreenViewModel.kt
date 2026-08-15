@@ -2,6 +2,7 @@ package com.kovhan.feature.main.presentation.quotes
 
 import com.kovhan.core.models.quote.QuoteFilter
 import com.kovhan.core.models.collections.SavedCollection
+import com.kovhan.core.ui.activity.InAppReviewUseCase
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.daily.localizedAuthor
 import com.kovhan.domain.daily.localizedBook
@@ -15,6 +16,8 @@ import com.kovhan.domain.library.use_case.quote.ObserveFilteredQuotesUseCase
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
 import com.kovhan.domain.premium.use_case.CheckQuoteLimitUseCase
+import com.kovhan.domain.review.use_case.MarkReviewAskedUseCase
+import com.kovhan.domain.review.use_case.ShouldAskForReviewUseCase
 import com.kovhan.domain.settings.use_case.SetDailyQuoteEnabledUseCase
 import com.kovhan.feature.main.presentation.quotes.mvi.QuotesScreenEffect
 import com.kovhan.feature.main.presentation.quotes.mvi.QuotesScreenIntent
@@ -38,10 +41,19 @@ class QuotesScreenViewModel @Inject constructor(
     private val dismissForToday: DismissDailyQuoteForTodayUseCase,
     private val setDailyQuoteEnabled: SetDailyQuoteEnabledUseCase,
     private val checkQuoteLimit: CheckQuoteLimitUseCase,
+    private val shouldAskForReview: ShouldAskForReviewUseCase,
+    private val markReviewAsked: MarkReviewAskedUseCase,
+    private val inAppReview: InAppReviewUseCase,
 ) : BaseViewModel<QuotesScreenState, QuotesScreenEffect>(QuotesScreenState()),
     QuotesScreenIntent {
 
     init {
+        viewModelScope.launch {
+            if (!shouldAskForReview()) return@launch
+            markReviewAsked()
+            inAppReview()
+        }
+
         observeCollections()
             .onEach { collections ->
                 publishState {

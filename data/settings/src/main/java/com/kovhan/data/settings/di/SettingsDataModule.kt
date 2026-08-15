@@ -1,10 +1,12 @@
 package com.kovhan.data.settings.di
 
+import com.kovhan.data.settings.local.ReviewPromptLocalDataSource
 import com.kovhan.data.settings.local.SettingsLocalDataSource
 import com.kovhan.data.settings.local.WidgetSettingsLocalDataSource
 import com.kovhan.domain.onboarding.OnboardingRepository
 import com.kovhan.domain.premium.OfferPromptRepository
 import com.kovhan.domain.premium.PaywallPromptRepository
+import com.kovhan.domain.review.ReviewPromptRepository
 import com.kovhan.domain.settings.SettingsRepository
 import com.kovhan.domain.widget.WidgetSettingsRepository
 import dagger.Binds
@@ -41,4 +43,10 @@ abstract class SettingsDataModule {
     abstract fun bindWidgetSettingsRepository(
         impl: WidgetSettingsLocalDataSource,
     ): WidgetSettingsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindReviewPromptRepository(
+        impl: ReviewPromptLocalDataSource,
+    ): ReviewPromptRepository
 }

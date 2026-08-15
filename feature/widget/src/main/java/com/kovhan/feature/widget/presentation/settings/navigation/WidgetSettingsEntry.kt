@@ -1,21 +1,24 @@
 package com.kovhan.feature.widget.presentation.settings.navigation
 
+import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kovhan.core.models.feedback.FeedbackSource
+import com.kovhan.core.navigation.FeedbackDialogKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PlaylistPickerKey
 import com.kovhan.core.navigation.WidgetAppearanceKey
+import com.kovhan.core.navigation.WidgetExitAction
 import com.kovhan.core.navigation.WidgetFrequencySheetKey
+import com.kovhan.core.navigation.WidgetSettingsExitDialogKey
 import com.kovhan.core.ui.snackbar.AppSnackbarBus
 import com.kovhan.core.ui.snackbar.SnackbarMessage
-import androidx.glance.appwidget.updateAll
 import com.kovhan.core.ui.widget.HomeWidgetPresence
 import com.kovhan.design.systems.R as DsR
-import com.kovhan.feature.widget.glance.QuotifyGlanceWidget
 import com.kovhan.feature.widget.glance.WidgetPinner
 import com.kovhan.feature.widget.glance.WidgetRotationScheduler
 import com.kovhan.feature.widget.presentation.settings.WidgetSettingsScreen
@@ -37,10 +40,17 @@ internal fun WidgetSettingsEntry(
             .collect { hours ->
                 hours ?: return@collect
                 viewModel.applyFrequency(hours)
-                if (HomeWidgetPresence.isPlaced(context)) {
-                    WidgetRotationScheduler.reschedule(context, hours)
-                }
             }
+    }
+
+    LaunchedEffect(Unit) {
+        coordinator.clearResult(NavigationCoordinator.KEY_WIDGET_SETTINGS_EXIT)
+        coordinator.observeResult<WidgetExitAction>(
+            NavigationCoordinator.KEY_WIDGET_SETTINGS_EXIT,
+        ).collect { action ->
+            action ?: return@collect
+            viewModel.onExitAction(action)
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -58,22 +68,26 @@ internal fun WidgetSettingsEntry(
                 is WidgetSettingsEffect.OpenAppearanceEditor ->
                     coordinator.navigate(WidgetAppearanceKey(effect.style.name))
 
-                WidgetSettingsEffect.WidgetAdded -> when {
-                    // Already on the home screen → just refresh it.
-                    HomeWidgetPresence.isPlaced(context) -> {
-                        QuotifyGlanceWidget().updateAll(context)
-                        AppSnackbarBus.show(SnackbarMessage.success(DsR.string.widget_updated_message))
-                        coordinator.goBack()
-                    }
-                    // Not placed → ask the launcher to pin it.
-                    WidgetPinner.pin(context) -> {
-                        AppSnackbarBus.show(SnackbarMessage.success(DsR.string.widget_added_message))
-                        coordinator.goBack()
-                    }
-                    // Launcher can't pin programmatically → tell the user to add manually.
-                    else ->
-                        AppSnackbarBus.show(SnackbarMessage.info(DsR.string.widget_pin_unsupported))
+                is WidgetSettingsEffect.OpenFeedback ->
+                    coordinator.showDialog(
+                        FeedbackDialogKey(
+                            source = FeedbackSource.WIDGET,
+                            liked = effect.liked,
+                        ),
+                    )
+
+                WidgetSettingsEffect.WidgetAdded ->
+                    if (applyWidget(context, viewModel)) coordinator.goBack()
+
+                WidgetSettingsEffect.ApplyAndClose -> {
+                    applyWidget(context, viewModel)
+                    coordinator.goBack()
                 }
+
+                WidgetSettingsEffect.ConfirmExit ->
+                    coordinator.showDialog(WidgetSettingsExitDialogKey)
+
+                WidgetSettingsEffect.Close -> coordinator.goBack()
             }
         }
     }
@@ -81,7 +95,31 @@ internal fun WidgetSettingsEntry(
     WidgetSettingsScreen(
         state = state.value,
         intent = viewModel,
-        onBack = coordinator::goBack,
+        onBack = { viewModel.onBackClicked(HomeWidgetPresence.isPlaced(context)) },
         paddingValues = paddingValues,
     )
+}
+
+/** Returns whether the widget is now carrying the saved settings. */
+private suspend fun applyWidget(
+    context: Context,
+    viewModel: WidgetSettingsViewModel,
+): Boolean = when {
+    HomeWidgetPresence.isPlaced(context) -> {
+        viewModel.applyToWidget()
+        WidgetRotationScheduler.reschedule(context, viewModel.uiState.value.frequencyHours)
+        AppSnackbarBus.show(SnackbarMessage.success(DsR.string.widget_updated_message))
+        true
+    }
+
+    WidgetPinner.pin(context) -> {
+        viewModel.applyToWidget()
+        AppSnackbarBus.show(SnackbarMessage.success(DsR.string.widget_added_message))
+        true
+    }
+
+    else -> {
+        AppSnackbarBus.show(SnackbarMessage.info(DsR.string.widget_pin_unsupported))
+        false
+    }
 }

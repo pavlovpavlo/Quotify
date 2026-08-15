@@ -45,12 +45,14 @@ class ResolveOfferTriggerUseCaseTest {
     )
 
     @Test
-    @DisplayName("active subscriber is never offered anything")
+    @DisplayName("active subscriber is never offered anything and keeps restarting the countdown")
     fun activeSubscriberSeesNothing() = runTest {
         coEvery { subscriptionRepository.observeStatus() } returns
             flowOf(status(SubscriptionStatus.ACTIVE, isActive = true))
 
         assertNull(useCase(now))
+        coVerify { repository.rememberFreeSince(now) }
+        coVerify { repository.clearShown(OfferTrigger.TENURE) }
     }
 
     @Test
@@ -83,22 +85,21 @@ class ResolveOfferTriggerUseCaseTest {
     }
 
     @Test
-    @DisplayName("first launch without a subscription seeds the date and offers the welcome deal")
-    fun firstLaunchTriggersWelcome() = runTest {
+    @DisplayName("first launch without a subscription only seeds the date, it offers nothing")
+    fun firstLaunchSeedsDateOnly() = runTest {
         coEvery { subscriptionRepository.observeStatus() } returns flowOf(SubscriptionStatus.None)
-        coEvery { repository.firstLaunchAt() } returns 0L
-        coEvery { repository.isShown(OfferTrigger.WELCOME) } returns false
+        coEvery { repository.freeSinceAt() } returns 0L
+        coEvery { repository.isShown(OfferTrigger.TENURE) } returns false
 
-        assertEquals(OfferTrigger.WELCOME, useCase(now))
-        coVerify { repository.rememberFirstLaunch(now) }
+        assertNull(useCase(now))
+        coVerify { repository.rememberFreeSince(now) }
     }
 
     @Test
-    @DisplayName("nothing fires between the welcome offer and the tenure mark")
+    @DisplayName("nothing fires before the tenure mark")
     fun quietBeforeTenure() = runTest {
         coEvery { subscriptionRepository.observeStatus() } returns flowOf(SubscriptionStatus.None)
-        coEvery { repository.firstLaunchAt() } returns now - tenureMs + 60_000L
-        coEvery { repository.isShown(OfferTrigger.WELCOME) } returns true
+        coEvery { repository.freeSinceAt() } returns now - tenureMs + 60_000L
         coEvery { repository.isShown(OfferTrigger.TENURE) } returns false
 
         assertNull(useCase(now))
@@ -108,11 +109,20 @@ class ResolveOfferTriggerUseCaseTest {
     @DisplayName("the tenure offer fires once enough days without a subscription have passed")
     fun tenureFiresAfterEnoughDays() = runTest {
         coEvery { subscriptionRepository.observeStatus() } returns flowOf(SubscriptionStatus.None)
-        coEvery { repository.firstLaunchAt() } returns now - tenureMs - 1_000L
-        coEvery { repository.isShown(OfferTrigger.WELCOME) } returns true
+        coEvery { repository.freeSinceAt() } returns now - tenureMs - 1_000L
         coEvery { repository.isShown(OfferTrigger.TENURE) } returns false
 
         assertEquals(OfferTrigger.TENURE, useCase(now))
+    }
+
+    @Test
+    @DisplayName("the tenure offer is shown only once per subscription-free stretch")
+    fun tenureOnlyOnce() = runTest {
+        coEvery { subscriptionRepository.observeStatus() } returns flowOf(SubscriptionStatus.None)
+        coEvery { repository.freeSinceAt() } returns now - tenureMs - 1_000L
+        coEvery { repository.isShown(OfferTrigger.TENURE) } returns true
+
+        assertNull(useCase(now))
     }
 
     @Test

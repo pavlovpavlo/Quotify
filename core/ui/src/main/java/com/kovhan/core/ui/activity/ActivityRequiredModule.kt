@@ -17,4 +17,8 @@ class ActivityRequiredModule {
     @Provides
     @IntoSet
     fun provideContactSupportUseCase(useCase: ContactSupportUseCase): ActivityRequired = useCase
+
+    @Provides
+    @IntoSet
+    fun provideInAppReviewUseCase(useCase: InAppReviewUseCase): ActivityRequired = useCase
 }
