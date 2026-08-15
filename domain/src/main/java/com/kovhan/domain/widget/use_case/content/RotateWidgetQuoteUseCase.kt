@@ -1,10 +1,7 @@
 package com.kovhan.domain.widget.use_case.content
 
 import com.kovhan.core.models.widget.WidgetQuote
-import com.kovhan.domain.library.use_case.quote.ObserveEnrichedQuoteByIdUseCase
 import com.kovhan.domain.widget.WidgetContentRepository
-import com.kovhan.domain.widget.toWidgetQuote
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 /**
@@ -18,7 +15,7 @@ import javax.inject.Inject
  */
 class RotateWidgetQuoteUseCase @Inject constructor(
     private val repository: WidgetContentRepository,
-    private val observeEnrichedById: ObserveEnrichedQuoteByIdUseCase,
+    private val resolveQuote: ResolveWidgetQuoteUseCase,
 ) {
     suspend operator fun invoke(): WidgetQuote? {
         val snapshot = repository.getSnapshotIds()
@@ -36,6 +33,6 @@ class RotateWidgetQuoteUseCase @Inject constructor(
         val next = pool.random()
         repository.markSeen(next)
         repository.setCurrentQuoteId(next)
-        return observeEnrichedById(next).first()?.toWidgetQuote()
+        return resolveQuote(next)
     }
 }

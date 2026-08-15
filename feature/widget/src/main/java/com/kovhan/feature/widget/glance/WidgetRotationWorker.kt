@@ -5,6 +5,7 @@ import androidx.glance.appwidget.updateAll
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.hilt.android.EntryPointAccessors
+import timber.log.Timber
 
 class WidgetRotationWorker(
     context: Context,
@@ -17,10 +18,9 @@ class WidgetRotationWorker(
             WidgetEntryPoint::class.java,
         )
         runCatching {
-            entryPoint.rebuildWidgetSnapshot().invoke()
-            entryPoint.rotateWidgetQuote().invoke()
+            entryPoint.ensureWidgetQuote().invoke(forceRotate = true)
             QuotifyGlanceWidget().updateAll(applicationContext)
-        }
+        }.onFailure { Timber.e(it, "Widget: rotation worker failed") }
         return Result.success()
     }
 }

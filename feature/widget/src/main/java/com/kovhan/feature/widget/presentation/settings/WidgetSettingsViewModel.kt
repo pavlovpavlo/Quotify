@@ -1,5 +1,6 @@
 package com.kovhan.feature.widget.presentation.settings
 
+import com.kovhan.core.models.widget.WidgetFeedback
 import com.kovhan.core.models.widget.WidgetSource
 import com.kovhan.core.models.widget.WidgetStyle
 import com.kovhan.core.ui.view_model.BaseViewModel
@@ -9,6 +10,7 @@ import com.kovhan.domain.widget.use_case.settings.SetWidgetDailyQuoteUseCase
 import com.kovhan.domain.widget.use_case.settings.SetWidgetFrequencyUseCase
 import com.kovhan.domain.widget.use_case.settings.SetWidgetSourceUseCase
 import com.kovhan.domain.widget.use_case.settings.SetWidgetStyleUseCase
+import com.kovhan.feature.widget.glance.WidgetRefresher
 import com.kovhan.feature.widget.presentation.settings.mvi.WidgetSettingsEffect
 import com.kovhan.feature.widget.presentation.settings.mvi.WidgetSettingsIntent
 import com.kovhan.feature.widget.presentation.settings.mvi.WidgetSettingsState
@@ -27,6 +29,7 @@ class WidgetSettingsViewModel @Inject constructor(
     private val setDailyQuote: SetWidgetDailyQuoteUseCase,
     private val setFrequency: SetWidgetFrequencyUseCase,
     private val setStyle: SetWidgetStyleUseCase,
+    private val widgetRefresher: WidgetRefresher,
 ) : BaseViewModel<WidgetSettingsState, WidgetSettingsEffect>(WidgetSettingsState()),
     WidgetSettingsIntent {
 
@@ -41,6 +44,7 @@ class WidgetSettingsViewModel @Inject constructor(
                     includeDailyQuote = settings.includeDailyQuote,
                     frequencyHours = settings.frequencyHours,
                     style = settings.style,
+                    appearance = settings.appearance,
                     allCount = sources.allCount,
                     favouritesCount = sources.favouritesCount,
                     playlists = sources.playlists,
@@ -51,7 +55,10 @@ class WidgetSettingsViewModel @Inject constructor(
 
     override fun onSourceSelected(source: WidgetSource) {
         publishState { copy(selectedSource = source) }
-        viewModelScope.launch { setSource(source) }
+        viewModelScope.launch {
+            setSource(source)
+            widgetRefresher.refresh(rotate = true)
+        }
     }
 
     override fun onCreatePlaylistClicked() = publishEffect(WidgetSettingsEffect.OpenCreatePlaylist)
@@ -61,7 +68,10 @@ class WidgetSettingsViewModel @Inject constructor(
 
     override fun onDailyQuoteToggled(enabled: Boolean) {
         publishState { copy(includeDailyQuote = enabled) }
-        viewModelScope.launch { setDailyQuote(enabled) }
+        viewModelScope.launch {
+            setDailyQuote(enabled)
+            widgetRefresher.refresh()
+        }
     }
 
     override fun onFrequencyClicked() =
@@ -69,14 +79,26 @@ class WidgetSettingsViewModel @Inject constructor(
 
     override fun onStyleSelected(style: WidgetStyle) {
         publishState { copy(style = style) }
-        viewModelScope.launch { setStyle(style) }
+        viewModelScope.launch {
+            setStyle(style)
+            widgetRefresher.refresh()
+        }
     }
+
+    override fun onEditStyleClicked(style: WidgetStyle) =
+        publishEffect(WidgetSettingsEffect.OpenAppearanceEditor(style))
+
+    override fun onFeedbackSelected(feedback: WidgetFeedback) =
+        publishState { copy(feedback = feedback) }
 
     override fun onAddToHomeClicked() = publishEffect(WidgetSettingsEffect.WidgetAdded)
 
     /** Called from the entry when the frequency sheet returns a value. */
     fun applyFrequency(hours: Int) {
         publishState { copy(frequencyHours = hours) }
-        viewModelScope.launch { setFrequency(hours) }
+        viewModelScope.launch {
+            setFrequency(hours)
+            widgetRefresher.refresh()
+        }
     }
 }

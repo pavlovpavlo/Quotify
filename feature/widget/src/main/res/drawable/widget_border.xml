@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Frame overlay for the widget. A stroked shape keeps the hairline exactly the
+  same width on every edge no matter how the widget is resized, and its hollow
+  centre lets a transparent style show the wallpaper through.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@android:color/transparent" />
+    <stroke
+        android:width="1.5dp"
+        android:color="#FFFFFFFF" />
+    <corners android:radius="16dp" />
+</shape>

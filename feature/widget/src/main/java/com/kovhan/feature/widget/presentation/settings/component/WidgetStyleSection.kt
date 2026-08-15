@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kovhan.core.models.widget.WidgetStyle
+import com.kovhan.core.ui.component.widget.WidgetPreviewQuote
 import com.kovhan.design.systems.R as DsR
 import com.kovhan.feature.widget.presentation.settings.mvi.WidgetSettingsIntent
 import com.kovhan.feature.widget.presentation.settings.mvi.WidgetSettingsState
@@ -19,6 +20,12 @@ internal fun WidgetStyleSection(
     intent: WidgetSettingsIntent,
     modifier: Modifier = Modifier,
 ) {
+    val previewQuote = WidgetPreviewQuote(
+        text = stringResource(DsR.string.widget_appearance_preview_quote),
+        author = stringResource(DsR.string.widget_appearance_preview_author),
+        book = stringResource(DsR.string.widget_appearance_preview_book),
+    )
+
     Column(modifier = modifier.fillMaxWidth()) {
         WidgetSectionLabel(stringResource(DsR.string.widget_style_label))
 
@@ -26,8 +33,11 @@ internal fun WidgetStyleSection(
             styleTabs.forEach { (style, labelRes) ->
                 WidgetStyleTab(
                     label = stringResource(labelRes),
+                    settings = state.appearance[style],
+                    previewQuote = previewQuote,
                     selected = state.style == style,
                     onClick = { intent.onStyleSelected(style) },
+                    onEdit = { intent.onEditStyleClicked(style) },
                     modifier = Modifier.weight(1f),
                 )
             }

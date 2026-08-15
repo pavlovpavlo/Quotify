@@ -35,6 +35,7 @@ import com.kovhan.core.navigation.WidgetQuoteKey
 import com.kovhan.core.navigation.WidgetSettingsKey
 import com.kovhan.core.ui.util.ContextUtils
 import com.kovhan.design.systems.QuotifyAppTheme
+import com.kovhan.feature.widget.glance.WidgetRefreshWorker
 import com.kovhan.domain.settings.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -86,6 +87,10 @@ class MainActivity : AppCompatActivity() {
         systemInDarkTheme.value = resources.configuration.isSystemInDarkTheme()
 
         handleWidgetDeepLink(intent)
+
+        // The library fills in after the remote sync, so redraw once the app is
+        // up — otherwise a widget placed earlier sits on a stale empty state.
+        WidgetRefreshWorker.enqueue(applicationContext)
 
         activityRequired.forEach { it.onCreated(this) }
 

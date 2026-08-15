@@ -1,14 +1,11 @@
 package com.kovhan.domain.widget.use_case.content
 
 import com.kovhan.core.models.widget.WidgetQuote
-import com.kovhan.domain.library.use_case.quote.ObserveEnrichedQuoteByIdUseCase
 import com.kovhan.domain.widget.WidgetContentRepository
-import com.kovhan.domain.widget.toWidgetQuote
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -17,12 +14,11 @@ import javax.inject.Inject
  */
 class ObserveWidgetQuoteUseCase @Inject constructor(
     private val repository: WidgetContentRepository,
-    private val observeEnrichedById: ObserveEnrichedQuoteByIdUseCase,
+    private val resolveQuote: ResolveWidgetQuoteUseCase,
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(): Flow<WidgetQuote?> =
-        repository.observeCurrentQuoteId().flatMapLatest { id ->
-            if (id == null) flowOf(null)
-            else observeEnrichedById(id).map { it?.toWidgetQuote() }
+        repository.observeCurrentQuoteId().flatMapLatest { ref ->
+            if (ref == null) flowOf(null) else resolveQuote.observe(ref)
         }
 }

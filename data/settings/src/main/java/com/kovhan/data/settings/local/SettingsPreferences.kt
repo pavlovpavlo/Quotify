@@ -33,5 +33,6 @@ internal object SettingsPreferences {
         val INCLUDE_DAILY_QUOTE = booleanPreferencesKey("widget_include_daily_quote")
         val FREQUENCY_HOURS = intPreferencesKey("widget_frequency_hours")
         val STYLE = stringPreferencesKey("widget_style")
+        val APPEARANCE = stringPreferencesKey("widget_appearance")
     }
 }

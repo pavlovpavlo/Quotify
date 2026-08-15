@@ -2,9 +2,9 @@ package com.kovhan.feature.widget.glance
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
@@ -19,153 +19,122 @@ import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
-import androidx.glance.layout.Spacer
+import androidx.glance.layout.ContentScale
+import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
-import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
-import androidx.glance.text.FontFamily
-import androidx.glance.text.FontStyle
-import androidx.glance.text.FontWeight
-import androidx.glance.text.Text
-import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.kovhan.core.models.widget.WidgetQuote
+import com.kovhan.core.models.widget.WidgetStyleSettings
 import com.kovhan.core.navigation.EXTRA_OPEN_WIDGET_QUOTE
 import com.kovhan.core.navigation.EXTRA_OPEN_WIDGET_SETTINGS
-import com.kovhan.design.systems.R as DsR
+import com.kovhan.core.ui.mapper.WidgetBackgroundMapper
+import com.kovhan.core.ui.mapper.WidgetCoverMapper
+import com.kovhan.domain.widget.WidgetQuoteRef
 import com.kovhan.feature.widget.R
+import com.kovhan.design.systems.R as DsR
 
 internal data class WidgetStrings(
     val emptyTitle: String,
     val emptyHint: String,
 )
 
-private val COMPACT_HEIGHT = 90.dp
+// The default 4x2 placement reports well under 90dp of usable height on most
+// launchers, so a higher threshold hid the icon and the author line at the size
+// the widget actually ships at. Only a deliberately shrunken widget collapses.
+private val COMPACT_HEIGHT = 56.dp
+private val CORNER_RADIUS = 16.dp
+private val CONTENT_PADDING = 12.dp
+private val COMPACT_PADDING = 8.dp
+private val SETTINGS_ICON_SIZE = 16.dp
 
 @Composable
 internal fun WidgetContent(
     quote: WidgetQuote?,
+    settings: WidgetStyleSettings,
     strings: WidgetStrings,
 ) {
     val context = LocalContext.current
-    val primaryIntent =
-        if (quote != null) openQuoteIntent(context, quote.id) else openSettingsIntent(context)
+    // The quote of the day is not a library entity, so it has no detail screen —
+    // tapping it just opens the app.
+    val primaryIntent = when {
+        quote == null -> openSettingsIntent(context)
+        WidgetQuoteRef.isDaily(quote.id) -> launchIntent(context)
+        else -> openQuoteIntent(context, quote.id)
+    }
 
-    // Below two cells tall there is no room for the settings affordance next to
-    // the text, so the chrome collapses and the padding tightens.
     val compact = LocalSize.current.height < COMPACT_HEIGHT
+    val padding = if (compact) COMPACT_PADDING else CONTENT_PADDING
+
+    val darkTheme = context.isDarkTheme()
+    val fill = WidgetBackgroundMapper.fillColor(settings)
+    val border = WidgetBackgroundMapper.borderColor(settings, darkTheme)
+    val text = WidgetBackgroundMapper.textColor(settings, darkTheme)
+    val metrics = WidgetLayoutMetrics.of(compact = compact, padding = padding)
 
     Box(
         modifier = GlanceModifier
             .fillMaxSize()
             .appWidgetBackground()
-            .background(ColorProvider(R.color.widget_bg))
-            .cornerRadius(16.dp)
+            .cornerRadius(CORNER_RADIUS)
+            .background(ColorProvider(fill))
             .clickable(actionStartActivity(primaryIntent)),
     ) {
-        Box(modifier = GlanceModifier.fillMaxSize().padding(if (compact) 8.dp else 16.dp)) {
-            if (quote == null) EmptyState(strings, compact) else QuoteState(quote, compact)
+        if (settings is WidgetStyleSettings.Cover) {
+            Image(
+                provider = ImageProvider(
+                    WidgetCoverMapper.imageRes(settings.coverId, settings.blurEnabled),
+                ),
+                contentDescription = null,
+                modifier = GlanceModifier.fillMaxSize().cornerRadius(CORNER_RADIUS),
+                contentScale = ContentScale.Crop,
+            )
         }
 
-        if (!compact) {
-            Box(
-                modifier = GlanceModifier.fillMaxSize().padding(8.dp),
-                contentAlignment = Alignment.TopEnd,
-            ) {
-                Image(
-                    provider = ImageProvider(DsR.drawable.ic_settings),
-                    contentDescription = null,
-                    modifier = GlanceModifier
-                        .size(20.dp)
-                        .clickable(actionStartActivity(openSettingsIntent(context))),
-                    colorFilter = ColorFilter.tint(ColorProvider(R.color.widget_text_secondary)),
-                )
+        // A stroked drawable rather than a padded box behind the content: the
+        // hollow centre keeps a transparent style transparent, and the stroke
+        // stays the same width on every edge at any widget size.
+        if (border != null) {
+            Image(
+                provider = ImageProvider(R.drawable.widget_border),
+                contentDescription = null,
+                modifier = GlanceModifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds,
+                colorFilter = ColorFilter.tint(ColorProvider(border)),
+            )
+        }
+
+        Column(modifier = GlanceModifier.fillMaxSize().padding(padding)) {
+            if (!compact) {
+                Row(
+                    modifier = GlanceModifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.End,
+                ) {
+                    Image(
+                        provider = ImageProvider(DsR.drawable.ic_settings),
+                        contentDescription = null,
+                        modifier = GlanceModifier
+                            .size(SETTINGS_ICON_SIZE)
+                            .clickable(actionStartActivity(openSettingsIntent(context))),
+                        colorFilter = ColorFilter.tint(ColorProvider(text)),
+                    )
+                }
+            }
+
+            if (quote == null) {
+                WidgetEmptyBody(strings, text, compact)
+            } else {
+                WidgetQuoteBody(quote, settings, text, metrics)
             }
         }
     }
 }
 
-@Composable
-private fun QuoteState(
-    quote: WidgetQuote,
-    compact: Boolean,
-) {
-    val meta = listOfNotNull(
-        quote.authorName?.takeIf { it.isNotBlank() },
-        quote.bookName?.takeIf { it.isNotBlank() },
-    ).joinToString(" — ")
-
-    val height = LocalSize.current.height
-    val maxLines = when {
-        height < 60.dp -> 1
-        height < 90.dp -> 2
-        height < 120.dp -> 3
-        height < 190.dp -> 5
-        else -> 9
-    }
-
-    Column(modifier = GlanceModifier.fillMaxSize()) {
-        Text(
-            text = quote.text,
-            maxLines = maxLines,
-            modifier = GlanceModifier.fillMaxWidth().defaultWeight(),
-            style = TextStyle(
-                color = ColorProvider(R.color.widget_text_primary),
-                fontSize = if (compact) 14.sp else 16.sp,
-                fontStyle = FontStyle.Italic,
-                fontFamily = FontFamily.Serif,
-            ),
-        )
-
-        if (meta.isNotEmpty() && !compact) {
-            Text(
-                text = meta,
-                maxLines = 1,
-                modifier = GlanceModifier.fillMaxWidth(),
-                style = TextStyle(
-                    color = ColorProvider(R.color.widget_text_secondary),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                ),
-            )
-        }
-    }
-}
-
-@Composable
-private fun EmptyState(
-    strings: WidgetStrings,
-    compact: Boolean,
-) {
-    Column(
-        modifier = GlanceModifier.fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = strings.emptyTitle,
-            maxLines = 1,
-            style = TextStyle(
-                color = ColorProvider(R.color.widget_text_primary),
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-            ),
-        )
-        if (!compact) {
-            Spacer(GlanceModifier.height(4.dp))
-            Text(
-                text = strings.emptyHint,
-                maxLines = 2,
-                style = TextStyle(
-                    color = ColorProvider(R.color.widget_text_secondary),
-                    fontSize = 12.sp,
-                ),
-            )
-        }
-    }
-}
+private fun Context.isDarkTheme(): Boolean =
+    (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+        Configuration.UI_MODE_NIGHT_YES
 
 private fun openSettingsIntent(context: Context): Intent =
     launchIntent(context).apply { putExtra(EXTRA_OPEN_WIDGET_SETTINGS, true) }

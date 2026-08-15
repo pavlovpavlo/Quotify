@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   Shown by the launcher while Glance has not rendered yet — most visibly right
-  after a reboot. The Glance default placeholder is a spinner on a bare surface,
-  which reads as a broken white card; this one is just the widget's own
-  background, so the restore looks like an empty widget instead.
+  after a reboot. A bare background reads as a broken, empty card, so the
+  placeholder carries the brand mark: the widget looks like itself, just without
+  a quote yet.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_placeholder_background" />
+    android:background="@drawable/widget_placeholder_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/widget_placeholder_brand"
+        android:textColor="@color/widget_text_tertiary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.08" />
+
+</FrameLayout>

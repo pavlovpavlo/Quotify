@@ -429,6 +429,39 @@
     <string name="widget_settings_cta_update">Update</string>
     <string name="widget_added_message">Widget added to your home screen</string>
     <string name="widget_updated_message">Widget updated</string>
+    <string name="widget_style_edit_cd">Edit appearance</string>
+
+    <!-- Widget feedback -->
+    <string name="widget_feedback_question">What do you think of widgets?</string>
+    <string name="widget_feedback_thanks">Thanks for the feedback!</string>
+    <string name="widget_feedback_like_cd">Like</string>
+    <string name="widget_feedback_dislike_cd">Dislike</string>
+
+    <!-- Widget appearance editor -->
+    <string name="widget_appearance_title">Edit widget</string>
+    <string name="widget_appearance_background">Background</string>
+    <string name="widget_appearance_blur_title">Background blur</string>
+    <string name="widget_appearance_blur_subtitle">A soft glass effect behind the text</string>
+    <string name="widget_appearance_border_title">Border</string>
+    <string name="widget_appearance_border_subtitle">A thin outline around the widget</string>
+    <string name="widget_appearance_border_color">Border colour</string>
+    <string name="widget_appearance_font_size">Font size</string>
+    <string name="widget_appearance_font_sample" translatable="false">A</string>
+    <string name="widget_appearance_text_color">Text colour</string>
+    <string name="widget_appearance_text_color_light">White</string>
+    <string name="widget_appearance_text_color_dark">Black</string>
+    <string name="widget_appearance_text_color_custom">Custom</string>
+    <string name="widget_appearance_align">Text alignment</string>
+    <string name="widget_appearance_align_start">Left</string>
+    <string name="widget_appearance_align_center">Center</string>
+    <string name="widget_appearance_done">Done</string>
+    <string name="widget_appearance_preview_quote">Calm is a strength.</string>
+    <string name="widget_appearance_preview_author">Marcus Aurelius</string>
+    <string name="widget_appearance_preview_book">Meditations</string>
+
+    <!-- Colour picker -->
+    <string name="color_picker_title">Text colour</string>
+    <string name="color_picker_confirm">Done</string>
 
     <!-- Widget frequency picker -->
     <string name="widget_frequency_title">Change frequency</string>
@@ -458,6 +491,7 @@
     <string name="widget_empty_title">Set up the widget</string>
     <string name="widget_empty_hint">Tap to choose a quote source</string>
     <string name="widget_pin_unsupported">Add the widget manually from the widget menu</string>
+    <string name="widget_placeholder_brand" translatable="false">QUOTIFY</string>
 
     <!-- Paywall -->
     <string name="paywall_restore">Restore</string>

@@ -6,8 +6,10 @@ import androidx.navigation3.runtime.NavKey
 import com.kovhan.core.navigation.EntryBuilder
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PlaylistPickerKey
+import com.kovhan.core.navigation.WidgetAppearanceKey
 import com.kovhan.core.navigation.WidgetQuoteKey
 import com.kovhan.core.navigation.WidgetSettingsKey
+import com.kovhan.feature.widget.presentation.appearance.navigation.WidgetAppearanceEntry
 import com.kovhan.feature.widget.presentation.picker.navigation.PlaylistPickerEntry
 import com.kovhan.feature.widget.presentation.quote.navigation.WidgetQuoteEntry
 import com.kovhan.feature.widget.presentation.settings.navigation.WidgetSettingsEntry
@@ -37,6 +39,14 @@ class WidgetEntryBuilder @Inject constructor() : EntryBuilder {
 
         scope.entry<WidgetQuoteKey> { key ->
             WidgetQuoteEntry(
+                key = key,
+                coordinator = coordinator,
+                paddingValues = paddingValues,
+            )
+        }
+
+        scope.entry<WidgetAppearanceKey> { key ->
+            WidgetAppearanceEntry(
                 key = key,
                 coordinator = coordinator,
                 paddingValues = paddingValues,

@@ -18,7 +18,7 @@ import com.kovhan.design.systems.QuotifyMaterialTheme
 @Composable
 internal fun WidgetSettingsFooter(
     text: String,
-    onAddToHome: () -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = QuotifyMaterialTheme.colors
@@ -39,7 +39,7 @@ internal fun WidgetSettingsFooter(
             QuotifyButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = text,
-                onClick = onAddToHome,
+                onClick = onClick,
                 variant = QuotifyButtonVariant.Filled,
                 accent = QuotifyButtonAccent.Primary,
                 sizeSpec = QuotifyButtonDefaults.pillSizeSpec(52.dp),

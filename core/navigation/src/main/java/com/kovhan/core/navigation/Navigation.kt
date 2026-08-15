@@ -85,6 +85,9 @@ data class WidgetQuoteKey(val quoteId: String) : NavKey
 data class PlaylistPickerKey(val playlistId: String? = null) : NavKey
 
 @Serializable
+data class WidgetAppearanceKey(val style: String) : NavKey
+
+@Serializable
 data class AddQuoteKey(val tab: AddQuoteTab = AddQuoteTab.TEXT) : NavKey
 
 @Serializable

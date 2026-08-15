@@ -1,6 +1,8 @@
 package com.kovhan.feature.widget.presentation.settings.mvi
 
 import com.kovhan.core.models.widget.PlaylistWithCount
+import com.kovhan.core.models.widget.WidgetAppearance
+import com.kovhan.core.models.widget.WidgetFeedback
 import com.kovhan.core.models.widget.WidgetSettings
 import com.kovhan.core.models.widget.WidgetSource
 import com.kovhan.core.models.widget.WidgetStyle
@@ -15,4 +17,6 @@ data class WidgetSettingsState(
     val includeDailyQuote: Boolean = true,
     val frequencyHours: Int = WidgetSettings.DEFAULT_FREQUENCY_HOURS,
     val style: WidgetStyle = WidgetStyle.CLASSIC,
+    val appearance: WidgetAppearance = WidgetAppearance(),
+    val feedback: WidgetFeedback? = null,
 ) : UiState

@@ -8,6 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PlaylistPickerKey
+import com.kovhan.core.navigation.WidgetAppearanceKey
 import com.kovhan.core.navigation.WidgetFrequencySheetKey
 import com.kovhan.core.ui.snackbar.AppSnackbarBus
 import com.kovhan.core.ui.snackbar.SnackbarMessage
@@ -53,6 +54,9 @@ internal fun WidgetSettingsEntry(
 
                 is WidgetSettingsEffect.OpenFrequencyPicker ->
                     coordinator.showBottomSheet(WidgetFrequencySheetKey(effect.hours))
+
+                is WidgetSettingsEffect.OpenAppearanceEditor ->
+                    coordinator.navigate(WidgetAppearanceKey(effect.style.name))
 
                 WidgetSettingsEffect.WidgetAdded -> when {
                     // Already on the home screen → just refresh it.

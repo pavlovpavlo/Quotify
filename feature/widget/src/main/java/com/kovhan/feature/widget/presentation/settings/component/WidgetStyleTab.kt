@@ -30,6 +30,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kovhan.core.models.widget.WidgetStyleSettings
+import com.kovhan.core.ui.component.widget.WidgetPreviewCard
+import com.kovhan.core.ui.component.widget.WidgetPreviewDefaults
+import com.kovhan.core.ui.component.widget.WidgetPreviewQuote
 import com.kovhan.design.systems.InterFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R as DsR
@@ -39,8 +43,11 @@ private const val ANIM_MS = 160
 @Composable
 internal fun WidgetStyleTab(
     label: String,
+    settings: WidgetStyleSettings,
+    previewQuote: WidgetPreviewQuote,
     selected: Boolean,
     onClick: () -> Unit,
+    onEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = QuotifyMaterialTheme.colors
@@ -58,37 +65,36 @@ internal fun WidgetStyleTab(
     )
 
     Column(
-        modifier = modifier.clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = null,
-            onClick = onClick,
-        ),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(dimensions.size8),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(dimensions.radiusXl))
-                .background(colors.bgElevated)
-                .border(2.dp, borderColor, RoundedCornerShape(dimensions.radiusXl))
-                .padding(7.dp),
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(dimensions.radiusLg))
-                    .background(colors.bgSecondary),
-                contentAlignment = Alignment.Center,
-            ) {
-                Image(
-                    modifier = Modifier.size(dimensions.size20),
-                    painter = painterResource(DsR.drawable.ic_image),
-                    contentDescription = stringResource(DsR.string.widget_style_image_cd),
-                    colorFilter = ColorFilter.tint(colors.textTertiary),
+                .border(dimensions.size2, borderColor, RoundedCornerShape(dimensions.radiusXl))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = onClick,
                 )
-            }
+                .padding(dimensions.size7),
+        ) {
+            WidgetPreviewCard(
+                modifier = Modifier.fillMaxSize(),
+                settings = settings,
+                quote = previewQuote,
+                scale = WidgetPreviewDefaults.ThumbnailScale,
+                cornerRadius = dimensions.radiusLg,
+            )
+
+            EditBadge(
+                modifier = Modifier.align(Alignment.TopEnd),
+                selected = selected,
+                onClick = onEdit,
+            )
         }
 
         Text(
@@ -99,6 +105,39 @@ internal fun WidgetStyleTab(
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W600,
             ),
+        )
+    }
+}
+
+@Composable
+private fun EditBadge(
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = QuotifyMaterialTheme.colors
+    val dimensions = QuotifyMaterialTheme.dimensions
+    val shape = RoundedCornerShape(dimensions.radiusFull)
+    val tint = if (selected) colors.accentPrimary else colors.textSecondary
+
+    Box(
+        modifier = modifier
+            .size(dimensions.size26)
+            .clip(shape)
+            .background(colors.bgElevated)
+            .border(dimensions.size1, if (selected) colors.accentPrimary else colors.borderStrong, shape)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Image(
+            modifier = Modifier.size(14.dp),
+            painter = painterResource(DsR.drawable.ic_pencil),
+            contentDescription = stringResource(DsR.string.widget_style_edit_cd),
+            colorFilter = ColorFilter.tint(tint),
         )
     }
 }

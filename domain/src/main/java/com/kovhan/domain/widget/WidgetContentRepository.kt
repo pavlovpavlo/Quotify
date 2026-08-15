@@ -29,4 +29,7 @@ interface WidgetContentRepository {
     suspend fun getCurrentQuoteId(): String?
 
     suspend fun setCurrentQuoteId(quoteId: String?)
+
+    /** Epoch millis of the last rotation, or 0 when the widget never rotated. */
+    suspend fun getLastRotatedAt(): Long
 }

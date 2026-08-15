@@ -9,6 +9,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 
 /**
  * Redraws the widget without advancing the rotation. Used after a device reboot
@@ -29,11 +30,12 @@ class WidgetRefreshWorker(
         runCatching {
             val hours = entryPoint.observeWidgetSettings().invoke().first().frequencyHours
             WidgetRotationScheduler.ensureScheduled(applicationContext, hours)
-        }
+        }.onFailure { Timber.e(it, "Widget: failed to schedule rotation") }
+
         runCatching {
             entryPoint.rebuildWidgetSnapshot().invoke()
             QuotifyGlanceWidget().updateAll(applicationContext)
-        }
+        }.onFailure { Timber.e(it, "Widget: refresh worker failed") }
         return Result.success()
     }
 

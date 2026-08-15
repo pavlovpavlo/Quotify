@@ -4,6 +4,7 @@ plugins {
     KotlinKapt
     Hilt
     Ktlint
+    KotlinSerialization
 }
 
 android {
@@ -16,4 +17,5 @@ dependencies {
     implementationDatastore()
     implementationCoroutines()
     implementationHilt()
+    implementationSerialization()
 }

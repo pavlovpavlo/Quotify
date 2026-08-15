@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.widget.rememberHomeWidgetPlaced
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R as DsR
+import com.kovhan.feature.widget.presentation.settings.component.WidgetFeedbackSection
 import com.kovhan.feature.widget.presentation.settings.component.WidgetOptionsSection
 import com.kovhan.feature.widget.presentation.settings.component.WidgetSettingsFooter
 import com.kovhan.feature.widget.presentation.settings.component.WidgetSettingsTopBar
@@ -73,6 +74,10 @@ internal fun WidgetSettingsScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 WidgetSourceSection(state = state, intent = intent)
+                WidgetFeedbackSection(
+                    feedback = state.feedback,
+                    onFeedback = intent::onFeedbackSelected,
+                )
                 WidgetOptionsSection(state = state, intent = intent)
                 WidgetStyleSection(state = state, intent = intent)
             }
@@ -85,7 +90,7 @@ internal fun WidgetSettingsScreen(
                         DsR.string.widget_settings_cta
                     },
                 ),
-                onAddToHome = intent::onAddToHomeClicked,
+                onClick = intent::onAddToHomeClicked,
             )
         }
     }

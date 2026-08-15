@@ -3,12 +3,19 @@ package com.kovhan.data.settings.local
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.kovhan.core.datastore.put
+import com.kovhan.core.models.widget.WidgetAppearance
 import com.kovhan.core.models.widget.WidgetSettings
 import com.kovhan.core.models.widget.WidgetSource
 import com.kovhan.core.models.widget.WidgetStyle
+import com.kovhan.core.models.widget.WidgetStyleSettings
+import com.kovhan.data.settings.dto.WidgetAppearanceDto
+import com.kovhan.data.settings.mapper.toDomain
+import com.kovhan.data.settings.mapper.toDto
 import com.kovhan.domain.widget.WidgetSettingsRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,6 +32,7 @@ class WidgetSettingsLocalDataSource @Inject constructor(
                 frequencyHours = prefs[SettingsPreferences.Widget.FREQUENCY_HOURS]
                     ?: WidgetSettings.DEFAULT_FREQUENCY_HOURS,
                 style = decodeStyle(prefs[SettingsPreferences.Widget.STYLE]),
+                appearance = decodeAppearance(prefs[SettingsPreferences.Widget.APPEARANCE]),
             )
         }
 
@@ -45,6 +53,24 @@ class WidgetSettingsLocalDataSource @Inject constructor(
 
     override suspend fun setStyle(style: WidgetStyle) =
         dataStore.put(SettingsPreferences.Widget.STYLE, style.name)
+
+    override suspend fun setStyleSettings(settings: WidgetStyleSettings) {
+        val updated = observe().first().appearance.with(settings)
+        dataStore.put(
+            SettingsPreferences.Widget.APPEARANCE,
+            json.encodeToString(WidgetAppearanceDto.serializer(), updated.toDto()),
+        )
+    }
+
+    private fun decodeAppearance(stored: String?): WidgetAppearance {
+        val dto = stored
+            ?.let {
+                runCatching { json.decodeFromString(WidgetAppearanceDto.serializer(), it) }
+                    .getOrNull()
+            }
+            ?: WidgetAppearanceDto()
+        return dto.toDomain()
+    }
 
     private fun encodeSource(source: WidgetSource): String = when (source) {
         WidgetSource.All -> SOURCE_ALL
@@ -67,5 +93,7 @@ class WidgetSettingsLocalDataSource @Inject constructor(
         const val SOURCE_ALL = "all"
         const val SOURCE_FAVORITES = "favorites"
         const val PLAYLIST_PREFIX = "playlist:"
+
+        val json = Json { ignoreUnknownKeys = true }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -42,12 +43,17 @@ data class QuotifySegmentTab<T>(
 
 private val SelectorEasing = CubicBezierEasing(0.22f, 0.61f, 0.36f, 1f)
 
+/**
+ * [content] replaces a tab's default icon-and-label row — for tabs that show a
+ * type sample or a colour dot instead of plain text.
+ */
 @Composable
 fun <T> QuotifySegmentedTabs(
     items: List<QuotifySegmentTab<T>>,
     selected: T,
     onSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
+    content: (@Composable RowScope.(item: QuotifySegmentTab<T>, selected: Boolean) -> Unit)? = null,
 ) {
     if (items.isEmpty()) return
 
@@ -106,22 +112,26 @@ fun <T> QuotifySegmentedTabs(
                     ),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (item.icon != null) {
-                        Image(
-                            modifier = Modifier.size(dimensions.size17),
-                            painter = painterResource(item.icon),
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(contentColor),
+                    if (content != null) {
+                        content(item, isSelected)
+                    } else {
+                        if (item.icon != null) {
+                            Image(
+                                modifier = Modifier.size(dimensions.size17),
+                                painter = painterResource(item.icon),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(contentColor),
+                            )
+                        }
+                        Text(
+                            text = item.label,
+                            style = typography.caption.copy(
+                                fontWeight = if (isSelected) FontWeight.W600 else FontWeight.W500,
+                            ),
+                            color = contentColor,
+                            maxLines = 1,
                         )
                     }
-                    Text(
-                        text = item.label,
-                        style = typography.caption.copy(
-                            fontWeight = if (isSelected) FontWeight.W600 else FontWeight.W500,
-                        ),
-                        color = contentColor,
-                        maxLines = 1,
-                    )
                 }
             }
         }

@@ -38,6 +38,8 @@ class WidgetContentRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentQuoteId(): String? = dao.getState()?.currentQuoteId
 
+    override suspend fun getLastRotatedAt(): Long = dao.getState()?.lastRotatedAt ?: 0L
+
     override suspend fun setCurrentQuoteId(quoteId: String?) {
         dao.setState(
             WidgetStateEntity(

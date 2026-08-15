@@ -52,6 +52,15 @@ class DailyQuoteRepositoryImpl @Inject constructor(
         return chosen
     }
 
+    override suspend fun getCachedDailyQuote(): DailyQuote? {
+        val today = LocalDate.now().toEpochDay()
+        val selection = selectionDao.get() ?: return null
+        if (selection.dismissedEpochDay == today) return null
+        if (selection.epochDay != today) return null
+        val quoteId = selection.quoteId ?: return null
+        return quoteDao.getAll().firstOrNull { it.id == quoteId }?.toDomain()
+    }
+
     override suspend fun dismissForToday() {
         val today = LocalDate.now().toEpochDay()
         val selection = selectionDao.get() ?: DailySelectionEntity()
