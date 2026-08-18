@@ -1,6 +1,5 @@
 package com.kovhan.domain.widget.use_case.settings
 
-import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.models.widget.PlaylistWithCount
 import com.kovhan.core.models.widget.WidgetSourceCounts
 import com.kovhan.domain.library.use_case.quote.ObserveQuotesUseCase
@@ -22,7 +21,7 @@ class ObserveWidgetSourcesUseCase @Inject constructor(
         combine(observePlaylists(), observeQuotes()) { playlists, quotes ->
             WidgetSourceCounts(
                 allCount = quotes.size,
-                favouritesCount = quotes.count { it.collectionId == SavedCollection.FAVOURITES_ID },
+                favouritesCount = quotes.count { it.isFavourite },
                 playlists = playlists.map { PlaylistWithCount(it, it.quoteCount(quotes)) },
             )
         }

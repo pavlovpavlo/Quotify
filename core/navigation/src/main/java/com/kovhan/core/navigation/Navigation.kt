@@ -131,6 +131,7 @@ data class SaveQuoteCollectionSheetKey(
     val tagNames: List<String>,
     val inWidgetPlaylist: Boolean,
     val inPushPlaylist: Boolean,
+    val page: Int? = null,
 ) : BottomSheetKey
 
 @Serializable
@@ -141,6 +142,7 @@ data class NewCollectionSheetKey(
     val tagNames: List<String>,
     val inWidgetPlaylist: Boolean,
     val inPushPlaylist: Boolean,
+    val page: Int? = null,
 ) : BottomSheetKey
 
 @Serializable
@@ -168,7 +170,7 @@ data class EditCollectionStyleSheetKey(
 data object ManageSubscriptionSheetKey : BottomSheetKey
 
 @Serializable
-data class EditQuoteSheetKey(
+data class EditQuoteKey(
     val quoteId: String,
     val text: String,
     val authorName: String,
@@ -181,13 +183,14 @@ data class EditQuoteSheetKey(
     val authorOptions: List<String>,
     val bookOptions: List<String>,
     val tagPool: List<String>,
-) : BottomSheetKey
+) : NavKey
 
 @Serializable
 data class MoveQuoteSheetKey(
     val quoteId: String,
     val selectedCollectionId: String?,
     val excludedCollectionId: String?,
+    val keepsFavourite: Boolean = false,
 ) : BottomSheetKey
 
 @Serializable
@@ -211,7 +214,7 @@ data class ConfirmDialogKey(
     @StringRes val titleRes: Int,
     @StringRes val messageRes: Int,
     @StringRes val confirmRes: Int,
-    @StringRes val cancelRes: Int,
+    @StringRes val cancelRes: Int?,
     val resultKey: String,
     val payload: String? = null,
 ) : DialogKey
@@ -260,6 +263,7 @@ enum class QuoteRemovalMode {
     DELETE,
     REMOVE_FROM_COLLECTION,
     REMOVE_FROM_ENTITY,
+    REMOVE_FROM_FAVOURITES,
 }
 
 enum class PhotoAction { TAKE, GALLERY, REMOVE }

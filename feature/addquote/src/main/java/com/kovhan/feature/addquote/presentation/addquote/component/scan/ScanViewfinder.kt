@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -46,7 +45,6 @@ import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 import timber.log.Timber
 
-private val FrameDark = Color(0xFF2B2622)
 private val VignetteEdge = Color(0x57281E12)
 
 
@@ -54,7 +52,6 @@ private val VignetteEdge = Color(0x57281E12)
 internal fun ScanStage(
     hasCameraPermission: Boolean,
     imageCapture: ImageCapture,
-    scanning: Boolean,
     noTextFound: Boolean,
     offline: Boolean,
     aiDenial: com.kovhan.domain.ai.AiDenialReason?,
@@ -80,7 +77,7 @@ internal fun ScanStage(
                 .weight(1f)
                 .heightIn(min = 220.dp)
                 .clip(RoundedCornerShape(dimensions.size18))
-                .background(FrameDark),
+                .background(ScanFrameDark),
             contentAlignment = Alignment.Center,
         ) {
             if (offline) {
@@ -94,34 +91,18 @@ internal fun ScanStage(
             } else {
                 PermissionPrompt(onRequestPermission = onRequestPermission)
             }
-
-            if (scanning) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(0xAA221D18)),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(dimensions.iconXl),
-                        color = colors.textOnAccent,
-                        strokeWidth = 2.dp,
-                    )
-                }
-            }
         }
 
         Text(
             text = stringResource(
                 when {
-                    scanning -> R.string.add_quote_scan_caption_scanning
                     offline -> R.string.add_quote_scan_offline_caption
                     noTextFound -> R.string.add_quote_scan_no_text
                     else -> R.string.add_quote_scan_caption_live
                 },
             ),
             style = typography.caption,
-            color = if (noTextFound && !scanning && !offline) colors.error else colors.textTertiary,
+            color = if (noTextFound && !offline) colors.error else colors.textTertiary,
             textAlign = TextAlign.Center,
         )
     }

@@ -127,3 +127,15 @@ val MIGRATION_9_10 = object : Migration(9, 10) {
         db.execSQL("ALTER TABLE `subscription_status` ADD COLUMN `startedAt` INTEGER")
     }
 }
+
+val MIGRATION_10_11 = object : Migration(10, 11) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "ALTER TABLE `quotes` ADD COLUMN `isFavourite` INTEGER NOT NULL DEFAULT 0",
+        )
+        db.execSQL(
+            "UPDATE `quotes` SET `isFavourite` = 1, `collectionId` = NULL " +
+                "WHERE `collectionId` = 'favourite'",
+        )
+    }
+}

@@ -29,14 +29,14 @@ internal data class WidgetAppearanceDto(
     @Serializable
     data class CoverDto(
         val coverId: String? = null,
-        val blurEnabled: Boolean = true,
+        val blurEnabled: Boolean = false,
         val border: BorderDto = BorderDto(),
         val text: TextDto = TextDto(),
     )
 
     @Serializable
     data class BorderDto(
-        val enabled: Boolean = true,
+        val enabled: Boolean = false,
         val toneId: String? = null,
     )
 

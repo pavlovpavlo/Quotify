@@ -9,4 +9,6 @@ interface FeedbackRepository {
     suspend fun submit(feedback: Feedback)
 
     fun observeGiven(source: FeedbackSource): Flow<Boolean>
+
+    suspend fun canSubmit(): Boolean
 }

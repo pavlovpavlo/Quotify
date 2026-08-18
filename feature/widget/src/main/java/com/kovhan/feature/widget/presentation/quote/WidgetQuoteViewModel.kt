@@ -9,7 +9,6 @@ import com.kovhan.domain.library.use_case.quote.GetQuoteByIdUseCase
 import com.kovhan.domain.library.use_case.quote.ObserveEnrichedQuoteByIdUseCase
 import com.kovhan.domain.library.use_case.quote.UpsertQuoteUseCase
 import com.kovhan.domain.library.use_case.tag.ObserveSavedTagsUseCase
-import com.kovhan.domain.widget.use_case.content.HandleWidgetQuoteRemovalUseCase
 import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteEffect
 import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteIntent
 import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteState
@@ -28,7 +27,6 @@ class WidgetQuoteViewModel @Inject constructor(
     private val getQuoteById: GetQuoteByIdUseCase,
     private val upsertQuote: UpsertQuoteUseCase,
     private val deleteQuote: DeleteQuoteUseCase,
-    private val handleWidgetQuoteRemoval: HandleWidgetQuoteRemovalUseCase,
 ) : BaseViewModel<WidgetQuoteState, WidgetQuoteEffect>(WidgetQuoteState()),
     WidgetQuoteIntent {
 
@@ -104,6 +102,7 @@ class WidgetQuoteViewModel @Inject constructor(
                 generalName = generalName,
                 sourceDailyId = existing?.sourceDailyId,
                 page = draft.page.toIntOrNull(),
+                isFavourite = existing?.isFavourite == true,
             )
             publishEffect(WidgetQuoteEffect.Edited)
         }
@@ -119,7 +118,6 @@ class WidgetQuoteViewModel @Inject constructor(
         val id = quoteId ?: return
         viewModelScope.launch {
             deleteQuote(id)
-            handleWidgetQuoteRemoval(id)
             publishEffect(WidgetQuoteEffect.Deleted)
         }
     }

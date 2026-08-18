@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,12 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.kovhan.core.ui.activity.ActivityRequired
 import com.kovhan.core.ui.locale.LocalAppLocaleContext
+import com.kovhan.core.ui.locale.withAppLocale
 import com.kovhan.core.navigation.BottomSheetEntryBuilder
 import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.core.navigation.EntryBuilder
@@ -38,7 +39,6 @@ import com.kovhan.design.systems.QuotifyAppTheme
 import com.kovhan.feature.widget.glance.WidgetRefreshWorker
 import com.kovhan.domain.settings.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -111,17 +111,13 @@ class MainActivity : AppCompatActivity() {
 
             val baseContext = LocalContext.current
             val localizedContext = remember(baseContext, uiState.language) {
-                val configuration = Configuration(baseContext.resources.configuration).apply {
-                    setLocale(Locale(uiState.language.tag))
-                }
-                ContextThemeWrapper(baseContext, 0).apply {
-                    applyOverrideConfiguration(configuration)
-                }
+                baseContext.withAppLocale(uiState.language.tag)
             }
 
             CompositionLocalProvider(
                 LocalContext provides localizedContext,
                 LocalConfiguration provides localizedContext.resources.configuration,
+                LocalResources provides localizedContext.resources,
                 LocalAppLocaleContext provides localizedContext,
                 LocalNavigationEventDispatcherOwner provides this@MainActivity,
             ) {

@@ -20,13 +20,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.ui.mapper.collectionColor
 import com.kovhan.design.systems.QuotifyMaterialTheme
+import com.kovhan.design.systems.R as DsR
 
 import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
-import com.kovhan.feature.entitydetails.presentation.entity_details.component.EntityQuoteCard
+import com.kovhan.core.ui.component.emptystate.DefaultEmptyStateAction
+import com.kovhan.core.ui.component.quote.QuoteActionCard
 import com.kovhan.feature.entitydetails.presentation.entity_details.component.EntityDetailsSummary
 import com.kovhan.feature.entitydetails.presentation.entity_details.component.EntityDetailsTopBar
 import com.kovhan.feature.entitydetails.presentation.entity_details.mvi.EntityDetailsScreenIntent
@@ -87,16 +90,42 @@ internal fun EntityDetailsScreen(
                 },
             )
 
-            EntityDetailsSummary(
-                type = state.type,
-                summary = state.summary,
-            )
+            if (state.quotes.isNotEmpty()) {
+                EntityDetailsSummary(
+                    type = state.type,
+                    summary = state.summary,
+                )
+            }
 
             Spacer(modifier = Modifier.height(dimensions.size12))
 
             if (state.quotes.isEmpty()) {
                 if (!state.isLoading) {
-                    DefaultEmptyState()
+                    val isCollection = state.type == EntityType.COLLECTION
+                    DefaultEmptyState(
+                        titleResource = if (isCollection) {
+                            DsR.string.collection_details_empty_title
+                        } else {
+                            DsR.string.search_empty_title
+                        },
+                        descriptionResource = if (isCollection) {
+                            DsR.string.collection_details_empty_message
+                        } else {
+                            DsR.string.search_empty_sub
+                        },
+                        action = if (isCollection) {
+                            {
+                                DefaultEmptyStateAction(
+                                    text = stringResource(
+                                        DsR.string.collection_details_empty_add_quote,
+                                    ),
+                                    onClick = navAction::onAddQuote,
+                                )
+                            }
+                        } else {
+                            null
+                        },
+                    )
                 }
             } else {
                 LazyColumn(
@@ -114,7 +143,7 @@ internal fun EntityDetailsScreen(
                             )
                         }
 
-                        EntityQuoteCard(
+                        QuoteActionCard(
                             quote = quote,
                             railColor = railColor,
                             menuExpanded = quoteMenuExpandedId == quote.id,

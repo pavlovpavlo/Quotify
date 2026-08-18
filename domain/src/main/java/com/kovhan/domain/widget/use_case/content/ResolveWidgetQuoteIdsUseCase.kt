@@ -1,6 +1,5 @@
 package com.kovhan.domain.widget.use_case.content
 
-import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.models.widget.WidgetSource
 import com.kovhan.domain.daily.use_case.GetCachedDailyQuoteUseCase
 import com.kovhan.domain.library.use_case.quote.ObserveQuotesUseCase
@@ -34,7 +33,7 @@ class ResolveWidgetQuoteIdsUseCase @Inject constructor(
                 WidgetSource.All -> quotes.map { it.id }
 
                 WidgetSource.Favorites ->
-                    quotes.filter { it.collectionId == SavedCollection.FAVOURITES_ID }.map { it.id }
+                    quotes.filter { it.isFavourite }.map { it.id }
 
                 is WidgetSource.Playlist -> {
                     val playlist = playlists.firstOrNull { it.id == source.playlistId }

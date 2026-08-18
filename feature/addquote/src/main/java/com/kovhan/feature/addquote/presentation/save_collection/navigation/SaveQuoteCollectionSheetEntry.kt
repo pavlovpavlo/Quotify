@@ -2,6 +2,10 @@ package com.kovhan.feature.addquote.presentation.save_collection.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,14 +38,20 @@ internal fun SaveQuoteCollectionSheetEntry(
         tagNames = key.tagNames,
         inWidgetPlaylist = key.inWidgetPlaylist,
         inPushPlaylist = key.inPushPlaylist,
+        page = key.page,
     )
 
     LaunchedEffect(Unit) {
         viewModel.loadCollections(generalName)
     }
 
+    var resultDrained by rememberSaveable { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
-        coordinator.clearResult(NavigationCoordinator.KEY_COLLECTION_CREATED)
+        if (!resultDrained) {
+            coordinator.clearResult(NavigationCoordinator.KEY_COLLECTION_CREATED)
+            resultDrained = true
+        }
         coordinator.observeResult<String>(NavigationCoordinator.KEY_COLLECTION_CREATED)
             .collect { createdId ->
                 if (createdId != null) {
@@ -101,6 +111,7 @@ internal fun SaveQuoteCollectionSheetEntry(
                     tagNames = key.tagNames,
                     inWidgetPlaylist = key.inWidgetPlaylist,
                     inPushPlaylist = key.inPushPlaylist,
+                    page = key.page,
                 ),
             )
         },

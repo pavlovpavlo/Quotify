@@ -32,6 +32,7 @@ class EntityMoveQuoteSheetViewModel @Inject constructor(
             copy(
                 quoteId = key.quoteId,
                 selectedCollectionId = key.selectedCollectionId,
+                keepsFavourite = key.keepsFavourite,
             )
         }
 

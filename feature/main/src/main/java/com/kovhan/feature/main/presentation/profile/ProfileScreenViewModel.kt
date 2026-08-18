@@ -8,6 +8,7 @@ import com.kovhan.design.systems.R
 import com.kovhan.domain.auth.use_case.GetUserUseCase
 import com.kovhan.domain.auth.use_case.SignOutUseCase
 import com.kovhan.domain.billing.use_case.ObserveIsSubscribedUseCase
+import com.kovhan.domain.feedback.use_case.CanSubmitFeedbackUseCase
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
@@ -38,6 +39,7 @@ class ProfileScreenViewModel @Inject constructor(
     private val signOut: SignOutUseCase,
     private val rateApp: RateAppUseCase,
     private val contactSupport: ContactSupportUseCase,
+    private val canSubmitFeedback: CanSubmitFeedbackUseCase,
     observeIsSubscribed: ObserveIsSubscribedUseCase,
     getProfileStatisticUseCase: GetProfileStatisticUseCase
 ) : BaseViewModel<ProfileScreenState, ProfileScreenEffect>(ProfileScreenState()),
@@ -89,6 +91,18 @@ class ProfileScreenViewModel @Inject constructor(
     )
 
     override fun onRateClicked() = rateApp()
+
+    override fun onFeedbackClicked() {
+        viewModelScope.launch {
+            publishEffect(
+                if (canSubmitFeedback()) {
+                    ProfileScreenEffect.OpenFeedbackDialog
+                } else {
+                    ProfileScreenEffect.ShowFeedbackThrottled
+                },
+            )
+        }
+    }
 
     override fun onSupportClicked() {
         if (!contactSupport()) {

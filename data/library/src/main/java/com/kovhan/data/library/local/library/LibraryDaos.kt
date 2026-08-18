@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.kovhan.core.models.collections.SavedCollection
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,10 +19,7 @@ interface QuoteDao {
     @Query("SELECT COUNT(*) FROM quotes")
     suspend fun count(): Int
 
-    @Query(
-        "SELECT COUNT(*) FROM quotes " +
-            "WHERE collectionId IS NULL OR collectionId != '${SavedCollection.FAVOURITES_ID}'",
-    )
+    @Query("SELECT COUNT(*) FROM quotes WHERE isFavourite = 0 OR collectionId IS NOT NULL")
     suspend fun countWithoutFavourite(): Int
 
     @Query("SELECT * FROM quotes WHERE id = :id")

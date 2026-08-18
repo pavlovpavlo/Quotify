@@ -7,6 +7,7 @@ import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.design.systems.R
 import com.kovhan.domain.billing.BillingProducts
+import com.kovhan.domain.billing.BillingWaits
 import com.kovhan.domain.billing.use_case.GetPremiumProductUseCase
 import com.kovhan.domain.billing.use_case.LaunchPurchaseUseCase
 import com.kovhan.domain.billing.use_case.ObservePurchaseFlowFailuresUseCase
@@ -38,9 +39,18 @@ class PaywallViewModel @Inject constructor(
 
         observePurchaseFlowFailures()
             .onEach { failure ->
-                publishState { copy(isPurchasing = false) }
-                if (failure == PurchaseFlowFailure.FAILED) {
-                    showSnackbar(SnackbarMessage.error(R.string.paywall_purchase_failed))
+                when (failure) {
+                    PurchaseFlowFailure.ALREADY_OWNED -> {
+                        publishState { copy(isPurchasing = false, isRestoring = true) }
+                        awaitAlreadyOwnedVerification()
+                    }
+
+                    PurchaseFlowFailure.FAILED -> {
+                        publishState { copy(isPurchasing = false) }
+                        showSnackbar(SnackbarMessage.error(R.string.paywall_purchase_failed))
+                    }
+
+                    PurchaseFlowFailure.CANCELLED -> publishState { copy(isPurchasing = false) }
                 }
             }
             .launchIn(viewModelScope)
@@ -82,7 +92,7 @@ class PaywallViewModel @Inject constructor(
         publishState { copy(isRestoring = true) }
         viewModelScope.launch {
             runCatching { restorePurchases() }
-            delay(RESTORE_GRACE_MS)
+            delay(BillingWaits.VERIFICATION_GRACE_MS)
             if (uiState.value.purchaseSucceeded) return@launch
             publishState { copy(isRestoring = false) }
             showSnackbar(SnackbarMessage.info(R.string.paywall_restore_empty))
@@ -90,6 +100,15 @@ class PaywallViewModel @Inject constructor(
     }
 
     override fun onRetryClicked() = loadOffers()
+
+    private fun awaitAlreadyOwnedVerification() {
+        viewModelScope.launch {
+            delay(BillingWaits.VERIFICATION_GRACE_MS)
+            if (uiState.value.purchaseSucceeded) return@launch
+            publishState { copy(isRestoring = false) }
+            showSnackbar(SnackbarMessage.error(R.string.paywall_verification_failed))
+        }
+    }
 
     private fun loadOffers() {
         publishState { copy(isLoading = true, loadFailed = false) }
@@ -117,9 +136,5 @@ class PaywallViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    private companion object {
-        const val RESTORE_GRACE_MS = 3_000L
     }
 }

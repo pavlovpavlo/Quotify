@@ -15,7 +15,7 @@ sealed interface WidgetStyleSettings {
     val textAlign: WidgetTextAlign
 
     data class Minimal(
-        override val borderEnabled: Boolean = true,
+        override val borderEnabled: Boolean = false,
         override val borderColor: WidgetBorderColor = WidgetBorderColor.DEFAULT,
         override val fontSize: WidgetFontSize = WidgetFontSize.DEFAULT,
         override val textColor: WidgetTextColor = WidgetTextColor.DEFAULT,
@@ -26,7 +26,7 @@ sealed interface WidgetStyleSettings {
 
     data class Classic(
         val toneId: String = WidgetTones.DEFAULT,
-        override val borderEnabled: Boolean = true,
+        override val borderEnabled: Boolean = false,
         override val borderColor: WidgetBorderColor = WidgetBorderColor.DEFAULT,
         override val fontSize: WidgetFontSize = WidgetFontSize.DEFAULT,
         override val textColor: WidgetTextColor = WidgetTextColor.DEFAULT,
@@ -37,8 +37,8 @@ sealed interface WidgetStyleSettings {
 
     data class Cover(
         val coverId: String = WidgetCovers.DEFAULT,
-        val blurEnabled: Boolean = true,
-        override val borderEnabled: Boolean = true,
+        val blurEnabled: Boolean = false,
+        override val borderEnabled: Boolean = false,
         override val borderColor: WidgetBorderColor = WidgetBorderColor.DEFAULT,
         override val fontSize: WidgetFontSize = WidgetFontSize.DEFAULT,
         override val textColor: WidgetTextColor = WidgetTextColor.DEFAULT,

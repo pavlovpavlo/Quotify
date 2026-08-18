@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kovhan.core.ui.component.bottomsheet.LocalBottomSheetSettled
 import com.kovhan.design.systems.InterFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
 
@@ -66,8 +67,9 @@ internal fun EditTextField(
         backgroundColor = colors.accentPrimary.copy(alpha = 0.3f),
     )
 
-    LaunchedEffect(autofocus) {
-        if (autofocus) focusRequester.requestFocus()
+    val sheetSettled = LocalBottomSheetSettled.current
+    LaunchedEffect(autofocus, sheetSettled) {
+        if (autofocus && sheetSettled) runCatching { focusRequester.requestFocus() }
     }
 
     CompositionLocalProvider(LocalTextSelectionColors provides selectionColors) {

@@ -7,7 +7,7 @@ import com.kovhan.domain.settings.AppTheme
 
 data class MainActivityState(
     val theme: AppTheme = AppTheme.SYSTEM,
-    val language: AppLanguage = AppLanguage.UKRAINIAN,
+    val language: AppLanguage = AppLanguage.default,
     val isFabTooltipVisible: Boolean = false,
     val pendingOfferTrigger: OfferTrigger? = null,
 ) : UiState

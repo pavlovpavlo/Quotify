@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import com.kovhan.core.ui.component.combobox.QuotifyComboboxField
 import com.kovhan.core.ui.component.playlist.QuotifyPlaylistOptions
 import com.kovhan.core.ui.component.quote.QuotePageInputField
@@ -84,6 +85,7 @@ fun DetailsScreen(
                     onOptionSelected = intent::onAuthorPicked,
                     options = state.filteredAuthorNames,
                     placeholder = stringResource(R.string.details_author_ph),
+                    imeAction = ImeAction.Next,
                 )
                 QuotifyComboboxField(
                     label = stringResource(R.string.details_field_book),
@@ -92,16 +94,22 @@ fun DetailsScreen(
                     onOptionSelected = intent::onBookPicked,
                     options = state.filteredBookNames,
                     placeholder = stringResource(R.string.details_book_ph),
+                    imeAction = ImeAction.Next,
                 )
                 QuotePageInputField(
                     value = state.page,
                     onValueChange = intent::onPageChanged,
                     label = stringResource(R.string.details_field_page),
+                    imeAction = ImeAction.Done,
+                    onImeAction = { focusManager.clearFocus() },
                 )
                 TagEditor(
                     tags = state.selectedTags,
                     onRemoveTag = intent::onRemoveTag,
-                    onAddTag = intent::onOpenTagSheet,
+                    onAddTag = {
+                        focusManager.clearFocus()
+                        intent.onOpenTagSheet()
+                    },
                 )
                 QuotifyPlaylistOptions(
                     widgetEnabled = state.inWidgetPlaylist,

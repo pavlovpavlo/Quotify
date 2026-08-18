@@ -102,7 +102,10 @@ fun FeedbackDialog(
 
                     Spacer(Modifier.height(dimensions.size4))
 
-                    DialogTitle(stringResource(R.string.feedback_done_title))
+                    DialogTitle(
+                        text = stringResource(R.string.feedback_done_title),
+                        modifier = Modifier.padding(horizontal = dimensions.size24),
+                    )
 
                     Spacer(Modifier.height(dimensions.size9))
 
@@ -120,7 +123,10 @@ fun FeedbackDialog(
                         sizeSpec = roundedSpec,
                     )
                 } else {
-                    DialogTitle(stringResource(R.string.feedback_title))
+                    DialogTitle(
+                        text = stringResource(R.string.feedback_title),
+                        modifier = Modifier.padding(horizontal = dimensions.size24),
+                    )
 
                     Spacer(Modifier.height(dimensions.size9))
 
@@ -211,8 +217,9 @@ fun FeedbackDialog(
 }
 
 @Composable
-private fun DialogTitle(text: String) {
+private fun DialogTitle(text: String, modifier: Modifier = Modifier) {
     Text(
+        modifier = modifier,
         text = text,
         color = QuotifyMaterialTheme.colors.textPrimary,
         textAlign = TextAlign.Center,

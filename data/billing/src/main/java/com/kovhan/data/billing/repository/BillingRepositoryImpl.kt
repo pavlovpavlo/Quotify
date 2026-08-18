@@ -9,9 +9,11 @@ import com.kovhan.core.models.billing.SubscriptionStatus
 import com.kovhan.data.billing.remote.BillingDataSource
 import com.kovhan.domain.ai.SubscriptionRepository
 import com.kovhan.domain.billing.BillingRepository
+import com.kovhan.domain.billing.BillingWaits
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -52,18 +54,7 @@ class BillingRepositoryImpl @Inject constructor(
         if (!observing.compareAndSet(false, true)) return
         scope.launch {
             billingService.purchases.collect { purchase ->
-                Timber.i("Verify purchase: надсилаємо %s на бекенд", purchase.productId)
-                val result = billingDataSource.verifyPlayPurchase(
-                    productId = purchase.productId,
-                    purchaseToken = purchase.purchaseToken,
-                )
-                if (result is Outcome.Success) {
-                    Timber.i(
-                        "Verify purchase: бекенд відповів entitled=%b status=%s",
-                        result.data.isActive,
-                        result.data.status,
-                    )
-                }
+                val result = verifyWithRetry(purchase.productId, purchase.purchaseToken)
                 if (result is Outcome.Success) {
                     runCatching { subscriptionRepository.refresh() }
                 }
@@ -72,7 +63,44 @@ class BillingRepositoryImpl @Inject constructor(
         }
     }
 
+    private suspend fun verifyWithRetry(
+        productId: String,
+        purchaseToken: String,
+    ): Outcome<SubscriptionStatus, BillingError> {
+        var attempt = 0
+        while (true) {
+            Timber.i("Verify purchase: надсилаємо %s на бекенд, спроба %d", productId, attempt + 1)
+            val result = billingDataSource.verifyPlayPurchase(productId, purchaseToken)
+
+            if (result is Outcome.Success) {
+                Timber.i(
+                    "Verify purchase: бекенд відповів entitled=%b status=%s",
+                    result.data.isActive,
+                    result.data.status,
+                )
+                return result
+            }
+
+            val error = (result as Outcome.Failure).error
+            attempt++
+            if (error !in RETRYABLE_ERRORS || attempt >= BillingWaits.MAX_VERIFY_ATTEMPTS) {
+                Timber.w("Verify purchase: здаємось після %d спроб, error=%s", attempt, error)
+                return result
+            }
+            delay(BillingWaits.VERIFY_RETRY_STEP_MS * attempt)
+        }
+    }
+
     override suspend fun refreshPurchases() {
         billingService.refreshActiveSubscriptions()
+    }
+
+    private companion object {
+        val RETRYABLE_ERRORS = setOf(
+            BillingError.NETWORK,
+            BillingError.BACKEND,
+            BillingError.NOT_AUTHENTICATED,
+            BillingError.UNKNOWN,
+        )
     }
 }

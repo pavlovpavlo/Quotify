@@ -10,4 +10,6 @@ sealed class ProfileScreenEffect : UiEffect {
     data object OpenWidgetSettings : ProfileScreenEffect()
     data object OpenPaywall : ProfileScreenEffect()
     data object OpenSubscription : ProfileScreenEffect()
+    data object OpenFeedbackDialog : ProfileScreenEffect()
+    data object ShowFeedbackThrottled : ProfileScreenEffect()
 }

@@ -54,6 +54,7 @@ internal fun DetailsEntry(
                     tagNames = draft.tagNames,
                     inWidgetPlaylist = draft.inWidgetPlaylist,
                     inPushPlaylist = draft.inPushPlaylist,
+                    page = draft.page,
                 ),
             )
         }

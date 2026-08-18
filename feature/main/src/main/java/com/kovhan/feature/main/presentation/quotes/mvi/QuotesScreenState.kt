@@ -12,7 +12,7 @@ data class QuotesScreenState(
     val displayText: String = "",
     val displayAuthor: String? = null,
     val displayBook: String? = null,
-    val language: AppLanguage = AppLanguage.UKRAINIAN,
+    val language: AppLanguage = AppLanguage.default,
     val isDailyQuoteFavourite: Boolean = false,
     val isDailyQuoteFavouriteLoading: Boolean = false,
     val folders: List<SavedCollection> = emptyList(),

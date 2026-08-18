@@ -3,13 +3,17 @@ package com.kovhan.feature.widget.presentation.quote.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.glance.appwidget.updateAll
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.ConfirmDialogKey
-import com.kovhan.core.navigation.EditQuoteSheetKey
+import com.kovhan.core.navigation.EditQuoteKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.QuoteEditDraft
 import com.kovhan.core.navigation.WidgetQuoteKey
@@ -34,8 +38,13 @@ internal fun WidgetQuoteEntry(
         viewModel.bind(key.quoteId, generalName)
     }
 
+    var editResultDrained by rememberSaveable { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
-        coordinator.clearResult(NavigationCoordinator.KEY_QUOTE_EDIT_RESULT)
+        if (!editResultDrained) {
+            coordinator.clearResult(NavigationCoordinator.KEY_QUOTE_EDIT_RESULT)
+            editResultDrained = true
+        }
         coordinator.observeResult<QuoteEditDraft>(NavigationCoordinator.KEY_QUOTE_EDIT_RESULT)
             .collect { draft -> draft?.let(viewModel::onEditSaved) }
     }
@@ -50,8 +59,8 @@ internal fun WidgetQuoteEntry(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is WidgetQuoteEffect.OpenEditSheet ->
-                    coordinator.showBottomSheet(
-                        EditQuoteSheetKey(
+                    coordinator.navigate(
+                        EditQuoteKey(
                             quoteId = effect.draft.quoteId,
                             text = effect.draft.text,
                             authorName = effect.draft.authorName,

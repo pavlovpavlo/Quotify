@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -19,7 +18,6 @@ import com.kovhan.core.ui.component.button.QuotifyButton
 import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
 import com.kovhan.core.ui.component.text_field.QuotifyTextField
 import com.kovhan.design.systems.QuotifyMaterialTheme
-import kotlinx.coroutines.delay
 
 /**
  * Reusable "rename" bottom sheet: a single autofocused text field capped at
@@ -47,17 +45,10 @@ fun RenameBottomSheet(
     var field by remember {
         mutableStateOf(TextFieldValue(initialName, TextRange(initialName.length)))
     }
-    val focusRequester = remember { FocusRequester() }
-
     LaunchedEffect(initialName) {
         if (initialName != field.text) {
             field = TextFieldValue(initialName, TextRange(initialName.length))
         }
-    }
-
-    LaunchedEffect(Unit) {
-        delay(150)
-        runCatching { focusRequester.requestFocus() }
     }
 
     QuotifyBottomSheet(
@@ -65,6 +56,8 @@ fun RenameBottomSheet(
         title = title,
         onBack = onBack,
     ) {
+        val focusRequester = rememberSheetAutofocusRequester()
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()

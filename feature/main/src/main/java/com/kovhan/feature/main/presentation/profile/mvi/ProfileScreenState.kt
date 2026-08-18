@@ -17,6 +17,6 @@ data class ProfileScreenState(
     val reminderHour: Int = 9,
     val reminderMinute: Int = 0,
     val theme: AppTheme = AppTheme.SYSTEM,
-    val language: AppLanguage = AppLanguage.UKRAINIAN,
+    val language: AppLanguage = AppLanguage.default,
 ) : UiState
 

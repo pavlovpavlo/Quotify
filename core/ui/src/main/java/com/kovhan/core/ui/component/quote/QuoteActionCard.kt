@@ -1,4 +1,4 @@
-package com.kovhan.feature.entitydetails.presentation.entity_details.component
+package com.kovhan.core.ui.component.quote
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -17,19 +17,13 @@ import com.kovhan.core.ui.component.button.QuotifyButtonVariant
 import com.kovhan.core.ui.component.button.QuotifyIconButton
 import com.kovhan.core.ui.component.menu.ActionMenu
 import com.kovhan.core.ui.component.menu.ActionMenuItem
-import com.kovhan.core.ui.component.quote.ReadOnlyQuoteCard
+import com.kovhan.core.ui.mapper.collectionColor
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R as DsR
 
-/**
- * Interactive quote card: the shared [ReadOnlyQuoteCard] plus a three-dot menu
- * (Edit / Move / Delete) in the trailing slot. Shared by collection and entity
- * details.
- */
 @Composable
-fun EntityQuoteCard(
+fun QuoteActionCard(
     quote: EnrichedQuote,
-    railColor: Color,
     menuExpanded: Boolean,
     onToggleMenu: () -> Unit,
     onDismissMenu: () -> Unit,
@@ -37,12 +31,15 @@ fun EntityQuoteCard(
     onMove: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
+    highlightQuery: String? = null,
+    railColor: Color = collectionColor(quote.collection?.iconColor ?: "terra"),
 ) {
     val colors = QuotifyMaterialTheme.colors
     val dimensions = QuotifyMaterialTheme.dimensions
 
     ReadOnlyQuoteCard(
         quote = quote,
+        highlightQuery = highlightQuery,
         modifier = modifier,
         railColor = railColor,
         trailingAction = {
@@ -57,7 +54,9 @@ fun EntityQuoteCard(
                     Image(
                         modifier = Modifier.size(dimensions.size18),
                         painter = painterResource(DsR.drawable.ic_more_vert),
-                        contentDescription = stringResource(DsR.string.collection_details_quote_menu_cd),
+                        contentDescription = stringResource(
+                            DsR.string.collection_details_quote_menu_cd,
+                        ),
                         colorFilter = ColorFilter.tint(colors.textTertiary),
                     )
                 }

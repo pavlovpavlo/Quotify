@@ -16,8 +16,11 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -102,7 +105,27 @@ class SaveDailyQuoteToFavouritesUseCaseTest {
         coVerify(exactly = 0) { authorRepository.edit(any()) }
         assertEquals("a-existing", quote.captured.authorId)
         assertEquals("book-id", quote.captured.bookId)
-        assertEquals(SavedCollection.FAVOURITES_ID, quote.captured.collectionId)
+        assertTrue(quote.captured.isFavourite)
+        assertNull(quote.captured.collectionId)
+    }
+
+    @Test
+    @DisplayName("flips the flag on the existing quote instead of adding a second copy")
+    fun reusesQuoteAlreadyInLibrary() = runTest {
+        coEvery { collectionRepository.getById(any()) } returns
+            SavedCollection(id = SavedCollection.FAVOURITES_ID, name = "Favourites")
+        val moved = Quote(id = "q1", text = "Know thyself", collectionId = "c1", sourceDailyId = "d1")
+        coEvery { quoteRepository.getAll() } returns listOf(moved)
+
+        val quote = slot<Quote>()
+        coEvery { quoteRepository.edit(capture(quote)) } returns Unit
+
+        useCase(daily, "Favourites", AppLanguage.ENGLISH)
+
+        assertEquals("q1", quote.captured.id)
+        assertEquals("c1", quote.captured.collectionId)
+        assertTrue(quote.captured.isFavourite)
+        verify(exactly = 0) { idGenerator.generate() }
     }
 
     @Test

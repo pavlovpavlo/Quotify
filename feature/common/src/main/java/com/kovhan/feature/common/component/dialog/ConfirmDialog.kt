@@ -42,7 +42,7 @@ fun ConfirmDialog(
     title: String,
     message: String,
     confirmText: String,
-    cancelText: String,
+    cancelText: String?,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -122,21 +122,21 @@ fun ConfirmDialog(
                     sizeSpec = roundedSpec,
                 )
 
-                Spacer(Modifier.height(dimensions.size9))
-
-                QuotifyButton(
-                    text = cancelText,
-                    onClick = onDismiss,
-                    modifier = Modifier.fillMaxWidth(),
-                    variant = QuotifyButtonVariant.Outlined,
-                    accent = QuotifyButtonAccent.Neutral,
-                    size = QuotifyButtonSize.Medium,
-                    colors = QuotifyButtonDefaults.colors(
+                if (cancelText != null) {
+                    QuotifyButton(
+                        text = cancelText,
+                        onClick = onDismiss,
+                        modifier = Modifier.fillMaxWidth(),
                         variant = QuotifyButtonVariant.Outlined,
                         accent = QuotifyButtonAccent.Neutral,
-                    ).copy(border = colors.borderStrong),
-                    sizeSpec = roundedSpec,
-                )
+                        size = QuotifyButtonSize.Medium,
+                        colors = QuotifyButtonDefaults.colors(
+                            variant = QuotifyButtonVariant.Outlined,
+                            accent = QuotifyButtonAccent.Neutral,
+                        ).copy(border = colors.borderStrong),
+                        sizeSpec = roundedSpec,
+                    )
+                }
             }
         }
     }

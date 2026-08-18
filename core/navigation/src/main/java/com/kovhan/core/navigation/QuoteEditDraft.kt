@@ -12,3 +12,8 @@ data class QuoteEditDraft(
     val inPushPlaylist: Boolean,
     val page: String = "",
 )
+
+data class MoveQuoteResult(
+    val quoteId: String,
+    val targetCollectionId: String,
+)

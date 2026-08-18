@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quotify</string>
+    <string name="home">Головна</string>
+    <string name="quotes">Цитати</string>
+    <string name="favorites">Обрані</string>
+    <string name="profile">Профіль</string>
+    <string name="profile_no_name">Без імені</string>
+    <string name="profile_sign_out">Вийти</string>
+
+    <!-- Bottom dock -->
+    <string name="dock_tab_library">Бібліотека</string>
+    <string name="dock_tab_profile">Профіль</string>
+    <string name="dock_fab_open">Додати цитату</string>
+    <string name="dock_fab_close">Закрити меню</string>
+    <string name="dock_fab_tooltip">Натисніть, щоб додати першу цитату</string>
+    <string name="dock_input_keyboard">Ввід з клавіатури</string>
+    <string name="dock_input_scan">Сканування тексту</string>
+    <string name="dock_input_voice">Голосовий ввід</string>
+
+    <!-- Add quote screen -->
+    <string name="add_quote_title">Нова цитата</string>
+    <string name="add_quote_close_cd">Закрити</string>
+    <string name="add_quote_tab_text">Текст</string>
+    <string name="add_quote_tab_scan">Сканування</string>
+    <string name="add_quote_tab_voice">Голос</string>
+    <string name="add_quote_field_label">Цитата</string>
+    <string name="add_quote_field_placeholder">Впиши тут цитату, яку хочеш зберегти…</string>
+    <string name="add_quote_next">Далі</string>
+    <string name="add_quote_scan_caption_live">Наведи на текст і зроби фото</string>
+    <string name="add_quote_scan_caption_scanning">Розпізнаю текст…</string>
+    <string name="add_quote_scan_caption_select">Утримай і потягни, щоб виділити фрагмент. Без виділення — увесь текст</string>
+    <string name="add_quote_scan_no_text">Не вдалося розпізнати текст. Спробуй ще раз</string>
+    <string name="add_quote_scan_gallery">Галерея</string>
+    <string name="add_quote_scan_shutter_cd">Зробити фото</string>
+    <string name="add_quote_scan_retake">Перезняти</string>
+    <string name="add_quote_scan_crop_caption">Обріжте область із текстом</string>
+    <string name="add_quote_scan_crop_confirm">Розпізнати</string>
+    <string name="add_quote_scan_crop_cancel">Скасувати</string>
+    <string name="add_quote_scan_permission">Дозволь доступ до камери, щоб сканувати текст</string>
+    <string name="add_quote_scan_permission_action">Надати доступ</string>
+    <string name="add_quote_scan_offline">В офлайн-режимі сканування тексту недоступне. Перевір з\'єднання й спробуй ще раз</string>
+    <string name="add_quote_scan_offline_action">Спробувати ще раз</string>
+    <string name="add_quote_scan_offline_caption">Немає з\'єднання з інтернетом</string>
+    <string name="ai_offline_title">Ви офлайн</string>
+    <string name="ai_offline_message">Ви зараз в офлайн-режимі, для цієї функції потрібне інтернет-з\'єднання</string>
+    <string name="ai_offline_ok">Зрозуміло</string>
+    <string name="splash_offline_title">Немає з\'єднання</string>
+    <string name="splash_offline_message">Щоб продовжити без інтернету, потрібна активна підписка. Перевір з\'єднання й спробуй ще раз</string>
+    <string name="splash_offline_retry">Повторити</string>
+    <string name="add_quote_voice_title">Продиктуй цитату</string>
+    <string name="add_quote_voice_subtitle">Затисни кнопку і промов рядки вголос — ми перетворимо їх на текст.</string>
+    <string name="add_quote_voice_field_label">Розпізнана цитата</string>
+    <string name="add_quote_voice_hint_idle">Натисни, щоб говорити</string>
+    <string name="add_quote_voice_hint_listening">Слухаю… говоріть</string>
+    <string name="add_quote_voice_mic_cd">Мікрофон</string>
+    <string name="add_quote_voice_unavailable">Розпізнавання мовлення недоступне на цьому пристрої.</string>
+
+    <!-- Add quote — details step -->
+    <string name="details_title">Додаткова інформація</string>
+    <string name="details_back_cd">Назад</string>
+    <string name="details_field_quote">Цитата</string>
+    <string name="details_field_author">Автор</string>
+    <string name="details_field_book">Книга</string>
+    <string name="details_field_page">Сторінка</string>
+    <string name="details_field_tags">Теги</string>
+    <string name="details_quote_ph">Впиши тут цитату…</string>
+    <string name="details_author_ph">Автор або джерело</string>
+    <string name="details_book_ph">Назва книги</string>
+    <string name="details_combo_empty">Нічого не знайдено — буде створено новий</string>
+    <string name="details_tag_add">Додати тег</string>
+    <string name="details_tag_remove_cd">Видалити тег</string>
+    <string name="details_tag_sheet_title">Теги</string>
+    <string name="details_tag_search_ph">Знайти або створити тег</string>
+    <string name="details_tag_create">Створити «%1$s»</string>
+    <string name="details_ai_generate">Згенерувати теги через AI</string>
+    <string name="details_ai_loading">Аналізуємо цитату…</string>
+    <string name="details_ai_eyebrow">Запропоновані AI</string>
+    <string name="details_recent_eyebrow">Нещодавні</string>
+    <string name="details_tag_empty">Нічого не знайдено</string>
+    <string name="details_tag_done">Готово</string>
+    <string name="details_tag_done_count">Готово · %1$d</string>
+    <string name="details_playlist_widget_title">Плейлист віджетів</string>
+    <string name="details_playlist_widget_subtitle">Показувати цю цитату у віджетах</string>
+    <string name="details_playlist_push_title">Плейлист сповіщень</string>
+    <string name="details_playlist_push_subtitle">Надсилати цю цитату у пуш-нагадуваннях</string>
+    <string name="details_save_collection_title">Зберегти в колекцію</string>
+    <string name="details_save_collection_add_cd">Додати в колекцію</string>
+    <string name="details_create_collection">Створити колекцію</string>
+    <string name="details_new_collection_title">Нова колекція</string>
+    <string name="details_new_collection_name">НАЗВА</string>
+    <string name="details_new_collection_placeholder">Назва колекції</string>
+    <string name="details_save">Зберегти</string>
+
+    <!-- AI access gate (upsell / limits) -->
+    <string name="ai_gate_upsell_title">Розблокуйте AI</string>
+    <string name="ai_gate_upsell_message">AI-функції — частина підписки Quotify. Оформіть її, щоб сканувати текст і отримувати підказки тегів без обмежень.</string>
+    <string name="ai_gate_upsell_cta">Оформити підписку</string>
+    <string name="ai_gate_review_cta">Переглянути підписки</string>
+    <string name="ai_gate_free_daily_title">Ліміт на сьогодні вичерпано</string>
+    <string name="ai_gate_free_daily_message">Ви використали всі AI-запити безкоштовного плану на сьогодні. Оформіть Premium, щоб отримати більше.</string>
+    <string name="ai_gate_free_monthly_title">Ліміт на місяць вичерпано</string>
+    <string name="ai_gate_free_monthly_message">Ви використали всі AI-запити безкоштовного плану цього місяця. Оформіть Premium, щоб отримати більше.</string>
+    <string name="ai_gate_daily_title">Ліміт на сьогодні вичерпано</string>
+    <string name="ai_gate_daily_message">Ви використали всі AI-запити на сьогодні. Спробуйте знову завтра.</string>
+    <string name="ai_gate_monthly_title">Ліміт на місяць вичерпано</string>
+    <string name="ai_gate_monthly_message">Ви використали всі AI-запити цього місяця. Ліміт оновиться наступного місяця.</string>
+    <string name="ai_gate_dismiss">Зрозуміло</string>
+    <string name="ai_gate_not_now">Не зараз</string>
+    <string name="ai_dialog_cta">Переглянути підписки</string>
+    <string name="ai_dialog_dismiss">Не зараз</string>
+    <string name="ai_tags_locked_cd">AI-теги доступні з Premium</string>
+
+    <!-- Onboarding — common -->
+    <string name="onboarding_skip">Пропустити</string>
+    <string name="onboarding_next">Далі</string>
+    <string name="onboarding_done">Почати</string>
+
+    <!-- Onboarding — slide 1 -->
+    <string name="onboarding_slide_1_title">Збирай цитати з книг</string>
+    <string name="onboarding_slide_1_body">Вводь вручну або сфотографуй сторінку — Quotify розпізнає текст за тебе.</string>
+
+    <!-- Onboarding — slide 2 -->
+    <string name="onboarding_slide_2_title">Папки, теги,\nмиттєвий пошук</string>
+    <string name="onboarding_slide_2_body">Розкладай цитати по папках, додавай теги і знаходь будь-яку за секунду.</string>
+    <string name="onboarding_chip_philosophy">#філософія</string>
+    <string name="onboarding_chip_author">#Сент-Екзюпері</string>
+    <string name="onboarding_chip_favorites">#обрані</string>
+    <string name="onboarding_chip_life">#життя</string>
+    <string name="onboarding_chip_science">#наука</string>
+
+    <!-- Onboarding — slide 3 -->
+    <string name="onboarding_slide_3_title">Постав віджет на екран</string>
+    <string name="onboarding_slide_3_body">Випадкова цитата з твоєї бібліотеки щодня прямо на головному екрані.</string>
+
+    <!-- Auth — common -->
+    <string name="auth_back">Назад</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_or">або</string>
+    <string name="auth_google">Google</string>
+    <string name="auth_terms">Умовами використання</string>
+    <string name="auth_privacy">Політикою конфіденційності</string>
+    <string name="auth_and">та</string>
+    <string name="auth_legal_intro">Продовжуючи, ти приймаєш</string>
+    <string name="auth_agree_intro">Створюючи акаунт, я погоджуюся з</string>
+    <!-- Used as the WebView screen title (nominative form). -->
+    <string name="auth_privacy_policy_title">Політика конфіденційності</string>
+    <string name="auth_terms_of_service_title">Умови використання</string>
+
+    <!-- Complete (Welcome) screen — almost there, sign in / sign up / later -->
+    <string name="complete_eyebrow">МАЙЖЕ ГОТОВО</string>
+    <string name="complete_title">Усе на місці.</string>
+    <string name="complete_quote">«Бути щасливим — це не означає мати все. Це означає радіти тому, що маєш.»</string>
+    <string name="complete_author">ЕЛЕОНОР ПОРТЕР</string>
+    <string name="complete_sign_up">Створити акаунт</string>
+    <string name="complete_sign_in">У мене вже є акаунт</string>
+    <string name="complete_later">Зроблю пізніше</string>
+
+    <!-- Sign in -->
+    <string name="sign_in_title">З поверненням</string>
+    <string name="sign_in_subtitle">Увійди, щоб синхронізувати бібліотеку.</string>
+    <string name="sign_in_email_placeholder">your\@email.com</string>
+    <string name="sign_in_password_placeholder">твій пароль</string>
+    <string name="sign_in_forgot">Забули пароль?</string>
+    <string name="sign_in_cta">Увійти</string>
+    <string name="sign_in_confirm_delete_title">Підтвердження видалення</string>
+    <string name="sign_in_confirm_delete_subtitle">Увійди ще раз, щоб підтвердити видалення акаунта.</string>
+    <string name="sign_in_confirm_delete_cta">Підтвердити видалення</string>
+    <string name="sign_in_alt_q">Немає акаунту?</string>
+    <string name="sign_in_alt_cta">Створити</string>
+
+    <!-- Sign up -->
+    <string name="sign_up_title">Створи акаунт</string>
+    <string name="sign_up_subtitle">Кілька секунд — і бібліотека твоя на всіх пристроях.</string>
+    <string name="sign_up_full_name">Повне імʼя</string>
+    <string name="sign_up_full_name_placeholder">Тарас Шевченко</string>
+    <string name="sign_up_username">Імʼя користувача</string>
+    <string name="sign_up_username_placeholder">taras</string>
+    <string name="sign_up_email_placeholder">your\@email.com</string>
+    <string name="sign_up_password_placeholder">мінімум 8 символів</string>
+    <string name="sign_up_cta">Створити акаунт</string>
+    <string name="sign_up_alt_q">Уже маєш акаунт?</string>
+    <string name="sign_up_alt_cta">Увійти</string>
+
+    <!-- Forgot password -->
+    <string name="forgot_title">Скинути пароль</string>
+    <string name="forgot_subtitle">Введи email — надішлемо посилання для відновлення.</string>
+    <string name="forgot_sent_subtitle">Перевір пошту. Якщо листа немає — глянь у Спам.</string>
+    <string name="forgot_email_placeholder">your\@email.com</string>
+    <string name="forgot_cta">Надіслати посилання</string>
+    <string name="forgot_sent_cta">Готово, повернутися до входу</string>
+    <string name="forgot_back_to_sign_in">Згадав пароль? · Увійти</string>
+    <string name="forgot_reset_sent">Посилання для відновлення надіслано на пошту.</string>
+
+    <!-- Auth — validation -->
+    <string name="auth_validation_name">Введи імʼя.</string>
+    <string name="auth_validation_email">Введи коректний email.</string>
+    <string name="auth_validation_password">Пароль має містити щонайменше 8 символів.</string>
+
+    <!-- Auth — errors -->
+    <string name="auth_error_invalid_credentials">Невірний email або пароль.</string>
+    <string name="auth_error_invalid_email">Невірний формат email.</string>
+    <string name="auth_error_email_in_use">Акаунт із таким email уже існує.</string>
+    <string name="auth_error_weak_password">Пароль надто простий. Спробуй надійніший.</string>
+    <string name="auth_error_user_not_found">Акаунт із таким email не знайдено.</string>
+    <string name="auth_error_user_disabled">Цей акаунт вимкнено.</string>
+    <string name="auth_error_too_many_requests">Забагато спроб. Спробуй трохи пізніше.</string>
+    <string name="auth_error_recent_login_required">Будь ласка, увійди знову, щоб змінити email.</string>
+    <string name="auth_error_network">Немає звʼязку. Перевір інтернет і спробуй ще раз.</string>
+    <string name="auth_error_google_cancelled">Вхід через Google скасовано.</string>
+    <string name="auth_error_google_failed">Не вдалося увійти через Google. Спробуй ще раз.</string>
+    <string name="auth_error_generic">Щось пішло не так. Спробуй ще раз.</string>
+
+    <!-- Profile — header -->
+    <string name="profile_edit_avatar_cd">Редагувати фото профілю</string>
+
+    <!-- Profile — stats -->
+    <string name="profile_stat_quotes">ЦИТАТИ</string>
+    <string name="profile_stat_books">КНИГИ</string>
+    <string name="profile_stat_folders">ПАПКИ</string>
+    <string name="profile_stat_authors">АВТОРИ</string>
+
+    <!-- Profile — premium banner -->
+    <string name="profile_premium_eyebrow">QUOTIFY PREMIUM</string>
+    <string name="profile_premium_title">Більше місця для думок</string>
+    <string name="profile_premium_benefit_folders">Безліміт папок</string>
+    <string name="profile_premium_benefit_widgets">Віджети</string>
+    <string name="profile_premium_benefit_sync">Синхронізація</string>
+    <string name="profile_premium_cta">Оформити</string>
+
+    <!-- Profile — widget section -->
+    <string name="profile_widget_section">На головному екрані</string>
+    <string name="profile_widget_title">Постав віджет із цитатою</string>
+    <string name="profile_widget_subtitle">Випадкова цитата з бібліотеки щодня просто на екрані.</string>
+    <string name="profile_widget_cta">Створити віджет</string>
+    <string name="profile_widget_cta_configure">Налаштувати віджет</string>
+    <string name="profile_widget_preview_quote">«Ми те, що ми постійно робимо.»</string>
+    <string name="profile_widget_preview_brand">Quotify</string>
+
+    <!-- Profile — notifications section -->
+    <string name="profile_notifications_section">Сповіщення</string>
+    <string name="profile_notif_quote_title">Показувати цитату дня</string>
+    <string name="profile_notif_quote_subtitle">Цитата дня просто на головному екрані.</string>
+    <string name="profile_notif_push_title">Нотифікація</string>
+    <string name="profile_notif_push_subtitle">Щоденно пуш з новою цитатою з підбірки.</string>
+    <string name="profile_notif_time_title">Час сповіщення</string>
+
+    <!-- Profile — time picker -->
+    <string name="profile_time_picker_title">Час нагадування</string>
+    <string name="profile_time_picker_hours">ГОДИНА</string>
+    <string name="profile_time_picker_minutes">ХВИЛИНИ</string>
+    <string name="profile_time_picker_cancel">Скасувати</string>
+    <string name="profile_time_picker_confirm">Готово</string>
+
+    <!-- Profile — settings -->
+    <string name="profile_settings_section">Налаштування</string>
+    <string name="profile_settings_folders">Папки й теги</string>
+    <string name="profile_settings_folders_meta">12</string>
+    <string name="profile_settings_edit_profile">Редагувати профіль</string>
+    <string name="profile_settings_appearance">Зовнішній вигляд</string>
+    <string name="profile_settings_appearance_meta">Авто</string>
+    <string name="profile_settings_language">Мова</string>
+    <string name="profile_settings_language_meta">Українська</string>
+    <string name="profile_settings_subscription">Підписка</string>
+    <string name="profile_settings_subscription_meta">Free</string>
+    <string name="profile_settings_subscription_meta_premium">Premium</string>
+    <string name="profile_settings_rate">Оцінити застосунок</string>
+    <string name="profile_settings_feedback">Надіслати фідбек</string>
+    <string name="profile_feedback_limit_title">Фідбек уже надіслано</string>
+    <string name="profile_feedback_limit_message">Надсилати відгук можна раз на день. Спробуй, будь ласка, завтра — ми читаємо кожне повідомлення.</string>
+    <string name="profile_feedback_limit_confirm">Зрозуміло</string>
+    <string name="profile_settings_support">Підтримка</string>
+    <string name="profile_settings_about">Про застосунок</string>
+    <string name="support_email_subject">%1$s — підтримка (v%2$s)</string>
+    <string name="support_email_no_app">Не знайдено застосунок для надсилання пошти</string>
+    <string name="profile_settings_about_meta">v2.4</string>
+    <string name="profile_version">Версія %1$s</string>
+
+    <string name="profile_time_picker_select">Обрати</string>
+
+    <!-- About app screen -->
+    <string name="about_title">Про застосунок</string>
+    <string name="about_placeholder">Інформація про застосунок зʼявиться незабаром.</string>
+
+    <!-- Shared -->
+    <string name="nav_back">Назад</string>
+
+    <!-- Edit profile -->
+    <string name="edit_profile_title">Редагувати профіль</string>
+    <string name="edit_profile_back">Назад</string>
+    <string name="edit_field_name">Повне імʼя</string>
+    <string name="edit_field_username">Імʼя користувача</string>
+    <string name="edit_field_email">Email</string>
+    <string name="edit_account_section">Акаунт</string>
+    <string name="edit_change_password">Змінити пароль</string>
+    <string name="edit_sign_out">Вийти</string>
+    <string name="edit_sign_in_or_register">Вхід або реєстрація</string>
+    <string name="edit_delete_account">Видалити акаунт</string>
+    <string name="edit_field_save">Зберегти</string>
+
+    <!-- Edit profile — change photo sheet -->
+    <string name="edit_photo_sheet_title">Змінити фото</string>
+    <string name="edit_photo_take">Зробити фото</string>
+    <string name="edit_photo_gallery">Вибрати з галереї</string>
+    <string name="edit_photo_remove">Прибрати фото</string>
+
+    <!-- Edit profile — change password / email -->
+    <string name="edit_password_sheet_title">Змінити пароль</string>
+    <string name="edit_password_current">Поточний пароль</string>
+    <string name="edit_password_new">Новий пароль</string>
+    <string name="edit_password_confirm">Підтвердити новий пароль</string>
+    <string name="edit_password_placeholder">••••••••</string>
+    <string name="edit_password_reset_sent">Ми надіслали лист з інструкціями на вашу пошту.</string>
+    <string name="edit_email_verification_sent">Лист підтвердження надіслано на нову пошту. Email зміниться після підтвердження.</string>
+    <string name="edit_photo_upload_failed">Не вдалося завантажити фото. Спробуй ще раз.</string>
+    <string name="edit_photo_camera_permission">Дозволь доступ до камери в налаштуваннях, щоб зробити фото.</string>
+
+    <!-- Edit profile — confirm dialogs -->
+    <string name="dialog_cancel">Скасувати</string>
+    <string name="dialog_logout_title">Вийти з акаунту?</string>
+    <string name="dialog_logout_text">Бібліотека лишиться у безпеці — ви зможете знову увійти будь-коли.</string>
+    <string name="dialog_logout_confirm">Вийти</string>
+    <string name="dialog_delete_title">Видалити акаунт?</string>
+    <string name="dialog_delete_text">Усі ваші цитати, папки та нотатки буде видалено назавжди. Цю дію не можна скасувати.</string>
+    <string name="dialog_delete_confirm">Видалити акаунт</string>
+
+    <!-- Profile — appearance / theme sheet -->
+    <string name="profile_theme_sheet_title">Зовнішній вигляд</string>
+    <string name="profile_theme_light">Світла</string>
+    <string name="profile_theme_dark">Темна</string>
+    <string name="profile_theme_system">Авто (система)</string>
+
+    <!-- Profile — language sheet -->
+    <string name="profile_language_sheet_title">Мова</string>
+    <string name="profile_language_uk">Українська</string>
+    <string name="profile_language_en">English</string>
+
+    <!-- Quote of the day card -->
+    <string name="daily_quote_eyebrow">ЦИТАТА ДНЯ</string>
+    <string name="daily_quote_remove_cd">Прибрати цитату дня</string>
+    <string name="daily_quote_save_cd">Зберегти в улюблене</string>
+    <string name="collection_favourites">Улюблене</string>
+    <string name="collection_general">Загальна</string>
+
+    <!-- Library screen -->
+    <string name="library_title">Бібліотека</string>
+    <string name="library_empty_title">Бібліотека поки порожня</string>
+    <string name="library_empty_description">Зберігай цитати голосом, скануванням чи вручну — вони з’являться тут.</string>
+    <string name="library_search_placeholder">Шукати цитату, автора або тег</string>
+    <string name="library_search_cd">Пошук</string>
+    <string name="library_folders_eyebrow">ПАПКИ</string>
+    <string name="library_new_folder">Нова папка</string>
+    <plurals name="library_folder_quote_count">
+        <item quantity="one">%d цитата</item>
+        <item quantity="few">%d цитати</item>
+        <item quantity="many">%d цитат</item>
+        <item quantity="other">%d цитати</item>
+    </plurals>
+
+    <!-- Hide daily quote dialog -->
+    <string name="daily_quote_hide_title">Приховати цитату дня?</string>
+    <string name="daily_quote_hide_text">Якщо прибрати назавжди, ти більше не бачитимеш щоденні цитати. Змінити цей вибір можна будь-коли в налаштуваннях.</string>
+    <string name="daily_quote_hide_forever">Прибрати назавжди</string>
+    <string name="daily_quote_hide_today">Закрити на сьогодні</string>
+    <string name="daily_quote_hide_keep">Залишити</string>
+    <string name="daily_quote_hide_close_cd">Закрити</string>
+    <!-- Collection details -->
+    <string name="collection_details_close_cd">Закрити деталі колекції</string>
+    <string name="collection_details_menu_cd">Меню колекції</string>
+    <string name="collection_details_menu_rename">Перейменувати</string>
+    <string name="collection_details_menu_edit">Редагувати</string>
+    <string name="collection_details_menu_delete">Видалити</string>
+    <string name="collection_details_empty_title">Тут поки порожньо</string>
+    <string name="collection_details_empty_message">Зберігай цитати з бібліотеки чи пошуку в цю папку — вони зʼявляться тут</string>
+    <string name="collection_details_empty_add_quote">Додати цитату</string>
+    <string name="collection_details_rename_title">Перейменувати папку</string>
+    <string name="collection_details_name_label">НАЗВА</string>
+    <string name="collection_details_name_placeholder">Назва папки</string>
+    <string name="collection_details_style_title">Редагувати папку</string>
+    <string name="collection_details_color_label">КОЛІР</string>
+    <string name="collection_details_icon_label">ІКОНКА</string>
+    <string name="collection_details_delete_collection_title">Видалити папку?</string>
+    <string name="collection_details_delete_collection_message">Сама папка зникне назавжди, а цитати залишаться в загальній бібліотеці.</string>
+    <string name="collection_details_delete_collection_confirm">Видалити папку</string>
+    <string name="collection_details_quote_menu_cd">Меню цитати</string>
+    <string name="collection_details_quote_edit">Редагувати</string>
+    <string name="collection_details_quote_move">Перемістити</string>
+    <string name="collection_details_quote_delete">Видалити</string>
+    <string name="collection_details_quote_edit_title">Редагування</string>
+    <string name="collection_details_move_title">Перемістити в колекцію</string>
+    <string name="collection_details_move_add_cd">Додати до колекції</string>
+    <string name="collection_details_move_favourite_notice">Цитату буде скопійовано в обрану папку — в «Обраному» вона теж залишиться.</string>
+    <string name="collection_details_remove_favourite_message">Цитату буде прибрано з «Обраного». Якщо вона є в іншій папці, там вона залишиться.</string>
+    <string name="collection_details_delete_quote_title">Видалити цитату?</string>
+    <string name="collection_details_delete_quote_message">Цитату буде прибрано з цієї колекції. Цю дію не можна скасувати.</string>
+    <string name="collection_details_delete_quote_confirm">Видалити цитату</string>
+    <!-- Search -->
+    <string name="search_title">Пошук</string>
+    <string name="search_placeholder">Шукати цитату, автора або тег</string>
+    <string name="search_clear_cd">Очистити</string>
+    <string name="search_scope_quotes">Цитати</string>
+    <string name="search_scope_folders">Папки</string>
+    <string name="search_scope_tags">Теги</string>
+    <string name="search_scope_books">Книги</string>
+    <string name="search_scope_authors">Автори</string>
+    <string name="search_empty_title">Нічого не знайдено</string>
+    <string name="search_empty_sub">Спробуй іншу фразу або зміни область пошуку</string>
+    <!-- Entity details -->
+    <string name="entity_menu_cd">Меню</string>
+    <string name="entity_rename_title">Перейменувати</string>
+    <string name="entity_name_placeholder">Назва</string>
+    <string name="entity_delete_title">Видалити?</string>
+    <string name="entity_delete_message">Це прибере її з усіх повʼязаних цитат. Дію не можна скасувати.</string>
+    <string name="entity_delete_confirm">Видалити</string>
+    <string name="entity_delete_quote_message">Цитату буде видалено назавжди. Цю дію не можна скасувати.</string>
+    <string name="entity_remove_quote_message">Цитату буде прибрано з цього списку. Саму цитату не видалено.</string>
+
+    <!-- Widget settings -->
+    <string name="widget_settings_title">Налаштування віджета</string>
+    <string name="widget_sources_label">Джерело цитат</string>
+    <string name="widget_source_all">Усі цитати</string>
+    <string name="widget_source_favorites">Улюблені</string>
+    <string name="widget_source_select_cd">Обрати джерело</string>
+    <string name="widget_create_playlist">Створити плейлист</string>
+    <plurals name="widget_quote_count">
+        <item quantity="one">%d цитата</item>
+        <item quantity="few">%d цитати</item>
+        <item quantity="many">%d цитат</item>
+        <item quantity="other">%d цитати</item>
+    </plurals>
+    <string name="widget_display_label">Показ</string>
+    <string name="widget_daily_quote_title">Додавати цитату дня</string>
+    <string name="widget_daily_quote_subtitle">Нова щоденна цитата теж потраплятиме у показ.</string>
+    <string name="widget_update_title">Оновлювати віджет</string>
+    <string name="widget_update_subtitle">Як часто цитата на віджеті змінюється.</string>
+    <string name="widget_frequency_hourly">Щогодини</string>
+    <plurals name="widget_frequency_hours">
+        <item quantity="one">Кожні %d годину</item>
+        <item quantity="few">Кожні %d години</item>
+        <item quantity="many">Кожні %d годин</item>
+        <item quantity="other">Кожні %d години</item>
+    </plurals>
+    <string name="widget_style_label">Вигляд віджета</string>
+    <string name="widget_style_minimal">Мінімальний</string>
+    <string name="widget_style_classic">Класичний</string>
+    <string name="widget_style_cover">Обкладинка</string>
+    <string name="widget_style_image_cd">Прев\'ю стилю</string>
+    <string name="widget_settings_cta">Додати на екран</string>
+    <string name="widget_settings_cta_update">Оновити</string>
+    <string name="widget_added_message">Віджет додано на головний екран</string>
+    <string name="widget_updated_message">Віджет оновлено</string>
+    <string name="widget_style_edit_cd">Редагувати вигляд</string>
+
+    <!-- Widget feedback -->
+    <string name="widget_feedback_question">Що ти думаєш про віджети?</string>
+    <string name="widget_feedback_thanks">Дякуємо за відгук!</string>
+    <string name="widget_feedback_like_cd">Подобається</string>
+    <string name="widget_feedback_dislike_cd">Не подобається</string>
+
+    <!-- Widget appearance editor -->
+    <string name="widget_appearance_title">Редагування віджета</string>
+    <string name="widget_appearance_background">Фон</string>
+    <string name="widget_appearance_blur_title">Розмиття фону</string>
+    <string name="widget_appearance_blur_subtitle">Легкий ефект скла позаду тексту</string>
+    <string name="widget_appearance_border_title">Рамка</string>
+    <string name="widget_appearance_border_subtitle">Тонка обвідка навколо віджета</string>
+    <string name="widget_appearance_border_color">Колір рамки</string>
+    <string name="widget_appearance_font_size">Розмір шрифту</string>
+    <string name="widget_appearance_font_sample" translatable="false">A</string>
+    <string name="widget_appearance_text_color">Колір тексту</string>
+    <string name="widget_appearance_text_color_light">Білий</string>
+    <string name="widget_appearance_text_color_dark">Чорний</string>
+    <string name="widget_appearance_text_color_custom">Свій</string>
+    <string name="widget_appearance_align">Вирівнювання тексту</string>
+    <string name="widget_appearance_align_start">Ліворуч</string>
+    <string name="widget_appearance_align_center">По центру</string>
+    <string name="widget_appearance_done">Готово</string>
+    <string name="widget_appearance_preview_quote">Спокій — це сила.</string>
+    <string name="widget_appearance_preview_author">Марк Аврелій</string>
+    <string name="widget_appearance_preview_book">Роздуми</string>
+
+    <!-- Widget promo dialog -->
+    <string name="widget_promo_title">Постав віджет із цитатою</string>
+    <string name="widget_promo_text">У тебе вже три збережені цитати. Винеси їх на головний екран, щоб бачити улюблені думки щодня.</string>
+    <string name="widget_promo_confirm">Спробувати зараз</string>
+    <string name="widget_promo_later">Пізніше</string>
+    <string name="widget_promo_close_cd">Закрити</string>
+
+    <!-- Widget settings exit dialog -->
+    <string name="widget_exit_title">Зміни ще не застосовані</string>
+    <string name="widget_exit_text">Налаштування збережено, але віджет на головному екрані досі показує попередній вигляд.</string>
+    <string name="widget_exit_apply">Застосувати й вийти</string>
+    <string name="widget_exit_leave">Вийти без застосування</string>
+    <string name="widget_exit_close_cd">Залишитися</string>
+
+    <!-- Feedback dialog -->
+    <string name="feedback_title">Допоможи нам стати кращими.</string>
+    <string name="feedback_text">Поділися враженнями від Quotify — це допомагає нам розвивати застосунок.</string>
+    <string name="feedback_like">Подобається</string>
+    <string name="feedback_dislike">Не те</string>
+    <string name="feedback_comment_label">Поділіться думкою</string>
+    <string name="feedback_comment_label_optional">Поділіться думкою — необов\'язково</string>
+    <string name="feedback_comment_hint_positive">Що сподобалось найбільше?</string>
+    <string name="feedback_comment_hint_negative">Що можна покращити?</string>
+    <string name="feedback_send">Надіслати відгук</string>
+    <string name="feedback_done_title">Дякуємо за відгук</string>
+    <string name="feedback_done_text">Ми врахуємо це, коли готуватимемо наступні оновлення.</string>
+    <string name="feedback_done_confirm">Готово</string>
+    <string name="feedback_close_cd">Закрити</string>
+
+    <!-- Colour picker -->
+    <string name="color_picker_title">Колір тексту</string>
+    <string name="color_picker_confirm">Готово</string>
+
+    <!-- Widget frequency picker -->
+    <string name="widget_frequency_title">Частота зміни</string>
+    <string name="widget_frequency_column">ГОДИНИ</string>
+    <string name="widget_frequency_confirm">Готово</string>
+
+    <!-- Widget playlist picker -->
+    <string name="playlist_new_title">Новий плейліст</string>
+    <string name="playlist_rename_title">Перейменувати плейлист</string>
+    <string name="playlist_name_label">Назва</string>
+    <string name="playlist_name_placeholder">Назва плейлиста</string>
+    <string name="playlist_create_confirm">Створити плейліст</string>
+    <string name="playlist_rename_confirm">Зберегти</string>
+    <string name="playlist_save">Зберегти</string>
+    <string name="playlist_search_placeholder">Шукати цитату, папку, тег, книгу чи автора</string>
+    <string name="playlist_menu_cd">Меню плейлиста</string>
+    <string name="playlist_menu_rename">Перейменувати</string>
+    <string name="playlist_menu_delete">Видалити</string>
+    <string name="playlist_delete_title">Видалити плейлист?</string>
+    <string name="playlist_delete_message">Плейлист буде видалено. Самі цитати залишаться недоторканими.</string>
+    <string name="playlist_delete_confirm">Видалити</string>
+    <string name="playlist_picked_cd">Обрано</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_quote_title">Цитата</string>
+    <string name="widget_quote_edit">Редагувати</string>
+    <string name="widget_empty_title">Налаштуйте віджет</string>
+    <string name="widget_empty_hint">Торкніться, щоб обрати джерело цитат</string>
+    <string name="widget_pin_unsupported">Додайте віджет вручну з меню віджетів</string>
+    <string name="widget_placeholder_brand" translatable="false">QUOTIFY</string>
+
+    <!-- Paywall -->
+    <string name="paywall_restore">Відновити</string>
+    <string name="paywall_close_cd">Закрити</string>
+    <string name="paywall_plan_gets">Цей план відкриває</string>
+    <string name="paywall_feature_offline">&lt;b&gt;Повний доступ офлайн&lt;/b&gt;.</string>
+    <string name="paywall_feature_quotes">&lt;b&gt;Безліч цитат і колекцій&lt;/b&gt; без обмежень.</string>
+    <string name="paywall_feature_style">&lt;b&gt;Власні кольори та іконки&lt;/b&gt;.</string>
+    <string name="paywall_feature_ai">&lt;b&gt;Більше сканувань&lt;/b&gt; і AI-підказки тегів.</string>
+    <string name="paywall_plan_yearly">Річна</string>
+    <string name="paywall_plan_monthly">Місячна</string>
+    <string name="paywall_plan_weekly">Тижнева</string>
+    <string name="paywall_plan_yearly_name">Річний план</string>
+    <string name="paywall_plan_monthly_name">Місячний план</string>
+    <string name="paywall_plan_weekly_name">Тижневий план</string>
+    <string name="paywall_plan_yearly_desc">Повний доступ до всіх можливостей Quotify на цілий рік.</string>
+    <string name="paywall_plan_monthly_desc">Повний доступ до всіх можливостей Quotify. Скасуйте будь-коли.</string>
+    <string name="paywall_plan_weekly_desc">Повний доступ до Quotify на тиждень. Ідеально, щоб спробувати.</string>
+    <string name="paywall_plan_tag_popular">Популярний</string>
+    <string name="paywall_plan_meta_yearly">Щороку</string>
+    <string name="paywall_plan_meta_monthly">Щомісяцю</string>
+    <string name="paywall_plan_meta_weekly">Щотижня</string>
+    <string name="paywall_period_year">/рік</string>
+    <string name="paywall_period_month">/міс</string>
+    <string name="paywall_period_week">/тиж</string>
+    <string name="paywall_cta_subscribe">Оформити підписку</string>
+    <plurals name="paywall_cta_trial">
+        <item quantity="one">Почати %1$d день безкоштовно</item>
+        <item quantity="few">Почати %1$d дні безкоштовно</item>
+        <item quantity="many">Почати %1$d днів безкоштовно</item>
+        <item quantity="other">Почати %1$d дня безкоштовно</item>
+    </plurals>
+    <string name="paywall_note_plain">%1$s. Скасувати можна будь-коли.</string>
+    <plurals name="paywall_note_trial">
+        <item quantity="one">Безкоштовно %1$d день, далі %2$s. Скасувати можна будь-коли.</item>
+        <item quantity="few">Безкоштовно %1$d дні, далі %2$s. Скасувати можна будь-коли.</item>
+        <item quantity="many">Безкоштовно %1$d днів, далі %2$s. Скасувати можна будь-коли.</item>
+        <item quantity="other">Безкоштовно %1$d дня, далі %2$s. Скасувати можна будь-коли.</item>
+    </plurals>
+    <string name="paywall_legal_terms">Умови використання</string>
+    <string name="paywall_legal_privacy">Політика конфіденційності</string>
+    <string name="paywall_legal_subscription">Політика підписки</string>
+
+    <string name="offer_badge">СПЕЦІАЛЬНА ПРОПОЗИЦІЯ</string>
+    <string name="offer_title">Ексклюзивна пропозиція саме для тебе</string>
+    <string name="offer_subtitle">Тільки зараз: цілий рік без обмежень за зниженою ціною.</string>
+    <string name="offer_discount">− %1$d%%</string>
+    <string name="offer_per_month">всього %1$s/міс</string>
+    <string name="offer_cta">Отримати за %1$s</string>
+    <string name="offer_dismiss">Не зараз</string>
+    <string name="offer_note">Списується щорічно. Скасувати можна будь-коли.</string>
+    <string name="offer_close_cd">Закрити пропозицію</string>
+
+    <string name="dev_tools_title">DEV TOOLS</string>
+    <string name="dev_tools_open_offer">Відкрити спеціальну пропозицію</string>
+    <string name="dev_tools_dialogs_section">Діалоги</string>
+    <string name="paywall_success_title">Вітаємо з Premium</string>
+    <string name="paywall_success_message">Тепер уся бібліотека без обмежень. Приємного читання.</string>
+    <string name="paywall_success_cta">Готово</string>
+    <string name="paywall_load_error_title">Не вдалося завантажити плани</string>
+    <string name="paywall_load_error_message">Перевірте з\'єднання та Google Play і спробуйте ще раз.</string>
+    <string name="paywall_retry">Спробувати ще раз</string>
+    <string name="paywall_purchase_failed">Не вдалося відкрити оплату</string>
+    <string name="paywall_verification_failed">Не вдалося підтвердити покупку</string>
+    <string name="paywall_restore_empty">Активних покупок не знайдено</string>
+
+    <!-- Current subscription -->
+    <string name="subscription_current_title">Підписка</string>
+    <string name="subscription_eyebrow">QUOTIFY PREMIUM</string>
+    <string name="subscription_plan_fallback">Quotify Premium</string>
+    <string name="subscription_status_active">Активна</string>
+    <string name="subscription_status_canceled">Скасована</string>
+    <string name="subscription_status_grace">Пільговий період</string>
+    <string name="subscription_status_on_hold">Призупинена</string>
+    <string name="subscription_status_paused">На паузі</string>
+    <string name="subscription_status_expired">Завершена</string>
+    <string name="subscription_next_billing">Наступне списання</string>
+    <string name="subscription_valid_until">Діє до</string>
+    <string name="subscription_start_date">Дата початку</string>
+    <string name="subscription_manage_cta">Керувати підпискою</string>
+    <string name="subscription_empty_title">Активної підписки немає</string>
+    <string name="subscription_empty_message">Оформіть Premium, щоб зняти обмеження бібліотеки та AI.</string>
+    <string name="subscription_empty_cta">Переглянути плани</string>
+
+    <!-- Manage subscription sheet -->
+    <string name="subscription_manage_sheet_title">Керувати підпискою</string>
+    <string name="subscription_cancel_title">Хочете скасувати підписку?</string>
+    <string name="subscription_cancel_intro">Зверніть увагу: як розробники, ми не можемо керувати вашими підписками. Щоб скасувати підписку чи безкоштовний період, виконайте ці кроки:</string>
+    <string name="subscription_cancel_step_1">Відкрийте застосунок &lt;b&gt;Google Play Store&lt;/b&gt; на своєму Android-пристрої.</string>
+    <string name="subscription_cancel_step_2">Торкніться &lt;b&gt;іконки профілю&lt;/b&gt; у верхньому правому куті.</string>
+    <string name="subscription_cancel_step_3">Виберіть &lt;b&gt;Платежі та підписки&lt;/b&gt;.</string>
+    <string name="subscription_cancel_step_4">Виберіть &lt;b&gt;Підписки&lt;/b&gt;.</string>
+    <string name="subscription_cancel_step_5">Оберіть підписку, яку хочете скасувати.</string>
+    <string name="subscription_cancel_step_6">Натисніть &lt;b&gt;Скасувати підписку&lt;/b&gt; та дотримуйтесь інструкцій на екрані.</string>
+    <string name="subscription_cancel_note">Зверніть увагу: видалення застосунку не скасовує підписку. Її потрібно скасувати через ваш акаунт Google Play.</string>
+
+    <!-- Premium limits -->
+    <string name="premium_locked_cd">Доступно з Premium</string>
+    <string name="premium_unlock_cta">Розблокувати</string>
+</resources>

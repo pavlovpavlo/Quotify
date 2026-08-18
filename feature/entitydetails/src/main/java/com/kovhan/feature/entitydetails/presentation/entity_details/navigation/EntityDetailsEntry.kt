@@ -6,9 +6,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kovhan.core.navigation.AddQuoteKey
 import com.kovhan.core.navigation.ConfirmDialogKey
 import com.kovhan.core.navigation.EditCollectionStyleSheetKey
-import com.kovhan.core.navigation.EditQuoteSheetKey
+import com.kovhan.core.navigation.EditQuoteKey
 import com.kovhan.core.navigation.EntityDetailsKey
 import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.navigation.MoveQuoteSheetKey
@@ -17,7 +18,7 @@ import com.kovhan.core.navigation.QuoteRemovalMode
 import com.kovhan.core.navigation.RenameEntitySheetKey
 import com.kovhan.design.systems.R as DsR
 import com.kovhan.feature.entitydetails.navigation.EntityCollectionStyleResult
-import com.kovhan.feature.entitydetails.navigation.EntityMoveQuoteResult
+import com.kovhan.core.navigation.MoveQuoteResult
 import com.kovhan.feature.entitydetails.navigation.KEY_ENTITY_DELETE_CONFIRMED
 import com.kovhan.feature.entitydetails.navigation.KEY_ENTITY_DELETE_QUOTE_RESULT
 import com.kovhan.feature.entitydetails.navigation.KEY_ENTITY_MOVE_QUOTE_RESULT
@@ -67,7 +68,7 @@ internal fun EntityDetailsEntry(
     }
 
     LaunchedEffect(Unit) {
-        coordinator.observeResult<EntityMoveQuoteResult>(KEY_ENTITY_MOVE_QUOTE_RESULT)
+        coordinator.observeResult<MoveQuoteResult>(KEY_ENTITY_MOVE_QUOTE_RESULT)
             .collect { result ->
                 result ?: return@collect
                 viewModel.onMoveQuoteConfirmed(result.quoteId, result.targetCollectionId)
@@ -109,9 +110,9 @@ internal fun EntityDetailsEntry(
                         ),
                     )
                 }
-                is EntityDetailsEffect.OpenQuoteEditSheet -> {
-                    coordinator.showBottomSheet(
-                        EditQuoteSheetKey(
+                is EntityDetailsEffect.OpenQuoteEditor -> {
+                    coordinator.navigate(
+                        EditQuoteKey(
                             quoteId = effect.draft.quoteId,
                             text = effect.draft.text,
                             authorName = effect.draft.authorName,
@@ -133,6 +134,7 @@ internal fun EntityDetailsEntry(
                             quoteId = effect.quoteId,
                             selectedCollectionId = effect.selectedCollectionId,
                             excludedCollectionId = effect.excludedCollectionId,
+                            keepsFavourite = effect.keepsFavourite,
                         ),
                     )
                 }
@@ -169,6 +171,8 @@ internal fun EntityDetailsEntry(
                             DsR.string.collection_details_delete_quote_message
                         QuoteRemovalMode.REMOVE_FROM_ENTITY ->
                             DsR.string.entity_remove_quote_message
+                        QuoteRemovalMode.REMOVE_FROM_FAVOURITES ->
+                            DsR.string.collection_details_remove_favourite_message
                     }
                     coordinator.showDialog(
                         ConfirmDialogKey(
@@ -190,6 +194,8 @@ internal fun EntityDetailsEntry(
         override fun onBack() {
             coordinator.goBack()
         }
+
+        override fun onAddQuote() = coordinator.navigate(AddQuoteKey())
     }
 
     EntityDetailsScreen(

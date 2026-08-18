@@ -7,4 +7,5 @@ data class EntityMoveQuoteSheetState(
     val quoteId: String = "",
     val targets: List<SavedCollection> = emptyList(),
     val selectedCollectionId: String? = null,
+    val keepsFavourite: Boolean = false,
 ) : UiState

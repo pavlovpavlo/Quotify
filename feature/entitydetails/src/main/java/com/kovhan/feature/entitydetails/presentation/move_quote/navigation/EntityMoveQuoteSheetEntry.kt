@@ -12,7 +12,7 @@ import com.kovhan.design.systems.R
 import com.kovhan.feature.entitydetails.presentation.move_quote.EntityMoveQuoteSheet
 import com.kovhan.feature.entitydetails.presentation.move_quote.EntityMoveQuoteSheetViewModel
 import com.kovhan.feature.entitydetails.presentation.move_quote.mvi.EntityMoveQuoteSheetEffect
-import com.kovhan.feature.entitydetails.navigation.EntityMoveQuoteResult
+import com.kovhan.core.navigation.MoveQuoteResult
 import com.kovhan.feature.entitydetails.navigation.KEY_ENTITY_MOVE_QUOTE_RESULT
 
 @Composable
@@ -56,7 +56,7 @@ internal fun EntityMoveQuoteSheetEntry(
                 is EntityMoveQuoteSheetEffect.CloseWithResult -> {
                     coordinator.dismissBottomSheetWithResult(
                         KEY_ENTITY_MOVE_QUOTE_RESULT,
-                        EntityMoveQuoteResult(
+                        MoveQuoteResult(
                             quoteId = effect.quoteId,
                             targetCollectionId = effect.targetCollectionId,
                         ),
@@ -69,6 +69,7 @@ internal fun EntityMoveQuoteSheetEntry(
     EntityMoveQuoteSheet(
         targets = state.value.targets,
         selectedCollectionId = state.value.selectedCollectionId,
+        keepsFavourite = state.value.keepsFavourite,
         onSelectCollection = viewModel::onSelectCollection,
         onAddToCollection = viewModel::onMoveRequested,
         onCreateCollection = viewModel::onCreateCollectionRequested,

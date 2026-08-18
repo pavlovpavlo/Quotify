@@ -8,6 +8,7 @@ import com.kovhan.data.library.local.MIGRATION_6_7
 import com.kovhan.data.library.local.MIGRATION_7_8
 import com.kovhan.data.library.local.MIGRATION_8_9
 import com.kovhan.data.library.local.MIGRATION_9_10
+import com.kovhan.data.library.local.MIGRATION_10_11
 import com.kovhan.data.library.local.QuotifyDatabase
 import com.kovhan.data.library.local.daily.DailyQuoteDao
 import com.kovhan.data.library.local.daily.DailySeenDao
@@ -43,6 +44,7 @@ object DatabaseModule {
                 MIGRATION_7_8,
                 MIGRATION_8_9,
                 MIGRATION_9_10,
+                MIGRATION_10_11,
             )
             .build()
 

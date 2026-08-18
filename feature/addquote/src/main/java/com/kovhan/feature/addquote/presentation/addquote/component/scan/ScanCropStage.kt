@@ -8,14 +8,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -47,8 +45,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.component.button.QuotifyButton
@@ -60,11 +56,12 @@ import com.kovhan.design.systems.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-private val FrameDark = Color(0xFF2B2622)
 private val Scrim = Color(0xB3211C18)
+private val GripBand = 28.dp
 
 @Composable
 internal fun ScanCropStage(
@@ -96,6 +93,7 @@ internal fun ScanCropStage(
         null
     }
     val minSizePx = with(density) { dimensions.size56.toPx() }
+    val gripBandPx = with(density) { GripBand.toPx() }
 
     LaunchedEffect(layout) {
         if (layout != null && crop == null) {
@@ -107,6 +105,11 @@ internal fun ScanCropStage(
                 layout.rect.bottom - inset,
             )
         }
+    }
+
+    if (cropping) {
+        ScanProcessingStage(imageUri = imageUri, modifier = modifier)
+        return
     }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -124,7 +127,7 @@ internal fun ScanCropStage(
                     .weight(1f)
                     .heightIn(min = 220.dp)
                     .clip(RoundedCornerShape(dimensions.size18))
-                    .background(FrameDark)
+                    .background(ScanFrameDark)
                     .onSizeChanged { boxSize = it },
                 contentAlignment = Alignment.Center,
             ) {
@@ -146,32 +149,17 @@ internal fun ScanCropStage(
                     if (c != null && layout != null) {
                         CropOverlay(crop = c, accent = colors.accentAi)
 
-                        // Drag the body to move the crop window.
                         Box(
                             modifier = Modifier
-                                .align(Alignment.TopStart)
-                                .absolute(c.left, c.top)
-                                .size(
-                                    width = with(density) { c.width.toDp() },
-                                    height = with(density) { c.height.toDp() },
-                                )
-                                .pointerInput(layout) {
-                                    detectDragGestures { _, drag -> crop = crop?.moveBy(drag, layout.rect) }
-                                },
+                                .fillMaxSize()
+                                .cropGestures(
+                                    bounds = layout.rect,
+                                    gripBand = gripBandPx,
+                                    minSize = minSizePx,
+                                    current = { crop },
+                                    onChange = { crop = it },
+                                ),
                         )
-
-                        CropHandle(c.left, c.top, density) { d ->
-                            crop?.let { cur -> crop = cur.resize(left = cur.left + d.x, top = cur.top + d.y, bounds = layout.rect, min = minSizePx) }
-                        }
-                        CropHandle(c.right, c.top, density) { d ->
-                            crop?.let { cur -> crop = cur.resize(right = cur.right + d.x, top = cur.top + d.y, bounds = layout.rect, min = minSizePx) }
-                        }
-                        CropHandle(c.left, c.bottom, density) { d ->
-                            crop?.let { cur -> crop = cur.resize(left = cur.left + d.x, bottom = cur.bottom + d.y, bounds = layout.rect, min = minSizePx) }
-                        }
-                        CropHandle(c.right, c.bottom, density) { d ->
-                            crop?.let { cur -> crop = cur.resize(right = cur.right + d.x, bottom = cur.bottom + d.y, bounds = layout.rect, min = minSizePx) }
-                        }
                     }
                 }
             }
@@ -261,29 +249,69 @@ private fun DrawScope.corner(color: Color, x: Float, y: Float, dx: Float, dy: Fl
     drawLine(color, Offset(x, y), Offset(x, y + dy), stroke, StrokeCap.Round)
 }
 
-@Composable
-private fun BoxScope.CropHandle(
-    x: Float,
-    y: Float,
-    density: Density,
-    onDrag: (Offset) -> Unit,
-) {
-    val touch = 44.dp
-    val half = with(density) { touch.toPx() / 2f }
-    Box(
-        modifier = Modifier
-            .align(Alignment.TopStart)
-            .absolute(x - half, y - half)
-            .size(touch)
-            .pointerInput(Unit) {
-                detectDragGestures { _, drag -> onDrag(drag) }
-            },
-    )
+private fun Modifier.cropGestures(
+    bounds: Rect,
+    gripBand: Float,
+    minSize: Float,
+    current: () -> Rect?,
+    onChange: (Rect) -> Unit,
+): Modifier = this.pointerInput(bounds, gripBand, minSize) {
+    var grip: CropGrip? = null
+    detectDragGestures(
+        onDragStart = { start -> grip = current()?.gripAt(start, gripBand) },
+        onDragEnd = { grip = null },
+        onDragCancel = { grip = null },
+    ) { change, drag ->
+        val active = grip ?: return@detectDragGestures
+        val rect = current() ?: return@detectDragGestures
+        change.consume()
+        onChange(rect.applyGrip(active, drag, bounds, minSize))
+    }
 }
 
-/** Absolute pixel placement within a TopStart-aligned parent slot. */
-private fun Modifier.absolute(xPx: Float, yPx: Float): Modifier =
-    this.offset { IntOffset(xPx.roundToInt(), yPx.roundToInt()) }
+private enum class CropGrip {
+    TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP, BOTTOM, LEFT, RIGHT, BODY
+}
+
+private fun Rect.gripAt(point: Offset, gripBand: Float): CropGrip? {
+    val band = min(gripBand, min(width, height) / 3f)
+    if (point.x < left - band || point.x > right + band) return null
+    if (point.y < top - band || point.y > bottom + band) return null
+
+    val onLeft = abs(point.x - left) <= band
+    val onRight = abs(point.x - right) <= band
+    val onTop = abs(point.y - top) <= band
+    val onBottom = abs(point.y - bottom) <= band
+
+    return when {
+        onLeft && onTop -> CropGrip.TOP_LEFT
+        onRight && onTop -> CropGrip.TOP_RIGHT
+        onLeft && onBottom -> CropGrip.BOTTOM_LEFT
+        onRight && onBottom -> CropGrip.BOTTOM_RIGHT
+        onTop -> CropGrip.TOP
+        onBottom -> CropGrip.BOTTOM
+        onLeft -> CropGrip.LEFT
+        onRight -> CropGrip.RIGHT
+        else -> CropGrip.BODY
+    }
+}
+
+private fun Rect.applyGrip(grip: CropGrip, drag: Offset, bounds: Rect, min: Float): Rect =
+    when (grip) {
+        CropGrip.BODY -> moveBy(drag, bounds)
+        CropGrip.TOP_LEFT ->
+            resize(left = left + drag.x, top = top + drag.y, bounds = bounds, min = min)
+        CropGrip.TOP_RIGHT ->
+            resize(right = right + drag.x, top = top + drag.y, bounds = bounds, min = min)
+        CropGrip.BOTTOM_LEFT ->
+            resize(left = left + drag.x, bottom = bottom + drag.y, bounds = bounds, min = min)
+        CropGrip.BOTTOM_RIGHT ->
+            resize(right = right + drag.x, bottom = bottom + drag.y, bounds = bounds, min = min)
+        CropGrip.TOP -> resize(top = top + drag.y, bounds = bounds, min = min)
+        CropGrip.BOTTOM -> resize(bottom = bottom + drag.y, bounds = bounds, min = min)
+        CropGrip.LEFT -> resize(left = left + drag.x, bounds = bounds, min = min)
+        CropGrip.RIGHT -> resize(right = right + drag.x, bounds = bounds, min = min)
+    }
 
 private data class FitLayout(val scale: Float, val rect: Rect)
 

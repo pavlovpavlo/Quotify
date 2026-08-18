@@ -18,7 +18,7 @@ sealed interface EntityDetailsEffect : UiEffect {
         val tone: String,
     ) : EntityDetailsEffect
 
-    data class OpenQuoteEditSheet(
+    data class OpenQuoteEditor(
         val draft: EntityQuoteDraft,
         val authorOptions: List<String>,
         val bookOptions: List<String>,
@@ -29,6 +29,7 @@ sealed interface EntityDetailsEffect : UiEffect {
         val quoteId: String,
         val selectedCollectionId: String?,
         val excludedCollectionId: String?,
+        val keepsFavourite: Boolean,
     ) : EntityDetailsEffect
 
     data class OpenDeleteEntityDialog(val type: EntityType) : EntityDetailsEffect

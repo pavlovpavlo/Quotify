@@ -38,6 +38,16 @@ class SaveDailyQuoteToFavouritesUseCase @Inject constructor(
             )
         }
 
+        val existing = quoteRepository.getAll().firstOrNull {
+            it.sourceDailyId == dailyQuote.id
+        }
+        if (existing != null) {
+            if (!existing.isFavourite) {
+                quoteRepository.edit(existing.copy(isFavourite = true))
+            }
+            return
+        }
+
         val authorId = resolveAuthorId(dailyQuote.localizedAuthor(language))
         val bookId = resolveBookId(dailyQuote.localizedBook(language))
 
@@ -47,7 +57,8 @@ class SaveDailyQuoteToFavouritesUseCase @Inject constructor(
                 text = dailyQuote.localizedText(language),
                 authorId = authorId,
                 bookId = bookId,
-                collectionId = SavedCollection.FAVOURITES_ID,
+                collectionId = null,
+                isFavourite = true,
                 sourceDailyId = dailyQuote.id,
             ),
         )

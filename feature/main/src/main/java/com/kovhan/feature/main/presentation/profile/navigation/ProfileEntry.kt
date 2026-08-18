@@ -5,9 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kovhan.core.models.feedback.FeedbackSource
 import com.kovhan.core.navigation.AboutKey
 import com.kovhan.core.navigation.CompleteKey
+import com.kovhan.core.navigation.ConfirmDialogKey
 import com.kovhan.core.navigation.EditProfileKey
+import com.kovhan.core.navigation.FeedbackDialogKey
 import com.kovhan.core.navigation.LanguageSheetKey
 import com.kovhan.core.navigation.DevToolsKey
 import com.kovhan.core.navigation.NavigationCoordinator
@@ -16,11 +19,14 @@ import com.kovhan.core.navigation.ReminderTimeSheetKey
 import com.kovhan.core.navigation.SubscriptionKey
 import com.kovhan.core.navigation.ThemeSheetKey
 import com.kovhan.core.navigation.WidgetSettingsKey
+import com.kovhan.design.systems.R
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import com.kovhan.feature.main.presentation.profile.ProfileScreen
 import com.kovhan.feature.main.presentation.profile.ProfileScreenViewModel
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenEffect
+
+private const val KEY_FEEDBACK_THROTTLED_ACK = "profile_feedback_throttled_ack"
 
 @Composable
 internal fun ProfileEntry(
@@ -83,6 +89,21 @@ internal fun ProfileEntry(
                 ProfileScreenEffect.OpenPaywall -> coordinator.navigate(PaywallKey)
 
                 ProfileScreenEffect.OpenSubscription -> coordinator.navigate(SubscriptionKey)
+
+                ProfileScreenEffect.OpenFeedbackDialog ->
+                    coordinator.showDialog(FeedbackDialogKey(source = FeedbackSource.SETTINGS))
+
+                ProfileScreenEffect.ShowFeedbackThrottled ->
+                    coordinator.showDialog(
+                        ConfirmDialogKey(
+                            iconRes = R.drawable.ic_feedback,
+                            titleRes = R.string.profile_feedback_limit_title,
+                            messageRes = R.string.profile_feedback_limit_message,
+                            confirmRes = R.string.profile_feedback_limit_confirm,
+                            cancelRes = null,
+                            resultKey = KEY_FEEDBACK_THROTTLED_ACK,
+                        ),
+                    )
             }
         }
     }

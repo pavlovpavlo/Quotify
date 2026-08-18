@@ -11,4 +11,5 @@ data class QuoteDto(
     val inWidgetPlaylist: Boolean = false,
     val sourceDailyId: String? = null,
     val page: Int? = null,
+    val isFavourite: Boolean = false,
 )

@@ -43,12 +43,14 @@ internal fun NewCollectionSheetEntry(
         }
     }
 
+    val hasSheetBelow = coordinator.bottomSheetStack.size > 2
+
     NewCollectionSheet(
         name = state.value.name,
         isSaving = state.value.isSaving,
         onNameChange = viewModel::onNameChanged,
         onSave = viewModel::saveCollection,
-        onBack = coordinator::dismissBottomSheet,
         onClose = coordinator::clearBottomSheets,
+        onBack = if (hasSheetBelow) ({ coordinator.dismissBottomSheet() }) else null,
     )
 }

@@ -20,6 +20,7 @@ import com.kovhan.design.systems.R as DsR
 internal fun EntityMoveQuoteSheet(
     targets: List<SavedCollection>,
     selectedCollectionId: String?,
+    keepsFavourite: Boolean,
     onSelectCollection: (String) -> Unit,
     onAddToCollection: (String) -> Unit,
     onCreateCollection: () -> Unit,
@@ -32,6 +33,8 @@ internal fun EntityMoveQuoteSheet(
         collections = targets,
         selectedCollectionId = selectedCollectionId,
         addContentDescription = stringResource(DsR.string.collection_details_move_add_cd),
+        subtitle = stringResource(DsR.string.collection_details_move_favourite_notice)
+            .takeIf { keepsFavourite },
         onSelectCollection = onSelectCollection,
         onAddToCollection = onAddToCollection,
         onDismiss = onDismiss,

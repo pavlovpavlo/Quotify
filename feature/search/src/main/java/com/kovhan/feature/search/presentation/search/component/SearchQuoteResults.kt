@@ -9,13 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.kovhan.core.models.quote.EnrichedQuote
 import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
-import com.kovhan.core.ui.component.quote.ReadOnlyQuoteCard
+import com.kovhan.core.ui.component.quote.QuoteActionCard
 import com.kovhan.design.systems.QuotifyMaterialTheme
+import com.kovhan.feature.search.presentation.search.SearchScreenAction
 
 @Composable
 internal fun SearchQuoteResults(
     quotes: List<EnrichedQuote>,
     query: String,
+    expandedMenuId: String?,
+    action: SearchScreenAction,
 ) {
     val dimensions = QuotifyMaterialTheme.dimensions
 
@@ -35,9 +38,15 @@ internal fun SearchQuoteResults(
         verticalArrangement = Arrangement.spacedBy(dimensions.size12),
     ) {
         items(items = quotes, key = { it.id }) { quote ->
-            ReadOnlyQuoteCard(
+            QuoteActionCard(
                 quote = quote,
                 highlightQuery = query.ifEmpty { null },
+                menuExpanded = expandedMenuId == quote.id,
+                onToggleMenu = { action.onQuoteMenuToggled(quote.id) },
+                onDismissMenu = action::onQuoteMenuDismissed,
+                onEdit = { action.onEditQuoteRequested(quote) },
+                onMove = { action.onMoveQuoteRequested(quote.id) },
+                onDelete = { action.onDeleteQuoteRequested(quote.id) },
             )
         }
     }

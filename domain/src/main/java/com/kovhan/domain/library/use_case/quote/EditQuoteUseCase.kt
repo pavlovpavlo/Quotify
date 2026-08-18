@@ -11,7 +11,8 @@ class EditQuoteUseCase @Inject constructor(
     private val ensureGeneralCollection: EnsureGeneralCollectionUseCase,
 ) {
     suspend operator fun invoke(quote: Quote, generalName: String) {
-        val resolved = if (quote.collectionId.isNullOrBlank()) {
+        val needsGeneral = quote.collectionId.isNullOrBlank() && !quote.isFavourite
+        val resolved = if (needsGeneral) {
             ensureGeneralCollection(generalName)
             quote.copy(collectionId = SavedCollection.GENERAL_ID)
         } else {

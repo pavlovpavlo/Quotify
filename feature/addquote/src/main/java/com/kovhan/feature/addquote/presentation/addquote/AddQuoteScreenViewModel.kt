@@ -108,7 +108,7 @@ class AddQuoteScreenViewModel @Inject constructor(
         viewModelScope.launch {
             publishState {
                 copy(
-                    pickedImage = null,
+                    pickedImage = image,
                     isScanning = true,
                     scanLines = emptyList(),
                     scanNoTextFound = false,
@@ -123,6 +123,7 @@ class AddQuoteScreenViewModel @Inject constructor(
                     publishState {
                         copy(
                             isScanning = false,
+                            pickedImage = null,
                             scanLines = lines,
                             scanNoTextFound = lines.isEmpty(),
                         )
@@ -132,10 +133,10 @@ class AddQuoteScreenViewModel @Inject constructor(
                 is Outcome.Failure -> publishState {
                     when (outcome.error) {
                         com.kovhan.core.models.AiError.Offline ->
-                            copy(isScanning = false, scanOffline = true)
+                            copy(isScanning = false, pickedImage = null, scanOffline = true)
 
                         com.kovhan.core.models.AiError.Unknown ->
-                            copy(isScanning = false, scanNoTextFound = true)
+                            copy(isScanning = false, pickedImage = null, scanNoTextFound = true)
                     }
                 }
             }

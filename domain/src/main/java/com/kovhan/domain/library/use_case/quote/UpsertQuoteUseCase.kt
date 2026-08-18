@@ -30,6 +30,7 @@ class UpsertQuoteUseCase @Inject constructor(
         id: String = idGenerator.generate(),
         sourceDailyId: String? = null,
         page: Int? = null,
+        isFavourite: Boolean = false,
     ) {
         val authorId = resolveAuthorId(authorName)
         val bookId = resolveBookId(bookName)
@@ -42,6 +43,7 @@ class UpsertQuoteUseCase @Inject constructor(
                 authorId = authorId,
                 bookId = bookId,
                 collectionId = collectionId.takeUnless { it == SavedCollection.GENERAL_ID },
+                isFavourite = isFavourite,
                 tagIds = tagIds,
                 inWidgetPlaylist = inWidgetPlaylist,
                 inPushPlaylist = inPushPlaylist,

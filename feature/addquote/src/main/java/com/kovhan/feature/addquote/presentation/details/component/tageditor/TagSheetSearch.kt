@@ -14,13 +14,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kovhan.core.ui.component.bottomsheet.rememberSheetAutofocusRequester
 import com.kovhan.core.ui.component.text_field.QuotifyOutlinedTextField
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
@@ -39,8 +39,7 @@ internal fun TagSheetSearch(
     val dimensions = QuotifyMaterialTheme.dimensions
     val typography = QuotifyMaterialTheme.typography
 
-    val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) { focusRequester.requestFocus() }
+    val focusRequester = rememberSheetAutofocusRequester()
 
     var field by remember { mutableStateOf(TextFieldValue(query)) }
     LaunchedEffect(query) {

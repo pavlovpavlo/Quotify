@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -62,8 +61,7 @@ internal fun EditFieldBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp, bottom = 22.dp)
-                .imePadding(),
+                .padding(start = 20.dp, end = 20.dp, bottom = 22.dp),
         ) {
             SheetFieldLabel(text = stringResource(titleRes))
             EditTextField(

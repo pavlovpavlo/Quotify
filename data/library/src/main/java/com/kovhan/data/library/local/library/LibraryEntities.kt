@@ -15,6 +15,7 @@ data class QuoteEntity(
     val inWidgetPlaylist: Boolean,
     val sourceDailyId: String?,
     val page: Int? = null,
+    val isFavourite: Boolean = false,
 )
 
 @Entity(tableName = "collections")

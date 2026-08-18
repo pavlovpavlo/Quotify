@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.component.button.QuotifyButtonAccent
 import com.kovhan.core.ui.component.button.QuotifyButtonVariant
@@ -53,6 +54,7 @@ fun CollectionPickerSheet(
     onDismiss: () -> Unit,
     footer: @Composable () -> Unit,
     busyCollectionId: String? = null,
+    subtitle: String? = null,
     countText: @Composable (Int) -> String = { it.toString() },
 ) {
     val dimensions = QuotifyMaterialTheme.dimensions
@@ -68,6 +70,18 @@ fun CollectionPickerSheet(
                 .fillMaxWidth()
                 .padding(start = dimensions.space5, end = dimensions.space5, bottom = dimensions.space4),
         ) {
+            if (subtitle != null) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = dimensions.space4),
+                    text = subtitle,
+                    style = QuotifyMaterialTheme.typography.caption,
+                    color = QuotifyMaterialTheme.colors.textTertiary,
+                    textAlign = TextAlign.Center,
+                )
+            }
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(dimensions.size2),

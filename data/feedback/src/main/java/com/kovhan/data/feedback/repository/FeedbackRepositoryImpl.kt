@@ -16,8 +16,17 @@ class FeedbackRepositoryImpl @Inject constructor(
 ) : FeedbackRepository {
 
     override suspend fun submit(feedback: Feedback) {
-        if (remote.submit(feedback)) local.markGiven(feedback.source)
+        if (!remote.submit(feedback)) return
+        local.markGiven(feedback.source)
+        local.markSubmittedAt(System.currentTimeMillis())
     }
 
     override fun observeGiven(source: FeedbackSource): Flow<Boolean> = local.observeGiven(source)
+
+    override suspend fun canSubmit(): Boolean =
+        System.currentTimeMillis() - local.lastSubmittedAt() >= SUBMIT_INTERVAL_MS
+
+    private companion object {
+        const val SUBMIT_INTERVAL_MS = 24L * 60 * 60 * 1000
+    }
 }

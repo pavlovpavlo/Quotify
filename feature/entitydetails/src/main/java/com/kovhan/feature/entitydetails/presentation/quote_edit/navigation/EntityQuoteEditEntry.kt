@@ -1,24 +1,26 @@
 package com.kovhan.feature.entitydetails.presentation.quote_edit.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kovhan.core.navigation.EditQuoteSheetKey
+import com.kovhan.core.navigation.EditQuoteKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.TagSheetKey
 import com.kovhan.core.navigation.TagSheetResult
-import com.kovhan.feature.entitydetails.presentation.quote_edit.EntityQuoteEditSheet
 import com.kovhan.feature.entitydetails.navigation.KEY_ENTITY_QUOTE_EDIT_RESULT
-import com.kovhan.feature.entitydetails.presentation.quote_edit.EntityQuoteEditSheetViewModel
-import com.kovhan.feature.entitydetails.presentation.quote_edit.mvi.EntityQuoteEditSheetEffect
+import com.kovhan.feature.entitydetails.presentation.quote_edit.EntityQuoteEditScreen
+import com.kovhan.feature.entitydetails.presentation.quote_edit.EntityQuoteEditViewModel
+import com.kovhan.feature.entitydetails.presentation.quote_edit.mvi.EntityQuoteEditEffect
 
 @Composable
-internal fun EntityQuoteEditSheetEntry(
-    key: EditQuoteSheetKey,
+internal fun EntityQuoteEditEntry(
+    key: EditQuoteKey,
     coordinator: NavigationCoordinator,
+    paddingValues: PaddingValues,
 ) {
-    val viewModel = hiltViewModel<EntityQuoteEditSheetViewModel>()
+    val viewModel = hiltViewModel<EntityQuoteEditViewModel>()
     val state = viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key) {
@@ -36,7 +38,7 @@ internal fun EntityQuoteEditSheetEntry(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                is EntityQuoteEditSheetEffect.OpenTagSheet -> {
+                is EntityQuoteEditEffect.OpenTagSheet -> {
                     coordinator.showBottomSheet(
                         TagSheetKey(
                             quoteText = effect.quoteText,
@@ -47,8 +49,8 @@ internal fun EntityQuoteEditSheetEntry(
                     )
                 }
 
-                is EntityQuoteEditSheetEffect.CloseWithResult -> {
-                    coordinator.dismissBottomSheetWithResult(
+                is EntityQuoteEditEffect.CloseWithResult -> {
+                    coordinator.goBackWithResult(
                         KEY_ENTITY_QUOTE_EDIT_RESULT,
                         effect.draft,
                     )
@@ -57,13 +59,14 @@ internal fun EntityQuoteEditSheetEntry(
         }
     }
 
-    EntityQuoteEditSheet(
+    EntityQuoteEditScreen(
         draft = state.value.draft,
         authorOptions = state.value.authorOptions,
         bookOptions = state.value.bookOptions,
         onDraftChange = viewModel::onDraftChanged,
         onOpenTagSheet = viewModel::onOpenTagSheetRequested,
         onSave = viewModel::onSaveRequested,
-        onDismiss = coordinator::dismissBottomSheet,
+        onBack = coordinator::goBack,
+        paddingValues = paddingValues,
     )
 }

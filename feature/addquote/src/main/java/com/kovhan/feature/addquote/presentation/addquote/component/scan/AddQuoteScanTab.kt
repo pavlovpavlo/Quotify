@@ -95,10 +95,9 @@ internal fun AddQuoteScanTab(
                 .fillMaxWidth(),
         ) {
             when (mode) {
-                ScanMode.LIVE, ScanMode.SCANNING -> ScanStage(
+                ScanMode.LIVE -> ScanStage(
                     hasCameraPermission = hasCameraPermission,
                     imageCapture = imageCapture,
-                    scanning = mode == ScanMode.SCANNING,
                     noTextFound = noTextFound,
                     offline = offline,
                     aiDenial = aiDenial,
@@ -108,6 +107,8 @@ internal fun AddQuoteScanTab(
                     onRetry = onRetry,
                     onUpgrade = onUpgrade,
                 )
+
+                ScanMode.SCANNING -> ScanProcessingStage(imageUri = pickedImage)
 
                 ScanMode.SELECT -> ScanTextSelector(
                     value = scanned,

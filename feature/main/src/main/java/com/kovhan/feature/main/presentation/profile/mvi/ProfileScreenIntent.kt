@@ -7,6 +7,7 @@ interface ProfileScreenIntent {
     fun onSignOutClicked()
     fun onUpgradeClicked()
     fun onRateClicked()
+    fun onFeedbackClicked()
     fun onSupportClicked()
     fun onCreateWidgetClicked()
     fun onShowQuoteOfDayToggled(enabled: Boolean)
@@ -23,6 +24,7 @@ interface ProfileScreenIntent {
             override fun onSignOutClicked() = Unit
             override fun onUpgradeClicked() = Unit
             override fun onRateClicked() = Unit
+            override fun onFeedbackClicked() = Unit
             override fun onSupportClicked() = Unit
             override fun onCreateWidgetClicked() = Unit
             override fun onShowQuoteOfDayToggled(enabled: Boolean) = Unit

@@ -31,7 +31,13 @@ internal fun SearchScreen(
     val colors = QuotifyMaterialTheme.colors
     val results = state.results
 
-    BackHandler(enabled = true, onBack = navAction::onClose)
+    BackHandler(enabled = true) {
+        if (state.expandedQuoteMenuId != null) {
+            action.onQuoteMenuDismissed()
+        } else {
+            navAction.onClose()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -84,6 +90,8 @@ internal fun SearchScreen(
                     books = results.books,
                     authors = results.authors,
                     tags = results.tags,
+                    expandedQuoteMenuId = state.expandedQuoteMenuId,
+                    action = action,
                     navAction = navAction,
                 )
             }

@@ -20,9 +20,13 @@ import com.kovhan.core.models.billing.PremiumProduct
 import com.kovhan.core.models.billing.PurchaseFlowFailure
 import com.kovhan.core.ui.activity.ActivityRequired
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
@@ -39,19 +43,25 @@ class BillingService @Inject constructor(
 
     private val offerTokenToProduct = ConcurrentHashMap<String, ProductDetails>()
 
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     private val purchasesUpdatedListener = PurchasesUpdatedListener { result, purchases ->
         if (result.responseCode == BillingClient.BillingResponseCode.OK) {
             emitPurchases(purchases)
             return@PurchasesUpdatedListener
         }
         Timber.i("Billing: флоу оплати закрито без покупки, code=%d", result.responseCode)
-        _purchaseFlowFailures.tryEmit(
-            if (result.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
-                PurchaseFlowFailure.CANCELLED
-            } else {
-                PurchaseFlowFailure.FAILED
-            },
-        )
+        when (result.responseCode) {
+            BillingClient.BillingResponseCode.USER_CANCELED ->
+                _purchaseFlowFailures.tryEmit(PurchaseFlowFailure.CANCELLED)
+
+            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
+                _purchaseFlowFailures.tryEmit(PurchaseFlowFailure.ALREADY_OWNED)
+                scope.launch { runCatching { refreshActiveSubscriptions() } }
+            }
+
+            else -> _purchaseFlowFailures.tryEmit(PurchaseFlowFailure.FAILED)
+        }
     }
 
     private val billingClient = BillingClient.newBuilder(context)

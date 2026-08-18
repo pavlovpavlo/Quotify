@@ -19,7 +19,7 @@ fun ConfirmDialogEntry(
         title = stringResource(key.titleRes),
         message = stringResource(key.messageRes),
         confirmText = stringResource(key.confirmRes),
-        cancelText = stringResource(key.cancelRes),
+        cancelText = key.cancelRes?.let { stringResource(it) },
         onConfirm = {
             scope.launch {
                 coordinator.dismissDialogWithResult(key.resultKey, key.payload ?: true)

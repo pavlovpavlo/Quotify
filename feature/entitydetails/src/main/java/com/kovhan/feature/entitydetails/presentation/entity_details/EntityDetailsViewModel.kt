@@ -195,7 +195,7 @@ class EntityDetailsViewModel @Inject constructor(
 
     override fun onEditQuoteRequested(quote: EnrichedQuote) {
         publishEffect(
-            EntityDetailsEffect.OpenQuoteEditSheet(
+            EntityDetailsEffect.OpenQuoteEditor(
                 draft = EntityQuoteDraft(
                     quoteId = quote.id,
                     text = quote.text,
@@ -237,20 +237,24 @@ class EntityDetailsViewModel @Inject constructor(
                 generalName = generalName,
                 sourceDailyId = existing?.sourceDailyId,
                 page = draft.page.toIntOrNull(),
+                isFavourite = existing?.isFavourite == true,
             )
         }
     }
 
     override fun onMoveQuoteRequested(quoteId: String) {
-        publishEffect(
-            EntityDetailsEffect.OpenMoveQuoteSheet(
-                quoteId = quoteId,
-                selectedCollectionId = moveTargets.firstOrNull()?.id,
-                excludedCollectionId = currentEntityId.takeIf {
-                    currentType == EntityType.COLLECTION
-                },
-            ),
-        )
+        viewModelScope.launch {
+            publishEffect(
+                EntityDetailsEffect.OpenMoveQuoteSheet(
+                    quoteId = quoteId,
+                    selectedCollectionId = moveTargets.firstOrNull()?.id,
+                    excludedCollectionId = currentEntityId.takeIf {
+                        currentType == EntityType.COLLECTION
+                    },
+                    keepsFavourite = getQuoteById(quoteId)?.isFavourite == true,
+                ),
+            )
+        }
     }
 
     override fun onMoveQuoteConfirmed(quoteId: String, targetCollectionId: String) {
@@ -399,12 +403,10 @@ class EntityDetailsViewModel @Inject constructor(
 
     private fun currentQuoteRemovalMode(): QuoteRemovalMode =
         when (currentType) {
-            EntityType.COLLECTION -> {
-                if (currentEntityId == SavedCollection.GENERAL_ID) {
-                    QuoteRemovalMode.DELETE
-                } else {
-                    QuoteRemovalMode.REMOVE_FROM_COLLECTION
-                }
+            EntityType.COLLECTION -> when (currentEntityId) {
+                SavedCollection.GENERAL_ID -> QuoteRemovalMode.DELETE
+                SavedCollection.FAVOURITES_ID -> QuoteRemovalMode.REMOVE_FROM_FAVOURITES
+                else -> QuoteRemovalMode.REMOVE_FROM_COLLECTION
             }
             EntityType.TAG,
             EntityType.BOOK,

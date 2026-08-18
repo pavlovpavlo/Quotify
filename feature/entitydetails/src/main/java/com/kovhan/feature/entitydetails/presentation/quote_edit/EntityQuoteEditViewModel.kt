@@ -1,22 +1,26 @@
 package com.kovhan.feature.entitydetails.presentation.quote_edit
 
-import com.kovhan.core.navigation.EditQuoteSheetKey
+import com.kovhan.core.navigation.EditQuoteKey
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.feature.entitydetails.presentation.entity_details.model.EntityQuoteDraft
-import com.kovhan.feature.entitydetails.presentation.quote_edit.mvi.EntityQuoteEditSheetEffect
-import com.kovhan.feature.entitydetails.presentation.quote_edit.mvi.EntityQuoteEditSheetIntent
-import com.kovhan.feature.entitydetails.presentation.quote_edit.mvi.EntityQuoteEditSheetState
+import com.kovhan.feature.entitydetails.presentation.quote_edit.mvi.EntityQuoteEditEffect
+import com.kovhan.feature.entitydetails.presentation.quote_edit.mvi.EntityQuoteEditIntent
+import com.kovhan.feature.entitydetails.presentation.quote_edit.mvi.EntityQuoteEditState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class EntityQuoteEditSheetViewModel @Inject constructor() :
-    BaseViewModel<EntityQuoteEditSheetState, EntityQuoteEditSheetEffect>(EntityQuoteEditSheetState()),
-    EntityQuoteEditSheetIntent {
+class EntityQuoteEditViewModel @Inject constructor() :
+    BaseViewModel<EntityQuoteEditState, EntityQuoteEditEffect>(EntityQuoteEditState()),
+    EntityQuoteEditIntent {
 
-    fun bind(key: EditQuoteSheetKey) {
+    private var bound = false
+
+    fun bind(key: EditQuoteKey) {
+        if (bound) return
+        bound = true
         publishState {
-            EntityQuoteEditSheetState(
+            EntityQuoteEditState(
                 draft = EntityQuoteDraft(
                     quoteId = key.quoteId,
                     text = key.text,
@@ -42,7 +46,7 @@ class EntityQuoteEditSheetViewModel @Inject constructor() :
     override fun onOpenTagSheetRequested() {
         val state = uiState.value
         publishEffect(
-            EntityQuoteEditSheetEffect.OpenTagSheet(
+            EntityQuoteEditEffect.OpenTagSheet(
                 quoteText = state.draft.text,
                 selectedTags = state.draft.tags,
                 aiTags = state.draft.aiTags,
@@ -65,6 +69,6 @@ class EntityQuoteEditSheetViewModel @Inject constructor() :
     override fun onSaveRequested() {
         val draft = uiState.value.draft
         if (draft.text.isBlank()) return
-        publishEffect(EntityQuoteEditSheetEffect.CloseWithResult(draft))
+        publishEffect(EntityQuoteEditEffect.CloseWithResult(draft))
     }
 }

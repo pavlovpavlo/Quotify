@@ -3,6 +3,7 @@ package com.kovhan.core.ui.component.quote
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import com.kovhan.core.ui.component.text.QuotifyFieldLabel
@@ -30,6 +32,8 @@ fun QuotePageInputField(
     onValueChange: (String) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Default,
+    onImeAction: () -> Unit = {},
 ) {
     val colors = QuotifyMaterialTheme.colors
     val dimensions = QuotifyMaterialTheme.dimensions
@@ -53,7 +57,14 @@ fun QuotePageInputField(
                 onValueChange(digits)
             },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = imeAction,
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { onImeAction() },
+                onNext = { onImeAction() },
+            ),
             shape = RoundedCornerShape(dimensions.radiusXl),
             textStyle = typography.body.copy(color = colors.textPrimary),
             colors = OutlinedTextFieldDefaults.colors(

@@ -8,6 +8,7 @@ import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.core.models.collections.SavedBook
 import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.models.collections.SavedTag
+import com.kovhan.feature.search.presentation.search.SearchScreenAction
 import com.kovhan.feature.search.presentation.search.mvi.SearchScope
 import com.kovhan.feature.search.presentation.search.navigation.SearchScreenNavAction
 
@@ -20,6 +21,8 @@ internal fun SearchResults(
     books: List<SavedBook>,
     authors: List<SavedAuthor>,
     tags: List<SavedTag>,
+    expandedQuoteMenuId: String?,
+    action: SearchScreenAction,
     navAction: SearchScreenNavAction,
     modifier: Modifier = Modifier,
 ) {
@@ -28,6 +31,8 @@ internal fun SearchResults(
             SearchScope.QUOTES -> SearchQuoteResults(
                 quotes = quotes,
                 query = query,
+                expandedMenuId = expandedQuoteMenuId,
+                action = action,
             )
             SearchScope.FOLDERS -> SearchFolderResults(
                 folders = folders,

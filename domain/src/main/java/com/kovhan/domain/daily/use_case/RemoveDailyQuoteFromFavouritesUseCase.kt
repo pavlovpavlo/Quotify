@@ -6,6 +6,8 @@ import com.kovhan.domain.library.CollectionRepository
 import com.kovhan.domain.library.QuoteRepository
 import com.kovhan.domain.library.SavedAuthorRepository
 import com.kovhan.domain.library.SavedBookRepository
+import com.kovhan.domain.library.use_case.quote.DeleteQuoteUseCase
+import com.kovhan.domain.widget.use_case.content.HandleWidgetQuoteRemovalUseCase
 import javax.inject.Inject
 
 class RemoveDailyQuoteFromFavouritesUseCase @Inject constructor(
@@ -13,13 +15,22 @@ class RemoveDailyQuoteFromFavouritesUseCase @Inject constructor(
     private val authorRepository: SavedAuthorRepository,
     private val bookRepository: SavedBookRepository,
     private val quoteRepository: QuoteRepository,
+    private val deleteQuote: DeleteQuoteUseCase,
+    private val handleWidgetQuoteRemoval: HandleWidgetQuoteRemovalUseCase,
 ) {
     suspend operator fun invoke(dailyQuote: DailyQuote) {
         val quote = quoteRepository.getAll().firstOrNull {
-            it.collectionId == SavedCollection.FAVOURITES_ID && it.sourceDailyId == dailyQuote.id
+            it.isFavourite && it.sourceDailyId == dailyQuote.id
         } ?: return
 
-        quoteRepository.deleteById(quote.id)
+        if (quote.collectionId != null) {
+            quoteRepository.edit(quote.copy(isFavourite = false))
+            handleWidgetQuoteRemoval(quote.id)
+            cleanUpFavouritesCollection()
+            return
+        }
+
+        deleteQuote(quote.id)
 
         val remaining = quoteRepository.getAll()
 
@@ -29,7 +40,13 @@ class RemoveDailyQuoteFromFavouritesUseCase @Inject constructor(
         quote.bookId?.let { bookId ->
             if (remaining.none { it.bookId == bookId }) bookRepository.deleteById(bookId)
         }
-        if (remaining.none { it.collectionId == SavedCollection.FAVOURITES_ID }) {
+        if (remaining.none { it.isFavourite }) {
+            collectionRepository.deleteById(SavedCollection.FAVOURITES_ID)
+        }
+    }
+
+    private suspend fun cleanUpFavouritesCollection() {
+        if (quoteRepository.getAll().none { it.isFavourite }) {
             collectionRepository.deleteById(SavedCollection.FAVOURITES_ID)
         }
     }

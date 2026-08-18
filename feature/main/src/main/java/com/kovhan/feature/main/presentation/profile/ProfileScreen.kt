@@ -138,6 +138,7 @@ fun ProfileScreen(
                 onLanguageClick = intent::onLanguageClicked,
                 onSubscriptionClick = intent::onUpgradeClicked,
                 onRateClick = intent::onRateClicked,
+                onFeedbackClick = intent::onFeedbackClicked,
                 onSupportClick = intent::onSupportClicked,
                 onAboutClick = navAction::navigateToAbout,
                 onDevToolsClick = navAction::navigateToDevTools,

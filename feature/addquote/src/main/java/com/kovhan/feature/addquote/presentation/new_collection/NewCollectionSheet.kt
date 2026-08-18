@@ -6,21 +6,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import com.kovhan.core.ui.component.bottomsheet.QuotifyBottomSheet
+import com.kovhan.core.ui.component.bottomsheet.rememberSheetAutofocusRequester
 import com.kovhan.core.ui.component.button.QuotifyButton
 import com.kovhan.core.ui.component.button.QuotifyButtonDefaults
 import com.kovhan.core.ui.component.text_field.QuotifyTextField
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,17 +26,11 @@ internal fun NewCollectionSheet(
     isSaving: Boolean,
     onNameChange: (String) -> Unit,
     onSave: () -> Unit,
-    onBack: () -> Unit,
     onClose: () -> Unit,
+    onBack: (() -> Unit)? = null,
 ) {
     val dimensions = QuotifyMaterialTheme.dimensions
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val focusRequester = remember { FocusRequester() }
-
-    LaunchedEffect(Unit) {
-        delay(150)
-        runCatching { focusRequester.requestFocus() }
-    }
 
     QuotifyBottomSheet(
         onDismiss = onClose,
@@ -47,6 +38,8 @@ internal fun NewCollectionSheet(
         title = stringResource(R.string.details_new_collection_title),
         onBack = onBack,
     ) {
+        val focusRequester = rememberSheetAutofocusRequester()
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
