@@ -21,6 +21,10 @@ internal fun DependencyHandlerScope.implementation(
     return addDependencyTo(this, "implementation", dependencyNotation, dependencyConfiguration)
 }
 
+internal fun DependencyHandlerScope.compileOnly(dependencyNotation: Any): Dependency? {
+    return add("compileOnly", dependencyNotation)
+}
+
 internal fun DependencyHandlerScope.api(dependencyNotation: Any): Dependency? {
     return add("api", dependencyNotation)
 }

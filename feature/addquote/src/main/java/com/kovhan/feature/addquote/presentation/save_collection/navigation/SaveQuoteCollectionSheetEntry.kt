@@ -15,6 +15,7 @@ import com.kovhan.core.navigation.FeedbackDialogKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.NewCollectionSheetKey
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.SaveQuoteCollectionSheetKey
 import com.kovhan.core.navigation.WidgetPromoKey
 import com.kovhan.feature.addquote.presentation.details.mvi.QuoteDraft
@@ -32,6 +33,7 @@ internal fun SaveQuoteCollectionSheetEntry(
     val generalName = stringResource(com.kovhan.design.systems.R.string.collection_general)
 
     val draft = QuoteDraft(
+        inputMethod = key.inputMethod,
         text = key.text,
         authorName = key.authorName,
         bookName = key.bookName,
@@ -83,7 +85,7 @@ internal fun SaveQuoteCollectionSheetEntry(
 
                 SaveQuoteCollectionEffect.ShowPaywall -> {
                     coordinator.dismissBottomSheet()
-                    coordinator.navigate(PaywallKey)
+                    coordinator.navigate(PaywallKey(PaywallOrigin.LIMIT))
                 }
             }
         }

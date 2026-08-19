@@ -1,5 +1,11 @@
 package com.kovhan.feature.addquote.presentation.details.component.tageditor
 
+import com.kovhan.core.analytics.AiFeatureName
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.event.AiLimitReached
+import com.kovhan.core.analytics.event.AiTagsAccepted
+import com.kovhan.core.analytics.event.AiTagsRequested
+import com.kovhan.core.models.quote.QuoteLimits
 import com.kovhan.core.models.AiError
 import com.kovhan.core.models.Outcome
 import com.kovhan.core.ui.UiState
@@ -55,6 +61,7 @@ class TagSheetViewModel @Inject constructor(
     private val recordAiRequest: RecordAiRequestUseCase,
     private val checkConnectivity: CheckConnectivityUseCase,
     observeIsSubscribed: ObserveIsSubscribedUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<TagSheetUiState, TagSheetEffect>(TagSheetUiState()) {
 
     init {
@@ -101,10 +108,11 @@ class TagSheetViewModel @Inject constructor(
     }
 
     fun onGenerateAiTags() {
-        val quote = uiState.value.quoteText.trim()
+        val quote = QuoteLimits.normalizeText(uiState.value.quoteText)
         if (quote.isBlank() || uiState.value.aiState == AiState.LOADING) return
         // Замок на плашці веде прямо на пейвол — без модалки про ліміт і без мережі.
         if (!uiState.value.isPremium) {
+            analytics.track(AiLimitReached(AiFeatureName.TAGS))
             publishEffect(TagSheetEffect.OpenPaywall)
             return
         }
@@ -115,8 +123,12 @@ class TagSheetViewModel @Inject constructor(
                 return@launch
             }
             when (val access = checkAiAccess(AiFeature.TAGS)) {
-                is AiAccess.Denied -> publishEffect(TagSheetEffect.ShowAiLimitDialog(access.reason))
+                is AiAccess.Denied -> {
+                    analytics.track(AiLimitReached(AiFeatureName.TAGS))
+                    publishEffect(TagSheetEffect.ShowAiLimitDialog(access.reason))
+                }
                 AiAccess.Allowed -> {
+                    analytics.track(AiTagsRequested)
                     publishState { copy(aiState = AiState.LOADING) }
                     when (val outcome = suggestTags(quote)) {
                         is Outcome.Success -> {
@@ -137,8 +149,22 @@ class TagSheetViewModel @Inject constructor(
         }
     }
 
-    fun buildResult(): TagSheetResult = TagSheetResult(
-        selectedTags = uiState.value.selectedTags,
-        aiTags = uiState.value.aiTags,
-    )
+    fun buildResult(): TagSheetResult {
+        val state = uiState.value
+        if (state.aiTags.isNotEmpty()) {
+            val accepted = state.selectedTags.count { selected ->
+                state.aiTags.any { it.equals(selected, ignoreCase = true) }
+            }
+            analytics.track(
+                AiTagsAccepted(
+                    suggestedCount = state.aiTags.size,
+                    acceptedCount = accepted,
+                ),
+            )
+        }
+        return TagSheetResult(
+            selectedTags = state.selectedTags,
+            aiTags = state.aiTags,
+        )
+    }
 }

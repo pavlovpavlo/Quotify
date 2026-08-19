@@ -1,5 +1,6 @@
 package com.kovhan.feature.addquote.presentation.details.mvi
 
+import com.kovhan.core.navigation.models.QuoteInputMethod
 import kotlinx.serialization.Serializable
 
 /**
@@ -9,6 +10,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class QuoteDraft(
+    val inputMethod: QuoteInputMethod = QuoteInputMethod.TEXT,
     val text: String,
     val authorName: String?,
     val bookName: String?,

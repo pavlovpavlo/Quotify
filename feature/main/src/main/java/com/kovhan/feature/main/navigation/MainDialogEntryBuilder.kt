@@ -76,7 +76,12 @@ class MainDialogEntryBuilder @Inject constructor() : DialogEntryBuilder {
                         coordinator.dismissDialog()
                     }
                 },
-                onKeep = coordinator::dismissDialog,
+                onKeep = {
+                    coroutineScope.launch {
+                        coordinator.emitResult(NavigationCoordinator.KEY_DAILY_QUOTE_KEEP, true)
+                        coordinator.dismissDialog()
+                    }
+                },
             )
         }
 

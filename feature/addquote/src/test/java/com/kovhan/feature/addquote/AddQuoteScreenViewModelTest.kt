@@ -3,6 +3,7 @@ package com.kovhan.feature.addquote
 import android.net.Uri
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
+import com.kovhan.core.analytics.AnalyticsTracker
 import com.kovhan.core.models.AiError
 import com.kovhan.core.models.Outcome
 import com.kovhan.domain.ai.AiAccess
@@ -36,6 +37,7 @@ class AddQuoteScreenViewModelTest {
     private val checkAiAccess: CheckAiAccessUseCase = mockk(relaxed = true)
     private val recordAiRequest: RecordAiRequestUseCase = mockk(relaxed = true)
     private val checkConnectivity: CheckConnectivityUseCase = mockk()
+    private val analytics: AnalyticsTracker = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -49,6 +51,7 @@ class AddQuoteScreenViewModelTest {
         checkAiAccess,
         recordAiRequest,
         checkConnectivity,
+        analytics,
     )
 
     @Test

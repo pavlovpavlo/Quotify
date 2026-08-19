@@ -7,6 +7,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.AddQuoteKey
+import com.kovhan.core.navigation.models.AddQuoteEntryPoint
 import com.kovhan.core.navigation.ConfirmDialogKey
 import com.kovhan.core.navigation.EditCollectionStyleSheetKey
 import com.kovhan.core.navigation.EditQuoteKey
@@ -195,7 +196,8 @@ internal fun EntityDetailsEntry(
             coordinator.goBack()
         }
 
-        override fun onAddQuote() = coordinator.navigate(AddQuoteKey())
+        override fun onAddQuote() =
+            coordinator.navigate(AddQuoteKey(entryPoint = AddQuoteEntryPoint.EMPTY_COLLECTION))
     }
 
     EntityDetailsScreen(

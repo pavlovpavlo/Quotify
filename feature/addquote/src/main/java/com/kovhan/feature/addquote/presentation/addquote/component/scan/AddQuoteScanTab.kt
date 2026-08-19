@@ -41,6 +41,7 @@ internal fun AddQuoteScanTab(
     onRetake: () -> Unit,
     onRetry: () -> Unit,
     onUpgrade: () -> Unit,
+    onPermissionResult: (Boolean) -> Unit,
     onProceed: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -58,7 +59,10 @@ internal fun AddQuoteScanTab(
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission(),
-    ) { granted -> hasCameraPermission = granted }
+    ) { granted ->
+        hasCameraPermission = granted
+        onPermissionResult(granted)
+    }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.PickVisualMedia(),

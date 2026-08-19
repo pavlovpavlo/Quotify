@@ -1,5 +1,8 @@
 package com.kovhan.feature.main.presentation.profile
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.event.RateUsInitiated
+import com.kovhan.core.analytics.event.VisitProfile
 import com.kovhan.core.ui.activity.ContactSupportUseCase
 import com.kovhan.core.ui.activity.RateAppUseCase
 import com.kovhan.core.ui.snackbar.SnackbarMessage
@@ -41,11 +44,14 @@ class ProfileScreenViewModel @Inject constructor(
     private val contactSupport: ContactSupportUseCase,
     private val canSubmitFeedback: CanSubmitFeedbackUseCase,
     observeIsSubscribed: ObserveIsSubscribedUseCase,
+    private val analytics: AnalyticsTracker,
     getProfileStatisticUseCase: GetProfileStatisticUseCase
 ) : BaseViewModel<ProfileScreenState, ProfileScreenEffect>(ProfileScreenState()),
     ProfileScreenIntent {
 
     init {
+        analytics.track(VisitProfile)
+
         // Профіль лише слухає кеш — синком займається SubscriptionSyncManager.
         observeIsSubscribed()
             .onEach { premium -> publishState { copy(isPremium = premium) } }
@@ -90,7 +96,10 @@ class ProfileScreenViewModel @Inject constructor(
         },
     )
 
-    override fun onRateClicked() = rateApp()
+    override fun onRateClicked() {
+        analytics.track(RateUsInitiated)
+        rateApp()
+    }
 
     override fun onFeedbackClicked() {
         viewModelScope.launch {

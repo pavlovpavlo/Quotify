@@ -1,5 +1,11 @@
 package com.kovhan.feature.entitydetails.presentation.entity_details
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.CollectionAction
+import com.kovhan.core.analytics.QuoteAction
+import com.kovhan.core.analytics.event.CollectionSettings
+import com.kovhan.core.analytics.event.QuoteSettings
+import com.kovhan.core.analytics.event.VisitCollection
 import com.kovhan.core.models.quote.EnrichedQuote
 import com.kovhan.core.models.LibraryEntityType
 import com.kovhan.core.models.quote.QuoteFilter
@@ -60,6 +66,7 @@ class EntityDetailsViewModel @Inject constructor(
     private val getQuoteById: GetQuoteByIdUseCase,
     private val moveQuoteToCollection: MoveQuoteToCollectionUseCase,
     private val removeQuoteFromEntity: RemoveQuoteFromEntityUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<EntityDetailsState, EntityDetailsEffect>(EntityDetailsState()),
     EntityDetailsScreenIntent {
 
@@ -138,6 +145,12 @@ class EntityDetailsViewModel @Inject constructor(
         val trimmed = name.trim()
         if (trimmed.isBlank()) return
 
+        analytics.track(
+            CollectionSettings(
+                action = CollectionAction.RENAME,
+                changedName = trimmed != uiState.value.title,
+            ),
+        )
         publishState { copy(title = trimmed) }
         viewModelScope.launch {
             when (currentType) {
@@ -157,6 +170,7 @@ class EntityDetailsViewModel @Inject constructor(
     }
 
     override fun onDeleteConfirmed() {
+        analytics.track(CollectionSettings(CollectionAction.DELETE))
         viewModelScope.launch {
             when (currentType) {
                 EntityType.COLLECTION -> {
@@ -183,6 +197,15 @@ class EntityDetailsViewModel @Inject constructor(
 
     override fun onCollectionStyleConfirmed(iconId: String, tone: String) {
         val collection = currentCollection ?: return
+        analytics.track(
+            CollectionSettings(
+                action = CollectionAction.EDIT,
+                changedIcon = iconId != collection.iconId,
+                changedColor = tone != collection.iconColor,
+                changeFrom = collection.iconId,
+                changeTo = iconId,
+            ),
+        )
         viewModelScope.launch {
             editCollection(
                 collection.copy(
@@ -194,6 +217,7 @@ class EntityDetailsViewModel @Inject constructor(
     }
 
     override fun onEditQuoteRequested(quote: EnrichedQuote) {
+        analytics.track(QuoteSettings(QuoteAction.EDIT))
         publishEffect(
             EntityDetailsEffect.OpenQuoteEditor(
                 draft = EntityQuoteDraft(
@@ -243,6 +267,7 @@ class EntityDetailsViewModel @Inject constructor(
     }
 
     override fun onMoveQuoteRequested(quoteId: String) {
+        analytics.track(QuoteSettings(QuoteAction.MOVE))
         viewModelScope.launch {
             publishEffect(
                 EntityDetailsEffect.OpenMoveQuoteSheet(
@@ -277,6 +302,7 @@ class EntityDetailsViewModel @Inject constructor(
     }
 
     override fun onRemoveQuoteConfirmed(quoteId: String) {
+        analytics.track(QuoteSettings(QuoteAction.DELETE))
         viewModelScope.launch {
             removeQuoteFromEntity(
                 quoteId = quoteId,
@@ -318,6 +344,14 @@ class EntityDetailsViewModel @Inject constructor(
                     }
                 }
             } else {
+                if (!hadResolvedCollection) {
+                    analytics.track(
+                        VisitCollection(
+                            name = collection.name,
+                            quoteCount = collection.quoteCount ?: quotes.size,
+                        ),
+                    )
+                }
                 hadResolvedCollection = true
                 publishState {
                     copy(

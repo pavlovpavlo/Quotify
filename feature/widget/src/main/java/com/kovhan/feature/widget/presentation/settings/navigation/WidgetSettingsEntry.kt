@@ -106,14 +106,14 @@ private suspend fun applyWidget(
     viewModel: WidgetSettingsViewModel,
 ): Boolean = when {
     HomeWidgetPresence.isPlaced(context) -> {
-        viewModel.applyToWidget()
+        viewModel.applyToWidget(alreadyPlaced = true)
         WidgetRotationScheduler.reschedule(context, viewModel.uiState.value.frequencyHours)
         AppSnackbarBus.show(SnackbarMessage.success(DsR.string.widget_updated_message))
         true
     }
 
     WidgetPinner.pin(context) -> {
-        viewModel.applyToWidget()
+        viewModel.applyToWidget(alreadyPlaced = false)
         AppSnackbarBus.show(SnackbarMessage.success(DsR.string.widget_added_message))
         true
     }

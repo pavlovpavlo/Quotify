@@ -22,7 +22,7 @@ internal fun CompleteEntry(
     val state = viewModel.uiState.collectAsStateWithLifecycle()
 
     val navAction = object : CompleteScreenNavAction {
-        override fun navigateToSignUp() = coordinator.navigate(RegisterKey)
+        override fun navigateToSignUp() = coordinator.navigate(RegisterKey())
         override fun navigateToSignIn() = coordinator.navigate(LoginKey())
         override fun navigateToMain() = coordinator.navigateAndClearBackStack(QuotesKey)
     }

@@ -1,6 +1,9 @@
 package com.kovhan.feature.auth.presentation.forgot_password
 
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.event.PasswordResetFinished
+import com.kovhan.core.analytics.event.PasswordResetInitiated
 import com.kovhan.core.ui.snackbar.SnackbarType
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.design.systems.R
@@ -20,6 +23,7 @@ import javax.inject.Inject
 class ForgotPasswordScreenViewModel @Inject constructor(
     private val sendPasswordReset: SendPasswordResetUseCase,
     private val validateInput: ValidateAuthInputUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<ForgotPasswordScreenState, ForgotPasswordScreenEffect>(ForgotPasswordScreenState()),
     ForgotPasswordScreenIntent {
 
@@ -34,10 +38,12 @@ class ForgotPasswordScreenViewModel @Inject constructor(
         }
 
         publishState { copy(isLoading = true) }
+        analytics.track(PasswordResetInitiated)
         viewModelScope.launch {
             sendPasswordReset(current.email.text)
                 .onSuccess {
                     publishState { copy(isLoading = false, errorMessage = null) }
+                    analytics.track(PasswordResetFinished)
                     showSnackbar(R.string.forgot_reset_sent, SnackbarType.Success)
                     publishEffect(ForgotPasswordScreenEffect.NavigateBack)
                 }

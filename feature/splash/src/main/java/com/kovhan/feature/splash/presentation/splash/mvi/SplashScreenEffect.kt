@@ -14,4 +14,7 @@ sealed class SplashScreenEffect : UiEffect {
 
     /** Offline with no subscription — show the blocking retry dialog. */
     data object ShowOfflineBlock : SplashScreenEffect()
+
+    /** Встановлена версія нижча за мінімальну з конфігу — показати блокуючий діалог. */
+    data object ShowUpdateRequired : SplashScreenEffect()
 }

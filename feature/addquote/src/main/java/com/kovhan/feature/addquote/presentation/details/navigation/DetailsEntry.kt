@@ -48,6 +48,7 @@ internal fun DetailsEntry(
         override fun proceedToSave(draft: QuoteDraft) {
             coordinator.showBottomSheet(
                 SaveQuoteCollectionSheetKey(
+                    inputMethod = draft.inputMethod,
                     text = draft.text,
                     authorName = draft.authorName,
                     bookName = draft.bookName,
@@ -61,6 +62,7 @@ internal fun DetailsEntry(
     }
 
     LaunchedEffect(Unit) {
+        viewModel.setInputMethod(key.inputMethod)
         viewModel.onInitialQuote(key.quote)
     }
 

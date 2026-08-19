@@ -15,6 +15,7 @@ import com.kovhan.core.navigation.LanguageSheetKey
 import com.kovhan.core.navigation.DevToolsKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.ReminderTimeSheetKey
 import com.kovhan.core.navigation.SubscriptionKey
 import com.kovhan.core.navigation.ThemeSheetKey
@@ -86,7 +87,7 @@ internal fun ProfileEntry(
                 ProfileScreenEffect.OpenWidgetSettings ->
                     coordinator.navigate(WidgetSettingsKey)
 
-                ProfileScreenEffect.OpenPaywall -> coordinator.navigate(PaywallKey)
+                ProfileScreenEffect.OpenPaywall -> coordinator.navigate(PaywallKey(PaywallOrigin.HOME))
 
                 ProfileScreenEffect.OpenSubscription -> coordinator.navigate(SubscriptionKey)
 

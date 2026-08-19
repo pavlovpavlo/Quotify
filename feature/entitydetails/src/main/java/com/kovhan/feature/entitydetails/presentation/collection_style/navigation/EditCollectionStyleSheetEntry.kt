@@ -11,6 +11,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.EditCollectionStyleSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.feature.entitydetails.presentation.collection_style.EditCollectionStyleSheet
 import com.kovhan.feature.entitydetails.presentation.collection_style.EditCollectionStyleViewModel
 import com.kovhan.feature.entitydetails.presentation.collection_style.model.CollectionStyleDraft
@@ -53,7 +54,10 @@ internal fun EditCollectionStyleSheetEntry(
         },
         // Пейвол відкриваємо поверх — шит лишається в збережених оверлеях
         // власника екрана, тож після покупки повернення відкриє його вже без замка.
-        onUnlock = { coordinator.navigate(PaywallKey) },
+        onUnlock = {
+            viewModel.onUnlockClicked()
+            coordinator.navigate(PaywallKey(PaywallOrigin.LIMIT))
+        },
         onDismiss = coordinator::dismissBottomSheet,
     )
 }

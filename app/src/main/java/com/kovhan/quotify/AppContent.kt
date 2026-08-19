@@ -32,11 +32,13 @@ import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.core.navigation.EntryBuilder
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.OfferKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.PlaceholderBottomSheetKey
 import com.kovhan.core.navigation.PlaceholderDialogKey
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.SplashKey
 import com.kovhan.core.ui.snackbar.QuotifySnackbar
+import com.kovhan.domain.premium.OfferTrigger
 import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.core.ui.snackbar.SnackbarMessageEffect
 import com.kovhan.quotify.mvi.MainActivityState
@@ -83,8 +85,13 @@ fun AppContent(
         val current = coordinator.currentKey ?: return@LaunchedEffect
         if (!coordinator.isTopLevelKey(current)) return@LaunchedEffect
 
+        val origin = when (uiState.pendingOfferTrigger) {
+            OfferTrigger.CANCELED -> PaywallOrigin.CANCEL
+            OfferTrigger.TENURE -> PaywallOrigin.TENURE
+            null -> PaywallOrigin.BANNER
+        }
         uiIntent.onOfferShown()
-        coordinator.navigate(OfferKey)
+        coordinator.navigate(OfferKey(origin))
     }
 
     val showDock by remember {

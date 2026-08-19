@@ -20,16 +20,24 @@ class SubscriptionEntryBuilder @Inject constructor() : EntryBuilder {
         coordinator: NavigationCoordinator,
         paddingValues: PaddingValues,
     ) {
-        scope.entry<PaywallKey> {
-            PaywallEntry(coordinator = coordinator, paddingValues = paddingValues)
+        scope.entry<PaywallKey> { key ->
+            PaywallEntry(
+                origin = key.origin,
+                coordinator = coordinator,
+                paddingValues = paddingValues,
+            )
         }
 
         scope.entry<SubscriptionKey> {
             CurrentSubscriptionEntry(coordinator = coordinator, paddingValues = paddingValues)
         }
 
-        scope.entry<OfferKey> {
-            OfferEntry(coordinator = coordinator, paddingValues = paddingValues)
+        scope.entry<OfferKey> { key ->
+            OfferEntry(
+                origin = key.origin,
+                coordinator = coordinator,
+                paddingValues = paddingValues,
+            )
         }
     }
 }

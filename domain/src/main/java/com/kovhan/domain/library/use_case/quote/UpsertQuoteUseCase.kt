@@ -1,5 +1,6 @@
 package com.kovhan.domain.library.use_case.quote
 
+import com.kovhan.core.models.quote.QuoteLimits
 import com.kovhan.core.models.quote.Quote
 import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.core.models.collections.SavedBook
@@ -39,7 +40,7 @@ class UpsertQuoteUseCase @Inject constructor(
         editQuote(
             Quote(
                 id = id,
-                text = text.trim(),
+                text = QuoteLimits.normalizeText(text),
                 authorId = authorId,
                 bookId = bookId,
                 collectionId = collectionId.takeUnless { it == SavedCollection.GENERAL_ID },

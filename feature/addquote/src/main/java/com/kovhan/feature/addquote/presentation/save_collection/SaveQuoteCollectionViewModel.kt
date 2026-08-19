@@ -4,6 +4,11 @@ import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.library.use_case.collection.GetCollectionsUseCase
 import com.kovhan.domain.library.use_case.quote.SaveQuoteToCollectionUseCase
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.LimitReason
+import com.kovhan.core.analytics.event.LimitReached
+import com.kovhan.core.analytics.event.QuoteAdded
+import com.kovhan.feature.addquote.presentation.analytics.toAnalytics
 import com.kovhan.domain.premium.use_case.CheckQuoteLimitUseCase
 import com.kovhan.domain.quote.CheckAddQuoteActionUseCase
 import com.kovhan.feature.addquote.presentation.details.mvi.QuoteDraft
@@ -19,6 +24,7 @@ class SaveQuoteCollectionViewModel @Inject constructor(
     private val saveQuoteToCollection: SaveQuoteToCollectionUseCase,
     private val checkAddQuoteActionUseCase: CheckAddQuoteActionUseCase,
     private val checkQuoteLimit: CheckQuoteLimitUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<SaveQuoteCollectionState, SaveQuoteCollectionEffect>(SaveQuoteCollectionState()) {
 
     private var widgetPlaced = false
@@ -53,6 +59,7 @@ class SaveQuoteCollectionViewModel @Inject constructor(
             publishState { copy(savingCollectionId = collectionId) }
             if (!checkQuoteLimit()) {
                 publishState { copy(savingCollectionId = null) }
+                analytics.track(LimitReached(LimitReason.QUOTES))
                 publishEffect(SaveQuoteCollectionEffect.ShowPaywall)
                 return@launch
             }
@@ -66,6 +73,17 @@ class SaveQuoteCollectionViewModel @Inject constructor(
                 inPushPlaylist = draft.inPushPlaylist,
                 generalName = generalName,
                 page = draft.page,
+            )
+            analytics.track(
+                QuoteAdded(
+                    inputMethod = draft.inputMethod.toAnalytics(),
+                    textLength = draft.text.trim().length,
+                    hasAuthor = !draft.authorName.isNullOrBlank(),
+                    hasBook = !draft.bookName.isNullOrBlank(),
+                    tagsCount = draft.tagNames.size,
+                    widgetEnabled = draft.inWidgetPlaylist,
+                    pushEnabled = draft.inPushPlaylist,
+                ),
             )
             publishEffect(SaveQuoteCollectionEffect.Saved(checkAddQuoteActionUseCase.invoke(widgetPlaced)))
         }

@@ -1,6 +1,7 @@
 package com.kovhan.feature.addquote
 
 import app.cash.turbine.test
+import com.kovhan.core.analytics.AnalyticsTracker
 import com.kovhan.core.models.Outcome
 import com.kovhan.domain.ai.AiAccess
 import com.kovhan.domain.ai.AiDenialReason
@@ -31,6 +32,7 @@ class TagSheetViewModelTest {
     private val checkAiAccess: CheckAiAccessUseCase = mockk()
     private val recordAiRequest: RecordAiRequestUseCase = mockk(relaxed = true)
     private val checkConnectivity: CheckConnectivityUseCase = mockk()
+    private val analytics: AnalyticsTracker = mockk(relaxed = true)
     private val observeIsSubscribed: ObserveIsSubscribedUseCase = mockk()
 
     /**
@@ -45,6 +47,7 @@ class TagSheetViewModelTest {
             recordAiRequest,
             checkConnectivity,
             observeIsSubscribed,
+            analytics,
         ).apply {
             initialize("a quote", emptyList(), emptyList(), emptyList())
             runBlocking { uiState.first { it.isPremium == premium } }

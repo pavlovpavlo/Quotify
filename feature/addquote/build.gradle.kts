@@ -12,8 +12,10 @@ android {
     namespace = "${AppConfig.applicationId}.feature.addquote"
 }
 
+
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:analytics"))
     implementation(project(":core:navigation"))
     implementation(project(":design-systems"))
     implementation(project(":domain"))

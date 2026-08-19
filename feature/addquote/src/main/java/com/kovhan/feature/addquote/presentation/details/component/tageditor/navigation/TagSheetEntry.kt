@@ -7,6 +7,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.rememberCoroutineScope
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.TagSheetResult
 import com.kovhan.core.navigation.TagSheetAiLimitDialogKey
 import com.kovhan.core.navigation.TagSheetKey
@@ -48,7 +49,7 @@ internal fun TagSheetEntry(
                     coordinator.showDialog(TagSheetOfflineDialogKey)
                 }
 
-                TagSheetEffect.OpenPaywall -> coordinator.navigate(PaywallKey)
+                TagSheetEffect.OpenPaywall -> coordinator.navigate(PaywallKey(PaywallOrigin.LIMIT))
             }
         }
     }

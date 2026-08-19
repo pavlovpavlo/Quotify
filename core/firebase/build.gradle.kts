@@ -12,6 +12,7 @@ android {
 
 dependencies {
     implementationFirebase()
+    implementationFirebaseRemoteConfig()
     implementationCoroutines()
     implementationHilt()
 }

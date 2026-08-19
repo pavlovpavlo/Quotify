@@ -84,6 +84,7 @@ fun AddQuoteScreen(
                         onRetake = intent::onScanRetake,
                         onRetry = intent::onScanRetry,
                         onUpgrade = intent::onUpgradeClicked,
+                        onPermissionResult = intent::onCameraPermissionResult,
                         onProceed = intent::onScanProceed,
                     )
 
@@ -95,6 +96,7 @@ fun AddQuoteScreen(
                         onQuoteChange = intent::onQuoteChanged,
                         onMicPressed = intent::onMicPressed,
                         onMicReleased = intent::onMicReleased,
+                        onPermissionResult = intent::onMicrophonePermissionResult,
                     )
                 }
             }

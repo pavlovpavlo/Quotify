@@ -4,6 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.navigation3.runtime.NavKey
 import com.kovhan.core.models.feedback.FeedbackSource
+import com.kovhan.core.navigation.models.AddQuoteEntryPoint
+import com.kovhan.core.navigation.models.AuthEntryPoint
+import com.kovhan.core.navigation.models.PaywallOrigin
+import com.kovhan.core.navigation.models.QuoteInputMethod
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
 import kotlinx.serialization.Serializable
@@ -22,10 +26,15 @@ data object OnboardingKey : NavKey
 data object CompleteKey : NavKey
 
 @Serializable
-data class LoginKey(val confirmDelete: Boolean = false) : NavKey
+data class LoginKey(
+    val confirmDelete: Boolean = false,
+    val entryPoint: AuthEntryPoint = AuthEntryPoint.FIRST_LAUNCH,
+) : NavKey
 
 @Serializable
-data object RegisterKey : NavKey
+data class RegisterKey(
+    val entryPoint: AuthEntryPoint = AuthEntryPoint.FIRST_LAUNCH,
+) : NavKey
 
 @Serializable
 data object ForgotPasswordKey : NavKey
@@ -62,13 +71,13 @@ data object EditProfileKey : NavKey
 data object AboutKey : NavKey
 
 @Serializable
-data object PaywallKey : NavKey
+data class PaywallKey(val origin: PaywallOrigin = PaywallOrigin.HOME) : NavKey
 
 @Serializable
 data object SubscriptionKey : NavKey
 
 @Serializable
-data object OfferKey : NavKey
+data class OfferKey(val origin: PaywallOrigin = PaywallOrigin.BANNER) : NavKey
 
 @Serializable
 data object DevToolsKey : NavKey
@@ -89,10 +98,16 @@ data class PlaylistPickerKey(val playlistId: String? = null) : NavKey
 data class WidgetAppearanceKey(val style: String) : NavKey
 
 @Serializable
-data class AddQuoteKey(val tab: AddQuoteTab = AddQuoteTab.TEXT) : NavKey
+data class AddQuoteKey(
+    val tab: AddQuoteTab = AddQuoteTab.TEXT,
+    val entryPoint: AddQuoteEntryPoint = AddQuoteEntryPoint.TAB,
+) : NavKey
 
 @Serializable
-data class QuoteDetailsKey(val quote: String) : NavKey
+data class QuoteDetailsKey(
+    val quote: String,
+    val inputMethod: QuoteInputMethod = QuoteInputMethod.TEXT,
+) : NavKey
 
 @Serializable
 data class WebViewKey(val title: String, val url: String) : NavKey
@@ -125,6 +140,7 @@ data class TagSheetKey(
 
 @Serializable
 data class SaveQuoteCollectionSheetKey(
+    val inputMethod: QuoteInputMethod = QuoteInputMethod.TEXT,
     val text: String,
     val authorName: String?,
     val bookName: String?,
@@ -136,6 +152,7 @@ data class SaveQuoteCollectionSheetKey(
 
 @Serializable
 data class NewCollectionSheetKey(
+    val inputMethod: QuoteInputMethod = QuoteInputMethod.TEXT,
     val text: String,
     val authorName: String?,
     val bookName: String?,
@@ -235,6 +252,9 @@ data class FeedbackDialogKey(
 ) : DialogKey
 @Serializable
 data object OfflineBlockingSheetKey : BottomSheetKey
+
+@Serializable
+data object UpdateRequiredDialogKey : DialogKey
 
 @Serializable
 data object TagSheetOfflineDialogKey : DialogKey

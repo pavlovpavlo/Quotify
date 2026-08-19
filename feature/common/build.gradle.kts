@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":design-systems"))
     implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
+    implementation(project(":core:analytics"))
     implementation(project(":domain"))
     implementationAndroidX()
     implementationCompose()

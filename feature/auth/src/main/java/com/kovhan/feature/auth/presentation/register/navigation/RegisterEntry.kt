@@ -11,8 +11,10 @@ import com.kovhan.core.navigation.LoginKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.RegisterKey
+import com.kovhan.core.navigation.models.AuthEntryPoint
 import com.kovhan.core.navigation.WebViewKey
 import com.kovhan.design.systems.R
+import com.kovhan.feature.auth.presentation.analytics.toAnalytics
 import com.kovhan.feature.auth.presentation.google.rememberGoogleSignInClient
 import com.kovhan.feature.auth.presentation.register.RegisterScreen
 import com.kovhan.feature.auth.presentation.register.RegisterScreenViewModel
@@ -23,9 +25,14 @@ import kotlinx.coroutines.launch
 internal fun RegisterEntry(
     coordinator: NavigationCoordinator,
     paddingValues: PaddingValues,
+    entryPoint: AuthEntryPoint = AuthEntryPoint.FIRST_LAUNCH,
 ) {
     val viewModel = hiltViewModel<RegisterScreenViewModel>()
     val state = viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(entryPoint) {
+        viewModel.onScreenOpened(entryPoint.toAnalytics())
+    }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val googleSignInClient = rememberGoogleSignInClient()
@@ -37,7 +44,7 @@ internal fun RegisterEntry(
 
         override fun navigateToMain() = coordinator.navigateAndClearBackStack(QuotesKey)
         override fun navigateToLogin() =
-            coordinator.navigate(LoginKey(), popUpTo = RegisterKey, inclusive = true)
+            coordinator.navigate(LoginKey(), popUpToClass = RegisterKey::class, inclusive = true)
         override fun navigateToWebView(title: String, url: String) =
             coordinator.navigate(WebViewKey(title = title, url = url))
     }

@@ -1,8 +1,5 @@
 package com.kovhan.feature.splash.presentation.splash.navigation
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,8 +11,12 @@ import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.OfflineBlockingSheetKey
 import com.kovhan.core.navigation.OnboardingKey
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.SplashKey
+import com.kovhan.core.navigation.UpdateRequiredDialogKey
+import com.kovhan.core.ui.extensions.getActivity
+import com.kovhan.core.ui.extensions.openAppInStore
 import com.kovhan.feature.splash.navigation.SplashScreenNavAction
 import com.kovhan.feature.splash.presentation.splash.SplashScreen
 import com.kovhan.feature.splash.presentation.splash.SplashScreenViewModel
@@ -46,7 +47,7 @@ internal fun SplashEntry(
         override fun navigateToMainWithPaywall() {
             // Спершу бібліотека, потім пейвол поверх — щоб «назад» повертало в застосунок.
             coordinator.navigate(QuotesKey, popUpTo = SplashKey, inclusive = true)
-            coordinator.navigate(PaywallKey)
+            coordinator.navigate(PaywallKey(PaywallOrigin.BANNER))
         }
 
         override fun navigateToAuth() {
@@ -62,6 +63,7 @@ internal fun SplashEntry(
                 SplashScreenEffect.NavigateToMain -> navAction.navigateToMain()
                 SplashScreenEffect.NavigateToMainWithPaywall -> navAction.navigateToMainWithPaywall()
                 SplashScreenEffect.ShowOfflineBlock -> coordinator.showBottomSheet(OfflineBlockingSheetKey)
+                SplashScreenEffect.ShowUpdateRequired -> coordinator.showDialog(UpdateRequiredDialogKey)
             }
         }
     }
@@ -73,7 +75,17 @@ internal fun SplashEntry(
 
     LaunchedEffect(Unit) {
         coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_OFFLINE_DISMISS)
-            .collect { confirmed -> if (confirmed == true) context.findActivity()?.finish() }
+            .collect { confirmed -> if (confirmed == true) context.getActivity()?.finish() }
+    }
+
+    LaunchedEffect(Unit) {
+        coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_UPDATE_REQUIRED_UPDATE)
+            .collect { confirmed -> if (confirmed == true) context.openAppInStore() }
+    }
+
+    LaunchedEffect(Unit) {
+        coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_UPDATE_REQUIRED_EXIT)
+            .collect { confirmed -> if (confirmed == true) context.getActivity()?.finish() }
     }
 
     SplashScreen(
@@ -82,13 +94,4 @@ internal fun SplashEntry(
         paddingValues = paddingValues,
         navAction = navAction,
     )
-}
-
-private fun Context.findActivity(): Activity? {
-    var current: Context? = this
-    while (current is ContextWrapper) {
-        if (current is Activity) return current
-        current = current.baseContext
-    }
-    return null
 }

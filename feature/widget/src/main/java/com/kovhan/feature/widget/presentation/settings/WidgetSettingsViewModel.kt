@@ -1,5 +1,10 @@
 package com.kovhan.feature.widget.presentation.settings
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.event.WidgetAdded
+import com.kovhan.core.analytics.event.WidgetUpdated
+import com.kovhan.feature.widget.presentation.analytics.toAnalytics
+import com.kovhan.feature.widget.presentation.analytics.toSnapshot
 import com.kovhan.core.models.feedback.FeedbackSource
 import com.kovhan.core.models.widget.WidgetFeedback
 import com.kovhan.core.models.widget.WidgetSettings
@@ -40,6 +45,7 @@ class WidgetSettingsViewModel @Inject constructor(
     private val setStyle: SetWidgetStyleUseCase,
     private val isWidgetSettingsApplied: IsWidgetSettingsAppliedUseCase,
     private val markWidgetSettingsApplied: MarkWidgetSettingsAppliedUseCase,
+    private val analytics: AnalyticsTracker,
     private val getAppliedWidgetSource: GetAppliedWidgetSourceUseCase,
     private val widgetRefresher: WidgetRefresher,
 ) : BaseViewModel<WidgetSettingsState, WidgetSettingsEffect>(WidgetSettingsState()),
@@ -80,11 +86,24 @@ class WidgetSettingsViewModel @Inject constructor(
         pendingWrite = viewModelScope.launch { write() }
     }
 
-    suspend fun applyToWidget() {
+    suspend fun applyToWidget(alreadyPlaced: Boolean) {
         pendingWrite?.join()
         val current = currentSettings ?: return
-        widgetRefresher.refresh(rotate = getAppliedWidgetSource() != current.source)
+        val appliedSource = getAppliedWidgetSource()
+        widgetRefresher.refresh(rotate = appliedSource != current.source)
         markWidgetSettingsApplied(current)
+        val snapshot = current.toSnapshot()
+        if (alreadyPlaced) {
+            analytics.track(
+                WidgetUpdated(
+                    snapshot = snapshot,
+                    from = (appliedSource ?: current.source).toAnalytics(),
+                    to = current.source.toAnalytics(),
+                ),
+            )
+        } else {
+            analytics.track(WidgetAdded(snapshot))
+        }
         publishState { copy(hasPendingChanges = false) }
     }
 

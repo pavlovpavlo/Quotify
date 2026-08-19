@@ -17,6 +17,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
+import com.kovhan.core.models.quote.QuoteLimits
 import com.kovhan.core.ui.component.text.QuotifyFieldLabel
 import com.kovhan.core.ui.component.text_field.QuotifyOutlinedTextField
 import com.kovhan.design.systems.QuotifyMaterialTheme
@@ -34,6 +35,7 @@ fun QuoteTextInputField(
     placeholder: String = "",
     minHeight: Dp = QuotifyMaterialTheme.dimensions.size130,
     requestFocus: Boolean = false,
+    maxLength: Int = QuoteLimits.MAX_TEXT_LENGTH,
 ) {
     val colors = QuotifyMaterialTheme.colors
     val dimensions = QuotifyMaterialTheme.dimensions
@@ -58,7 +60,15 @@ fun QuoteTextInputField(
                 .heightIn(min = minHeight)
                 .focusRequester(focusRequester),
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = { input ->
+                onValueChange(
+                    if (input.text.length <= maxLength) {
+                        input
+                    } else {
+                        input.copy(text = input.text.take(maxLength))
+                    },
+                )
+            },
             shape = RoundedCornerShape(dimensions.radiusXl),
             textStyle = typography.readingBody.copy(color = colors.textPrimary),
             singleLine = false,

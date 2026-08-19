@@ -46,6 +46,10 @@
     <string name="splash_offline_title">No connection</string>
     <string name="splash_offline_message">To continue without internet you need an active subscription. Check your connection and try again</string>
     <string name="splash_offline_retry">Retry</string>
+    <string name="update_required_title">Update required</string>
+    <string name="update_required_text">This version of Quotify is no longer supported. Update the app to keep reading and saving your quotes.</string>
+    <string name="update_required_confirm">Update</string>
+    <string name="update_required_exit">Exit</string>
     <string name="add_quote_voice_title">Dictate your quote</string>
     <string name="add_quote_voice_subtitle">Hold the button and say the lines out loud — we\'ll turn them into text.</string>
     <string name="add_quote_voice_field_label">Recognized quote</string>

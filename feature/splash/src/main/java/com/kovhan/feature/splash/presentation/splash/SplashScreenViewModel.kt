@@ -1,7 +1,10 @@
 package com.kovhan.feature.splash.presentation.splash
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.event.OfflineShown
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.ai.SubscriptionRepository
+import com.kovhan.domain.appconfig.use_case.CheckUpdateRequiredUseCase
 import com.kovhan.domain.auth.use_case.IsLoggedInUseCase
 import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
 import com.kovhan.domain.daily.use_case.PrefetchDailyQuotesUseCase
@@ -24,11 +27,13 @@ class SplashScreenViewModel @Inject constructor(
     private val isLoggedIn: IsLoggedInUseCase,
     private val prefetchDailyQuotes: PrefetchDailyQuotesUseCase,
     private val checkConnectivity: CheckConnectivityUseCase,
+    private val checkUpdateRequired: CheckUpdateRequiredUseCase,
     private val subscriptionRepository: SubscriptionRepository,
     private val syncPendingChanges: SyncPendingChangesUseCase,
     private val refreshLibrary: RefreshLibraryUseCase,
     private val shouldShowStartupPaywall: ShouldShowStartupPaywallUseCase,
     private val markStartupPaywallShown: MarkStartupPaywallShownUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<SplashScreenState, SplashScreenEffect>(SplashScreenState()), SplashScreenIntent {
 
     private val createdAt = System.currentTimeMillis()
@@ -45,6 +50,10 @@ class SplashScreenViewModel @Inject constructor(
     private fun runStartupGate() {
         viewModelScope.launch {
             if (checkConnectivity()) {
+                if (runCatching { checkUpdateRequired() }.getOrDefault(false)) {
+                    publishEffect(SplashScreenEffect.ShowUpdateRequired)
+                    return@launch
+                }
                 runCatching { prefetchDailyQuotes() }
                 // Push queued offline changes first, then pull the fresh remote state.
                 val drained = runCatching { syncPendingChanges() }.getOrDefault(false)
@@ -56,6 +65,7 @@ class SplashScreenViewModel @Inject constructor(
                 awaitMinDuration()
                 navigateOnward()
             } else {
+                analytics.track(OfflineShown)
                 publishEffect(SplashScreenEffect.ShowOfflineBlock)
             }
         }

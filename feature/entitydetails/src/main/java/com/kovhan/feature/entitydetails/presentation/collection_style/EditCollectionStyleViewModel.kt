@@ -1,5 +1,8 @@
 package com.kovhan.feature.entitydetails.presentation.collection_style
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.LimitReason
+import com.kovhan.core.analytics.event.LimitReached
 import com.kovhan.core.ui.UiEffect
 import com.kovhan.core.ui.UiState
 import com.kovhan.core.ui.view_model.BaseViewModel
@@ -21,11 +24,16 @@ sealed class EditCollectionStyleEffect : UiEffect
 @HiltViewModel
 class EditCollectionStyleViewModel @Inject constructor(
     observeIsSubscribed: ObserveIsSubscribedUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<EditCollectionStyleState, EditCollectionStyleEffect>(EditCollectionStyleState()) {
 
     init {
         observeIsSubscribed()
             .onEach { premium -> publishState { copy(isPremium = premium) } }
             .launchIn(viewModelScope)
+    }
+
+    fun onUnlockClicked() {
+        analytics.track(LimitReached(LimitReason.EDIT_COLLECTION))
     }
 }

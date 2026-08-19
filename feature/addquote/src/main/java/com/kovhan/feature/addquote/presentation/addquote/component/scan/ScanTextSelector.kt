@@ -16,6 +16,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kovhan.core.models.quote.QuoteLimits
 import com.kovhan.core.ui.component.text_field.QuotifyOutlinedTextField
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
@@ -59,7 +60,15 @@ internal fun ScanTextSelector(
                 .weight(1f)
                 .focusRequester(focusRequester),
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = { input ->
+                onValueChange(
+                    if (input.text.length <= QuoteLimits.MAX_TEXT_LENGTH) {
+                        input
+                    } else {
+                        input.copy(text = input.text.take(QuoteLimits.MAX_TEXT_LENGTH))
+                    },
+                )
+            },
             shape = RoundedCornerShape(dimensions.radiusXl),
             textStyle = typography.readingBody.copy(color = colors.textPrimary),
             singleLine = false,

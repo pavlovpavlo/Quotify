@@ -33,6 +33,7 @@ internal fun AddQuoteVoiceTab(
     onQuoteChange: (TextFieldValue) -> Unit,
     onMicPressed: () -> Unit,
     onMicReleased: () -> Unit,
+    onPermissionResult: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = QuotifyMaterialTheme.colors
@@ -48,7 +49,10 @@ internal fun AddQuoteVoiceTab(
     }
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission(),
-    ) { granted -> hasPermission = granted }
+    ) { granted ->
+        hasPermission = granted
+        onPermissionResult(granted)
+    }
 
     val startListening = {
         when {

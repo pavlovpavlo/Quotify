@@ -2,6 +2,10 @@ package com.kovhan.feature.addquote.presentation.details
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kovhan.core.analytics.AddQuoteStep
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.event.QuoteAddClosed
+import com.kovhan.core.navigation.models.QuoteInputMethod
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.library.use_case.author.ObserveSavedAuthorsUseCase
 import com.kovhan.domain.library.use_case.book.ObserveSavedBooksUseCase
@@ -19,9 +23,11 @@ class DetailsViewModel @Inject constructor(
     observeSavedAuthors: ObserveSavedAuthorsUseCase,
     observeSavedBooks: ObserveSavedBooksUseCase,
     observeSavedTags: ObserveSavedTagsUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<DetailsState, DetailsEffect>(DetailsState()), DetailsIntent {
 
     private var quoteInitialized = false
+    private var inputMethod: QuoteInputMethod = QuoteInputMethod.TEXT
 
     init {
         viewModelScope.launch {
@@ -76,10 +82,18 @@ class DetailsViewModel @Inject constructor(
             inWidgetPlaylist = state.inWidgetPlaylist,
             inPushPlaylist = state.inPushPlaylist,
             page = state.page.toIntOrNull(),
+            inputMethod = inputMethod,
         )
         publishEffect(DetailsEffect.ProceedToSave(draft))
     }
 
     override fun onBackClicked() = publishEffect(DetailsEffect.Back)
-    override fun onCloseClicked() = publishEffect(DetailsEffect.Close)
+    override fun onCloseClicked() {
+        analytics.track(QuoteAddClosed(AddQuoteStep.ADDITIONAL_INFO))
+        publishEffect(DetailsEffect.Close)
+    }
+
+    fun setInputMethod(method: QuoteInputMethod) {
+        inputMethod = method
+    }
 }

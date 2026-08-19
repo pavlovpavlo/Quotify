@@ -1,6 +1,12 @@
 package com.kovhan.feature.auth.presentation.register
 
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.AuthEntry
+import com.kovhan.core.analytics.AuthProvider
+import com.kovhan.core.analytics.event.SignUpFailed
+import com.kovhan.core.analytics.event.SignUpFinished
+import com.kovhan.core.analytics.event.SignUpOpened
 import com.kovhan.core.ui.constants.AppLinks
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.auth.model.AuthError
@@ -10,6 +16,7 @@ import com.kovhan.domain.auth.use_case.guest.GuestAwareGoogleSignInUseCase
 import com.kovhan.domain.auth.use_case.guest.GuestAwareSignUpUseCase
 import com.kovhan.core.models.onFailure
 import com.kovhan.core.models.onSuccess
+import com.kovhan.feature.auth.presentation.analytics.toFailureName
 import com.kovhan.feature.auth.presentation.google.GoogleSignInOutcome
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenEffect
 import com.kovhan.feature.auth.presentation.register.mvi.RegisterScreenIntent
@@ -24,8 +31,16 @@ class RegisterScreenViewModel @Inject constructor(
     private val signUp: GuestAwareSignUpUseCase,
     private val signInWithGoogle: GuestAwareGoogleSignInUseCase,
     private val validateInput: ValidateAuthInputUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<RegisterScreenState, RegisterScreenEffect>(RegisterScreenState()),
     RegisterScreenIntent {
+
+    private var entry: AuthEntry = AuthEntry.FIRST_LAUNCH
+
+    fun onScreenOpened(entry: AuthEntry) {
+        this.entry = entry
+        analytics.track(SignUpOpened(entry))
+    }
 
     override fun onFullNameChanged(value: TextFieldValue) = publishState { copy(fullName = value) }
     override fun onUsernameChanged(value: TextFieldValue) = publishState { copy(username = value, errorMessage = null, errorValidationMessage = null) }
@@ -50,12 +65,13 @@ class RegisterScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val displayName = current.fullName.text.ifBlank { current.username.text }
             handleResult(
-                signUp(
+                result = signUp(
                     email = current.email.text,
                     password = current.password.text,
                     username = current.username.text,
                     displayName = displayName,
                 ),
+                provider = AuthProvider.EMAIL,
             )
         }
     }
@@ -69,7 +85,7 @@ class RegisterScreenViewModel @Inject constructor(
     override fun onGoogleSignInResult(outcome: GoogleSignInOutcome) {
         when (outcome) {
             is GoogleSignInOutcome.Success -> viewModelScope.launch {
-                handleResult(signInWithGoogle(outcome.idToken))
+                handleResult(signInWithGoogle(outcome.idToken), AuthProvider.GOOGLE)
             }
             is GoogleSignInOutcome.Failure -> {
                 publishState { copy(isGoogleLoading = false) }
@@ -80,11 +96,17 @@ class RegisterScreenViewModel @Inject constructor(
         }
     }
 
-    private fun <T> handleResult(result: AuthResult<T>) {
+    private fun <T> handleResult(result: AuthResult<T>, provider: AuthProvider) {
         publishState { copy(isLoading = false, isGoogleLoading = false) }
         result
-            .onSuccess { publishEffect(RegisterScreenEffect.NavigateToMain) }
-            .onFailure { publishState { copy(errorMessage = it) } }
+            .onSuccess {
+                analytics.track(SignUpFinished(entry, provider))
+                publishEffect(RegisterScreenEffect.NavigateToMain)
+            }
+            .onFailure {
+                analytics.track(SignUpFailed(entry, it.toFailureName()))
+                publishState { copy(errorMessage = it) }
+            }
     }
 
     override fun onSignInClicked() {

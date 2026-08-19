@@ -1,5 +1,7 @@
 package com.kovhan.feature.search.presentation.search
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.event.SearchInitiated
 import com.kovhan.core.models.quote.EnrichedQuote
 import com.kovhan.core.models.collections.SavedAuthor
 import com.kovhan.core.models.collections.SavedBook
@@ -41,6 +43,7 @@ class SearchViewModel @Inject constructor(
     private val upsertQuote: UpsertQuoteUseCase,
     private val moveQuoteToCollection: MoveQuoteToCollectionUseCase,
     private val deleteQuote: DeleteQuoteUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<SearchState, SearchEffect>(SearchState(isLoading = true)),
     SearchScreenAction {
 
@@ -88,7 +91,10 @@ class SearchViewModel @Inject constructor(
         this.generalName = generalName
     }
 
-    override fun onQueryChange(query: String) = publishState { copy(query = query) }
+    override fun onQueryChange(query: String) {
+        if (uiState.value.query.isEmpty() && query.isNotEmpty()) analytics.track(SearchInitiated)
+        publishState { copy(query = query) }
+    }
 
     override fun onScopeChange(scope: SearchScope) = publishState { copy(scope = scope) }
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.NewCollectionSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.feature.addquote.presentation.new_collection.NewCollectionSheet
 import com.kovhan.feature.addquote.presentation.new_collection.NewCollectionViewModel
 import com.kovhan.feature.addquote.presentation.new_collection.mvi.NewCollectionEffect
@@ -37,7 +38,7 @@ internal fun NewCollectionSheetEntry(
 
                 NewCollectionEffect.ShowPaywall -> {
                     coordinator.dismissBottomSheet()
-                    coordinator.navigate(PaywallKey)
+                    coordinator.navigate(PaywallKey(PaywallOrigin.LIMIT))
                 }
             }
         }

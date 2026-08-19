@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.ManageSubscriptionSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.feature.subscription.presentation.current.CurrentSubscriptionScreen
 import com.kovhan.feature.subscription.presentation.current.CurrentSubscriptionViewModel
 
@@ -23,7 +24,7 @@ internal fun CurrentSubscriptionEntry(
         state = state,
         onBack = coordinator::goBack,
         onManage = { coordinator.showBottomSheet(ManageSubscriptionSheetKey) },
-        onOpenPaywall = { coordinator.navigate(PaywallKey) },
+        onOpenPaywall = { coordinator.navigate(PaywallKey(PaywallOrigin.HOME)) },
         paddingValues = paddingValues,
     )
 }

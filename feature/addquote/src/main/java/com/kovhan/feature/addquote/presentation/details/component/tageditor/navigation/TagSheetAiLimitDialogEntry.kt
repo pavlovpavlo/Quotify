@@ -3,6 +3,7 @@ package com.kovhan.feature.addquote.presentation.details.component.tageditor.nav
 import androidx.compose.runtime.Composable
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.TagSheetAiLimitDialogKey
 import com.kovhan.feature.addquote.presentation.common.AiLimitDialog
 import com.kovhan.feature.addquote.presentation.common.toDomain
@@ -17,7 +18,7 @@ internal fun TagSheetAiLimitDialogEntry(
         onDismiss = coordinator::dismissDialog,
         onReviewSubscriptions = {
             coordinator.dismissDialog()
-            coordinator.navigate(PaywallKey)
+            coordinator.navigate(PaywallKey(PaywallOrigin.LIMIT))
         },
     )
 }

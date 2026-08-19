@@ -8,7 +8,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kovhan.core.navigation.AddQuoteKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.QuoteDetailsKey
+import com.kovhan.core.navigation.models.QuoteInputMethod
 import com.kovhan.feature.addquote.presentation.addquote.AddQuoteScreen
 import com.kovhan.feature.addquote.presentation.addquote.AddQuoteScreenViewModel
 import com.kovhan.feature.addquote.presentation.addquote.mvi.AddQuoteScreenEffect
@@ -27,24 +29,25 @@ internal fun AddQuoteEntry(
             coordinator.goBack()
         }
 
-        override fun proceedToDetails(quote: String) {
-            coordinator.navigate(QuoteDetailsKey(quote = quote))
+        override fun proceedToDetails(quote: String, inputMethod: QuoteInputMethod) {
+            coordinator.navigate(QuoteDetailsKey(quote = quote, inputMethod = inputMethod))
         }
 
         override fun openPaywall() {
-            coordinator.navigate(PaywallKey)
+            coordinator.navigate(PaywallKey(PaywallOrigin.LIMIT))
         }
     }
 
     LaunchedEffect(Unit) {
-        viewModel.onInitialTab(key.tab)
+        viewModel.onInitialTab(key.tab, key.entryPoint)
     }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 AddQuoteScreenEffect.Close -> navAction.close()
-                is AddQuoteScreenEffect.ProceedToDetails -> navAction.proceedToDetails(effect.quote)
+                is AddQuoteScreenEffect.ProceedToDetails ->
+                    navAction.proceedToDetails(effect.quote, effect.inputMethod)
                 AddQuoteScreenEffect.OpenPaywall -> navAction.openPaywall()
             }
         }

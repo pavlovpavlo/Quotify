@@ -4,6 +4,11 @@ import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.common.IdGenerator
 import com.kovhan.domain.library.use_case.collection.EditCollectionUseCase
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.CollectionCreateSource
+import com.kovhan.core.analytics.LimitReason
+import com.kovhan.core.analytics.event.CollectionCreated
+import com.kovhan.core.analytics.event.LimitReached
 import com.kovhan.domain.premium.use_case.CheckCollectionLimitUseCase
 import com.kovhan.feature.addquote.presentation.new_collection.mvi.NewCollectionEffect
 import com.kovhan.feature.addquote.presentation.new_collection.mvi.NewCollectionState
@@ -15,6 +20,7 @@ import javax.inject.Inject
 class NewCollectionViewModel @Inject constructor(
     private val editCollection: EditCollectionUseCase,
     private val checkCollectionLimit: CheckCollectionLimitUseCase,
+    private val analytics: AnalyticsTracker,
     private val idGenerator: IdGenerator,
 ) : BaseViewModel<NewCollectionState, NewCollectionEffect>(NewCollectionState()) {
 
@@ -28,6 +34,7 @@ class NewCollectionViewModel @Inject constructor(
             // Єдина точка створення колекції — покриває всі три входи в цей шит.
             if (!checkCollectionLimit()) {
                 publishState { copy(isSaving = false) }
+                analytics.track(LimitReached(LimitReason.COLLECTION))
                 publishEffect(NewCollectionEffect.ShowPaywall)
                 return@launch
             }
@@ -38,6 +45,7 @@ class NewCollectionViewModel @Inject constructor(
                     name = state.name.trim(),
                 ),
             )
+            analytics.track(CollectionCreated(CollectionCreateSource.ADD_QUOTE))
             publishEffect(NewCollectionEffect.Saved(id))
         }
     }

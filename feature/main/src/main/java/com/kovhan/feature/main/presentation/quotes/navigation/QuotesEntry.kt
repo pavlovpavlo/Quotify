@@ -11,6 +11,7 @@ import com.kovhan.core.navigation.HideDailyQuoteDialogKey
 import com.kovhan.core.navigation.NewCollectionSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PaywallKey
+import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.SearchKey
 import com.kovhan.feature.main.presentation.quotes.QuotesScreen
 import com.kovhan.feature.main.presentation.quotes.QuotesScreenViewModel
@@ -32,10 +33,15 @@ internal fun QuotesEntry(
         coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_DAILY_QUOTE_HIDE_TODAY)
             .collect { confirmed -> if (confirmed == true) viewModel.onHideDailyQuoteToday() }
     }
+
+    LaunchedEffect(Unit) {
+        coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_DAILY_QUOTE_KEEP)
+            .collect { confirmed -> if (confirmed == true) viewModel.onDailyQuoteHideCancelled() }
+    }
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                QuotesScreenEffect.OpenPaywall -> coordinator.navigate(PaywallKey)
+                QuotesScreenEffect.OpenPaywall -> coordinator.navigate(PaywallKey(PaywallOrigin.LIMIT))
                 QuotesScreenEffect.None -> Unit
             }
         }
@@ -51,8 +57,10 @@ internal fun QuotesEntry(
 
             override fun navigateToQuoteDetails(quoteId: String) = Unit
 
-            override fun showHideDailyQuoteDialog() =
+            override fun showHideDailyQuoteDialog() {
+                viewModel.onDailyQuoteHideRequested()
                 coordinator.showDialog(HideDailyQuoteDialogKey)
+            }
 
             override fun openSearch() {
                 coordinator.navigate(SearchKey)

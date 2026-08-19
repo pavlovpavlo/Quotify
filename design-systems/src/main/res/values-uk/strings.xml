@@ -48,6 +48,10 @@
     <string name="splash_offline_title">Немає з\'єднання</string>
     <string name="splash_offline_message">Щоб продовжити без інтернету, потрібна активна підписка. Перевір з\'єднання й спробуй ще раз</string>
     <string name="splash_offline_retry">Повторити</string>
+    <string name="update_required_title">Потрібне оновлення</string>
+    <string name="update_required_text">Ця версія Quotify більше не підтримується. Онови застосунок, щоб читати й зберігати свої цитати.</string>
+    <string name="update_required_confirm">Оновити</string>
+    <string name="update_required_exit">Вийти</string>
     <string name="add_quote_voice_title">Продиктуй цитату</string>
     <string name="add_quote_voice_subtitle">Затисни кнопку і промов рядки вголос — ми перетворимо їх на текст.</string>
     <string name="add_quote_voice_field_label">Розпізнана цитата</string>

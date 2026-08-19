@@ -14,6 +14,7 @@ object FirebaseDependencies {
     internal const val FIREBASE_MESSAGING_PATH = "com.google.firebase:firebase-messaging"
     internal const val FIREBASE_FIRESTORE_PATH = "com.google.firebase:firebase-firestore"
     internal const val FIREBASE_AI_PATH = "com.google.firebase:firebase-ai"
+    internal const val FIREBASE_CONFIG_PATH = "com.google.firebase:firebase-config"
     internal const val FIREBASE_APPCHECK_PLAY_INTEGRITY = "com.google.firebase:firebase-appcheck-playintegrity"
     internal const val FIREBASE_APPCHECK_DEBUG = "com.google.firebase:firebase-appcheck-debug"
 
@@ -28,6 +29,16 @@ fun DependencyHandlerScope.implementationFirebase() {
     implementation(FirebaseDependencies.FIREBASE_FIRESTORE_PATH)
     implementation(FirebaseDependencies.FIREBASE_APPCHECK_PLAY_INTEGRITY)
     debugImplementation(FirebaseDependencies.FIREBASE_APPCHECK_DEBUG)
+}
+
+fun DependencyHandlerScope.implementationFirebaseAnalytics() {
+    implementationPlatform(FirebaseDependencies.FIREBASE_BOM_PATH)
+    implementation(FirebaseDependencies.FIREBASE_ANALYTICS_PATH)
+}
+
+fun DependencyHandlerScope.implementationFirebaseRemoteConfig() {
+    implementationPlatform(FirebaseDependencies.FIREBASE_BOM_PATH)
+    implementation(FirebaseDependencies.FIREBASE_CONFIG_PATH)
 }
 
 fun DependencyHandlerScope.implementationFirebaseAi() {

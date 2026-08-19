@@ -1,5 +1,9 @@
 ﻿package com.kovhan.feature.main.presentation.edit_profile
 
+import com.kovhan.core.analytics.AccountDeleteResult
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.event.AccountDeleteFinished
+import com.kovhan.core.analytics.event.LogoutFinished
 import com.kovhan.core.ui.snackbar.SnackbarMessage
 import com.kovhan.core.ui.snackbar.SnackbarType
 import com.kovhan.core.ui.view_model.BaseViewModel
@@ -38,6 +42,7 @@ class EditProfileViewModel @Inject constructor(
     private val sendPasswordReset: SendPasswordResetUseCase,
     private val deleteAccount: DeleteAccountUseCase,
     private val signOut: SignOutUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<EditProfileState, EditProfileEffect>(EditProfileState()),
     EditProfileIntent {
 
@@ -123,6 +128,7 @@ class EditProfileViewModel @Inject constructor(
         publishState { copy(isProcessing = true) }
         viewModelScope.launch {
             signOut()
+            analytics.track(LogoutFinished)
             publishState { copy(isProcessing = false) }
             publishEffect(EditProfileEffect.NavigateToAuth)
         }
@@ -135,6 +141,7 @@ class EditProfileViewModel @Inject constructor(
             when (val result = deleteAccount()) {
                 is Outcome.Success -> {
                     signOut()
+                    analytics.track(AccountDeleteFinished(AccountDeleteResult.DELETED))
                     publishState { copy(isProcessing = false) }
                     publishEffect(EditProfileEffect.NavigateToAuth)
                 }

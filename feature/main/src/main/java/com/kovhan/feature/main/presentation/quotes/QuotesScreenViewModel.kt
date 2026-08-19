@@ -15,6 +15,15 @@ import com.kovhan.domain.library.use_case.collection.ObserveCollectionsUseCase
 import com.kovhan.domain.library.use_case.quote.ObserveFilteredQuotesUseCase
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.LimitReason
+import com.kovhan.core.analytics.event.LimitReached
+import com.kovhan.core.analytics.DailyQuoteResult
+import com.kovhan.core.analytics.event.DailyQuoteSaved
+import com.kovhan.core.analytics.event.HideDailyQuoteFinished
+import com.kovhan.core.analytics.event.HideDailyQuoteInitiated
+import com.kovhan.core.analytics.event.RateUsInitiated
+import com.kovhan.core.analytics.event.VisitLibrary
 import com.kovhan.domain.premium.use_case.CheckQuoteLimitUseCase
 import com.kovhan.domain.review.use_case.MarkReviewAskedUseCase
 import com.kovhan.domain.review.use_case.ShouldAskForReviewUseCase
@@ -41,6 +50,7 @@ class QuotesScreenViewModel @Inject constructor(
     private val dismissForToday: DismissDailyQuoteForTodayUseCase,
     private val setDailyQuoteEnabled: SetDailyQuoteEnabledUseCase,
     private val checkQuoteLimit: CheckQuoteLimitUseCase,
+    private val analytics: AnalyticsTracker,
     private val shouldAskForReview: ShouldAskForReviewUseCase,
     private val markReviewAsked: MarkReviewAskedUseCase,
     private val inAppReview: InAppReviewUseCase,
@@ -48,9 +58,12 @@ class QuotesScreenViewModel @Inject constructor(
     QuotesScreenIntent {
 
     init {
+        analytics.track(VisitLibrary)
+
         viewModelScope.launch {
             if (!shouldAskForReview()) return@launch
             markReviewAsked()
+            analytics.track(RateUsInitiated)
             inAppReview()
         }
 
@@ -88,6 +101,11 @@ class QuotesScreenViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun onDailyQuoteHideRequested() {
+        val quote = uiState.value.dailyQuote ?: return
+        analytics.track(HideDailyQuoteInitiated(quote.id))
+    }
+
     override fun onToggleDailyQuoteFavourite(favouritesName: String) {
         val quote = uiState.value.dailyQuote ?: return
         val language = uiState.value.language
@@ -97,6 +115,7 @@ class QuotesScreenViewModel @Inject constructor(
             // Додавання в обране створює нову цитату, тому впирається в той самий ліміт.
             if (!wasFavourite && !checkQuoteLimit()) {
                 publishState { copy(isDailyQuoteFavouriteLoading = false) }
+                analytics.track(LimitReached(LimitReason.QUOTES))
                 publishEffect(QuotesScreenEffect.OpenPaywall)
                 return@launch
             }
@@ -104,6 +123,7 @@ class QuotesScreenViewModel @Inject constructor(
                 if (wasFavourite) removeFromFavourites(quote)
                 else saveToFavourites(quote, favouritesName, language)
             }.isSuccess
+            if (success && !wasFavourite) analytics.track(DailyQuoteSaved(quote.id))
             publishState {
                 copy(
                     isDailyQuoteFavourite = if (success) !wasFavourite else wasFavourite,
@@ -114,13 +134,22 @@ class QuotesScreenViewModel @Inject constructor(
     }
 
     override fun onHideDailyQuoteForever() {
+        val quoteId = uiState.value.dailyQuote?.id.orEmpty()
+        analytics.track(HideDailyQuoteFinished(quoteId, DailyQuoteResult.REMOVE))
         viewModelScope.launch { setDailyQuoteEnabled(false) }
     }
 
     override fun onHideDailyQuoteToday() {
+        val quoteId = uiState.value.dailyQuote?.id.orEmpty()
+        analytics.track(HideDailyQuoteFinished(quoteId, DailyQuoteResult.HIDE_FOR_TODAY))
         viewModelScope.launch {
             dismissForToday()
             publishState { copy(dailyQuote = null) }
         }
+    }
+
+    fun onDailyQuoteHideCancelled() {
+        val quoteId = uiState.value.dailyQuote?.id.orEmpty()
+        analytics.track(HideDailyQuoteFinished(quoteId, DailyQuoteResult.KEEP))
     }
 }

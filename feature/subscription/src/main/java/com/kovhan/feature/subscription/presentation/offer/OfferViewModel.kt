@@ -1,5 +1,15 @@
 package com.kovhan.feature.subscription.presentation.offer
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.PaywallSource
+import com.kovhan.core.analytics.PaywallType
+import com.kovhan.core.analytics.PurchaseFailure
+import com.kovhan.core.analytics.event.SubscriptionClosed
+import com.kovhan.core.analytics.event.SubscriptionOpened
+import com.kovhan.core.analytics.event.SubscriptionPurchaseCanceled
+import com.kovhan.core.analytics.event.SubscriptionPurchaseFailed
+import com.kovhan.core.analytics.event.SubscriptionPurchaseFinished
+import com.kovhan.core.analytics.event.SubscriptionPurchaseInitiated
 import com.kovhan.core.models.Outcome
 import com.kovhan.core.models.billing.PurchaseFlowFailure
 import com.kovhan.core.models.billing.isEntitled
@@ -25,9 +35,35 @@ import javax.inject.Inject
 class OfferViewModel @Inject constructor(
     private val getSpecialOffer: GetSpecialOfferUseCase,
     private val launchPurchase: LaunchPurchaseUseCase,
+    private val analytics: AnalyticsTracker,
     observePurchaseVerifications: ObservePurchaseVerificationsUseCase,
     observePurchaseFlowFailures: ObservePurchaseFlowFailuresUseCase,
 ) : BaseViewModel<OfferState, OfferEffect>(OfferState()), OfferIntent {
+
+    private var source: PaywallSource = PaywallSource.BANNER
+
+    fun onScreenOpened(source: PaywallSource) {
+        this.source = source
+        analytics.track(SubscriptionOpened(source, PaywallType.SPECIAL_OFFER))
+    }
+
+    fun onScreenClosed() {
+        if (uiState.value.purchaseSucceeded) return
+        analytics.track(SubscriptionClosed(source, PaywallType.SPECIAL_OFFER))
+    }
+
+    private fun productId(): String = uiState.value.offer?.basePlanId.orEmpty()
+
+    private fun trackPurchaseFailed(failure: PurchaseFailure) {
+        analytics.track(
+            SubscriptionPurchaseFailed(
+                source = source,
+                type = PaywallType.SPECIAL_OFFER,
+                productId = productId(),
+                failure = failure,
+            ),
+        )
+    }
 
     init {
         loadOffer()
@@ -40,10 +76,19 @@ class OfferViewModel @Inject constructor(
                 when (outcome) {
                     is Outcome.Success -> if (outcome.data.isEntitled()) {
                         publishState { copy(purchaseSucceeded = true) }
+                        analytics.track(
+                            SubscriptionPurchaseFinished(
+                                source = source,
+                                type = PaywallType.SPECIAL_OFFER,
+                                productId = productId(),
+                            ),
+                        )
                     }
 
-                    is Outcome.Failure ->
+                    is Outcome.Failure -> {
+                        trackPurchaseFailed(PurchaseFailure.VERIFICATION_FAILED)
                         showSnackbar(SnackbarMessage.error(R.string.paywall_verification_failed))
+                    }
                 }
             }
             .launchIn(viewModelScope)
@@ -55,10 +100,20 @@ class OfferViewModel @Inject constructor(
 
                     PurchaseFlowFailure.FAILED -> {
                         publishState { copy(isPurchasing = false) }
+                        trackPurchaseFailed(PurchaseFailure.BILLING_ERROR)
                         showSnackbar(SnackbarMessage.error(R.string.paywall_purchase_failed))
                     }
 
-                    PurchaseFlowFailure.CANCELLED -> publishState { copy(isPurchasing = false) }
+                    PurchaseFlowFailure.CANCELLED -> {
+                        publishState { copy(isPurchasing = false) }
+                        analytics.track(
+                            SubscriptionPurchaseCanceled(
+                                source = source,
+                                type = PaywallType.SPECIAL_OFFER,
+                                productId = productId(),
+                            ),
+                        )
+                    }
                 }
             }
             .launchIn(viewModelScope)
@@ -69,6 +124,7 @@ class OfferViewModel @Inject constructor(
             delay(BillingWaits.VERIFICATION_GRACE_MS)
             if (uiState.value.purchaseSucceeded) return@launch
             publishState { copy(isPurchasing = false) }
+            trackPurchaseFailed(PurchaseFailure.ALREADY_OWNED)
             showSnackbar(SnackbarMessage.error(R.string.paywall_verification_failed))
         }
     }
@@ -78,8 +134,16 @@ class OfferViewModel @Inject constructor(
         if (uiState.value.isPurchasing) return
 
         publishState { copy(isPurchasing = true) }
+        analytics.track(
+            SubscriptionPurchaseInitiated(
+                source = source,
+                type = PaywallType.SPECIAL_OFFER,
+                productId = offer.basePlanId,
+            ),
+        )
         if (!launchPurchase(offer.offerToken)) {
             publishState { copy(isPurchasing = false) }
+            trackPurchaseFailed(PurchaseFailure.PRODUCT_UNAVAILABLE)
             showSnackbar(SnackbarMessage.error(R.string.paywall_purchase_failed))
         }
     }

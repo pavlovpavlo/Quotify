@@ -1,5 +1,17 @@
 package com.kovhan.feature.subscription.presentation.paywall
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.PaywallSource
+import com.kovhan.core.analytics.PaywallType
+import com.kovhan.core.analytics.PurchaseFailure
+import com.kovhan.core.analytics.RestoreStatus
+import com.kovhan.core.analytics.event.SubscriptionClosed
+import com.kovhan.core.analytics.event.SubscriptionOpened
+import com.kovhan.core.analytics.event.SubscriptionPurchaseCanceled
+import com.kovhan.core.analytics.event.SubscriptionPurchaseFailed
+import com.kovhan.core.analytics.event.SubscriptionPurchaseFinished
+import com.kovhan.core.analytics.event.SubscriptionPurchaseInitiated
+import com.kovhan.core.analytics.event.SubscriptionRestored
 import com.kovhan.core.models.Outcome
 import com.kovhan.core.models.billing.PurchaseFlowFailure
 import com.kovhan.core.models.billing.isEntitled
@@ -30,9 +42,36 @@ class PaywallViewModel @Inject constructor(
     private val getPremiumProduct: GetPremiumProductUseCase,
     private val launchPurchase: LaunchPurchaseUseCase,
     private val restorePurchases: RestorePurchasesUseCase,
+    private val analytics: AnalyticsTracker,
     observePurchaseVerifications: ObservePurchaseVerificationsUseCase,
     observePurchaseFlowFailures: ObservePurchaseFlowFailuresUseCase,
 ) : BaseViewModel<PaywallState, PaywallEffect>(PaywallState()), PaywallIntent {
+
+    private var source: PaywallSource = PaywallSource.HOME
+
+    fun onScreenOpened(source: PaywallSource) {
+        this.source = source
+        analytics.track(SubscriptionOpened(source, PaywallType.SUBSCRIPTION))
+    }
+
+    fun onScreenClosed() {
+        if (uiState.value.purchaseSucceeded) return
+        analytics.track(SubscriptionClosed(source, PaywallType.SUBSCRIPTION))
+    }
+
+    private fun selectedProductId(): String =
+        uiState.value.selectedOffer?.basePlanId.orEmpty()
+
+    private fun trackPurchaseFailed(failure: PurchaseFailure) {
+        analytics.track(
+            SubscriptionPurchaseFailed(
+                source = source,
+                type = PaywallType.SUBSCRIPTION,
+                productId = selectedProductId(),
+                failure = failure,
+            ),
+        )
+    }
 
     init {
         loadOffers()
@@ -47,10 +86,20 @@ class PaywallViewModel @Inject constructor(
 
                     PurchaseFlowFailure.FAILED -> {
                         publishState { copy(isPurchasing = false) }
+                        trackPurchaseFailed(PurchaseFailure.BILLING_ERROR)
                         showSnackbar(SnackbarMessage.error(R.string.paywall_purchase_failed))
                     }
 
-                    PurchaseFlowFailure.CANCELLED -> publishState { copy(isPurchasing = false) }
+                    PurchaseFlowFailure.CANCELLED -> {
+                        publishState { copy(isPurchasing = false) }
+                        analytics.track(
+                            SubscriptionPurchaseCanceled(
+                                source = source,
+                                type = PaywallType.SUBSCRIPTION,
+                                productId = selectedProductId(),
+                            ),
+                        )
+                    }
                 }
             }
             .launchIn(viewModelScope)
@@ -60,14 +109,33 @@ class PaywallViewModel @Inject constructor(
                 val awaited = uiState.value.isPurchasing || uiState.value.isRestoring
                 if (!awaited) return@onEach
 
+                val wasRestoring = uiState.value.isRestoring
                 publishState { copy(isPurchasing = false, isRestoring = false) }
                 when (outcome) {
                     is Outcome.Success -> if (outcome.data.isEntitled()) {
                         publishState { copy(purchaseSucceeded = true) }
+                        if (wasRestoring) {
+                            analytics.track(
+                                SubscriptionRestored(
+                                    status = RestoreStatus.SUCCESS,
+                                    productId = selectedProductId(),
+                                ),
+                            )
+                        } else {
+                            analytics.track(
+                                SubscriptionPurchaseFinished(
+                                    source = source,
+                                    type = PaywallType.SUBSCRIPTION,
+                                    productId = selectedProductId(),
+                                ),
+                            )
+                        }
                     }
 
-                    is Outcome.Failure ->
+                    is Outcome.Failure -> {
+                        trackPurchaseFailed(PurchaseFailure.VERIFICATION_FAILED)
                         showSnackbar(SnackbarMessage.error(R.string.paywall_verification_failed))
+                    }
                 }
             }
             .launchIn(viewModelScope)
@@ -81,8 +149,16 @@ class PaywallViewModel @Inject constructor(
         if (uiState.value.isPurchasing) return
 
         publishState { copy(isPurchasing = true) }
+        analytics.track(
+            SubscriptionPurchaseInitiated(
+                source = source,
+                type = PaywallType.SUBSCRIPTION,
+                productId = offer.basePlanId,
+            ),
+        )
         if (!launchPurchase(offer.offerToken)) {
             publishState { copy(isPurchasing = false) }
+            trackPurchaseFailed(PurchaseFailure.PRODUCT_UNAVAILABLE)
             showSnackbar(SnackbarMessage.error(R.string.paywall_purchase_failed))
         }
     }
@@ -95,6 +171,12 @@ class PaywallViewModel @Inject constructor(
             delay(BillingWaits.VERIFICATION_GRACE_MS)
             if (uiState.value.purchaseSucceeded) return@launch
             publishState { copy(isRestoring = false) }
+            analytics.track(
+                SubscriptionRestored(
+                    status = RestoreStatus.FAILED,
+                    productId = selectedProductId(),
+                ),
+            )
             showSnackbar(SnackbarMessage.info(R.string.paywall_restore_empty))
         }
     }
@@ -106,6 +188,7 @@ class PaywallViewModel @Inject constructor(
             delay(BillingWaits.VERIFICATION_GRACE_MS)
             if (uiState.value.purchaseSucceeded) return@launch
             publishState { copy(isRestoring = false) }
+            trackPurchaseFailed(PurchaseFailure.ALREADY_OWNED)
             showSnackbar(SnackbarMessage.error(R.string.paywall_verification_failed))
         }
     }

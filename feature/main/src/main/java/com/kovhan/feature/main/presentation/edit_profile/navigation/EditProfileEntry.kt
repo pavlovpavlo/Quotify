@@ -18,6 +18,7 @@ import com.kovhan.core.navigation.DeleteAccountDialogKey
 import com.kovhan.core.navigation.EditField
 import com.kovhan.core.navigation.EditFieldSheetKey
 import com.kovhan.core.navigation.LoginKey
+import com.kovhan.core.navigation.models.AuthEntryPoint
 import com.kovhan.core.navigation.LogoutDialogKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.PhotoAction
@@ -105,10 +106,10 @@ internal fun EditProfileEntry(
                     coordinator.navigateAndClearBackStack(CompleteKey)
 
                 EditProfileEffect.NavigateToLogin ->
-                    coordinator.navigate(LoginKey())
+                    coordinator.navigate(LoginKey(entryPoint = AuthEntryPoint.SETTINGS))
 
                 EditProfileEffect.NavigateToConfirmDelete ->
-                    coordinator.navigate(LoginKey(confirmDelete = true))
+                    coordinator.navigate(LoginKey(confirmDelete = true, entryPoint = AuthEntryPoint.SETTINGS))
 
                 EditProfileEffect.OpenPhotoSheet ->
                     coordinator.showBottomSheet(ChangePhotoSheetKey)

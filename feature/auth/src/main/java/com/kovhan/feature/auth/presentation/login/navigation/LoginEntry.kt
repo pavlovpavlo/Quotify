@@ -12,8 +12,10 @@ import com.kovhan.core.navigation.ForgotPasswordKey
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.core.navigation.RegisterKey
+import com.kovhan.core.navigation.models.AuthEntryPoint
 import com.kovhan.core.navigation.WebViewKey
 import com.kovhan.design.systems.R
+import com.kovhan.feature.auth.presentation.analytics.toAnalytics
 import com.kovhan.feature.auth.presentation.google.rememberGoogleSignInClient
 import com.kovhan.feature.auth.presentation.login.LoginScreen
 import com.kovhan.feature.auth.presentation.login.LoginScreenViewModel
@@ -25,6 +27,7 @@ internal fun LoginEntry(
     coordinator: NavigationCoordinator,
     paddingValues: PaddingValues,
     confirmDelete: Boolean = false,
+    entryPoint: AuthEntryPoint = AuthEntryPoint.FIRST_LAUNCH,
 ) {
     val viewModel = hiltViewModel<LoginScreenViewModel>()
     val state = viewModel.uiState.collectAsStateWithLifecycle()
@@ -36,13 +39,17 @@ internal fun LoginEntry(
         if (confirmDelete) viewModel.enableConfirmDelete()
     }
 
+    LaunchedEffect(entryPoint) {
+        viewModel.onScreenOpened(entryPoint.toAnalytics())
+    }
+
     val navAction = object : LoginScreenNavAction {
         override fun navigateBack() {
             coordinator.goBack()
         }
 
         override fun navigateToMain() = coordinator.navigateAndClearBackStack(QuotesKey)
-        override fun navigateToRegister() = coordinator.navigate(RegisterKey)
+        override fun navigateToRegister() = coordinator.navigate(RegisterKey())
         override fun navigateToForgotPassword() = coordinator.navigate(ForgotPasswordKey)
         override fun navigateToWebView(title: String, url: String) =
             coordinator.navigate(WebViewKey(title = title, url = url))

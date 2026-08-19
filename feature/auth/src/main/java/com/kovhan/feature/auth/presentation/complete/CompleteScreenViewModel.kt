@@ -1,5 +1,8 @@
 package com.kovhan.feature.auth.presentation.complete
 
+import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.WelcomeResult
+import com.kovhan.core.analytics.event.WelcomeScreenResult
 import com.kovhan.core.models.onFailure
 import com.kovhan.core.models.onSuccess
 import com.kovhan.core.ui.view_model.BaseViewModel
@@ -15,19 +18,23 @@ import javax.inject.Inject
 @HiltViewModel
 class CompleteScreenViewModel @Inject constructor(
     private val continueAsGuest: ContinueAsGuestUseCase,
+    private val analytics: AnalyticsTracker,
 ) : BaseViewModel<CompleteScreenState, CompleteScreenEffect>(CompleteScreenState()),
     CompleteScreenIntent {
 
     override fun onSignUpClicked() {
+        analytics.track(WelcomeScreenResult(WelcomeResult.CREATE))
         publishEffect(CompleteScreenEffect.NavigateToSignUp)
     }
 
     override fun onSignInClicked() {
+        analytics.track(WelcomeScreenResult(WelcomeResult.HAVE))
         publishEffect(CompleteScreenEffect.NavigateToSignIn)
     }
 
     override fun onLaterClicked() {
         if (uiState.value.isGuestLoading) return
+        analytics.track(WelcomeScreenResult(WelcomeResult.LATER))
         publishState { copy(isGuestLoading = true) }
         viewModelScope.launch {
             continueAsGuest()
