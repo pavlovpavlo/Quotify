@@ -10,6 +10,7 @@ import com.kovhan.domain.premium.use_case.MarkOfferShownUseCase
 import com.kovhan.domain.premium.use_case.ResolveOfferTriggerUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
 import com.kovhan.domain.settings.use_case.GetThemeUseCase
+import com.kovhan.domain.survey.use_case.ResolveSurveyInviteUseCase
 import com.kovhan.quotify.mvi.MainActivityEffect
 import com.kovhan.quotify.mvi.MainActivityState
 import com.kovhan.quotify.mvi.MainIntent
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
@@ -27,6 +29,7 @@ class MainActivityViewModel @Inject constructor(
     getFabTooltipDismissed: GetFabTooltipDismissedUseCase,
     private val setFabTooltipDismissed: SetFabTooltipDismissedUseCase,
     private val resolveOfferTrigger: ResolveOfferTriggerUseCase,
+    private val resolveSurveyInvite: ResolveSurveyInviteUseCase,
     private val getSpecialOffer: GetSpecialOfferUseCase,
     private val markOfferShown: MarkOfferShownUseCase,
     snackbarMessageSource: SnackbarMessageSource,
@@ -56,9 +59,16 @@ class MainActivityViewModel @Inject constructor(
 
     override fun onAppForegrounded() {
         viewModelScope.launch {
-            val trigger = resolveOfferTrigger() ?: return@launch
-            if (getSpecialOffer() == null) return@launch
-            publishState { copy(pendingOfferTrigger = trigger) }
+            val trigger = runCatching { resolveOfferTrigger() }.getOrNull()
+            if (trigger != null && runCatching { getSpecialOffer() }.getOrNull() != null) {
+                publishState { copy(pendingOfferTrigger = trigger) }
+                return@launch
+            }
+
+            val survey = runCatching { resolveSurveyInvite() }
+                .onFailure { Timber.w(it, "Survey invite resolution failed") }
+                .getOrNull() ?: return@launch
+            publishState { copy(pendingSurveyId = survey.id) }
         }
     }
 
@@ -66,6 +76,10 @@ class MainActivityViewModel @Inject constructor(
         val trigger = uiState.value.pendingOfferTrigger ?: return
         publishState { copy(pendingOfferTrigger = null) }
         viewModelScope.launch { markOfferShown(trigger) }
+    }
+
+    override fun onSurveyInviteShown() {
+        publishState { copy(pendingSurveyId = null) }
     }
 
     override fun onFabClicked() = dismissFabTooltip()

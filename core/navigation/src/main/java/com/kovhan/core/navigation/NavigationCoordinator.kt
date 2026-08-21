@@ -501,5 +501,7 @@ class NavigationCoordinator @Inject constructor() {
         const val KEY_MOVE_QUOTE_RESULT = "move_quote_result"
         const val KEY_SEARCH_QUOTE_DELETE = "search_quote_delete"
         const val KEY_WIDGET_SETTINGS_EXIT = "widget_settings_exit"
+        const val KEY_SURVEY_INVITE = "survey_invite"
+        const val KEY_SURVEY_EXIT = "survey_exit"
     }
 }

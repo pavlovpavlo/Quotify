@@ -12,4 +12,5 @@ sealed class ProfileScreenEffect : UiEffect {
     data object OpenSubscription : ProfileScreenEffect()
     data object OpenFeedbackDialog : ProfileScreenEffect()
     data object ShowFeedbackThrottled : ProfileScreenEffect()
+    data object ConfirmHideDailyQuote : ProfileScreenEffect()
 }

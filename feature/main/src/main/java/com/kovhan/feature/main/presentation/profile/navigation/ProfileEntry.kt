@@ -11,6 +11,7 @@ import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.ConfirmDialogKey
 import com.kovhan.core.navigation.EditProfileKey
 import com.kovhan.core.navigation.FeedbackDialogKey
+import com.kovhan.core.navigation.HideDailyQuoteDialogKey
 import com.kovhan.core.navigation.LanguageSheetKey
 import com.kovhan.core.navigation.DevToolsKey
 import com.kovhan.core.navigation.NavigationCoordinator
@@ -18,6 +19,7 @@ import com.kovhan.core.navigation.PaywallKey
 import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.ReminderTimeSheetKey
 import com.kovhan.core.navigation.SubscriptionKey
+import com.kovhan.core.navigation.SurveyKey
 import com.kovhan.core.navigation.ThemeSheetKey
 import com.kovhan.core.navigation.WidgetSettingsKey
 import com.kovhan.design.systems.R
@@ -49,6 +51,9 @@ internal fun ProfileEntry(
         override fun navigateToAuth() = coordinator.navigateAndClearBackStack(CompleteKey)
 
         override fun navigateToDevTools() = coordinator.navigate(DevToolsKey)
+
+        override fun navigateToSurvey(surveyId: String) =
+            coordinator.navigate(SurveyKey(surveyId))
     }
 
     LaunchedEffect(Unit) {
@@ -58,6 +63,21 @@ internal fun ProfileEntry(
     LaunchedEffect(Unit) {
         coordinator.observeResult<AppLanguage>(NavigationCoordinator.KEY_SELECTED_LANGUAGE)
             .collect { language -> language?.let(viewModel::onLanguageSelected) }
+    }
+    LaunchedEffect(Unit) {
+        coordinator.clearResult(NavigationCoordinator.KEY_DAILY_QUOTE_HIDE_FOREVER)
+        coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_DAILY_QUOTE_HIDE_FOREVER)
+            .collect { confirmed -> if (confirmed == true) viewModel.onHideDailyQuoteForever() }
+    }
+    LaunchedEffect(Unit) {
+        coordinator.clearResult(NavigationCoordinator.KEY_DAILY_QUOTE_HIDE_TODAY)
+        coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_DAILY_QUOTE_HIDE_TODAY)
+            .collect { confirmed -> if (confirmed == true) viewModel.onHideDailyQuoteToday() }
+    }
+    LaunchedEffect(Unit) {
+        coordinator.clearResult(NavigationCoordinator.KEY_DAILY_QUOTE_KEEP)
+        coordinator.observeResult<Boolean>(NavigationCoordinator.KEY_DAILY_QUOTE_KEEP)
+            .collect { confirmed -> if (confirmed == true) viewModel.onDailyQuoteHideCancelled() }
     }
     LaunchedEffect(Unit) {
         coordinator.observeResult<Pair<Int, Int>>(NavigationCoordinator.KEY_REMINDER_TIME)
@@ -90,6 +110,9 @@ internal fun ProfileEntry(
                 ProfileScreenEffect.OpenPaywall -> coordinator.navigate(PaywallKey(PaywallOrigin.HOME))
 
                 ProfileScreenEffect.OpenSubscription -> coordinator.navigate(SubscriptionKey)
+
+                ProfileScreenEffect.ConfirmHideDailyQuote ->
+                    coordinator.showDialog(HideDailyQuoteDialogKey)
 
                 ProfileScreenEffect.OpenFeedbackDialog ->
                     coordinator.showDialog(FeedbackDialogKey(source = FeedbackSource.SETTINGS))

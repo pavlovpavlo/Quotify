@@ -9,6 +9,8 @@ import com.kovhan.core.navigation.FeedbackDialogKey
 import com.kovhan.core.navigation.HideDailyQuoteDialogKey
 import com.kovhan.core.navigation.LogoutDialogKey
 import com.kovhan.core.navigation.TagSheetAiLimitDialogKey
+import com.kovhan.core.navigation.SurveyExitDialogKey
+import com.kovhan.core.navigation.SurveyInviteDialogKey
 import com.kovhan.core.navigation.TagSheetOfflineDialogKey
 import com.kovhan.core.navigation.WidgetPromoKey
 import com.kovhan.design.systems.R
@@ -26,6 +28,8 @@ internal val DevDialogCatalog: List<DevDialogSample> = buildList {
     add(DevDialogSample("HideDailyQuoteDialogKey", HideDailyQuoteDialogKey))
     add(DevDialogSample("TagSheetOfflineDialogKey", TagSheetOfflineDialogKey))
     add(DevDialogSample("WidgetPromoKey", WidgetPromoKey))
+    add(DevDialogSample("SurveyInviteDialogKey", SurveyInviteDialogKey()))
+    add(DevDialogSample("SurveyExitDialogKey", SurveyExitDialogKey()))
     add(DevDialogSample("FeedbackDialogKey", FeedbackDialogKey()))
     add(
         DevDialogSample(

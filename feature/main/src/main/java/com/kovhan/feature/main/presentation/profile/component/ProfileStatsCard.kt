@@ -1,5 +1,6 @@
 package com.kovhan.feature.main.presentation.profile.component
 
+import androidx.annotation.PluralsRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,20 +53,20 @@ internal fun ProfileStatsCard(
             .padding(vertical = 16.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        StatColumn(value = quotes, label = stringResource(R.string.profile_stat_quotes))
+        StatColumn(value = quotes, labelRes = R.plurals.profile_stat_quotes)
         StatDivider()
-        StatColumn(value = books, label = stringResource(R.string.profile_stat_books))
+        StatColumn(value = books, labelRes = R.plurals.profile_stat_books)
         StatDivider()
-        StatColumn(value = folders, label = stringResource(R.string.profile_stat_folders))
+        StatColumn(value = folders, labelRes = R.plurals.profile_stat_folders)
         StatDivider()
-        StatColumn(value = authors, label = stringResource(R.string.profile_stat_authors))
+        StatColumn(value = authors, labelRes = R.plurals.profile_stat_authors)
     }
 }
 
 @Composable
 private fun RowScope.StatColumn(
     value: Int,
-    label: String,
+    @PluralsRes labelRes: Int,
 ) {
     val colors = QuotifyMaterialTheme.colors
     Column(
@@ -84,7 +85,7 @@ private fun RowScope.StatColumn(
             ),
         )
         Text(
-            text = label,
+            text = pluralStringResource(labelRes, value),
             color = colors.textTertiary,
             textAlign = TextAlign.Center,
             style = TextStyle(

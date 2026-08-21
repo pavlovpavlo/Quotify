@@ -220,10 +220,30 @@
     <string name="profile_edit_avatar_cd">Редагувати фото профілю</string>
 
     <!-- Profile — stats -->
-    <string name="profile_stat_quotes">ЦИТАТИ</string>
-    <string name="profile_stat_books">КНИГИ</string>
-    <string name="profile_stat_folders">ПАПКИ</string>
-    <string name="profile_stat_authors">АВТОРИ</string>
+    <plurals name="profile_stat_quotes">
+        <item quantity="one">ЦИТАТА</item>
+        <item quantity="few">ЦИТАТИ</item>
+        <item quantity="many">ЦИТАТ</item>
+        <item quantity="other">ЦИТАТИ</item>
+    </plurals>
+    <plurals name="profile_stat_books">
+        <item quantity="one">КНИГА</item>
+        <item quantity="few">КНИГИ</item>
+        <item quantity="many">КНИГ</item>
+        <item quantity="other">КНИГИ</item>
+    </plurals>
+    <plurals name="profile_stat_folders">
+        <item quantity="one">ПАПКА</item>
+        <item quantity="few">ПАПКИ</item>
+        <item quantity="many">ПАПОК</item>
+        <item quantity="other">ПАПКИ</item>
+    </plurals>
+    <plurals name="profile_stat_authors">
+        <item quantity="one">АВТОР</item>
+        <item quantity="few">АВТОРИ</item>
+        <item quantity="many">АВТОРІВ</item>
+        <item quantity="other">АВТОРИ</item>
+    </plurals>
 
     <!-- Profile — premium banner -->
     <string name="profile_premium_eyebrow">QUOTIFY PREMIUM</string>
@@ -440,7 +460,7 @@
     <string name="widget_update_subtitle">Як часто цитата на віджеті змінюється.</string>
     <string name="widget_frequency_hourly">Щогодини</string>
     <plurals name="widget_frequency_hours">
-        <item quantity="one">Кожні %d годину</item>
+        <item quantity="one">Кожну %d годину</item>
         <item quantity="few">Кожні %d години</item>
         <item quantity="many">Кожні %d годин</item>
         <item quantity="other">Кожні %d години</item>
@@ -519,7 +539,12 @@
 
     <!-- Widget frequency picker -->
     <string name="widget_frequency_title">Частота зміни</string>
-    <string name="widget_frequency_column">ГОДИНИ</string>
+    <plurals name="widget_frequency_column">
+        <item quantity="one">ГОДИНА</item>
+        <item quantity="few">ГОДИНИ</item>
+        <item quantity="many">ГОДИН</item>
+        <item quantity="other">ГОДИНИ</item>
+    </plurals>
     <string name="widget_frequency_confirm">Готово</string>
 
     <!-- Widget playlist picker -->
@@ -645,4 +670,92 @@
     <!-- Premium limits -->
     <string name="premium_locked_cd">Доступно з Premium</string>
     <string name="premium_unlock_cta">Розблокувати</string>
+
+    <!-- Survey — invite dialog -->
+    <string name="survey_invite_eyebrow">ОПИТУВАННЯ</string>
+    <string name="survey_invite_title">Допоможи нам стати кращими</string>
+    <string name="survey_invite_body">Кілька коротких питань про те, як нам покращити Quotify.</string>
+    <string name="survey_invite_reward">У нагороду — кастомний фон для віджета</string>
+    <string name="survey_invite_start">Почати</string>
+    <string name="survey_invite_later">Пізніше</string>
+    <string name="survey_invite_skip">Пропустити</string>
+    <string name="survey_invite_close_cd">Закрити</string>
+
+    <!-- Survey — questionnaire -->
+    <string name="survey_step_of">Питання %1$d з %2$d</string>
+    <string name="survey_next">Далі</string>
+    <string name="survey_finish">Завершити</string>
+    <string name="survey_skip">Пропустити</string>
+    <string name="survey_back_cd">Назад</string>
+    <string name="survey_exit_cd">Вийти</string>
+    <string name="survey_exit_title">Вийти з опитування?</string>
+    <string name="survey_exit_body">Якщо пропустити, опитування більше не з’явиться і подарунок за нього ти не отримаєш. Можна пройти пізніше — відповіді збережуться.</string>
+    <string name="survey_exit_later">Пройти пізніше</string>
+    <string name="survey_exit_skip">Пропустити опитування</string>
+    <string name="survey_exit_continue">Продовжити</string>
+    <string name="survey_exit_close_cd">Закрити</string>
+    <string name="survey_input_label">Розкажіть більше</string>
+    <string name="survey_input_hint">Ваш коментар</string>
+
+    <!-- Survey — questions -->
+    <string name="survey_q_usage_title">Як часто ти зберігаєш цитати?</string>
+    <string name="survey_q_usage_hint">Обери один варіант</string>
+    <string name="survey_q_usage_daily">Щодня</string>
+    <string name="survey_q_usage_weekly">Кілька разів на тиждень</string>
+    <string name="survey_q_usage_monthly">Кілька разів на місяць</string>
+    <string name="survey_q_usage_rarely">Рідше</string>
+
+    <string name="survey_q_value_title">Що для тебе найцінніше в Quotify?</string>
+    <string name="survey_q_value_hint">Можна обрати кілька</string>
+    <string name="survey_q_value_saving">Швидке збереження</string>
+    <string name="survey_q_value_collections">Колекції та теги</string>
+    <string name="survey_q_value_widget">Віджет на головному екрані</string>
+    <string name="survey_q_value_reminders">Нагадування</string>
+    <string name="survey_q_value_search">Пошук по бібліотеці</string>
+
+    <string name="survey_q_missing_title">Чого не вистачає у застосунку?</string>
+    <string name="survey_q_missing_hint">Обери варіант і додай деталі</string>
+    <string name="survey_q_missing_sync">Синхронізації між пристроями</string>
+    <string name="survey_q_missing_styles">Більше стилів віджета</string>
+    <string name="survey_q_missing_shared">Спільних колекцій</string>
+    <string name="survey_q_missing_export">Експорту цитат</string>
+    <string name="survey_q_missing_other">Інше</string>
+    <string name="survey_q_missing_comment_label">Розкажи докладніше</string>
+    <string name="survey_q_missing_comment_hint">Що б ти додав або змінив?</string>
+
+    <string name="survey_q_nps_title">Порадиш Quotify друзям?</string>
+    <string name="survey_q_nps_hint">Обери один варіант</string>
+    <string name="survey_q_nps_definitely">Точно так</string>
+    <string name="survey_q_nps_probably">Скоріше так</string>
+    <string name="survey_q_nps_unsure">Не впевнений</string>
+    <string name="survey_q_nps_no">Скоріше ні</string>
+    <string name="survey_q_nps_comment_label">Що варто покращити?</string>
+    <string name="survey_q_nps_comment_hint">Твій коментар</string>
+
+    <!-- Survey — thank you -->
+    <string name="survey_done_eyebrow">ДЯКУЄМО</string>
+    <string name="survey_done_title">Дякуємо за відповіді</string>
+    <string name="survey_done_body">Твої відповіді допоможуть нам зробити Quotify кращим. Кастомний фон для віджета вже у твоїй колекції.</string>
+    <string name="survey_done_reward_title">Новий фон для віджета відкрито</string>
+    <string name="survey_done_reward_body">Застосуй його в налаштуваннях віджета.</string>
+    <string name="survey_done_empty_eyebrow">УПС</string>
+    <string name="survey_done_empty_title">Нагороди вже закінчилися</string>
+    <string name="survey_done_empty_body">Дякуємо за відповіді! Ми роздали всі фони, які мали, — і вже негайно готуємо нові.</string>
+    <string name="survey_done_primary">Налаштувати віджет</string>
+    <string name="survey_done_secondary">Готово</string>
+
+    <!-- Survey — profile plate -->
+    <string name="survey_plate_title">Пройди коротке опитування</string>
+    <string name="survey_plate_subtitle">Отримай кастомний фон для віджета у подарунок</string>
+    <string name="survey_plate_preview_title">Плашка опитування</string>
+    <string name="survey_plate_preview_card">Картка</string>
+    <string name="survey_plate_preview_gold">Заливка</string>
+    <string name="survey_plate_preview_gold_full">Заливка на всю ширину</string>
+
+    <!-- Dev tools -->
+    <string name="dev_tools_survey_section">Опитування</string>
+    <string name="dev_tools_open_survey">Екрани опитування</string>
+    <string name="dev_tools_open_survey_plate">Варіанти плашки профілю</string>
+    <string name="dev_tools_reset_survey">Скинути стан опитувань</string>
+    <string name="dev_tools_survey_reset_done">Стан опитувань очищено</string>
 </resources>

@@ -8,6 +8,10 @@ plugins {
 
 android {
     namespace = "${AppConfig.applicationId}.core.firebase"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {

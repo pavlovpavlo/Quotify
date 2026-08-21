@@ -3,6 +3,7 @@ package com.kovhan.data.settings.mapper
 import com.kovhan.core.models.widget.WidgetAppearance
 import com.kovhan.core.models.widget.WidgetBorderColor
 import com.kovhan.core.models.widget.WidgetCovers
+import com.kovhan.core.models.widget.WidgetSpecialCovers
 import com.kovhan.core.models.widget.WidgetFontSize
 import com.kovhan.core.models.widget.WidgetStyleSettings
 import com.kovhan.core.models.widget.WidgetTextAlign
@@ -27,7 +28,9 @@ internal fun WidgetAppearanceDto.toDomain() = WidgetAppearance(
         textAlign = classic.text.align.toTextAlign(),
     ),
     cover = WidgetStyleSettings.Cover(
-        coverId = cover.coverId?.takeIf { it in WidgetCovers.ALL } ?: WidgetCovers.DEFAULT,
+        coverId = cover.coverId
+            ?.takeIf { it in WidgetCovers.ALL || WidgetSpecialCovers.isSpecial(it) }
+            ?: WidgetCovers.DEFAULT,
         blurEnabled = cover.blurEnabled,
         borderEnabled = cover.border.enabled,
         borderColor = cover.border.toBorderColor(),

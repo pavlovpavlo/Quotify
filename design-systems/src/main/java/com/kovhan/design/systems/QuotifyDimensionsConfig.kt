@@ -128,6 +128,7 @@ data class QuotifyDimensions(
     val size26: Dp  = 26.dp,
     val size28: Dp  = 28.dp,
     val size30: Dp  = 30.dp,
+    val size34: Dp  = 34.dp,
     val size38: Dp  = 38.dp,
     val size40: Dp  = 40.dp,
     val size44: Dp  = 44.dp,

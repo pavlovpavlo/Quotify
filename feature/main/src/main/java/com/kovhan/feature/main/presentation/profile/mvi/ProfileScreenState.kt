@@ -18,5 +18,6 @@ data class ProfileScreenState(
     val reminderMinute: Int = 0,
     val theme: AppTheme = AppTheme.SYSTEM,
     val language: AppLanguage = AppLanguage.default,
+    val postponedSurveyId: String? = null,
 ) : UiState
 

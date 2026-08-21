@@ -45,6 +45,14 @@ object AnalyticsParam {
     const val HAS_WIDGET = "has_widget"
     const val AUTH_TYPE = "auth_type"
 
+    const val SURVEY_ID = "survey_id"
+    const val QUESTION_ID = "question_id"
+    const val OPTIONS_COUNT = "options_count"
+    const val HAS_COMMENT = "has_comment"
+    const val REWARD_ID = "reward_id"
+    const val COMPLETED_SURVEYS = "completed_surveys"
+    const val ANSWERED_COUNT = "answered_count"
+
     const val WIDGET_TYPE = "type"
     const val BACKGROUND_COLOUR = "background_colour"
     const val BACKGROUND = "background"

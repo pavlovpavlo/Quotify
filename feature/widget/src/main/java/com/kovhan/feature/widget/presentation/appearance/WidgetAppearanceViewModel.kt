@@ -9,12 +9,15 @@ import com.kovhan.core.models.widget.WidgetTextColor
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.widget.use_case.settings.ObserveWidgetSettingsUseCase
 import com.kovhan.domain.widget.use_case.settings.SetWidgetStyleSettingsUseCase
+import com.kovhan.domain.survey.use_case.ObserveUnlockedCoversUseCase
 import com.kovhan.domain.widget.use_case.settings.SetWidgetStyleUseCase
 import com.kovhan.feature.widget.presentation.appearance.mvi.WidgetAppearanceEffect
 import com.kovhan.feature.widget.presentation.appearance.mvi.WidgetAppearanceIntent
 import com.kovhan.feature.widget.presentation.appearance.mvi.WidgetAppearanceState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,10 +26,17 @@ class WidgetAppearanceViewModel @Inject constructor(
     private val observeWidgetSettings: ObserveWidgetSettingsUseCase,
     private val setStyleSettings: SetWidgetStyleSettingsUseCase,
     private val setStyle: SetWidgetStyleUseCase,
+    observeUnlockedCovers: ObserveUnlockedCoversUseCase,
 ) : BaseViewModel<WidgetAppearanceState, WidgetAppearanceEffect>(WidgetAppearanceState()),
     WidgetAppearanceIntent {
 
     private var style: WidgetStyle? = null
+
+    init {
+        observeUnlockedCovers()
+            .onEach { covers -> publishState { copy(unlockedCovers = covers) } }
+            .launchIn(viewModelScope)
+    }
 
     fun initialize(style: WidgetStyle) {
         if (this.style == style) return

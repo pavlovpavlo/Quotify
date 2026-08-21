@@ -10,6 +10,7 @@ import com.kovhan.feature.widget.presentation.appearance.mvi.WidgetAppearanceInt
 @Composable
 internal fun WidgetBackgroundSection(
     settings: WidgetStyleSettings,
+    unlockedCovers: List<String>,
     intent: WidgetAppearanceIntent,
 ) {
     when (settings) {
@@ -27,6 +28,7 @@ internal fun WidgetBackgroundSection(
             WidgetLabeledSection(stringResource(DsR.string.widget_appearance_background)) {
                 WidgetCoverPicker(
                     selectedCoverId = settings.coverId,
+                    unlockedCovers = unlockedCovers,
                     blurEnabled = settings.blurEnabled,
                     onCoverSelected = intent::onCoverSelected,
                 )

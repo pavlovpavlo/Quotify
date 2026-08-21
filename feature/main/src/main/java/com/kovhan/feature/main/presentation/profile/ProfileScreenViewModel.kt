@@ -1,6 +1,9 @@
 package com.kovhan.feature.main.presentation.profile
 
 import com.kovhan.core.analytics.AnalyticsTracker
+import com.kovhan.core.analytics.DailyQuoteResult
+import com.kovhan.core.analytics.event.HideDailyQuoteFinished
+import com.kovhan.core.analytics.event.HideDailyQuoteInitiated
 import com.kovhan.core.analytics.event.RateUsInitiated
 import com.kovhan.core.analytics.event.VisitProfile
 import com.kovhan.core.ui.activity.ContactSupportUseCase
@@ -14,6 +17,7 @@ import com.kovhan.domain.billing.use_case.ObserveIsSubscribedUseCase
 import com.kovhan.domain.feedback.use_case.CanSubmitFeedbackUseCase
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
+import com.kovhan.domain.daily.use_case.DismissDailyQuoteForTodayUseCase
 import com.kovhan.domain.settings.use_case.GetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.GetLanguageUseCase
 import com.kovhan.domain.settings.use_case.GetProfileStatisticUseCase
@@ -21,6 +25,7 @@ import com.kovhan.domain.settings.use_case.GetThemeUseCase
 import com.kovhan.domain.settings.use_case.SetDailyQuoteEnabledUseCase
 import com.kovhan.domain.settings.use_case.SetLanguageUseCase
 import com.kovhan.domain.settings.use_case.SetThemeUseCase
+import com.kovhan.domain.survey.use_case.ObservePostponedSurveyUseCase
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenEffect
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenIntent
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenState
@@ -39,10 +44,12 @@ class ProfileScreenViewModel @Inject constructor(
     private val setTheme: SetThemeUseCase,
     private val setLanguage: SetLanguageUseCase,
     private val setDailyQuoteEnabled: SetDailyQuoteEnabledUseCase,
+    private val dismissDailyQuoteForToday: DismissDailyQuoteForTodayUseCase,
     private val signOut: SignOutUseCase,
     private val rateApp: RateAppUseCase,
     private val contactSupport: ContactSupportUseCase,
     private val canSubmitFeedback: CanSubmitFeedbackUseCase,
+    observePostponedSurvey: ObservePostponedSurveyUseCase,
     observeIsSubscribed: ObserveIsSubscribedUseCase,
     private val analytics: AnalyticsTracker,
     getProfileStatisticUseCase: GetProfileStatisticUseCase
@@ -75,6 +82,10 @@ class ProfileScreenViewModel @Inject constructor(
 
         getProfileStatisticUseCase()
             .onEach { statistic -> publishState { copy(stats = statistic) } }
+            .launchIn(viewModelScope)
+
+        observePostponedSurvey()
+            .onEach { surveyId -> publishState { copy(postponedSurveyId = surveyId) } }
             .launchIn(viewModelScope)
     }
 
@@ -122,9 +133,30 @@ class ProfileScreenViewModel @Inject constructor(
     override fun onCreateWidgetClicked() = publishEffect(ProfileScreenEffect.OpenWidgetSettings)
 
     override fun onShowQuoteOfDayToggled(enabled: Boolean) {
-        publishState { copy(showQuoteOfDay = enabled) }
-        viewModelScope.launch { setDailyQuoteEnabled(enabled) }
+        // Вимкнення проходить через той самий діалог, що й приховування цитати
+        // дня в бібліотеці — там ще є варіант сховати лише на сьогодні.
+        if (!enabled) {
+            analytics.track(HideDailyQuoteInitiated(""))
+            publishEffect(ProfileScreenEffect.ConfirmHideDailyQuote)
+            return
+        }
+        publishState { copy(showQuoteOfDay = true) }
+        viewModelScope.launch { setDailyQuoteEnabled(true) }
     }
+
+    fun onHideDailyQuoteForever() {
+        analytics.track(HideDailyQuoteFinished("", DailyQuoteResult.REMOVE))
+        publishState { copy(showQuoteOfDay = false) }
+        viewModelScope.launch { setDailyQuoteEnabled(false) }
+    }
+
+    fun onHideDailyQuoteToday() {
+        analytics.track(HideDailyQuoteFinished("", DailyQuoteResult.HIDE_FOR_TODAY))
+        viewModelScope.launch { dismissDailyQuoteForToday() }
+    }
+
+    fun onDailyQuoteHideCancelled() =
+        analytics.track(HideDailyQuoteFinished("", DailyQuoteResult.KEEP))
 
     override fun onNotificationsToggled(enabled: Boolean) =
         publishState { copy(notificationsEnabled = enabled) }

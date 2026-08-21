@@ -199,10 +199,22 @@
     <string name="profile_edit_avatar_cd">Edit profile photo</string>
 
     <!-- Profile — stats -->
-    <string name="profile_stat_quotes">QUOTES</string>
-    <string name="profile_stat_books">BOOKS</string>
-    <string name="profile_stat_folders">FOLDERS</string>
-    <string name="profile_stat_authors">AUTHORS</string>
+    <plurals name="profile_stat_quotes">
+        <item quantity="one">QUOTE</item>
+        <item quantity="other">QUOTES</item>
+    </plurals>
+    <plurals name="profile_stat_books">
+        <item quantity="one">BOOK</item>
+        <item quantity="other">BOOKS</item>
+    </plurals>
+    <plurals name="profile_stat_folders">
+        <item quantity="one">FOLDER</item>
+        <item quantity="other">FOLDERS</item>
+    </plurals>
+    <plurals name="profile_stat_authors">
+        <item quantity="one">AUTHOR</item>
+        <item quantity="other">AUTHORS</item>
+    </plurals>
 
     <!-- Profile — premium banner -->
     <string name="profile_premium_eyebrow">QUOTIFY PREMIUM</string>
@@ -505,7 +517,10 @@
 
     <!-- Widget frequency picker -->
     <string name="widget_frequency_title">Change frequency</string>
-    <string name="widget_frequency_column">HOURS</string>
+    <plurals name="widget_frequency_column">
+        <item quantity="one">HOUR</item>
+        <item quantity="other">HOURS</item>
+    </plurals>
     <string name="widget_frequency_confirm">Done</string>
 
     <!-- Widget playlist picker -->
@@ -627,4 +642,92 @@
     <!-- Premium limits -->
     <string name="premium_locked_cd">Available with Premium</string>
     <string name="premium_unlock_cta">Unlock</string>
+
+    <!-- Survey — invite dialog -->
+    <string name="survey_invite_eyebrow">SURVEY</string>
+    <string name="survey_invite_title">Help us get better</string>
+    <string name="survey_invite_body">A few short questions about how we can improve Quotify.</string>
+    <string name="survey_invite_reward">Reward — a custom widget background</string>
+    <string name="survey_invite_start">Start</string>
+    <string name="survey_invite_later">Later</string>
+    <string name="survey_invite_skip">Skip</string>
+    <string name="survey_invite_close_cd">Close</string>
+
+    <!-- Survey — questionnaire -->
+    <string name="survey_step_of">Question %1$d of %2$d</string>
+    <string name="survey_next">Next</string>
+    <string name="survey_finish">Finish</string>
+    <string name="survey_skip">Skip</string>
+    <string name="survey_back_cd">Back</string>
+    <string name="survey_exit_cd">Exit</string>
+    <string name="survey_exit_title">Leave the survey?</string>
+    <string name="survey_exit_body">If you skip it, the survey will not come back and the gift for finishing it will be gone. You can also take it later — your answers are kept.</string>
+    <string name="survey_exit_later">Take it later</string>
+    <string name="survey_exit_skip">Skip the survey</string>
+    <string name="survey_exit_continue">Keep answering</string>
+    <string name="survey_exit_close_cd">Close</string>
+    <string name="survey_input_label">Tell us more</string>
+    <string name="survey_input_hint">Your comment</string>
+
+    <!-- Survey — questions -->
+    <string name="survey_q_usage_title">How often do you save quotes?</string>
+    <string name="survey_q_usage_hint">Pick one</string>
+    <string name="survey_q_usage_daily">Every day</string>
+    <string name="survey_q_usage_weekly">A few times a week</string>
+    <string name="survey_q_usage_monthly">A few times a month</string>
+    <string name="survey_q_usage_rarely">Less often</string>
+
+    <string name="survey_q_value_title">What do you value most in Quotify?</string>
+    <string name="survey_q_value_hint">Pick as many as apply</string>
+    <string name="survey_q_value_saving">Fast saving</string>
+    <string name="survey_q_value_collections">Collections and tags</string>
+    <string name="survey_q_value_widget">Home screen widget</string>
+    <string name="survey_q_value_reminders">Reminders</string>
+    <string name="survey_q_value_search">Library search</string>
+
+    <string name="survey_q_missing_title">What is missing in the app?</string>
+    <string name="survey_q_missing_hint">Pick one and add details</string>
+    <string name="survey_q_missing_sync">Cross-device sync</string>
+    <string name="survey_q_missing_styles">More widget styles</string>
+    <string name="survey_q_missing_shared">Shared collections</string>
+    <string name="survey_q_missing_export">Quote export</string>
+    <string name="survey_q_missing_other">Something else</string>
+    <string name="survey_q_missing_comment_label">Tell us more</string>
+    <string name="survey_q_missing_comment_hint">What would you add or change?</string>
+
+    <string name="survey_q_nps_title">Would you recommend Quotify?</string>
+    <string name="survey_q_nps_hint">Pick one</string>
+    <string name="survey_q_nps_definitely">Definitely</string>
+    <string name="survey_q_nps_probably">Probably</string>
+    <string name="survey_q_nps_unsure">Not sure</string>
+    <string name="survey_q_nps_no">Probably not</string>
+    <string name="survey_q_nps_comment_label">What should we improve?</string>
+    <string name="survey_q_nps_comment_hint">Your comment</string>
+
+    <!-- Survey — thank you -->
+    <string name="survey_done_eyebrow">THANK YOU</string>
+    <string name="survey_done_title">Thanks for your answers</string>
+    <string name="survey_done_body">Your answers help us make Quotify better. Your custom widget background is already in your collection.</string>
+    <string name="survey_done_reward_title">New widget background unlocked</string>
+    <string name="survey_done_reward_body">Apply it in your widget settings.</string>
+    <string name="survey_done_empty_eyebrow">OOPS</string>
+    <string name="survey_done_empty_title">The rewards have run out</string>
+    <string name="survey_done_empty_body">Thank you for your answers! We have handed out every background we had — we are adding new ones right now.</string>
+    <string name="survey_done_primary">Set up widget</string>
+    <string name="survey_done_secondary">Done</string>
+
+    <!-- Survey — profile plate -->
+    <string name="survey_plate_title">Take a short survey</string>
+    <string name="survey_plate_subtitle">Get a custom widget background as a gift</string>
+    <string name="survey_plate_preview_title">Survey plate</string>
+    <string name="survey_plate_preview_card">Card</string>
+    <string name="survey_plate_preview_gold">Gold</string>
+    <string name="survey_plate_preview_gold_full">Gold, full bleed</string>
+
+    <!-- Dev tools -->
+    <string name="dev_tools_survey_section">Survey</string>
+    <string name="dev_tools_open_survey">Survey screens</string>
+    <string name="dev_tools_open_survey_plate">Profile plate variants</string>
+    <string name="dev_tools_reset_survey">Reset survey state</string>
+    <string name="dev_tools_survey_reset_done">Survey state cleared</string>
 </resources>

@@ -23,7 +23,7 @@ import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 import com.kovhan.domain.settings.AppLanguage
 import com.kovhan.domain.settings.AppTheme
-import com.kovhan.feature.main.presentation.profile.component.NotificationsCard
+import com.kovhan.feature.main.presentation.profile.component.DailyQuoteCard
 import com.kovhan.feature.main.presentation.profile.component.PremiumBanner
 import com.kovhan.feature.main.presentation.profile.component.ProfileHeader
 import com.kovhan.feature.main.presentation.profile.component.ProfileStatsCard
@@ -32,6 +32,8 @@ import com.kovhan.feature.main.presentation.profile.component.WidgetSection
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenIntent
 import com.kovhan.feature.main.presentation.profile.mvi.ProfileScreenState
 import com.kovhan.feature.main.presentation.profile.navigation.ProfileScreenNavAction
+import com.kovhan.feature.survey.presentation.plate.SurveyPlate
+import com.kovhan.feature.survey.presentation.plate.SurveyPlateVariant
 
 private const val DOCK_RESERVED_SPACE_DP = 90
 
@@ -95,6 +97,16 @@ fun ProfileScreen(
 
             Spacer(Modifier.height(14.dp))
 
+            state.postponedSurveyId?.let { surveyId ->
+                SurveyPlate(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { navAction.navigateToSurvey(surveyId) },
+                    variant = SurveyPlateVariant.GOLD,
+                )
+
+                Spacer(Modifier.height(14.dp))
+            }
+
             if (!state.isPremium) {
                 PremiumBanner(
                     modifier = Modifier.fillMaxWidth(),
@@ -111,14 +123,10 @@ fun ProfileScreen(
 
             Spacer(Modifier.height(14.dp))
 
-            NotificationsCard(
+            DailyQuoteCard(
                 modifier = Modifier.fillMaxWidth(),
                 showQuoteOfDay = state.showQuoteOfDay,
-                notificationsEnabled = state.notificationsEnabled,
-                reminderTime = reminderTime,
                 onShowQuoteOfDayToggled = intent::onShowQuoteOfDayToggled,
-                onNotificationsToggled = intent::onNotificationsToggled,
-                onReminderTimeClick = intent::onReminderTimeClicked,
             )
 
             Spacer(Modifier.height(14.dp))

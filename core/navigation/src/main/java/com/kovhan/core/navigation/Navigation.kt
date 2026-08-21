@@ -82,6 +82,14 @@ data class OfferKey(val origin: PaywallOrigin = PaywallOrigin.BANNER) : NavKey
 @Serializable
 data object DevToolsKey : NavKey
 
+@Serializable
+data class SurveyKey(val surveyId: String = DEFAULT_SURVEY_ID) : NavKey
+
+@Serializable
+data object SurveyPlatePreviewKey : NavKey
+
+const val DEFAULT_SURVEY_ID = "quotify_v1"
+
 const val EXTRA_OPEN_WIDGET_SETTINGS = "com.kovhan.quotify.OPEN_WIDGET_SETTINGS"
 const val EXTRA_OPEN_WIDGET_QUOTE = "com.kovhan.quotify.OPEN_WIDGET_QUOTE"
 
@@ -238,6 +246,18 @@ data class ConfirmDialogKey(
 
 @Serializable
 data object WidgetPromoKey: DialogKey
+
+@Serializable
+data class SurveyInviteDialogKey(val surveyId: String = DEFAULT_SURVEY_ID) : DialogKey
+
+@Serializable
+enum class SurveyInviteAction { START, LATER, DISMISS }
+
+@Serializable
+data class SurveyExitDialogKey(val surveyId: String = DEFAULT_SURVEY_ID) : DialogKey
+
+@Serializable
+enum class SurveyExitAction { LATER, SKIP }
 
 @Serializable
 data object WidgetSettingsExitDialogKey : DialogKey

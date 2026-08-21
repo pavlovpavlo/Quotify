@@ -28,6 +28,9 @@ import com.kovhan.feature.main.presentation.profile.component.ProfileSectionTitl
 fun DevToolsScreen(
     onBack: () -> Unit,
     onOpenOffer: () -> Unit,
+    onOpenSurvey: () -> Unit,
+    onOpenSurveyPlate: () -> Unit,
+    onResetSurveyState: () -> Unit,
     onOpenDialog: (DialogKey) -> Unit,
     paddingValues: PaddingValues,
 ) {
@@ -60,6 +63,41 @@ fun DevToolsScreen(
                 onClick = onOpenOffer,
                 variant = QuotifyButtonVariant.Outlined,
                 accent = QuotifyButtonAccent.Ai,
+                size = QuotifyButtonSize.Medium,
+            )
+
+            VerticalSpacer(dimensions.space6)
+
+            ProfileSectionTitle(stringResource(R.string.dev_tools_survey_section))
+
+            QuotifyButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.dev_tools_open_survey),
+                onClick = onOpenSurvey,
+                variant = QuotifyButtonVariant.Outlined,
+                accent = QuotifyButtonAccent.Ai,
+                size = QuotifyButtonSize.Medium,
+            )
+
+            VerticalSpacer(dimensions.space2)
+
+            QuotifyButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.dev_tools_open_survey_plate),
+                onClick = onOpenSurveyPlate,
+                variant = QuotifyButtonVariant.Outlined,
+                accent = QuotifyButtonAccent.Ai,
+                size = QuotifyButtonSize.Medium,
+            )
+
+            VerticalSpacer(dimensions.space2)
+
+            QuotifyButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.dev_tools_reset_survey),
+                onClick = onResetSurveyState,
+                variant = QuotifyButtonVariant.Outlined,
+                accent = QuotifyButtonAccent.Neutral,
                 size = QuotifyButtonSize.Medium,
             )
 

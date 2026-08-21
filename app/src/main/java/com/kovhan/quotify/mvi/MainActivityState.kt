@@ -10,4 +10,5 @@ data class MainActivityState(
     val language: AppLanguage = AppLanguage.default,
     val isFabTooltipVisible: Boolean = false,
     val pendingOfferTrigger: OfferTrigger? = null,
+    val pendingSurveyId: String? = null,
 ) : UiState

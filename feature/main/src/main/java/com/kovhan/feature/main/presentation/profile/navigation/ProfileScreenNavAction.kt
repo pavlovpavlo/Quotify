@@ -11,6 +11,8 @@ interface ProfileScreenNavAction {
 
     fun navigateToDevTools()
 
+    fun navigateToSurvey(surveyId: String)
+
     companion object {
         val Empty: ProfileScreenNavAction = EmptyProfileScreenNavAction
     }
@@ -22,4 +24,5 @@ private object EmptyProfileScreenNavAction : ProfileScreenNavAction {
     override fun navigateToAbout() = Unit
     override fun navigateToAuth() = Unit
     override fun navigateToDevTools() = Unit
+    override fun navigateToSurvey(surveyId: String) = Unit
 }

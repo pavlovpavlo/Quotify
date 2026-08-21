@@ -7,4 +7,6 @@ interface MainIntent : DockIntent {
     fun onAppForegrounded()
 
     fun onOfferShown()
+
+    fun onSurveyInviteShown()
 }

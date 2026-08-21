@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":design-systems"))
     implementation(project(":feature:common"))
+    implementation(project(":feature:survey"))
 
     implementationAndroidX()
     implementationCompose()

@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -81,7 +82,7 @@ internal fun WidgetFrequencySheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = dimensions.space2),
-                text = stringResource(DsR.string.widget_frequency_column),
+                text = pluralStringResource(DsR.plurals.widget_frequency_column, selectedHours),
                 textAlign = TextAlign.Center,
                 color = colors.textSecondary,
                 style = TextStyle(

@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 2,
+  "surveys": [
+    {
+      "id": "push_interest_v2",
+      "enabled": true,
+      "showProgress": true,
+      "reward": { "id": "survey_reward_cover", "kind": "widget_background" },
+      "invite": {
+        "title": { "en": "Should Quotify send notifications?", "uk": "Чи потрібні Quotify сповіщення?" },
+        "body": {
+          "en": "Four quick questions — they decide whether we build push notifications at all.",
+          "uk": "Чотири швидкі питання — від них залежить, чи робимо ми пуші взагалі."
+        },
+        "reward": {
+          "en": "Reward — a new widget background",
+          "uk": "Нагорода — новий фон для віджета"
+        }
+      },
+      "questions": [
+        {
+          "id": "interest",
+          "title": {
+            "en": "Would you want Quotify to send you notifications?",
+            "uk": "Хотів би отримувати сповіщення від Quotify?"
+          },
+          "description": { "en": "Pick one", "uk": "Обери один варіант" },
+          "multiSelect": false,
+          "skippable": false,
+          "options": [
+            { "id": "daily", "text": { "en": "Yes, every day", "uk": "Так, щодня" } },
+            { "id": "few_week", "text": { "en": "Yes, a few times a week", "uk": "Так, кілька разів на тиждень" } },
+            { "id": "rare", "text": { "en": "Only occasionally", "uk": "Лише зрідка" } },
+            {
+              "id": "never",
+              "text": { "en": "No, I would turn them off", "uk": "Ні, я б їх вимкнув" },
+              "input": {
+                "required": false,
+                "label": { "en": "Why not?", "uk": "Чому ні?" },
+                "placeholder": { "en": "A word or two is enough", "uk": "Достатньо кількох слів" }
+              }
+            }
+          ]
+        },
+        {
+          "id": "content",
+          "title": {
+            "en": "What would be worth a notification?",
+            "uk": "Заради чого варто присилати сповіщення?"
+          },
+          "description": { "en": "Pick as many as apply", "uk": "Обери скільки завгодно варіантів" },
+          "multiSelect": true,
+          "skippable": true,
+          "options": [
+            { "id": "quote_of_day", "text": { "en": "Quote of the day", "uk": "Цитата дня" } },
+            { "id": "saved_reminder", "text": { "en": "A reminder to revisit my saved quotes", "uk": "Нагадування перечитати збережені цитати" } },
+            { "id": "reading_streak", "text": { "en": "My reading streak", "uk": "Моя серія днів поспіль" } },
+            { "id": "new_collections", "text": { "en": "New curated collections", "uk": "Нові добірки цитат" } },
+            { "id": "widget_tips", "text": { "en": "Widget ideas and tips", "uk": "Ідеї та поради для віджета" } },
+            {
+              "id": "other",
+              "text": { "en": "Something else", "uk": "Щось інше" },
+              "input": {
+                "required": true,
+                "label": { "en": "What exactly?", "uk": "Що саме?" },
+                "placeholder": { "en": "Describe the notification you would like", "uk": "Опиши сповіщення, яке хотів би отримувати" }
+              }
+            }
+          ]
+        },
+        {
+          "id": "timing",
+          "title": { "en": "When would it be welcome?", "uk": "Коли це було б доречно?" },
+          "description": { "en": "Pick one", "uk": "Обери один варіант" },
+          "multiSelect": false,
+          "skippable": true,
+          "options": [
+            { "id": "morning", "text": { "en": "Morning", "uk": "Зранку" } },
+            { "id": "midday", "text": { "en": "Around midday", "uk": "Опівдні" } },
+            { "id": "evening", "text": { "en": "Evening", "uk": "Увечері" } },
+            { "id": "night", "text": { "en": "Late at night", "uk": "Пізно ввечері" } }
+          ]
+        },
+        {
+          "id": "blocker",
+          "title": {
+            "en": "What would make you turn notifications off?",
+            "uk": "Що змусило б тебе вимкнути сповіщення?"
+          },
+          "description": { "en": "Pick one and add details", "uk": "Обери один і додай деталі" },
+          "multiSelect": false,
+          "skippable": true,
+          "options": [
+            { "id": "too_often", "text": { "en": "Too many of them", "uk": "Їх забагато" } },
+            { "id": "irrelevant", "text": { "en": "Content that does not fit me", "uk": "Контент, який мені не підходить" } },
+            { "id": "wrong_time", "text": { "en": "Arriving at the wrong time", "uk": "Приходять не вчасно" } },
+            { "id": "no_push_at_all", "text": { "en": "I keep notifications off everywhere", "uk": "Я скрізь тримаю сповіщення вимкненими" } },
+            {
+              "id": "other",
+              "text": { "en": "Something else", "uk": "Щось інше" },
+              "input": {
+                "required": true,
+                "label": { "en": "Tell us more", "uk": "Розкажи більше" },
+                "placeholder": { "en": "What would annoy you?", "uk": "Що б тебе дратувало?" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

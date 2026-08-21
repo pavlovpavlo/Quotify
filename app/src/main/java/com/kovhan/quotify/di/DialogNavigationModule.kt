@@ -5,6 +5,7 @@ import com.kovhan.feature.addquote.navigation.AddQuoteDialogEntryBuilder
 import com.kovhan.feature.entitydetails.navigation.EntityDetailsDialogEntryBuilder
 import com.kovhan.feature.main.navigation.MainDialogEntryBuilder
 import com.kovhan.feature.splash.navigation.SplashDialogEntryBuilder
+import com.kovhan.feature.survey.navigation.SurveyDialogEntryBuilder
 import com.kovhan.feature.widget.navigation.WidgetDialogEntryBuilder
 import dagger.Binds
 import dagger.Module
@@ -40,5 +41,11 @@ abstract class DialogNavigationModule {
     @IntoSet
     abstract fun bindSplashDialogEntryBuilder(
         impl: SplashDialogEntryBuilder,
+    ): DialogEntryBuilder
+
+    @Binds
+    @IntoSet
+    abstract fun bindSurveyDialogEntryBuilder(
+        impl: SurveyDialogEntryBuilder,
     ): DialogEntryBuilder
 }

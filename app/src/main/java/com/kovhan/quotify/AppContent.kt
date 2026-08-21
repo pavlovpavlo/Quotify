@@ -32,6 +32,7 @@ import com.kovhan.core.navigation.DialogEntryBuilder
 import com.kovhan.core.navigation.EntryBuilder
 import com.kovhan.core.navigation.NavigationCoordinator
 import com.kovhan.core.navigation.OfferKey
+import com.kovhan.core.navigation.SurveyInviteDialogKey
 import com.kovhan.core.navigation.models.PaywallOrigin
 import com.kovhan.core.navigation.PlaceholderBottomSheetKey
 import com.kovhan.core.navigation.PlaceholderDialogKey
@@ -92,6 +93,16 @@ fun AppContent(
         }
         uiIntent.onOfferShown()
         coordinator.navigate(OfferKey(origin))
+    }
+
+       LaunchedEffect(uiState.pendingSurveyId, coordinator.currentKey, coordinator.currentDialog) {
+        val surveyId = uiState.pendingSurveyId ?: return@LaunchedEffect
+        val current = coordinator.currentKey ?: return@LaunchedEffect
+        if (!coordinator.isTopLevelKey(current)) return@LaunchedEffect
+        if (coordinator.currentDialog != null) return@LaunchedEffect
+
+        uiIntent.onSurveyInviteShown()
+        coordinator.showDialog(SurveyInviteDialogKey(surveyId))
     }
 
     val showDock by remember {

@@ -48,6 +48,7 @@ internal fun WidgetTonePicker(
 @Composable
 internal fun WidgetCoverPicker(
     selectedCoverId: String,
+    unlockedCovers: List<String>,
     blurEnabled: Boolean,
     onCoverSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -59,7 +60,7 @@ internal fun WidgetCoverPicker(
         modifier = modifier.horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(dimensions.size7),
     ) {
-        WidgetCovers.ALL.forEach { coverId ->
+        (unlockedCovers + WidgetCovers.ALL).forEach { coverId ->
             QuotifySwatch(
                 modifier = Modifier.width(COVER_CELL),
                 selected = selectedCoverId == coverId,
@@ -79,8 +80,6 @@ internal fun WidgetCoverPicker(
     }
 }
 
-// Narrower than it is tall, so the swatch reads as the same pill used by the
-// collection colour picker rather than a circle.
 private val TONE_CELL = 46.dp
 private val COVER_CELL = 88.dp
 private const val HALO_ALPHA = 0.2f

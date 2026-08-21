@@ -114,7 +114,9 @@ private suspend fun applyWidget(
 
     WidgetPinner.pin(context) -> {
         viewModel.applyToWidget(alreadyPlaced = false)
-        AppSnackbarBus.show(SnackbarMessage.success(DsR.string.widget_added_message))
+        WidgetPinner.awaitPlacement(context) {
+            AppSnackbarBus.show(SnackbarMessage.success(DsR.string.widget_added_message))
+        }
         true
     }
 

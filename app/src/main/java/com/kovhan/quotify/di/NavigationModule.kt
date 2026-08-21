@@ -9,6 +9,7 @@ import com.kovhan.feature.onboarding.navigation.OnboardingEntryBuilder
 import com.kovhan.feature.search.navigation.SearchEntryBuilder
 import com.kovhan.feature.splash.navigation.SplashEntryBuilder
 import com.kovhan.feature.subscription.navigation.SubscriptionEntryBuilder
+import com.kovhan.feature.survey.navigation.SurveyEntryBuilder
 import com.kovhan.feature.webview.navigation.WebViewEntryBuilder
 import com.kovhan.feature.widget.navigation.WidgetEntryBuilder
 import dagger.Binds
@@ -64,4 +65,8 @@ abstract class NavigationModule {
     @Binds
     @IntoSet
     abstract fun bindSubscriptionEntryBuilder(impl: SubscriptionEntryBuilder): EntryBuilder
+
+    @Binds
+    @IntoSet
+    abstract fun bindSurveyEntryBuilder(impl: SurveyEntryBuilder): EntryBuilder
 }

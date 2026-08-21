@@ -185,3 +185,14 @@ enum class AppTheme(override val value: String) : AnalyticsValue {
     DARK("dark"),
     LIGHT("light"),
 }
+
+enum class SurveyInviteChoice(override val value: String) : AnalyticsValue {
+    START("start"),
+    LATER("later"),
+    DISMISS("dismiss"),
+}
+
+enum class SurveyExitChoice(override val value: String) : AnalyticsValue {
+    LATER("later"),
+    SKIP("skip"),
+}

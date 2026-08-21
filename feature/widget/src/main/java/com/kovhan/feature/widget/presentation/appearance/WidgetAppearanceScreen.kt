@@ -108,7 +108,11 @@ internal fun WidgetAppearanceScreen(
                     ),
                 )
 
-                WidgetBackgroundSection(settings = settings, intent = intent)
+                WidgetBackgroundSection(
+                    settings = settings,
+                    unlockedCovers = state.unlockedCovers,
+                    intent = intent,
+                )
 
                 if (settings is WidgetStyleSettings.Cover) {
                     WidgetAppearanceToggleRow(
