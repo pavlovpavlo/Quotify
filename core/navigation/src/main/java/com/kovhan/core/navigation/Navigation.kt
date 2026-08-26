@@ -71,6 +71,9 @@ data object EditProfileKey : NavKey
 data object AboutKey : NavKey
 
 @Serializable
+data object FaqKey : NavKey
+
+@Serializable
 data class PaywallKey(val origin: PaywallOrigin = PaywallOrigin.HOME) : NavKey
 
 @Serializable
@@ -109,12 +112,15 @@ data class WidgetAppearanceKey(val style: String) : NavKey
 data class AddQuoteKey(
     val tab: AddQuoteTab = AddQuoteTab.TEXT,
     val entryPoint: AddQuoteEntryPoint = AddQuoteEntryPoint.TAB,
+    /** Колекція, у яку одразу піде цитата — вхід з порожньої папки минає вибір колекції. */
+    val collectionId: String? = null,
 ) : NavKey
 
 @Serializable
 data class QuoteDetailsKey(
     val quote: String,
     val inputMethod: QuoteInputMethod = QuoteInputMethod.TEXT,
+    val collectionId: String? = null,
 ) : NavKey
 
 @Serializable

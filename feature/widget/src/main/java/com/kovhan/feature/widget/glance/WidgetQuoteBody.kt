@@ -3,11 +3,11 @@ package com.kovhan.feature.widget.glance
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceModifier
 import androidx.glance.LocalContext
-import androidx.glance.LocalSize
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.ColumnScope
@@ -56,14 +56,14 @@ internal fun ColumnScope.WidgetQuoteBody(
     )
 
     if (showMeta) {
-        Spacer(GlanceModifier.height(META_SPACING))
+        Spacer(GlanceModifier.height(META_SPACING * metrics.sizeScale))
         Text(
             text = meta,
             maxLines = 1,
             modifier = GlanceModifier.fillMaxWidth(),
             style = TextStyle(
                 color = ColorProvider(textColor.copy(alpha = META_ALPHA)),
-                fontSize = META_FONT_SIZE.sp,
+                fontSize = metrics.metaFontSize.sp,
                 fontWeight = FontWeight.Medium,
                 textAlign = textAlign,
             ),
@@ -75,7 +75,7 @@ internal fun ColumnScope.WidgetQuoteBody(
 internal fun WidgetEmptyBody(
     strings: WidgetStrings,
     textColor: Color,
-    compact: Boolean,
+    metrics: WidgetLayoutMetrics,
 ) {
     Column(
         modifier = GlanceModifier.fillMaxSize(),
@@ -87,18 +87,18 @@ internal fun WidgetEmptyBody(
             maxLines = 1,
             style = TextStyle(
                 color = ColorProvider(textColor),
-                fontSize = 15.sp,
+                fontSize = (EMPTY_TITLE_SIZE * metrics.sizeScale).sp,
                 fontWeight = FontWeight.Bold,
             ),
         )
-        if (!compact) {
-            Spacer(GlanceModifier.height(4.dp))
+        if (!metrics.compact) {
+            Spacer(GlanceModifier.height(4.dp * metrics.sizeScale))
             Text(
                 text = strings.emptyHint,
                 maxLines = 2,
                 style = TextStyle(
                     color = ColorProvider(textColor.copy(alpha = META_ALPHA)),
-                    fontSize = META_FONT_SIZE.sp,
+                    fontSize = metrics.metaFontSize.sp,
                 ),
             )
         }
@@ -112,14 +112,25 @@ internal fun WidgetEmptyBody(
  * ellipsis when `maxLines` is what cuts the text off. Asking for more lines than
  * actually fit means the layout clips them instead, with no ellipsis, so the
  * line count has to be derived from the space really left for the quote.
+ *
+ * [sizeScale] carries the second half of that budget: type is pinned in sp while
+ * the box is handed to us in dp, so an identically-placed widget on a tablet is
+ * physically much larger with the same 16sp quote inside it — which reads as
+ * tiny. Scaling every dimension by how much bigger the box is than a phone-sized
+ * one keeps the proportions the design was drawn at.
  */
 internal data class WidgetLayoutMetrics(
     val available: Dp,
     val compact: Boolean,
     val fontScale: Float,
+    val sizeScale: Float,
 ) {
+    val metaFontSize: Float get() = META_FONT_SIZE * sizeScale
+
+    val iconRowHeight: Dp get() = ICON_ROW_HEIGHT * sizeScale
+
     fun quoteFontSize(settings: WidgetStyleSettings): Float =
-        (if (compact) COMPACT_QUOTE_SIZE else BASE_QUOTE_SIZE) * settings.fontSize.scale
+        (if (compact) COMPACT_QUOTE_SIZE else BASE_QUOTE_SIZE) * settings.fontSize.scale * sizeScale
 
     /**
      * Font sizes are in sp, so the budget has to be measured in scaled units too —
@@ -127,11 +138,11 @@ internal data class WidgetLayoutMetrics(
      */
     fun quoteMaxLines(quoteSize: Float, showMeta: Boolean): Int {
         val metaBlock = if (showMeta) {
-            META_SPACING.value + META_FONT_SIZE * fontScale * META_LINE_RATIO
+            (META_SPACING * sizeScale).value + metaFontSize * fontScale * META_LINE_RATIO
         } else {
             0f
         }
-        val chrome = (if (compact) 0f else ICON_ROW_HEIGHT.value) + metaBlock
+        val chrome = (if (compact) 0f else iconRowHeight.value) + metaBlock
         val forQuote = available.value - chrome
         val lineHeight = quoteSize * fontScale * QUOTE_LINE_RATIO
         val fits = forQuote / lineHeight + LINE_ROUNDING
@@ -140,12 +151,24 @@ internal data class WidgetLayoutMetrics(
     }
 
     companion object {
+        /**
+         * How much larger the placed widget is than the phone reference the sizes
+         * were tuned against. The smaller of the two ratios wins so a widget that
+         * only grew sideways never asks for type its height cannot fit.
+         */
+        fun scaleFor(size: DpSize): Float = minOf(
+            size.width.value / REFERENCE_WIDTH,
+            size.height.value / REFERENCE_HEIGHT,
+        ).coerceIn(1f, MAX_SIZE_SCALE)
+
         @Composable
-        fun of(compact: Boolean, padding: Dp): WidgetLayoutMetrics = WidgetLayoutMetrics(
-            available = LocalSize.current.height - padding * 2,
-            compact = compact,
-            fontScale = LocalContext.current.resources.configuration.fontScale,
-        )
+        fun of(compact: Boolean, padding: Dp, sizeScale: Float, size: DpSize) =
+            WidgetLayoutMetrics(
+                available = size.height - padding * 2,
+                compact = compact,
+                fontScale = LocalContext.current.resources.configuration.fontScale,
+                sizeScale = sizeScale,
+            )
     }
 }
 
@@ -157,6 +180,7 @@ private fun WidgetStyleSettings.glanceTextAlign(): TextAlign = when (textAlign) 
 private const val BASE_QUOTE_SIZE = 16f
 private const val COMPACT_QUOTE_SIZE = 14f
 private const val META_FONT_SIZE = 12f
+private const val EMPTY_TITLE_SIZE = 15f
 private const val META_ALPHA = 0.82f
 private const val QUOTE_LINE_RATIO = 1.35f
 private const val META_LINE_RATIO = 1.35f
@@ -165,3 +189,9 @@ private const val MIN_QUOTE_LINES = 2
 private const val MAX_QUOTE_LINES = 9
 private val META_SPACING = 4.dp
 private val ICON_ROW_HEIGHT = 16.dp
+
+// A generous phone 4x2 placement. Anything at or below this renders exactly as
+// before; a tablet cell is roughly twice as wide, which is where scaling starts.
+private const val REFERENCE_WIDTH = 300f
+private const val REFERENCE_HEIGHT = 130f
+private const val MAX_SIZE_SCALE = 1.6f

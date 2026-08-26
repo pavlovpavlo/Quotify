@@ -12,6 +12,7 @@ import com.kovhan.core.navigation.ConfirmDialogKey
 import com.kovhan.core.navigation.EditCollectionStyleSheetKey
 import com.kovhan.core.navigation.EditQuoteKey
 import com.kovhan.core.navigation.EntityDetailsKey
+import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.navigation.EntityType
 import com.kovhan.core.navigation.MoveQuoteSheetKey
 import com.kovhan.core.navigation.NavigationCoordinator
@@ -196,8 +197,18 @@ internal fun EntityDetailsEntry(
             coordinator.goBack()
         }
 
+        // Порожня папка вже і є ціллю збереження, тож несемо її далі — на кроці
+        // збереження шит вибору колекції не відкривається.
         override fun onAddQuote() =
-            coordinator.navigate(AddQuoteKey(entryPoint = AddQuoteEntryPoint.EMPTY_COLLECTION))
+            coordinator.navigate(
+                AddQuoteKey(
+                    entryPoint = AddQuoteEntryPoint.EMPTY_COLLECTION,
+                    collectionId = key.entityId.takeIf {
+                        key.type == EntityType.COLLECTION &&
+                            it != SavedCollection.FAVOURITES_ID
+                    },
+                ),
+            )
     }
 
     EntityDetailsScreen(

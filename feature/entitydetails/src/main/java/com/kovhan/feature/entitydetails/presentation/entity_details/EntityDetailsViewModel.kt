@@ -242,8 +242,13 @@ class EntityDetailsViewModel @Inject constructor(
 
         viewModelScope.launch {
             val existing = getQuoteById(draft.quoteId)
+            // «Обране» — це прапорець isFavourite, а не папка. Прив'язати цитату
+            // до нього означало б вирвати її з реальної колекції, тож на цьому
+            // екрані лишаємо ту, що вже була.
             val collectionId = when (currentType) {
-                EntityType.COLLECTION -> currentEntityId
+                EntityType.COLLECTION ->
+                    if (isFavouritesScreen) existing?.collectionId else currentEntityId
+
                 EntityType.TAG,
                 EntityType.BOOK,
                 EntityType.AUTHOR,
@@ -292,13 +297,19 @@ class EntityDetailsViewModel @Inject constructor(
         }
     }
 
+    private val isFavouritesScreen: Boolean
+        get() = currentType == EntityType.COLLECTION &&
+            currentEntityId == SavedCollection.FAVOURITES_ID
+
     override fun onRemoveQuoteRequested(quoteId: String) {
-        publishEffect(
-            EntityDetailsEffect.OpenDeleteQuoteDialog(
-                quoteId = quoteId,
-                mode = currentQuoteRemovalMode(),
-            ),
-        )
+        viewModelScope.launch {
+            publishEffect(
+                EntityDetailsEffect.OpenDeleteQuoteDialog(
+                    quoteId = quoteId,
+                    mode = removalModeFor(quoteId),
+                ),
+            )
+        }
     }
 
     override fun onRemoveQuoteConfirmed(quoteId: String) {
@@ -435,18 +446,29 @@ class EntityDetailsViewModel @Inject constructor(
             )
         }
 
-    private fun currentQuoteRemovalMode(): QuoteRemovalMode =
-        when (currentType) {
-            EntityType.COLLECTION -> when (currentEntityId) {
-                SavedCollection.GENERAL_ID -> QuoteRemovalMode.DELETE
-                SavedCollection.FAVOURITES_ID -> QuoteRemovalMode.REMOVE_FROM_FAVOURITES
-                else -> QuoteRemovalMode.REMOVE_FROM_COLLECTION
+    /**
+     * Текст підтвердження має збігатися з тим, що станеться насправді, а це
+     * залежить від самої цитати: та, що живе ще й в «Обраному», лише втратить
+     * прив'язку, решта — зникне назовсім.
+     */
+    private suspend fun removalModeFor(quoteId: String): QuoteRemovalMode {
+        if (currentType != EntityType.COLLECTION) return QuoteRemovalMode.REMOVE_FROM_ENTITY
+
+        val quote = getQuoteById(quoteId)
+        return if (currentEntityId == SavedCollection.FAVOURITES_ID) {
+            if (quote?.collectionId != null) {
+                QuoteRemovalMode.REMOVE_FROM_FAVOURITES
+            } else {
+                QuoteRemovalMode.DELETE
             }
-            EntityType.TAG,
-            EntityType.BOOK,
-            EntityType.AUTHOR,
-            -> QuoteRemovalMode.REMOVE_FROM_ENTITY
+        } else {
+            if (quote?.isFavourite == true) {
+                QuoteRemovalMode.REMOVE_FROM_COLLECTION
+            } else {
+                QuoteRemovalMode.DELETE
+            }
         }
+    }
 }
 
 private fun EntityType.toLibraryEntityType(): LibraryEntityType =

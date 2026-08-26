@@ -147,6 +147,7 @@ fun ProfileScreen(
                 onSubscriptionClick = intent::onUpgradeClicked,
                 onRateClick = intent::onRateClicked,
                 onFeedbackClick = intent::onFeedbackClicked,
+                onFaqClick = navAction::navigateToFaq,
                 onSupportClick = intent::onSupportClicked,
                 onAboutClick = navAction::navigateToAbout,
                 onDevToolsClick = navAction::navigateToDevTools,

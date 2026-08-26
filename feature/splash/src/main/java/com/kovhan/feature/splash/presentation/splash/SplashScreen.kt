@@ -39,7 +39,7 @@ fun SplashScreen(
             composition = preloaderLottieComposition,
             modifier = Modifier,
             iterations = 1,
-            speed = 1.3f,
+            speed = SplashAnimation.SPEED,
             isPlaying = true
         )
     }

@@ -43,7 +43,11 @@ class UpsertQuoteUseCase @Inject constructor(
                 text = QuoteLimits.normalizeText(text),
                 authorId = authorId,
                 bookId = bookId,
-                collectionId = collectionId.takeUnless { it == SavedCollection.GENERAL_ID },
+                // Ні «Загальна», ні «Обране» не зберігаються як collectionId:
+                // перша мається на увазі за замовчуванням, друге — прапорець isFavourite.
+                collectionId = collectionId.takeUnless {
+                    it == SavedCollection.GENERAL_ID || it == SavedCollection.FAVOURITES_ID
+                },
                 isFavourite = isFavourite,
                 tagIds = tagIds,
                 inWidgetPlaylist = inWidgetPlaylist,

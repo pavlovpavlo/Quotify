@@ -65,14 +65,21 @@ internal fun WidgetContent(
         else -> openQuoteIntent(context, quote.id)
     }
 
-    val compact = LocalSize.current.height < COMPACT_HEIGHT
-    val padding = if (compact) COMPACT_PADDING else CONTENT_PADDING
+    val size = LocalSize.current
+    val compact = size.height < COMPACT_HEIGHT
+    val sizeScale = WidgetLayoutMetrics.scaleFor(size)
+    val padding = if (compact) COMPACT_PADDING else CONTENT_PADDING * sizeScale
 
     val darkTheme = context.isDarkTheme()
     val fill = WidgetBackgroundMapper.fillColor(settings)
     val border = WidgetBackgroundMapper.borderColor(settings, darkTheme)
     val text = WidgetBackgroundMapper.textColor(settings, darkTheme)
-    val metrics = WidgetLayoutMetrics.of(compact = compact, padding = padding)
+    val metrics = WidgetLayoutMetrics.of(
+        compact = compact,
+        padding = padding,
+        sizeScale = sizeScale,
+        size = size,
+    )
 
     Box(
         modifier = GlanceModifier
@@ -116,7 +123,7 @@ internal fun WidgetContent(
                         provider = ImageProvider(DsR.drawable.ic_settings),
                         contentDescription = null,
                         modifier = GlanceModifier
-                            .size(SETTINGS_ICON_SIZE)
+                            .size(SETTINGS_ICON_SIZE * sizeScale)
                             .clickable(actionStartActivity(openSettingsIntent(context))),
                         colorFilter = ColorFilter.tint(ColorProvider(text)),
                     )
@@ -124,7 +131,7 @@ internal fun WidgetContent(
             }
 
             if (quote == null) {
-                WidgetEmptyBody(strings, text, compact)
+                WidgetEmptyBody(strings, text, metrics)
             } else {
                 WidgetQuoteBody(quote, settings, text, metrics)
             }

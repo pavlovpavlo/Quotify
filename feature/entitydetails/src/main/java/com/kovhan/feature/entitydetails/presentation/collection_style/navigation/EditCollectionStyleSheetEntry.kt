@@ -52,11 +52,14 @@ internal fun EditCollectionStyleSheetEntry(
                 )
             }
         },
-        // Пейвол відкриваємо поверх — шит лишається в збережених оверлеях
-        // власника екрана, тож після покупки повернення відкриє його вже без замка.
+        // Пейвол відкриваємо поверх — restoreBottomSheets кладе шит у збережені
+        // оверлеї власника екрана, тож повернення відкриє його знову, вже без замка.
         onUnlock = {
             viewModel.onUnlockClicked()
-            coordinator.navigate(PaywallKey(PaywallOrigin.LIMIT))
+            coordinator.navigate(
+                PaywallKey(PaywallOrigin.LIMIT),
+                restoreBottomSheets = true,
+            )
         },
         onDismiss = coordinator::dismissBottomSheet,
     )

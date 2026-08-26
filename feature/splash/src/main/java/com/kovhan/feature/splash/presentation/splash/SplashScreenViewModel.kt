@@ -87,13 +87,9 @@ class SplashScreenViewModel @Inject constructor(
         return SplashScreenEffect.NavigateToMainWithPaywall
     }
 
-    /** Keep the intro on screen for at least [SPLASH_MIN_DURATION_MS] on the first pass. */
+    /** Keep the intro on screen until the Lottie has played through once. */
     private suspend fun awaitMinDuration() {
-        val remaining = SPLASH_MIN_DURATION_MS - (System.currentTimeMillis() - createdAt)
+        val remaining = SplashAnimation.MIN_VISIBLE_MS - (System.currentTimeMillis() - createdAt)
         if (remaining > 0) delay(remaining)
-    }
-
-    private companion object {
-        const val SPLASH_MIN_DURATION_MS = 3000L
     }
 }

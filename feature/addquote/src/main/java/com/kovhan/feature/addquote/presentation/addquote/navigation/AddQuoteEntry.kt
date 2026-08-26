@@ -30,7 +30,13 @@ internal fun AddQuoteEntry(
         }
 
         override fun proceedToDetails(quote: String, inputMethod: QuoteInputMethod) {
-            coordinator.navigate(QuoteDetailsKey(quote = quote, inputMethod = inputMethod))
+            coordinator.navigate(
+                QuoteDetailsKey(
+                    quote = quote,
+                    inputMethod = inputMethod,
+                    collectionId = key.collectionId,
+                ),
+            )
         }
 
         override fun openPaywall() {

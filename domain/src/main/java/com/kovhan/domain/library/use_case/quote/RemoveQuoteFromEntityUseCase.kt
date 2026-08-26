@@ -49,14 +49,14 @@ class RemoveQuoteFromEntityUseCase @Inject constructor(
             return
         }
 
-        if (collectionId == SavedCollection.GENERAL_ID) {
-            deleteQuote(quoteId)
-            return
-        }
-
         val quote = getQuoteById(quoteId) ?: return
-        val target = if (quote.isFavourite) null else SavedCollection.GENERAL_ID
-        editQuote(quote.copy(collectionId = target), generalName)
+        // Дзеркало правила «Обраного»: якщо цитата живе ще й там, прибираємо лише
+        // прив'язку до папки; якщо це було її єдине місце — видаляємо зовсім.
+        if (quote.isFavourite) {
+            editQuote(quote.copy(collectionId = null), generalName)
+        } else {
+            deleteQuote(quoteId)
+        }
     }
 
     private suspend fun removeFromFavourites(quoteId: String, generalName: String) {

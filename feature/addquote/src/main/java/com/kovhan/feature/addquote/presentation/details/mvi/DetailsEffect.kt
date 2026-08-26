@@ -1,5 +1,6 @@
 package com.kovhan.feature.addquote.presentation.details.mvi
 
+import com.kovhan.core.models.quote.AddQuoteAction
 import com.kovhan.core.ui.UiEffect
 
 sealed class DetailsEffect : UiEffect {
@@ -7,4 +8,9 @@ sealed class DetailsEffect : UiEffect {
     data object Close : DetailsEffect()
     data object OpenTagSheet : DetailsEffect()
     data class ProceedToSave(val draft: QuoteDraft) : DetailsEffect()
+
+    /** Колекція вже відома (вхід з порожньої папки) — цитата збережена без шита. */
+    data class Saved(val action: AddQuoteAction) : DetailsEffect()
+
+    data object ShowPaywall : DetailsEffect()
 }

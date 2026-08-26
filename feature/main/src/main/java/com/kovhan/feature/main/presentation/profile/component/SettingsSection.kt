@@ -42,6 +42,7 @@ internal fun SettingsSection(
     onSubscriptionClick: () -> Unit,
     onRateClick: () -> Unit,
     onFeedbackClick: () -> Unit,
+    onFaqClick: () -> Unit,
     onSupportClick: () -> Unit,
     onAboutClick: () -> Unit,
     onDevToolsClick: () -> Unit,
@@ -100,6 +101,13 @@ internal fun SettingsSection(
                 label = stringResource(R.string.profile_settings_feedback),
                 meta = null,
                 onClick = onFeedbackClick,
+                showDivider = true,
+            )
+            SettingsRow(
+                iconRes = R.drawable.ic_faq,
+                label = stringResource(R.string.profile_settings_faq),
+                meta = null,
+                onClick = onFaqClick,
                 showDivider = true,
             )
             SettingsRow(

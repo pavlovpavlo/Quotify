@@ -7,6 +7,7 @@ import com.kovhan.core.navigation.AboutKey
 import com.kovhan.core.navigation.DevToolsKey
 import com.kovhan.core.navigation.EditProfileKey
 import com.kovhan.core.navigation.EntryBuilder
+import com.kovhan.core.navigation.FaqKey
 import com.kovhan.core.navigation.FavoritesKey
 import com.kovhan.core.navigation.HomeKey
 import com.kovhan.core.navigation.NavigationCoordinator
@@ -15,6 +16,7 @@ import com.kovhan.core.navigation.QuotesKey
 import com.kovhan.feature.main.presentation.about.navigation.AboutEntry
 import com.kovhan.feature.main.presentation.devtools.navigation.DevToolsEntry
 import com.kovhan.feature.main.presentation.edit_profile.navigation.EditProfileEntry
+import com.kovhan.feature.main.presentation.faq.navigation.FaqEntry
 import com.kovhan.feature.main.presentation.favorites.navigation.FavoritesEntry
 import com.kovhan.feature.main.presentation.home.navigation.HomeEntry
 import com.kovhan.feature.main.presentation.profile.navigation.ProfileEntry
@@ -34,6 +36,7 @@ class MainEntryBuilder @Inject constructor() : EntryBuilder {
         scope.entry<ProfileKey> { ProfileEntry(coordinator, paddingValues) }
         scope.entry<EditProfileKey> { EditProfileEntry(coordinator, paddingValues) }
         scope.entry<AboutKey> { AboutEntry(coordinator, paddingValues) }
+        scope.entry<FaqKey> { FaqEntry(coordinator, paddingValues) }
         scope.entry<DevToolsKey> { DevToolsEntry(coordinator, paddingValues) }
     }
 }

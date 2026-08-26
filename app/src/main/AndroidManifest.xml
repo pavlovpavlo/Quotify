@@ -43,7 +43,8 @@
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Quotify.Splash">
+            android:theme="@style/Theme.Quotify.Splash"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

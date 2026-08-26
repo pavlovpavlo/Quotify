@@ -27,7 +27,7 @@
     <string name="add_quote_next">Next</string>
     <string name="add_quote_scan_caption_live">Point at the text and take a photo</string>
     <string name="add_quote_scan_caption_scanning">Recognizing text…</string>
-    <string name="add_quote_scan_caption_select">Press and drag to select a fragment. No selection keeps all text</string>
+    <string name="add_quote_scan_caption_select">Check the recognised text and edit it if needed</string>
     <string name="add_quote_scan_no_text">Couldn\'t recognize any text. Try again</string>
     <string name="add_quote_scan_gallery">Gallery</string>
     <string name="add_quote_scan_shutter_cd">Take a photo</string>
@@ -271,8 +271,93 @@
     <string name="support_email_no_app">No mail app found</string>
     <string name="profile_settings_about_meta">v2.4</string>
     <string name="profile_version">Version %1$s</string>
+    <string name="profile_settings_faq">FAQ</string>
+
+    <string name="faq_title">FAQ</string>
+    <string name="faq_section_general">General</string>
+    <string name="faq_section_features">Features</string>
+    <string name="faq_section_subscription">Subscription</string>
+    <string name="faq_section_account">Account and data</string>
+
+    <string name="faq_q_what_is">What is this app for?</string>
+    <string name="faq_a_what_is">It keeps the lines you want to remember: quotes from books, articles or your own thoughts. You sort them into folders, tag them, and come back to them through the widget and the quote of the day.</string>
+    <string name="faq_q_offline">Does it work offline?</string>
+    <string name="faq_a_offline">Offline access is a premium feature. Without a subscription the app asks for a connection when it starts. With premium the whole library — reading, editing, adding — works with no connection at all, and your changes sync as soon as you are back online. Scanning and tag suggestions always need a connection.</string>
+    <string name="faq_q_sync">How does syncing between devices work?</string>
+    <string name="faq_a_sync">Sign in with the same account on the other device — the library is pulled on launch. Anything you changed offline is pushed first, so nothing gets lost.</string>
+
+    <string name="faq_q_add_quote">How do I add a quote?</string>
+    <string name="faq_a_add_quote">Tap the plus button in the bottom bar. There are three ways: type it in, dictate it out loud, or scan a page with the camera.</string>
+    <string name="faq_q_scan">How does scanning work?</string>
+    <string name="faq_a_scan">Point the camera at a page or pick a photo from the gallery. The app recognises the text and lets you edit it before saving. It needs an internet connection and a registered account, and every scan counts towards your AI allowance.</string>
+    <string name="faq_q_folders_tags">What is the difference between folders and tags?</string>
+    <string name="faq_a_folders_tags">A quote lives in exactly one folder, but it can carry as many tags as you like. Folders are the structure; tags cut across it by topic.</string>
+    <string name="faq_q_favourites">How do Favourites work?</string>
+    <string name="faq_a_favourites">Favourites is a mark, not a folder. A quote can sit in Favourites and in a folder at the same time — removing it from one leaves it in the other.</string>
+    <string name="faq_q_daily">What is the quote of the day?</string>
+    <string name="faq_a_daily">One quote from our collection, picked fresh every day on the library screen. Tap the heart to keep it in your own library, or turn the whole thing off in settings.</string>
+    <string name="faq_q_widget">How do I set up the widget?</string>
+    <string name="faq_a_widget">Add the widget to your home screen, then pick a playlist — folders, tags, books or authors it should pull from — and how often it rotates. Colours and fonts are configured separately.</string>
+    <string name="faq_q_appearance">How do I change the language or theme?</string>
+    <string name="faq_a_appearance">Profile → Language or Appearance. Both apply immediately, without restarting the app.</string>
+
+    <string name="faq_q_premium">What does premium give me?</string>
+    <string name="faq_a_premium">Unlimited quotes and folders, offline access to your whole library, AI tag suggestions, a much larger scanning allowance, and custom icons and colours for your folders.</string>
+    <string name="faq_q_free_limits">What are the free limits?</string>
+    <string name="faq_a_free_limits">Up to 10 quotes and 3 folders, and the app needs a connection to start. Scanning is capped at 3 per day and 50 per month; tag suggestions are not available on the free plan at all. Premium removes the quote and folder caps and raises scanning to 15 per day and 200 per month.</string>
+    <string name="faq_q_cancel">How do I cancel my subscription?</string>
+    <string name="faq_a_cancel">Through Google Play → Payments and subscriptions → Subscriptions. You keep access until the end of the period you already paid for.</string>
+    <string name="faq_q_not_active">I paid, but premium is not active</string>
+    <string name="faq_a_not_active">Open Profile → Subscription: the status refreshes on its own within a few minutes. If it does not, check that you are signed in to the same Google account you paid with, and that the device is online.</string>
+    <string name="faq_q_expired">What happens to my quotes if the subscription ends?</string>
+    <string name="faq_a_expired">Nothing disappears. Everything you saved stays and is still readable — you just cannot add new quotes beyond the free limit until you renew.</string>
+
+    <string name="faq_q_why_account">Why should I create an account?</string>
+    <string name="faq_a_why_account">So your library is backed up and follows you to a new device. You can also use the app as a guest — everything is kept on the device, and it moves into your account when you sign up — but scanning and tag suggestions are only available to registered users.</string>
+    <string name="faq_q_reset_email">The password recovery email never arrives</string>
+    <string name="faq_a_reset_email">Check the Spam folder first — the email can take a few minutes. If it still is not there after 15 minutes, try again or write to us from the Support item in settings.</string>
+    <string name="faq_q_delete_account">How do I delete my account?</string>
+    <string name="faq_a_delete_account">Profile → Edit profile → Delete account. This also permanently deletes every quote, folder and tag you saved, so export anything you want to keep first.</string>
+
     <string name="about_title">About</string>
-    <string name="about_placeholder">App information is coming soon.</string>
+    <string name="about_intro_1">Quotify is your personal library for quotes and thoughts worth keeping.</string>
+    <string name="about_intro_2">A book, article, podcast, or casual conversation can leave you with a line you want to come back to. But too often, those notes get lost among dozens of other things you\'ve saved.</string>
+    <string name="about_intro_3">Quotify keeps meaningful words in one place, making it quick to save quotes, easy to organize them, and simple to find them again later.</string>
+
+    <string name="about_save_title">Save quotes in seconds</string>
+    <string name="about_save_1">Type a quote and add the author and source</string>
+    <string name="about_save_2">Scan a quote from a page using your camera</string>
+    <string name="about_save_3">Speak your thoughts and turn them into a saved quote</string>
+    <string name="about_save_note">Don\'t want to fill in everything right away? Save the text now and add the author, source, and other details later.</string>
+
+    <string name="about_organize_title">Organize your library your way</string>
+    <string name="about_organize_1">Create collections and customize them with colors and icons</string>
+    <string name="about_organize_2">Add your own tags or use AI-powered tag suggestions</string>
+    <string name="about_organize_3">Search by quote text, author, source, or tag</string>
+    <string name="about_organize_4">Add your favorite quotes to Favorites for quick access</string>
+    <string name="about_organize_note">Your library stays organized even when it grows to hundreds of saved thoughts.</string>
+
+    <string name="about_daily_title">Quote of the day</string>
+    <string name="about_daily_1">Discover a new quote every day or bring your favorite words directly to your home screen with a widget.</string>
+    <string name="about_daily_2">Choose which collection the widget uses and how often the quote changes.</string>
+
+    <string name="about_offline_title">Offline access</string>
+    <string name="about_offline_1">Your library stays available on your device even without an internet connection.</string>
+    <string name="about_offline_2">Read, add, and edit quotes while traveling, on the subway, on a plane, or anywhere else offline. Your changes can sync once you\'re connected again.</string>
+
+    <string name="about_premium_title">Quotify Premium</string>
+    <string name="about_premium_intro">The free version includes everything you need for everyday use. With Premium, you get more:</string>
+    <string name="about_premium_1">Unlimited collections and quotes</string>
+    <string name="about_premium_2">Offline access</string>
+    <string name="about_premium_3">Extended text scanning and AI-powered tag suggestions</string>
+    <string name="about_premium_billing">Subscriptions are charged through your Google Play account and automatically renew unless canceled at least 24 hours before the end of the current subscription period.</string>
+
+    <string name="about_guest_title">Start without signing up</string>
+    <string name="about_guest_1">Try Quotify as a guest — you don\'t need to create an account right away.</string>
+    <string name="about_guest_2">Later, you can sign in with Google or email and continue using your quote library.</string>
+
+    <string name="about_closing_1">Quotify is made for readers, writers, students, and anyone who loves collecting words worth coming back to.</string>
+    <string name="about_closing_2">Start your library with your first quote today.</string>
     <string name="nav_back">Back</string>
 
     <!-- Profile — appearance / theme sheet -->
@@ -297,7 +382,7 @@
     <string name="edit_account_section">Account</string>
     <string name="edit_change_password">Change password</string>
     <string name="edit_sign_out">Sign out</string>
-    <string name="edit_sign_in_or_register">Sign in or register</string>
+    <string name="edit_sign_in_or_register">Sign up or Log in</string>
     <string name="edit_delete_account">Delete account</string>
     <string name="edit_field_save">Save</string>
 
@@ -332,7 +417,7 @@
     <string name="auth_error_google_cancelled">Google sign-in was canceled.</string>
     <string name="auth_error_google_failed">Google sign-in failed. Please try again.</string>
     <string name="auth_error_generic">Something went wrong. Please try again.</string>
-    <string name="forgot_reset_sent">A recovery link has been sent to your email.</string>
+    <string name="forgot_reset_sent">A recovery link has been sent. It may take a few minutes — check the Spam folder too.</string>
 
     <!-- Edit profile — confirm dialogs -->
     <string name="dialog_cancel">Cancel</string>
@@ -378,7 +463,7 @@
     <string name="collection_details_menu_edit">Edit</string>
     <string name="collection_details_menu_delete">Delete</string>
     <string name="collection_details_empty_title">Nothing here yet</string>
-    <string name="collection_details_empty_message">Save quotes from your library or search into this folder — they\'ll appear here.</string>
+    <string name="collection_details_empty_message">Add your first quote to this folder — it will appear here.</string>
     <string name="collection_details_empty_add_quote">Add quote</string>
     <string name="collection_details_rename_title">Rename folder</string>
     <string name="collection_details_name_label">NAME</string>
@@ -399,7 +484,7 @@
     <string name="collection_details_move_favourite_notice">The quote will be copied into the chosen folder — it also stays in Favourites.</string>
     <string name="collection_details_remove_favourite_message">The quote will be removed from Favourites. If it is in another folder, it stays there.</string>
     <string name="collection_details_delete_quote_title">Delete quote?</string>
-    <string name="collection_details_delete_quote_message">The quote will be removed from this collection. This action can\'t be undone.</string>
+    <string name="collection_details_delete_quote_message">The quote will be removed from this folder, but it stays in Favourites.</string>
     <string name="collection_details_delete_quote_confirm">Delete quote</string>
     <!-- Search -->
     <string name="search_title">Search</string>

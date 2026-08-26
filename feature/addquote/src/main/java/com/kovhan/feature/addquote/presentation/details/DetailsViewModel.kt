@@ -10,6 +10,8 @@ import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.library.use_case.author.ObserveSavedAuthorsUseCase
 import com.kovhan.domain.library.use_case.book.ObserveSavedBooksUseCase
 import com.kovhan.domain.library.use_case.tag.ObserveSavedTagsUseCase
+import com.kovhan.feature.addquote.presentation.common.QuoteSaveResult
+import com.kovhan.feature.addquote.presentation.common.QuoteSaver
 import com.kovhan.feature.addquote.presentation.details.mvi.DetailsEffect
 import com.kovhan.feature.addquote.presentation.details.mvi.DetailsIntent
 import com.kovhan.feature.addquote.presentation.details.mvi.DetailsState
@@ -23,11 +25,16 @@ class DetailsViewModel @Inject constructor(
     observeSavedAuthors: ObserveSavedAuthorsUseCase,
     observeSavedBooks: ObserveSavedBooksUseCase,
     observeSavedTags: ObserveSavedTagsUseCase,
+    private val quoteSaver: QuoteSaver,
     private val analytics: AnalyticsTracker,
 ) : BaseViewModel<DetailsState, DetailsEffect>(DetailsState()), DetailsIntent {
 
     private var quoteInitialized = false
     private var inputMethod: QuoteInputMethod = QuoteInputMethod.TEXT
+    private var targetCollectionId: String? = null
+    private var generalName: String = ""
+    private var widgetPlaced = false
+    private var saving = false
 
     init {
         viewModelScope.launch {
@@ -84,7 +91,36 @@ class DetailsViewModel @Inject constructor(
             page = state.page.toIntOrNull(),
             inputMethod = inputMethod,
         )
-        publishEffect(DetailsEffect.ProceedToSave(draft))
+        val collectionId = targetCollectionId
+        if (collectionId == null) {
+            publishEffect(DetailsEffect.ProceedToSave(draft))
+            return
+        }
+
+        if (saving) return
+        saving = true
+        viewModelScope.launch {
+            val result = quoteSaver.save(
+                draft = draft,
+                collectionId = collectionId,
+                generalName = generalName,
+                widgetPlaced = widgetPlaced,
+            )
+            saving = false
+            when (result) {
+                QuoteSaveResult.Blocked -> publishEffect(DetailsEffect.ShowPaywall)
+                is QuoteSaveResult.Saved -> publishEffect(DetailsEffect.Saved(result.action))
+            }
+        }
+    }
+
+    fun setTargetCollection(collectionId: String?, generalName: String) {
+        targetCollectionId = collectionId
+        this.generalName = generalName
+    }
+
+    fun onWidgetPlaced(placed: Boolean) {
+        widgetPlaced = placed
     }
 
     override fun onBackClicked() = publishEffect(DetailsEffect.Back)

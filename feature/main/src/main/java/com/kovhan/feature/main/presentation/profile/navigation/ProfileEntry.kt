@@ -10,6 +10,7 @@ import com.kovhan.core.navigation.AboutKey
 import com.kovhan.core.navigation.CompleteKey
 import com.kovhan.core.navigation.ConfirmDialogKey
 import com.kovhan.core.navigation.EditProfileKey
+import com.kovhan.core.navigation.FaqKey
 import com.kovhan.core.navigation.FeedbackDialogKey
 import com.kovhan.core.navigation.HideDailyQuoteDialogKey
 import com.kovhan.core.navigation.LanguageSheetKey
@@ -47,6 +48,8 @@ internal fun ProfileEntry(
         override fun navigateToEditProfile() = coordinator.navigate(EditProfileKey)
 
         override fun navigateToAbout() = coordinator.navigate(AboutKey)
+
+        override fun navigateToFaq() = coordinator.navigate(FaqKey)
 
         override fun navigateToAuth() = coordinator.navigateAndClearBackStack(CompleteKey)
 

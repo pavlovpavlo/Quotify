@@ -46,4 +46,26 @@ class EditQuoteUseCaseTest {
         coVerify(exactly = 0) { ensureGeneralCollection(any()) }
         coVerify { repository.edit(quote) }
     }
+
+    @Test
+    @DisplayName("ensures the general collection when it is chosen explicitly")
+    fun ensuresGeneralWhenChosenExplicitly() = runTest {
+        val quote = Quote(id = "q1", text = "x", collectionId = SavedCollection.GENERAL_ID)
+
+        useCase(quote, "General")
+
+        coVerify { ensureGeneralCollection("General") }
+        coVerify { repository.edit(quote) }
+    }
+
+    @Test
+    @DisplayName("leaves a favourite without a collection out of the general collection")
+    fun keepsFavouriteOutOfGeneral() = runTest {
+        val quote = Quote(id = "q1", text = "x", collectionId = null, isFavourite = true)
+
+        useCase(quote, "General")
+
+        coVerify(exactly = 0) { ensureGeneralCollection(any()) }
+        coVerify { repository.edit(quote) }
+    }
 }

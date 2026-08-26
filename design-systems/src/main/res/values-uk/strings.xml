@@ -29,7 +29,7 @@
     <string name="add_quote_next">Далі</string>
     <string name="add_quote_scan_caption_live">Наведи на текст і зроби фото</string>
     <string name="add_quote_scan_caption_scanning">Розпізнаю текст…</string>
-    <string name="add_quote_scan_caption_select">Утримай і потягни, щоб виділити фрагмент. Без виділення — увесь текст</string>
+    <string name="add_quote_scan_caption_select">Перевір розпізнаний текст і за потреби відредагуй</string>
     <string name="add_quote_scan_no_text">Не вдалося розпізнати текст. Спробуй ще раз</string>
     <string name="add_quote_scan_gallery">Галерея</string>
     <string name="add_quote_scan_shutter_cd">Зробити фото</string>
@@ -195,7 +195,7 @@
     <string name="forgot_cta">Надіслати посилання</string>
     <string name="forgot_sent_cta">Готово, повернутися до входу</string>
     <string name="forgot_back_to_sign_in">Згадав пароль? · Увійти</string>
-    <string name="forgot_reset_sent">Посилання для відновлення надіслано на пошту.</string>
+    <string name="forgot_reset_sent">Посилання для відновлення надіслано. Лист може йти кілька хвилин — перевір і теку «Спам».</string>
 
     <!-- Auth — validation -->
     <string name="auth_validation_name">Введи імʼя.</string>
@@ -304,8 +304,93 @@
     <string name="profile_time_picker_select">Обрати</string>
 
     <!-- About app screen -->
+    <string name="profile_settings_faq">Питання та відповіді</string>
+
+    <string name="faq_title">Питання та відповіді</string>
+    <string name="faq_section_general">Загальне</string>
+    <string name="faq_section_features">Можливості</string>
+    <string name="faq_section_subscription">Підписка</string>
+    <string name="faq_section_account">Акаунт і дані</string>
+
+    <string name="faq_q_what_is">Для чого цей застосунок?</string>
+    <string name="faq_a_what_is">Він зберігає рядки, які хочеться памʼятати: цитати з книжок, статей або власні думки. Ти розкладаєш їх по папках, додаєш теги й повертаєшся до них через віджет і цитату дня.</string>
+    <string name="faq_q_offline">Чи працює застосунок офлайн?</string>
+    <string name="faq_a_offline">Офлайн-доступ — це можливість преміуму. Без підписки застосунок просить зʼєднання під час запуску. З преміумом уся бібліотека — читання, редагування, додавання — працює зовсім без інтернету, а зміни синхронізуються, щойно звʼязок повернеться. Скануванню й підказкам тегів мережа потрібна завжди.</string>
+    <string name="faq_q_sync">Як працює синхронізація між пристроями?</string>
+    <string name="faq_a_sync">Увійди на іншому пристрої в той самий акаунт — бібліотека підтягнеться під час запуску. Те, що ти змінив офлайн, спершу вивантажиться, тож нічого не загубиться.</string>
+
+    <string name="faq_q_add_quote">Як додати цитату?</string>
+    <string name="faq_a_add_quote">Натисни плюс на нижній панелі. Є три способи: набрати текст, надиктувати голосом або сканувати сторінку камерою.</string>
+    <string name="faq_q_scan">Як працює сканування?</string>
+    <string name="faq_a_scan">Наведи камеру на сторінку або обери фото з галереї. Застосунок розпізнає текст і дасть відредагувати його перед збереженням. Потрібні інтернет і зареєстрований акаунт, і кожне сканування списує ШІ-запит.</string>
+    <string name="faq_q_folders_tags">Чим папки відрізняються від тегів?</string>
+    <string name="faq_a_folders_tags">Цитата лежить рівно в одній папці, але тегів у неї може бути скільки завгодно. Папки — це структура, а теги ріжуть її навскіс за темами.</string>
+    <string name="faq_q_favourites">Як працює «Обране»?</string>
+    <string name="faq_a_favourites">«Обране» — це позначка, а не папка. Цитата може бути одночасно в «Обраному» і в будь-якій папці: якщо прибрати її звідкись одного, у другому вона залишиться.</string>
+    <string name="faq_q_daily">Що таке цитата дня?</string>
+    <string name="faq_a_daily">Одна цитата з нашої добірки, яка щодня оновлюється на екрані бібліотеки. Натисни сердечко, щоб залишити її собі, або вимкни цей блок у налаштуваннях.</string>
+    <string name="faq_q_widget">Як налаштувати віджет?</string>
+    <string name="faq_a_widget">Винеси віджет на головний екран, потім обери плейлист — папки, теги, книги чи авторів, з яких він братиме цитати, — і частоту оновлення. Кольори та шрифти налаштовуються окремо.</string>
+    <string name="faq_q_appearance">Як змінити мову або тему?</string>
+    <string name="faq_a_appearance">Профіль → Мова або Вигляд. Обидва застосовуються одразу, перезапускати застосунок не треба.</string>
+
+    <string name="faq_q_premium">Що дає преміум?</string>
+    <string name="faq_a_premium">Необмежену кількість цитат і папок, офлайн-доступ до всієї бібліотеки, ШІ-підказки тегів, значно більший запас сканувань, а також власні іконки та кольори для папок.</string>
+    <string name="faq_q_free_limits">Які обмеження без підписки?</string>
+    <string name="faq_a_free_limits">До 10 цитат і 3 папок, а для запуску застосунку потрібне зʼєднання. Сканування обмежене 3 разами на день і 50 на місяць, а підказки тегів недоступні взагалі — вони лише для передплатників. Преміум знімає ліміти на цитати й папки та піднімає сканування до 15 на день і 200 на місяць.</string>
+    <string name="faq_q_cancel">Як скасувати підписку?</string>
+    <string name="faq_a_cancel">Через Google Play → Платежі та підписки → Підписки. Доступ залишиться до кінця вже оплаченого періоду.</string>
+    <string name="faq_q_not_active">Я оплатив, але преміум не активувався</string>
+    <string name="faq_a_not_active">Відкрий Профіль → Підписка: статус оновлюється сам протягом кількох хвилин. Якщо ні — перевір, що ти в тому самому Google-акаунті, з якого платив, і що пристрій онлайн.</string>
+    <string name="faq_q_expired">Що буде з цитатами, якщо підписка закінчиться?</string>
+    <string name="faq_a_expired">Нічого не зникне. Усе збережене залишиться на місці й читатиметься далі — просто не вийде додавати нові цитати понад безкоштовний ліміт, доки не поновиш підписку.</string>
+
+    <string name="faq_q_why_account">Навіщо створювати акаунт?</string>
+    <string name="faq_a_why_account">Щоб бібліотека мала копію в хмарі й переїхала з тобою на новий пристрій. Можна користуватися й гостем — усе збережеться на пристрої, а під час реєстрації перенесеться в акаунт, — але сканування й підказки тегів доступні лише зареєстрованим.</string>
+    <string name="faq_q_reset_email">Не приходить лист для відновлення пароля</string>
+    <string name="faq_a_reset_email">Спершу перевір теку «Спам» — лист може йти кілька хвилин. Якщо за 15 хвилин його немає, спробуй ще раз або напиши нам через пункт «Підтримка» в налаштуваннях.</string>
+    <string name="faq_q_delete_account">Як видалити акаунт?</string>
+    <string name="faq_a_delete_account">Профіль → Редагувати профіль → Видалити акаунт. Разом з акаунтом назавжди видаляються всі збережені цитати, папки й теги, тож спершу збережи те, що хочеш лишити.</string>
+
     <string name="about_title">Про застосунок</string>
-    <string name="about_placeholder">Інформація про застосунок зʼявиться незабаром.</string>
+    <string name="about_intro_1">Quotify — особиста бібліотека для цитат і думок, які хочеться зберегти.</string>
+    <string name="about_intro_2">Книга, стаття, подкаст або випадкова розмова можуть залишити після себе фразу, до якої захочеться повернутися. Але часто такі нотатки губляться серед десятків інших записів.</string>
+    <string name="about_intro_3">Quotify допомагає зберігати важливі слова в одному місці: швидко додавати цитати, зручно їх організовувати та легко знаходити пізніше.</string>
+
+    <string name="about_save_title">Зберігайте цитати за кілька секунд</string>
+    <string name="about_save_1">Введіть текст вручну та додайте автора й джерело</string>
+    <string name="about_save_2">Відскануйте цитату зі сторінки за допомогою камери</string>
+    <string name="about_save_3">Продиктуйте текст голосом і перетворіть його на збережену цитату</string>
+    <string name="about_save_note">Не хочете заповнювати все одразу? Збережіть текст, а автора, джерело та інші деталі додайте пізніше.</string>
+
+    <string name="about_organize_title">Організуйте бібліотеку по-своєму</string>
+    <string name="about_organize_1">Створюйте колекції та налаштовуйте для них кольори й іконки</string>
+    <string name="about_organize_2">Додавайте власні теги або використовуйте пропозиції тегів від ШІ</string>
+    <string name="about_organize_3">Шукайте цитати за текстом, автором, джерелом або тегами</string>
+    <string name="about_organize_4">Додавайте улюблені цитати в обране для швидкого доступу</string>
+    <string name="about_organize_note">Так ваша бібліотека залишається впорядкованою, навіть коли в ній уже сотні збережених думок.</string>
+
+    <string name="about_daily_title">Цитата дня</string>
+    <string name="about_daily_1">Відкривайте нову цитату щодня або винесіть улюблені слова прямо на головний екран за допомогою віджета.</string>
+    <string name="about_daily_2">Ви можете вибрати колекцію, з якої віджет показуватиме цитати, та налаштувати частоту їх оновлення.</string>
+
+    <string name="about_offline_title">Доступ без інтернету</string>
+    <string name="about_offline_1">Ваша бібліотека залишається доступною навіть без підключення до мережі.</string>
+    <string name="about_offline_2">Читайте, додавайте та редагуйте цитати в дорозі, метро, літаку чи будь-де офлайн. Після відновлення зʼєднання зміни можна синхронізувати.</string>
+
+    <string name="about_premium_title">Quotify Premium</string>
+    <string name="about_premium_intro">Безкоштовної версії достатньо для основних можливостей Quotify. З Premium ви отримуєте більше:</string>
+    <string name="about_premium_1">Необмежену кількість колекцій та цитат</string>
+    <string name="about_premium_2">Офлайн-доступ</string>
+    <string name="about_premium_3">Розширені можливості сканування тексту та пропозицій тегів за допомогою ШІ</string>
+    <string name="about_premium_billing">Підписка оплачується через ваш обліковий запис Google Play і автоматично поновлюється, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду.</string>
+
+    <string name="about_guest_title">Почніть без реєстрації</string>
+    <string name="about_guest_1">Спробуйте Quotify як гість — створювати обліковий запис одразу не обовʼязково.</string>
+    <string name="about_guest_2">Пізніше ви зможете увійти через Google або електронну пошту та продовжити користуватися своєю бібліотекою цитат.</string>
+
+    <string name="about_closing_1">Quotify створений для читачів, письменників, студентів і всіх, хто любить зберігати слова, до яких хочеться повертатися.</string>
+    <string name="about_closing_2">Почніть свою бібліотеку з першої цитати вже сьогодні.</string>
 
     <!-- Shared -->
     <string name="nav_back">Назад</string>
@@ -319,7 +404,7 @@
     <string name="edit_account_section">Акаунт</string>
     <string name="edit_change_password">Змінити пароль</string>
     <string name="edit_sign_out">Вийти</string>
-    <string name="edit_sign_in_or_register">Вхід або реєстрація</string>
+    <string name="edit_sign_in_or_register">Реєстрація або вхід</string>
     <string name="edit_delete_account">Видалити акаунт</string>
     <string name="edit_field_save">Зберегти</string>
 
@@ -396,7 +481,7 @@
     <string name="collection_details_menu_edit">Редагувати</string>
     <string name="collection_details_menu_delete">Видалити</string>
     <string name="collection_details_empty_title">Тут поки порожньо</string>
-    <string name="collection_details_empty_message">Зберігай цитати з бібліотеки чи пошуку в цю папку — вони зʼявляться тут</string>
+    <string name="collection_details_empty_message">Додай у цю папку першу цитату — вона зʼявиться тут</string>
     <string name="collection_details_empty_add_quote">Додати цитату</string>
     <string name="collection_details_rename_title">Перейменувати папку</string>
     <string name="collection_details_name_label">НАЗВА</string>
@@ -417,7 +502,7 @@
     <string name="collection_details_move_favourite_notice">Цитату буде скопійовано в обрану папку — в «Обраному» вона теж залишиться.</string>
     <string name="collection_details_remove_favourite_message">Цитату буде прибрано з «Обраного». Якщо вона є в іншій папці, там вона залишиться.</string>
     <string name="collection_details_delete_quote_title">Видалити цитату?</string>
-    <string name="collection_details_delete_quote_message">Цитату буде прибрано з цієї колекції. Цю дію не можна скасувати.</string>
+    <string name="collection_details_delete_quote_message">Цитату буде прибрано з цієї папки, але в «Обраному» вона залишиться.</string>
     <string name="collection_details_delete_quote_confirm">Видалити цитату</string>
     <!-- Search -->
     <string name="search_title">Пошук</string>

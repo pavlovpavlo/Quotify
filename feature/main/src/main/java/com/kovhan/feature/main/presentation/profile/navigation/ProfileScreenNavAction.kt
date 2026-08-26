@@ -7,6 +7,7 @@ interface ProfileScreenNavAction {
     fun navigateBack()
     fun navigateToEditProfile()
     fun navigateToAbout()
+    fun navigateToFaq()
     fun navigateToAuth()
 
     fun navigateToDevTools()
@@ -22,6 +23,7 @@ private object EmptyProfileScreenNavAction : ProfileScreenNavAction {
     override fun navigateBack() = Unit
     override fun navigateToEditProfile() = Unit
     override fun navigateToAbout() = Unit
+    override fun navigateToFaq() = Unit
     override fun navigateToAuth() = Unit
     override fun navigateToDevTools() = Unit
     override fun navigateToSurvey(surveyId: String) = Unit
