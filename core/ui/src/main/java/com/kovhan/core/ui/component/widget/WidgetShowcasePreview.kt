@@ -21,6 +21,7 @@ fun WidgetShowcasePreview(
     modifier: Modifier = Modifier,
     scale: Float = SHOWCASE_SCALE,
     cornerRadius: Dp = SHOWCASE_CORNER_RADIUS,
+    metaMaxLines: Int = 1,
 ) {
     WidgetPreviewCard(
         modifier = modifier,
@@ -28,6 +29,7 @@ fun WidgetShowcasePreview(
         quote = quote,
         scale = scale,
         cornerRadius = cornerRadius,
+        metaMaxLines = metaMaxLines,
     )
 }
 

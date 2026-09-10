@@ -24,7 +24,15 @@ class SubscriptionRepositoryImpl @Inject constructor(
     private val cacheDao: SubscriptionDao,
 ) : SubscriptionRepository {
 
-    override suspend fun isSubscribed(): Boolean = getStatus().isEntitled()
+    /**
+     * Гейти безкоштовного плану смикають це на кожному збереженні, тож мережевий
+     * раунд-трип блокував би кнопку «Зберегти». Кеш оновлюють [refresh] на
+     * фореграунді та верифікація покупки; у мережу йдемо, лише поки кешу немає.
+     */
+    override suspend fun isSubscribed(): Boolean {
+        val cached = cacheDao.getStatus() ?: return getStatus().isEntitled()
+        return cached.toStatus().isEntitled()
+    }
 
     override suspend fun getStatus(): SubscriptionStatus {
         if (connectivity.isOnline()) {

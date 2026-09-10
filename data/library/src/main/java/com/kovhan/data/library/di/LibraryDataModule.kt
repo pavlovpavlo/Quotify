@@ -1,6 +1,8 @@
 package com.kovhan.data.library.di
 
 import com.kovhan.data.library.connectivity.AndroidConnectivityRepository
+import com.kovhan.data.library.local.RoomTransactionRunner
+import com.kovhan.data.library.local.TransactionRunner
 import com.kovhan.data.library.repository.AiUsageRepositoryImpl
 import com.kovhan.data.library.repository.CollectionRepositoryImpl
 import com.kovhan.data.library.repository.DailyQuoteRepositoryImpl
@@ -82,6 +84,10 @@ abstract class LibraryDataModule {
     @Binds
     @Singleton
     abstract fun bindLibrarySynchronizer(impl: LibrarySynchronizerImpl): LibrarySynchronizer
+
+    @Binds
+    @Singleton
+    abstract fun bindTransactionRunner(impl: RoomTransactionRunner): TransactionRunner
 
     @Binds
     @Singleton

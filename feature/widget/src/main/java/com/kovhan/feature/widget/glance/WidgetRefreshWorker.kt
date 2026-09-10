@@ -12,10 +12,14 @@ import kotlinx.coroutines.flow.first
 import timber.log.Timber
 
 /**
- * Redraws the widget without advancing the rotation. Used after a device reboot
- * or an app update, where the launcher restores the widget but Glance has no
- * session to render into — leaving the placeholder loading layout on screen
- * until something calls [updateAll].
+ * Brings the widget back in sync with its content. Used after a device reboot,
+ * an app update or a day change, where the launcher keeps the widget on screen
+ * but Glance has no session to render into — leaving the stale (or placeholder)
+ * layout until something calls [updateAll].
+ *
+ * The quote is resolved here rather than left to `provideGlance`, so a live
+ * session picks the new quote up through its flows even when the render prelude
+ * does not run again.
  */
 class WidgetRefreshWorker(
     context: Context,
@@ -28,12 +32,13 @@ class WidgetRefreshWorker(
                 WidgetEntryPoint::class.java,
             )
         runCatching {
-            val hours = entryPoint.observeWidgetSettings().invoke().first().frequencyHours
-            WidgetRotationScheduler.ensureScheduled(applicationContext, hours)
+            val settings = entryPoint.observeWidgetSettings().invoke().first()
+            WidgetRotationScheduler.ensureScheduled(applicationContext, settings.frequencyHours)
+            WidgetDayChangeScheduler.sync(applicationContext, settings.includeDailyQuote)
         }.onFailure { Timber.e(it, "Widget: failed to schedule rotation") }
 
         runCatching {
-            entryPoint.rebuildWidgetSnapshot().invoke()
+            entryPoint.ensureWidgetQuote().invoke()
             QuotifyGlanceWidget().updateAll(applicationContext)
         }.onFailure { Timber.e(it, "Widget: refresh worker failed") }
         return Result.success()

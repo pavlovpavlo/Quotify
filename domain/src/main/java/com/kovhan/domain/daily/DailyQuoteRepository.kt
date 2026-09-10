@@ -15,5 +15,14 @@ interface DailyQuoteRepository {
      */
     suspend fun getCachedDailyQuote(): DailyQuote?
 
+    /**
+     * Сьогоднішня цитата дня для фонових споживачів: перевикористовує вибір за
+     * сьогодні, а якщо його ще нема — робить новий із локального пулу. На
+     * відміну від [getDailyQuote] не ходить у мережу, тож придатна для віджета,
+     * який мусить оживати й без запуску застосунку.
+     */
+    suspend fun ensureDailyQuote(): DailyQuote?
+
+    /** Ховає картку в бібліотеці до кінця доби. На віджет не впливає. */
     suspend fun dismissForToday()
 }

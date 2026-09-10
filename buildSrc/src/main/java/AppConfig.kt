@@ -15,13 +15,13 @@ object AppConfig {
     }
 
     object AppVersion {
-        private const val MAJOR = 1
+        private const val MAJOR = 2
         private const val MINOR = 0 // Maximum value 99
-        private const val PATCH = 9
+        private const val PATCH = 1
         // Maximum value 99
 
         fun getName(): String {
-            return "$MAJOR.$MINOR.$PATCH"
+            return "${MAJOR-1}.$MINOR.$PATCH"
         }
 
         fun getCode(): Int {

@@ -33,9 +33,13 @@ class DailyQuoteRepositoryImpl @Inject constructor(
 
     override suspend fun getDailyQuote(): DailyQuote? {
         ensurePoolCached()
+        if (isDismissedToday()) return null
+        return ensureDailyQuote()
+    }
+
+    override suspend fun ensureDailyQuote(): DailyQuote? {
         val today = LocalDate.now().toEpochDay()
         val selection = selectionDao.get()
-        if (selection?.dismissedEpochDay == today) return null
 
         val pool = quoteDao.getAll().map { it.toDomain() }
         if (pool.isEmpty()) return null
@@ -55,7 +59,6 @@ class DailyQuoteRepositoryImpl @Inject constructor(
     override suspend fun getCachedDailyQuote(): DailyQuote? {
         val today = LocalDate.now().toEpochDay()
         val selection = selectionDao.get() ?: return null
-        if (selection.dismissedEpochDay == today) return null
         if (selection.epochDay != today) return null
         val quoteId = selection.quoteId ?: return null
         return quoteDao.getAll().firstOrNull { it.id == quoteId }?.toDomain()
@@ -66,6 +69,9 @@ class DailyQuoteRepositoryImpl @Inject constructor(
         val selection = selectionDao.get() ?: DailySelectionEntity()
         selectionDao.set(selection.copy(dismissedEpochDay = today))
     }
+
+    private suspend fun isDismissedToday(): Boolean =
+        selectionDao.get()?.dismissedEpochDay == LocalDate.now().toEpochDay()
 
     /** Prefer a quote not shown before; once every quote has been seen, reset the history. */
     private suspend fun pickUnseen(pool: List<DailyQuote>): DailyQuote {
@@ -80,7 +86,7 @@ class DailyQuoteRepositoryImpl @Inject constructor(
         if (refreshed) return
         refreshMutex.withLock {
             if (refreshed) return
-            val remotePool = remote.getAll()
+            val remotePool = runCatching { remote.getAll() }.getOrNull() ?: return
             if (remotePool.isNotEmpty()) {
                 quoteDao.replaceAll(remotePool.map { it.toEntity() })
             }

@@ -119,6 +119,7 @@ internal fun WidgetSection(
                     author = stringResource(R.string.widget_appearance_preview_author),
                     book = stringResource(R.string.widget_appearance_preview_book),
                 ),
+                metaMaxLines = 2,
             )
         }
     }

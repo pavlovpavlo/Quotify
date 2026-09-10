@@ -29,9 +29,11 @@ import com.kovhan.core.navigation.models.AddQuoteEntryPoint
 import com.kovhan.core.navigation.models.QuoteInputMethod
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.ai.AiAccess
+import com.kovhan.domain.ai.AiDenialReason
 import com.kovhan.domain.ai.AiFeature
 import com.kovhan.domain.ai.use_case.CheckAiAccessUseCase
 import com.kovhan.domain.ai.use_case.RecordAiRequestUseCase
+import com.kovhan.domain.billing.use_case.ObserveIsSubscribedUseCase
 import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
 import com.kovhan.domain.scan.use_case.RecognizeTextUseCase
 import com.kovhan.domain.voice.use_case.IsVoiceInputAvailableUseCase
@@ -41,6 +43,7 @@ import com.kovhan.feature.addquote.presentation.addquote.mvi.AddQuoteScreenInten
 import com.kovhan.feature.addquote.presentation.addquote.mvi.AddQuoteScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,6 +55,7 @@ class AddQuoteScreenViewModel @Inject constructor(
     private val checkAiAccess: CheckAiAccessUseCase,
     private val recordAiRequest: RecordAiRequestUseCase,
     private val checkConnectivity: CheckConnectivityUseCase,
+    private val observeIsSubscribed: ObserveIsSubscribedUseCase,
     private val analytics: AnalyticsTracker,
 ) : BaseViewModel<AddQuoteScreenState, AddQuoteScreenEffect>(AddQuoteScreenState()),
     AddQuoteScreenIntent {
@@ -66,6 +70,17 @@ class AddQuoteScreenViewModel @Inject constructor(
 
     init {
         publishState { copy(isVoiceAvailable = isVoiceInputAvailable()) }
+        observeSubscriptionChanges()
+    }
+
+    private fun observeSubscriptionChanges() {
+        viewModelScope.launch {
+            observeIsSubscribed()
+                .drop(1)
+                .collect {
+                    if (uiState.value.selectedTab == AddQuoteTab.SCAN) refreshScanGate()
+                }
+        }
     }
 
     override fun onInitialTab(tab: AddQuoteTab, entryPoint: AddQuoteEntryPoint) {
@@ -109,11 +124,23 @@ class AddQuoteScreenViewModel @Inject constructor(
                 publishState { copy(scanOffline = true, scanAiDenial = null) }
                 return@launch
             }
-            val denial = (checkAiAccess(AiFeature.SCAN) as? AiAccess.Denied)?.reason
-            if (denial != null) analytics.track(AiLimitReached(AiFeatureName.CAMERA))
-            publishState { copy(scanOffline = false, scanAiDenial = denial) }
+            val denial = scanDenial()
+            publishState { copy(scanOffline = false).withScanDenial(denial) }
         }
     }
+
+    private suspend fun scanDenial(): AiDenialReason? {
+        val denial = (checkAiAccess(AiFeature.SCAN) as? AiAccess.Denied)?.reason
+        if (denial != null && uiState.value.scanAiDenial == null) {
+            analytics.track(AiLimitReached(AiFeatureName.CAMERA))
+        }
+        return denial
+    }
+
+    private fun AddQuoteScreenState.withScanDenial(denial: AiDenialReason?) = copy(
+        scanAiDenial = denial,
+        scanNoTextFound = scanNoTextFound && denial == null,
+    )
 
     override fun onQuoteChanged(value: TextFieldValue) = publishState { copy(quote = value) }
 
@@ -164,18 +191,27 @@ class AddQuoteScreenViewModel @Inject constructor(
 
     override fun onScanImagePicked(image: Uri) {
         viewModelScope.launch {
-            when (val access = checkAiAccess(AiFeature.SCAN)) {
-                is AiAccess.Denied -> {
-                    analytics.track(AiLimitReached(AiFeatureName.CAMERA))
-                    publishState { copy(pickedImage = null, scanAiDenial = access.reason) }
+            val denial = scanDenial()
+            publishState {
+                if (denial != null) {
+                    copy(pickedImage = null).withScanDenial(denial)
+                } else {
+                    copy(scanAiDenial = null, pickedImage = image)
                 }
-                AiAccess.Allowed -> publishState { copy(scanAiDenial = null, pickedImage = image) }
             }
         }
     }
 
     override fun onScanCropConfirmed(image: Uri) {
         viewModelScope.launch {
+            val denial = scanDenial()
+            if (denial != null) {
+                publishState {
+                    copy(pickedImage = null, isScanning = false).withScanDenial(denial)
+                }
+                return@launch
+            }
+
             scanStartedAt = System.currentTimeMillis()
             publishState {
                 copy(
@@ -224,12 +260,18 @@ class AddQuoteScreenViewModel @Inject constructor(
                             },
                         ),
                     )
+                    val offline = outcome.error == com.kovhan.core.models.AiError.Offline
+                    val denial = if (offline) null else scanDenial()
                     publishState {
-                        when (outcome.error) {
-                            com.kovhan.core.models.AiError.Offline ->
+                        when {
+                            offline ->
                                 copy(isScanning = false, pickedImage = null, scanOffline = true)
 
-                            com.kovhan.core.models.AiError.Unknown ->
+                            denial != null ->
+                                copy(isScanning = false, pickedImage = null)
+                                    .withScanDenial(denial)
+
+                            else ->
                                 copy(isScanning = false, pickedImage = null, scanNoTextFound = true)
                         }
                     }
@@ -240,14 +282,17 @@ class AddQuoteScreenViewModel @Inject constructor(
 
     override fun onScanCropCancelled() = publishState { copy(pickedImage = null) }
 
-    override fun onScanRetake() = publishState {
-        copy(
-            isScanning = false,
-            pickedImage = null,
-            scanLines = emptyList(),
-            scanNoTextFound = false,
-            scanOffline = false,
-        )
+    override fun onScanRetake() {
+        publishState {
+            copy(
+                isScanning = false,
+                pickedImage = null,
+                scanLines = emptyList(),
+                scanNoTextFound = false,
+                scanOffline = false,
+            )
+        }
+        refreshScanGate()
     }
 
     override fun onScanProceed(text: String) {

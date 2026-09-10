@@ -32,7 +32,6 @@ import com.kovhan.core.navigation.EXTRA_OPEN_WIDGET_QUOTE
 import com.kovhan.core.navigation.EXTRA_OPEN_WIDGET_SETTINGS
 import com.kovhan.core.ui.mapper.WidgetBackgroundMapper
 import com.kovhan.core.ui.mapper.WidgetCoverMapper
-import com.kovhan.domain.widget.WidgetQuoteRef
 import com.kovhan.feature.widget.R
 import com.kovhan.design.systems.R as DsR
 
@@ -57,11 +56,8 @@ internal fun WidgetContent(
     strings: WidgetStrings,
 ) {
     val context = LocalContext.current
-    // The quote of the day is not a library entity, so it has no detail screen —
-    // tapping it just opens the app.
-    val primaryIntent = when {
-        quote == null -> openSettingsIntent(context)
-        WidgetQuoteRef.isDaily(quote.id) -> launchIntent(context)
+    val primaryIntent = when (quote) {
+        null -> openSettingsIntent(context)
         else -> openQuoteIntent(context, quote.id)
     }
 

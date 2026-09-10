@@ -57,6 +57,7 @@ fun WidgetPreviewCard(
     modifier: Modifier = Modifier,
     scale: Float = 1f,
     cornerRadius: Dp = PREVIEW_CORNER_RADIUS,
+    metaMaxLines: Int = META_MAX_LINES,
 ) {
     val darkTheme = QuotifyMaterialTheme.system.isDarkTheme
     val shape = RoundedCornerShape(cornerRadius)
@@ -104,7 +105,9 @@ fun WidgetPreviewCard(
             horizontalAlignment = horizontalAlignment,
         ) {
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f, fill = false),
                 text = quote.text,
                 color = textColor,
                 textAlign = textAlign,
@@ -129,7 +132,7 @@ fun WidgetPreviewCard(
                     text = meta,
                     color = textColor.copy(alpha = AUTHOR_ALPHA),
                     textAlign = textAlign,
-                    maxLines = 1,
+                    maxLines = metaMaxLines,
                     overflow = TextOverflow.Ellipsis,
                     fontFamily = InterFamily,
                     fontWeight = FontWeight.W600,
@@ -149,3 +152,4 @@ private val QUOTE_LINE_HEIGHT = 23.sp
 private val META_FONT_SIZE = 12.sp
 private const val AUTHOR_ALPHA = 0.82f
 private const val QUOTE_MAX_LINES = 6
+private const val META_MAX_LINES = 1

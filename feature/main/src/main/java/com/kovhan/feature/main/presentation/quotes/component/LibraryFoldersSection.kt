@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.kovhan.core.models.collections.SavedCollection
 import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
+import com.kovhan.core.ui.component.emptystate.DefaultEmptyStateAction
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
 
@@ -37,6 +38,12 @@ internal fun LibraryFoldersSection(
                 imageResource = QuotifyMaterialTheme.images.imgLibraryEmpty,
                 titleResource = R.string.library_empty_title,
                 descriptionResource = R.string.library_empty_description,
+                action = {
+                    DefaultEmptyStateAction(
+                        text = stringResource(R.string.details_create_collection),
+                        onClick = onCreateFolder,
+                    )
+                },
             )
         } else {
             Text(

@@ -627,6 +627,7 @@
 
     <!-- Home-screen widget -->
     <string name="widget_quote_title">Quote</string>
+    <string name="widget_quote_daily_title">Quote of the day</string>
     <string name="widget_quote_edit">Edit</string>
     <string name="widget_empty_title">Set up the widget</string>
     <string name="widget_empty_hint">Tap to choose a quote source</string>

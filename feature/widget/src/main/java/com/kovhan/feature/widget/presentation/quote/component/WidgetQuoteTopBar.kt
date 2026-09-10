@@ -1,5 +1,6 @@
 package com.kovhan.feature.widget.presentation.quote.component
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteIntent
 
 @Composable
 internal fun WidgetQuoteTopBar(
+    @StringRes titleRes: Int,
     menuVisible: Boolean,
     canShowMenu: Boolean,
     intent: WidgetQuoteIntent,
@@ -64,7 +66,7 @@ internal fun WidgetQuoteTopBar(
 
         Text(
             modifier = Modifier.weight(1f).padding(horizontal = dimensions.size4),
-            text = stringResource(DsR.string.widget_quote_title),
+            text = stringResource(titleRes),
             textAlign = TextAlign.Center,
             color = colors.textPrimary,
             style = TextStyle(

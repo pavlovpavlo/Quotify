@@ -26,8 +26,12 @@ import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R as DsR
 
 /**
- * The two "add to playlist" toggles (home-screen widget + daily push) shown on
- * the add-quote details screen and the quote edit sheet. Tapping a row toggles it.
+ * The "add to playlist" toggles (home-screen widget + daily push) shown on the
+ * add-quote details screen and the quote edit sheet. Tapping a row toggles it.
+ *
+ * The push row stays hidden behind [PUSH_PLAYLIST_VISIBLE] until notifications
+ * actually ship — the flag and its callbacks are kept so turning them back on is
+ * a one-line change. Same reasoning as the unused `NotificationsCard`.
  */
 @Composable
 fun QuotifyPlaylistOptions(
@@ -57,23 +61,27 @@ fun QuotifyPlaylistOptions(
             checked = widgetEnabled,
             onCheckedChange = onWidgetToggle,
         )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(dimensions.size1)
-                .background(colors.border),
-        )
-        PlaylistOptionRow(
-            title = stringResource(DsR.string.details_playlist_push_title),
-            subtitle = stringResource(DsR.string.details_playlist_push_subtitle),
-            iconRes = DsR.drawable.ic_bell,
-            iconTint = colors.accentPrimary,
-            iconContainer = colors.accentPrimarySoft,
-            checked = pushEnabled,
-            onCheckedChange = onPushToggle,
-        )
+        if (PUSH_PLAYLIST_VISIBLE) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(dimensions.size1)
+                    .background(colors.border),
+            )
+            PlaylistOptionRow(
+                title = stringResource(DsR.string.details_playlist_push_title),
+                subtitle = stringResource(DsR.string.details_playlist_push_subtitle),
+                iconRes = DsR.drawable.ic_bell,
+                iconTint = colors.accentPrimary,
+                iconContainer = colors.accentPrimarySoft,
+                checked = pushEnabled,
+                onCheckedChange = onPushToggle,
+            )
+        }
     }
 }
+
+private const val PUSH_PLAYLIST_VISIBLE = false
 
 @Composable
 private fun PlaylistOptionRow(

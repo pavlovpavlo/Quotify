@@ -12,6 +12,14 @@ interface LibrarySynchronizer {
     suspend fun refreshFromRemote()
 
     /**
+     * Повний цикл: [syncPendingChanges], а далі [refreshFromRemote] — але лише якщо
+     * чергу вдалося спорожнити, бо пул замінює таблиці цілком і затер би непроштовхані
+     * зміни. [force] обходить внутрішній тротлінг (холодний старт тягне завжди,
+     * повернення з фону — не частіше ніж раз на хвилину).
+     */
+    suspend fun sync(force: Boolean = false)
+
+    /**
      * Wipes the local library (all five tables + the pending-sync queue). Room is NOT scoped
      * by uid, so this must run on sign-out and account deletion — otherwise the next user
      * (including a fresh anonymous guest) inherits the previous user's local data.

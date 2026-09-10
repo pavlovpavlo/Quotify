@@ -651,6 +651,7 @@
 
     <!-- Home-screen widget -->
     <string name="widget_quote_title">Цитата</string>
+    <string name="widget_quote_daily_title">Цитата дня</string>
     <string name="widget_quote_edit">Редагувати</string>
     <string name="widget_empty_title">Налаштуйте віджет</string>
     <string name="widget_empty_hint">Торкніться, щоб обрати джерело цитат</string>

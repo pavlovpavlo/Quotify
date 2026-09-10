@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -141,14 +142,41 @@ class QuoteRepositoryImplTest {
         @Test
         @DisplayName("edit writes to Room and enqueues an UPSERT pending op")
         fun editEnqueues() = runTest {
+            val entity = slot<QuoteEntity>()
             val op = slot<PendingOperationEntity>()
 
             repository.edit(q1.toDomainQuote())
 
-            coVerify { dao.upsert(q1) }
+            coVerify { dao.upsert(capture(entity)) }
+            assertEquals(q1.copy(createdAt = entity.captured.createdAt), entity.captured)
             coVerify { pendingDao.insert(capture(op)) }
             assertEquals("QUOTE:q1", op.captured.key)
             assertEquals("UPSERT", op.captured.opType)
+        }
+
+        @Test
+        @DisplayName("edit stamps createdAt on a quote Room has never seen")
+        fun editStampsCreatedAt() = runTest {
+            val entity = slot<QuoteEntity>()
+            coEvery { dao.getById("q1") } returns null
+            val before = System.currentTimeMillis()
+
+            repository.edit(q1.toDomainQuote())
+
+            coVerify { dao.upsert(capture(entity)) }
+            assertTrue(entity.captured.createdAt >= before)
+        }
+
+        @Test
+        @DisplayName("edit keeps the stored createdAt so an edit does not reorder the list")
+        fun editPreservesCreatedAt() = runTest {
+            val entity = slot<QuoteEntity>()
+            coEvery { dao.getById("q1") } returns q1.copy(createdAt = 1_700_000_000_000L)
+
+            repository.edit(q1.toDomainQuote().copy(text = "edited"))
+
+            coVerify { dao.upsert(capture(entity)) }
+            assertEquals(1_700_000_000_000L, entity.captured.createdAt)
         }
 
         @Test

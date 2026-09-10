@@ -30,5 +30,6 @@ class QuotifyGlanceWidgetReceiver : GlanceAppWidgetReceiver() {
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
         WidgetRotationScheduler.cancel(context)
+        WidgetDayChangeScheduler.cancel(context)
     }
 }

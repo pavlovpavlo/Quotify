@@ -1,6 +1,7 @@
 package com.kovhan.data.library.repository
 
 import com.kovhan.core.models.billing.SubscriptionStatus
+import com.kovhan.core.models.billing.isEntitled
 import com.kovhan.data.library.local.library.SubscriptionDao
 import com.kovhan.data.library.local.library.SubscriptionEntity
 import com.kovhan.data.library.remote.SubscriptionRemoteDataSource
@@ -38,7 +39,7 @@ class SubscriptionRepositoryImplTest {
         coEvery { remote.getStatus() } returns activeStatus()
         val cached = slot<SubscriptionEntity>()
 
-        assertTrue(repository.isSubscribed())
+        assertTrue(repository.getStatus().isEntitled())
 
         coVerify { cacheDao.set(capture(cached)) }
         assertTrue(cached.captured.isSubscribed)
@@ -51,7 +52,7 @@ class SubscriptionRepositoryImplTest {
         coEvery { connectivity.isOnline() } returns true
         coEvery { remote.getStatus() } returns activeStatus(status = SubscriptionStatus.IN_GRACE_PERIOD)
 
-        assertTrue(repository.isSubscribed())
+        assertTrue(repository.getStatus().isEntitled())
     }
 
     @Test
@@ -62,7 +63,7 @@ class SubscriptionRepositoryImplTest {
             expiresAt = System.currentTimeMillis() - 1_000,
         )
 
-        assertFalse(repository.isSubscribed())
+        assertFalse(repository.getStatus().isEntitled())
     }
 
     @Test
@@ -72,7 +73,30 @@ class SubscriptionRepositoryImplTest {
         coEvery { remote.getStatus() } throws RuntimeException("boom")
         coEvery { cacheDao.getStatus() } returns cachedEntity()
 
+        assertTrue(repository.getStatus().isEntitled())
+    }
+
+    @Test
+    @DisplayName("isSubscribed answers from the cache without hitting the network")
+    fun isSubscribedPrefersCache() = runTest {
+        coEvery { connectivity.isOnline() } returns true
+        coEvery { cacheDao.getStatus() } returns cachedEntity()
+
         assertTrue(repository.isSubscribed())
+
+        coVerify(exactly = 0) { remote.getStatus() }
+    }
+
+    @Test
+    @DisplayName("isSubscribed goes to the network only while no status is cached yet")
+    fun isSubscribedFallsBackToNetwork() = runTest {
+        coEvery { connectivity.isOnline() } returns true
+        coEvery { cacheDao.getStatus() } returns null
+        coEvery { remote.getStatus() } returns activeStatus()
+
+        assertTrue(repository.isSubscribed())
+
+        coVerify { remote.getStatus() }
     }
 
     @Test

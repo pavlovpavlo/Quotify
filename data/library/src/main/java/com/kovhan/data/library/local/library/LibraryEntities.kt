@@ -16,6 +16,7 @@ data class QuoteEntity(
     val sourceDailyId: String?,
     val page: Int? = null,
     val isFavourite: Boolean = false,
+    val createdAt: Long = 0L,
 )
 
 @Entity(tableName = "collections")

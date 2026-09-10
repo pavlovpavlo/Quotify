@@ -41,6 +41,7 @@ import com.kovhan.feature.addquote.presentation.addquote.mvi.ScanMode
 internal fun ScanDock(
     mode: ScanMode,
     canProceed: Boolean,
+    canCapture: Boolean,
     onGallery: () -> Unit,
     onShutter: () -> Unit,
     onRetake: () -> Unit,
@@ -61,7 +62,7 @@ internal fun ScanDock(
     ) {
         when (mode) {
             ScanMode.LIVE, ScanMode.SCANNING -> {
-                val enabled = mode == ScanMode.LIVE
+                val enabled = mode == ScanMode.LIVE && canCapture
                 GalleryButton(onClick = onGallery, enabled = enabled)
                 ShutterButton(onClick = onShutter, enabled = enabled)
                 Spacer(modifier = Modifier.width(dimensions.size72))

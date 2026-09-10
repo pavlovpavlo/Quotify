@@ -1,5 +1,9 @@
 package com.kovhan.feature.widget.presentation.quote
 
+import com.kovhan.core.models.collections.SavedAuthor
+import com.kovhan.core.models.collections.SavedBook
+import com.kovhan.core.models.quote.EnrichedQuote
+import com.kovhan.core.models.widget.WidgetQuote
 import com.kovhan.core.navigation.QuoteEditDraft
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.library.use_case.author.ObserveSavedAuthorsUseCase
@@ -9,6 +13,8 @@ import com.kovhan.domain.library.use_case.quote.GetQuoteByIdUseCase
 import com.kovhan.domain.library.use_case.quote.ObserveEnrichedQuoteByIdUseCase
 import com.kovhan.domain.library.use_case.quote.UpsertQuoteUseCase
 import com.kovhan.domain.library.use_case.tag.ObserveSavedTagsUseCase
+import com.kovhan.domain.widget.WidgetQuoteRef
+import com.kovhan.domain.widget.use_case.content.ResolveWidgetQuoteUseCase
 import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteEffect
 import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteIntent
 import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteState
@@ -27,6 +33,7 @@ class WidgetQuoteViewModel @Inject constructor(
     private val getQuoteById: GetQuoteByIdUseCase,
     private val upsertQuote: UpsertQuoteUseCase,
     private val deleteQuote: DeleteQuoteUseCase,
+    private val resolveWidgetQuote: ResolveWidgetQuoteUseCase,
 ) : BaseViewModel<WidgetQuoteState, WidgetQuoteEffect>(WidgetQuoteState()),
     WidgetQuoteIntent {
 
@@ -55,9 +62,21 @@ class WidgetQuoteViewModel @Inject constructor(
         bound = true
         quoteId = id
         this.generalName = generalName
-        observeEnrichedById(id)
-            .onEach { quote -> publishState { copy(isLoading = false, quote = quote) } }
-            .launchIn(viewModelScope)
+        if (WidgetQuoteRef.isDaily(id)) {
+            bindDaily(id)
+        } else {
+            observeEnrichedById(id)
+                .onEach { quote -> publishState { copy(isLoading = false, quote = quote) } }
+                .launchIn(viewModelScope)
+        }
+    }
+
+    private fun bindDaily(ref: String) {
+        publishState { copy(isDaily = true) }
+        viewModelScope.launch {
+            val daily = resolveWidgetQuote(ref)
+            publishState { copy(isLoading = false, quote = daily?.toEnrichedQuote()) }
+        }
     }
 
     override fun onToggleMenu() = publishState { copy(menuVisible = !menuVisible) }
@@ -122,3 +141,17 @@ class WidgetQuoteViewModel @Inject constructor(
         }
     }
 }
+
+/**
+ * The quote of the day lives outside the library, so it has no entity of its own —
+ * it is wrapped in an [EnrichedQuote] purely so the screen can render it with the
+ * same card. The synthetic author/book ids are never used for navigation because
+ * the screen stays read-only for daily refs.
+ */
+private fun WidgetQuote.toEnrichedQuote(): EnrichedQuote = EnrichedQuote(
+    id = id,
+    text = text,
+    author = authorName?.takeIf { it.isNotBlank() }?.let { SavedAuthor(id = id, name = it) },
+    book = bookName?.takeIf { it.isNotBlank() }?.let { SavedBook(id = id, name = it) },
+    tags = emptyList(),
+)

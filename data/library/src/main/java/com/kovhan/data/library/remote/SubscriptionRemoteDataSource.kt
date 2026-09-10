@@ -2,6 +2,7 @@ package com.kovhan.data.library.remote
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import com.kovhan.core.models.billing.SubscriptionStatus
 import com.kovhan.core.models.billing.isEntitled
 import kotlinx.coroutines.tasks.await
@@ -17,9 +18,17 @@ class SubscriptionRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
 ) {
+    /**
+     * Свідомо [Source.SERVER]: із `Source.DEFAULT` збійний запит тихо віддає
+     * порожній снапшот із кешу Firestore, а він тут невідрізненний від «підписки
+     * немає» — і викликач закешував би зняття преміуму з платного користувача.
+     */
     suspend fun getStatus(): SubscriptionStatus {
         val uid = auth.currentUser?.uid ?: return SubscriptionStatus.None
-        val snapshot = firestore.collection(USERS_COLLECTION).document(uid).get().await()
+        val snapshot = firestore.collection(USERS_COLLECTION)
+            .document(uid)
+            .get(Source.SERVER)
+            .await()
         val premium = snapshot.get(FIELD_PREMIUM) as? Map<*, *> ?: return SubscriptionStatus.None
 
         return SubscriptionStatus(

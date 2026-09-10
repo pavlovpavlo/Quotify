@@ -1,5 +1,8 @@
 package com.kovhan.feature.widget.glance
 
+import android.appwidget.AppWidgetManager
+import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -8,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceModifier
 import androidx.glance.LocalContext
+import androidx.glance.appwidget.LocalAppWidgetOptions
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.ColumnScope
@@ -164,13 +168,34 @@ internal data class WidgetLayoutMetrics(
         @Composable
         fun of(compact: Boolean, padding: Dp, sizeScale: Float, size: DpSize) =
             WidgetLayoutMetrics(
-                available = size.height - padding * 2,
+                available = hostHeight(size) - padding * 2,
                 compact = compact,
                 fontScale = LocalContext.current.resources.configuration.fontScale,
                 sizeScale = sizeScale,
             )
+
+        /**
+         * Лаунчер повідомляє висоту віджета двічі: портретну в
+         * `OPTION_APPWIDGET_MAX_HEIGHT` і значно меншу ландшафтну в
+         * `OPTION_APPWIDGET_MIN_HEIGHT`. Частина лаунчерів віддає Glance саме
+         * ландшафтну, і бюджет висоти падає втричі — через це цитата обривалась
+         * трьома крапками на другому рядку при повній вільній колонці під нею.
+         */
+        @Composable
+        private fun hostHeight(size: DpSize): Dp {
+            val options = LocalAppWidgetOptions.current
+            val key = if (LocalContext.current.isLandscape()) {
+                AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT
+            } else {
+                AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT
+            }
+            return maxOf(size.height, options.getInt(key, 0).dp)
+        }
     }
 }
+
+private fun Context.isLandscape(): Boolean =
+    resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
 private fun WidgetStyleSettings.glanceTextAlign(): TextAlign = when (textAlign) {
     WidgetTextAlign.START -> TextAlign.Start

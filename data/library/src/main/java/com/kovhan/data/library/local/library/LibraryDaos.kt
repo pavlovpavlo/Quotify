@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface QuoteDao {
 
-    @Query("SELECT * FROM quotes")
+    @Query("SELECT * FROM quotes ORDER BY createdAt ASC, id ASC")
     fun observeAll(): Flow<List<QuoteEntity>>
 
-    @Query("SELECT * FROM quotes")
+    @Query("SELECT * FROM quotes ORDER BY createdAt ASC, id ASC")
     suspend fun getAll(): List<QuoteEntity>
 
     @Query("SELECT COUNT(*) FROM quotes")

@@ -32,8 +32,10 @@ class QuotifyGlanceWidget : GlanceAppWidget() {
 
         // Ensure timer rotation is scheduled — covers widgets placed by an older
         // build (before the scheduler existed), where onEnabled never fired.
-        runCatching { WidgetRotationScheduler.ensureScheduled(context, initialSettings.frequencyHours) }
-            .onFailure { Timber.e(it, "Widget: failed to schedule rotation") }
+        runCatching {
+            WidgetRotationScheduler.ensureScheduled(context, initialSettings.frequencyHours)
+            WidgetDayChangeScheduler.sync(context, initialSettings.includeDailyQuote)
+        }.onFailure { Timber.e(it, "Widget: failed to schedule rotation") }
 
         val initialQuote: WidgetQuote? = runCatching { entryPoint.ensureWidgetQuote().invoke() }
             .onFailure { Timber.e(it, "Widget: failed to resolve quote") }

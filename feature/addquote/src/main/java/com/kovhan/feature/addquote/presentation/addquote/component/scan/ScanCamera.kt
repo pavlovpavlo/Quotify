@@ -6,11 +6,19 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.resolutionselector.AspectRatioStrategy
+import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.resume
+
+internal const val CAPTURE_ASPECT_RATIO = 3f / 4f
+
+internal fun fourByThreeSelector(): ResolutionSelector = ResolutionSelector.Builder()
+    .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
+    .build()
 
 internal fun hasCameraPermission(context: Context): Boolean =
     ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) ==

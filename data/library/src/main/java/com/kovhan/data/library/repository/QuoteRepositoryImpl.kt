@@ -43,8 +43,16 @@ class QuoteRepositoryImpl @Inject constructor(
         enqueue(id, PendingOpType.DELETE)
     }
 
+    /**
+     * Редагування приходить без `createdAt` (екрани будують `Quote` заново), тому
+     * спершу піднімаємо збережене значення — інакше правка тексту зсувала б
+     * цитату в кінець списку.
+     */
     override suspend fun edit(quote: Quote) {
-        dao.upsert(quote.toEntity())
+        val createdAt = quote.createdAt.takeIf { it > 0L }
+            ?: dao.getById(quote.id)?.createdAt?.takeIf { it > 0L }
+            ?: System.currentTimeMillis()
+        dao.upsert(quote.copy(createdAt = createdAt).toEntity())
         enqueue(quote.id, PendingOpType.UPSERT)
     }
 

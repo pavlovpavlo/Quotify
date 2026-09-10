@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.kovhan.core.ui.component.emptystate.DefaultEmptyState
 import com.kovhan.core.ui.component.quote.ReadOnlyQuoteCard
 import com.kovhan.design.systems.QuotifyMaterialTheme
+import com.kovhan.design.systems.R as DsR
 import com.kovhan.feature.widget.presentation.quote.component.WidgetQuoteTopBar
 import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteIntent
 import com.kovhan.feature.widget.presentation.quote.mvi.WidgetQuoteState
@@ -52,8 +53,13 @@ internal fun WidgetQuoteScreen(
 
         Column(modifier = Modifier.fillMaxSize()) {
             WidgetQuoteTopBar(
+                titleRes = if (state.isDaily) {
+                    DsR.string.widget_quote_daily_title
+                } else {
+                    DsR.string.widget_quote_title
+                },
                 menuVisible = state.menuVisible,
-                canShowMenu = state.quote != null,
+                canShowMenu = state.quote != null && !state.isDaily,
                 intent = intent,
                 onBack = onBack,
             )

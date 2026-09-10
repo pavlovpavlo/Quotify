@@ -7,8 +7,7 @@ import com.kovhan.domain.appconfig.use_case.CheckUpdateRequiredUseCase
 import com.kovhan.domain.auth.use_case.IsLoggedInUseCase
 import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
 import com.kovhan.domain.daily.use_case.PrefetchDailyQuotesUseCase
-import com.kovhan.domain.library.use_case.sync.RefreshLibraryUseCase
-import com.kovhan.domain.library.use_case.sync.SyncPendingChangesUseCase
+import com.kovhan.domain.library.use_case.sync.SyncLibraryUseCase
 import com.kovhan.domain.onboarding.use_case.GetOnboardingCompletedUseCase
 import com.kovhan.domain.premium.use_case.MarkStartupPaywallShownUseCase
 import com.kovhan.domain.premium.use_case.ShouldShowStartupPaywallUseCase
@@ -31,8 +30,7 @@ class SplashScreenViewModelTest {
     private val checkConnectivity: CheckConnectivityUseCase = mockk()
     private val checkUpdateRequired: CheckUpdateRequiredUseCase = mockk(relaxed = true)
     private val subscriptionRepository: SubscriptionRepository = mockk()
-    private val syncPendingChanges: SyncPendingChangesUseCase = mockk(relaxed = true)
-    private val refreshLibrary: RefreshLibraryUseCase = mockk(relaxed = true)
+    private val syncLibrary: SyncLibraryUseCase = mockk(relaxed = true)
     private val shouldShowStartupPaywall: ShouldShowStartupPaywallUseCase = mockk(relaxed = true)
     private val markStartupPaywallShown: MarkStartupPaywallShownUseCase = mockk(relaxed = true)
     private val analytics: AnalyticsTracker = mockk(relaxed = true)
@@ -44,8 +42,7 @@ class SplashScreenViewModelTest {
         checkConnectivity,
         checkUpdateRequired,
         subscriptionRepository,
-        syncPendingChanges,
-        refreshLibrary,
+        syncLibrary,
         shouldShowStartupPaywall,
         markStartupPaywallShown,
         analytics,
@@ -63,15 +60,13 @@ class SplashScreenViewModelTest {
     }
 
     @Test
-    @DisplayName("online startup syncs the queue and refreshes the library")
+    @DisplayName("online startup forces a full library sync")
     fun onlineSyncsAndRefreshes() = runBlocking {
         coEvery { checkConnectivity() } returns true
-        coEvery { syncPendingChanges() } returns true
 
         viewModel()
 
-        coVerify(timeout = 3_000) { syncPendingChanges() }
-        coVerify(timeout = 3_000) { refreshLibrary() }
+        coVerify(timeout = 3_000) { syncLibrary(force = true) }
     }
 
     @Test
@@ -84,7 +79,7 @@ class SplashScreenViewModelTest {
             assertEquals(SplashScreenEffect.ShowUpdateRequired, awaitItem())
         }
 
-        coVerify(exactly = 0) { syncPendingChanges() }
+        coVerify(exactly = 0) { syncLibrary(any()) }
     }
 
     @Test
@@ -96,6 +91,6 @@ class SplashScreenViewModelTest {
         viewModel()
 
         coVerify(timeout = 3_000) { subscriptionRepository.isSubscribed() }
-        coVerify(exactly = 0) { syncPendingChanges() }
+        coVerify(exactly = 0) { syncLibrary(any()) }
     }
 }

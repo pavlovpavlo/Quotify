@@ -7,4 +7,5 @@ data class WidgetQuoteState(
     val isLoading: Boolean = true,
     val quote: EnrichedQuote? = null,
     val menuVisible: Boolean = false,
+    val isDaily: Boolean = false,
 ) : UiState

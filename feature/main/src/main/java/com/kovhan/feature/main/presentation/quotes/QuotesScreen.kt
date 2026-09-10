@@ -74,9 +74,11 @@ fun QuotesScreen(
                 color = colors.textPrimary,
             )
 
-            LibrarySearchBar(onClick = navAction::openSearch)
+            if (state.folders.isNotEmpty()) {
+                LibrarySearchBar(onClick = navAction::openSearch)
 
-            Spacer(Modifier.height(dimensions.size14))
+                Spacer(Modifier.height(dimensions.size14))
+            }
 
             if (state.dailyQuote != null) {
                 QuoteOfTheDayCard(

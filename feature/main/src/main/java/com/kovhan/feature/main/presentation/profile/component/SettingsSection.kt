@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.kovhan.design.systems.InterFamily
 import com.kovhan.design.systems.QuotifyMaterialTheme
 import com.kovhan.design.systems.R
+import com.kovhan.feature.main.BuildConfig
 
 @Composable
 internal fun SettingsSection(
@@ -122,15 +123,17 @@ internal fun SettingsSection(
                 label = stringResource(R.string.profile_settings_about),
                 meta = aboutMeta,
                 onClick = onAboutClick,
-                showDivider = true,
+                showDivider = BuildConfig.DEBUG,
             )
-            SettingsRow(
-                iconRes = R.drawable.ic_settings,
-                label = stringResource(R.string.dev_tools_title),
-                meta = null,
-                onClick = onDevToolsClick,
-                showDivider = false,
-            )
+            if (BuildConfig.DEBUG) {
+                SettingsRow(
+                    iconRes = R.drawable.ic_settings,
+                    label = stringResource(R.string.dev_tools_title),
+                    meta = null,
+                    onClick = onDevToolsClick,
+                    showDivider = false,
+                )
+            }
         }
     }
 }

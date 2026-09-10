@@ -139,3 +139,15 @@ val MIGRATION_10_11 = object : Migration(10, 11) {
         )
     }
 }
+
+/**
+ * Додає момент створення цитати — за ним сортується список. Наявні рядки не
+ * мають реальної дати, тож бекфілимо `rowid`: він зростає в порядку вставки,
+ * отже старий порядок збережеться.
+ */
+val MIGRATION_11_12 = object : Migration(11, 12) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `quotes` ADD COLUMN `createdAt` INTEGER NOT NULL DEFAULT 0")
+        db.execSQL("UPDATE `quotes` SET `createdAt` = `rowid`")
+    }
+}

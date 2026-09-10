@@ -48,7 +48,11 @@ internal fun AddQuoteScanTab(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val imageCapture = remember { ImageCapture.Builder().build() }
+    val imageCapture = remember {
+        ImageCapture.Builder()
+            .setResolutionSelector(fourByThreeSelector())
+            .build()
+    }
     var hasCameraPermission by remember { mutableStateOf(hasCameraPermission(context)) }
 
     val view = LocalView.current
@@ -126,6 +130,7 @@ internal fun AddQuoteScanTab(
         ScanDock(
             mode = mode,
             canProceed = scanned.text.isNotBlank(),
+            canCapture = !offline && aiDenial == null,
             onGallery = {
                 galleryLauncher.launch(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),

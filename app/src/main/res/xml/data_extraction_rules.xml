@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-   Sample data extraction rules file; uncomment and customize as necessary.
-   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
-   for details.
+   Nothing leaves the device. `android:allowBackup="false"` already kills cloud
+   backup, but on API 31+ device-to-device transfer keeps running regardless, so
+   both sections have to opt out explicitly.
+
+   The reason is account safety rather than secrecy: `quotify.db` carries the
+   pending-sync queue and the DataStore carries the cached uid, so restoring them
+   next to a different signed-in account would push one account's offline edits
+   into another. The library itself is restored from Firestore on sign-in.
 -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- TODO: Use <include> and <exclude> to control what is backed up.
-        <include .../>
-        <exclude .../>
-        -->
+        <exclude domain="root" path="." />
+        <exclude domain="device_root" path="." />
+        <exclude domain="external" path="." />
     </cloud-backup>
-    <!--
     <device-transfer>
-        <include .../>
-        <exclude .../>
+        <exclude domain="root" path="." />
+        <exclude domain="device_root" path="." />
+        <exclude domain="external" path="." />
     </device-transfer>
-    -->
 </data-extraction-rules>

@@ -12,4 +12,5 @@ data class Quote(
     val inWidgetPlaylist: Boolean = false,
     val sourceDailyId: String? = null,
     val page: Int? = null,
+    val createdAt: Long = 0L,
 )

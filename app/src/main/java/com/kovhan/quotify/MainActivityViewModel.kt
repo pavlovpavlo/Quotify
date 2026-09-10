@@ -5,6 +5,7 @@ import com.kovhan.core.ui.snackbar.SnackbarMessageSource
 import com.kovhan.core.ui.view_model.BaseViewModel
 import com.kovhan.domain.onboarding.use_case.GetFabTooltipDismissedUseCase
 import com.kovhan.domain.billing.use_case.GetSpecialOfferUseCase
+import com.kovhan.domain.library.use_case.sync.SyncLibraryUseCase
 import com.kovhan.domain.onboarding.use_case.SetFabTooltipDismissedUseCase
 import com.kovhan.domain.premium.use_case.MarkOfferShownUseCase
 import com.kovhan.domain.premium.use_case.ResolveOfferTriggerUseCase
@@ -32,6 +33,7 @@ class MainActivityViewModel @Inject constructor(
     private val resolveSurveyInvite: ResolveSurveyInviteUseCase,
     private val getSpecialOffer: GetSpecialOfferUseCase,
     private val markOfferShown: MarkOfferShownUseCase,
+    private val syncLibrary: SyncLibraryUseCase,
     snackbarMessageSource: SnackbarMessageSource,
 ) : BaseViewModel<MainActivityState, MainActivityEffect>(MainActivityState()), MainIntent {
 
@@ -58,6 +60,11 @@ class MainActivityViewModel @Inject constructor(
     }
 
     override fun onAppForegrounded() {
+        viewModelScope.launch {
+            runCatching { syncLibrary() }
+                .onFailure { Timber.w(it, "Library sync on foreground failed") }
+        }
+
         viewModelScope.launch {
             val trigger = runCatching { resolveOfferTrigger() }.getOrNull()
             if (trigger != null && runCatching { getSpecialOffer() }.getOrNull() != null) {

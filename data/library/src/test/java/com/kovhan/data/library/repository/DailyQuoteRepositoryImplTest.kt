@@ -132,4 +132,67 @@ class DailyQuoteRepositoryImplTest {
         assertEquals("q1", repository.getDailyQuote()?.id)
         coVerify { seenDao.clear() }
     }
+
+    @Test
+    @DisplayName("getDailyQuote still picks from the cached pool when the remote is unreachable")
+    fun offlineFallsBackToCachedPool() = runTest {
+        coEvery { remote.getAll() } throws RuntimeException("offline")
+        coEvery { quoteDao.getAll() } returns listOf(q1)
+        coEvery { selectionDao.get() } returns null
+
+        assertEquals("q1", repository.getDailyQuote()?.id)
+    }
+
+    @Test
+    @DisplayName("ensureDailyQuote rolls a new quote for today without touching the network")
+    fun ensurePicksOffline() = runTest {
+        coEvery { quoteDao.getAll() } returns listOf(q1)
+        coEvery { selectionDao.get() } returns
+            DailySelectionEntity(quoteId = "q2", epochDay = today - 1)
+
+        assertEquals("q1", repository.ensureDailyQuote()?.id)
+        coVerify { selectionDao.set(DailySelectionEntity(quoteId = "q1", epochDay = today)) }
+        coVerify(exactly = 0) { remote.getAll() }
+    }
+
+    @Test
+    @DisplayName("ensureDailyQuote reuses today's selection")
+    fun ensureReusesTodaySelection() = runTest {
+        coEvery { quoteDao.getAll() } returns listOf(q1, q2)
+        coEvery { selectionDao.get() } returns DailySelectionEntity(quoteId = "q2", epochDay = today)
+
+        assertEquals("q2", repository.ensureDailyQuote()?.id)
+        coVerify(exactly = 0) { selectionDao.set(any()) }
+    }
+
+    @Test
+    @DisplayName("getDailyQuote hides the library card once dismissed for today")
+    fun dismissedHidesLibraryCard() = runTest {
+        coEvery { quoteDao.getAll() } returns listOf(q1)
+        coEvery { selectionDao.get() } returns
+            DailySelectionEntity(quoteId = "q1", epochDay = today, dismissedEpochDay = today)
+
+        assertNull(repository.getDailyQuote())
+    }
+
+    @Test
+    @DisplayName("dismissing for today leaves the widget's quote intact")
+    fun dismissedKeepsWidgetQuote() = runTest {
+        coEvery { quoteDao.getAll() } returns listOf(q1)
+        coEvery { selectionDao.get() } returns
+            DailySelectionEntity(quoteId = "q1", epochDay = today, dismissedEpochDay = today)
+
+        assertEquals("q1", repository.getCachedDailyQuote()?.id)
+        assertEquals("q1", repository.ensureDailyQuote()?.id)
+    }
+
+    @Test
+    @DisplayName("a dismissal from yesterday no longer hides today's card")
+    fun yesterdaysDismissalExpires() = runTest {
+        coEvery { quoteDao.getAll() } returns listOf(q1)
+        coEvery { selectionDao.get() } returns
+            DailySelectionEntity(quoteId = "q2", epochDay = today - 1, dismissedEpochDay = today - 1)
+
+        assertEquals("q1", repository.getDailyQuote()?.id)
+    }
 }

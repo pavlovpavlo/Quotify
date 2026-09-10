@@ -16,6 +16,7 @@ fun QuoteDto.toDomain() = Quote(
     inWidgetPlaylist = inWidgetPlaylist,
     sourceDailyId = sourceDailyId,
     page = page,
+    createdAt = createdAt,
 )
 
 fun Quote.toDto() = QuoteDto(
@@ -30,6 +31,7 @@ fun Quote.toDto() = QuoteDto(
     inWidgetPlaylist = inWidgetPlaylist,
     sourceDailyId = sourceDailyId,
     page = page,
+    createdAt = createdAt,
 )
 
 internal fun QuoteDto.isFavouriteResolved(): Boolean =

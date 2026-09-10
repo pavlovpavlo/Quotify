@@ -50,7 +50,7 @@ import com.kovhan.data.library.local.widget.WidgetStateEntity
         WidgetSeenEntity::class,
         WidgetStateEntity::class,
     ],
-    version = 11,
+    version = 12,
     exportSchema = false,
 )
 @TypeConverters(StringListConverter::class)

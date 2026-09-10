@@ -8,8 +8,7 @@ import com.kovhan.domain.appconfig.use_case.CheckUpdateRequiredUseCase
 import com.kovhan.domain.auth.use_case.IsLoggedInUseCase
 import com.kovhan.domain.connectivity.use_case.CheckConnectivityUseCase
 import com.kovhan.domain.daily.use_case.PrefetchDailyQuotesUseCase
-import com.kovhan.domain.library.use_case.sync.RefreshLibraryUseCase
-import com.kovhan.domain.library.use_case.sync.SyncPendingChangesUseCase
+import com.kovhan.domain.library.use_case.sync.SyncLibraryUseCase
 import com.kovhan.domain.onboarding.use_case.GetOnboardingCompletedUseCase
 import com.kovhan.domain.premium.use_case.MarkStartupPaywallShownUseCase
 import com.kovhan.domain.premium.use_case.ShouldShowStartupPaywallUseCase
@@ -29,8 +28,7 @@ class SplashScreenViewModel @Inject constructor(
     private val checkConnectivity: CheckConnectivityUseCase,
     private val checkUpdateRequired: CheckUpdateRequiredUseCase,
     private val subscriptionRepository: SubscriptionRepository,
-    private val syncPendingChanges: SyncPendingChangesUseCase,
-    private val refreshLibrary: RefreshLibraryUseCase,
+    private val syncLibrary: SyncLibraryUseCase,
     private val shouldShowStartupPaywall: ShouldShowStartupPaywallUseCase,
     private val markStartupPaywallShown: MarkStartupPaywallShownUseCase,
     private val analytics: AnalyticsTracker,
@@ -55,9 +53,7 @@ class SplashScreenViewModel @Inject constructor(
                     return@launch
                 }
                 runCatching { prefetchDailyQuotes() }
-                // Push queued offline changes first, then pull the fresh remote state.
-                val drained = runCatching { syncPendingChanges() }.getOrDefault(false)
-                if (drained) runCatching { refreshLibrary() }
+                runCatching { syncLibrary(force = true) }
                 awaitMinDuration()
                 navigateOnward()
             } else if (subscriptionRepository.isSubscribed()) {

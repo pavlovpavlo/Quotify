@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +27,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -107,11 +104,6 @@ internal fun ScanCropStage(
         }
     }
 
-    if (cropping) {
-        ScanProcessingStage(imageUri = imageUri, modifier = modifier)
-        return
-    }
-
     Column(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -121,16 +113,7 @@ internal fun ScanCropStage(
             verticalArrangement = Arrangement.spacedBy(dimensions.size14),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .heightIn(min = 220.dp)
-                    .clip(RoundedCornerShape(dimensions.size18))
-                    .background(ScanFrameDark)
-                    .onSizeChanged { boxSize = it },
-                contentAlignment = Alignment.Center,
-            ) {
+            ScanFrame(modifier = Modifier.weight(1f)) {
                 if (bmp == null) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(dimensions.iconXl),
@@ -138,30 +121,38 @@ internal fun ScanCropStage(
                         strokeWidth = 2.dp,
                     )
                 } else {
-                    Image(
-                        modifier = Modifier.fillMaxSize(),
-                        bitmap = bmp.asImageBitmap(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                    )
-
-                    val c = crop
-                    if (c != null && layout != null) {
-                        CropOverlay(crop = c, accent = colors.accentAi)
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .cropGestures(
-                                    bounds = layout.rect,
-                                    gripBand = gripBandPx,
-                                    minSize = minSizePx,
-                                    current = { crop },
-                                    onChange = { crop = it },
-                                ),
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .onSizeChanged { boxSize = it },
+                    ) {
+                        Image(
+                            modifier = Modifier.fillMaxSize(),
+                            bitmap = bmp.asImageBitmap(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
                         )
+
+                        val c = crop
+                        if (c != null && layout != null && !cropping) {
+                            CropOverlay(crop = c, accent = colors.accentAi)
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .cropGestures(
+                                        bounds = layout.rect,
+                                        gripBand = gripBandPx,
+                                        minSize = minSizePx,
+                                        current = { crop },
+                                        onChange = { crop = it },
+                                    ),
+                            )
+                        }
                     }
                 }
+
+                if (cropping) ScanFrameProgress()
             }
 
             Text(
@@ -175,7 +166,8 @@ internal fun ScanCropStage(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensions.space6, vertical = dimensions.space5),
+                .padding(horizontal = dimensions.space6, vertical = dimensions.space5)
+                .heightIn(min = dimensions.size70),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             QuotifyButton(

@@ -12,4 +12,5 @@ data class QuoteDto(
     val sourceDailyId: String? = null,
     val page: Int? = null,
     val isFavourite: Boolean = false,
+    val createdAt: Long = 0L,
 )

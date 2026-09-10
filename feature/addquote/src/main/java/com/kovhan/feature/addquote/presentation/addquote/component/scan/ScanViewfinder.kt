@@ -12,17 +12,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -71,15 +68,7 @@ internal fun ScanStage(
         verticalArrangement = Arrangement.spacedBy(dimensions.size14),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .heightIn(min = 220.dp)
-                .clip(RoundedCornerShape(dimensions.size18))
-                .background(ScanFrameDark),
-            contentAlignment = Alignment.Center,
-        ) {
+        ScanFrame(modifier = Modifier.weight(1f)) {
             if (offline) {
                 ScanOfflinePrompt(onRetry = onRetry)
             } else if (aiDenial != null) {
@@ -93,18 +82,20 @@ internal fun ScanStage(
             }
         }
 
-        Text(
-            text = stringResource(
-                when {
-                    offline -> R.string.add_quote_scan_offline_caption
-                    noTextFound -> R.string.add_quote_scan_no_text
-                    else -> R.string.add_quote_scan_caption_live
-                },
-            ),
-            style = typography.caption,
-            color = if (noTextFound && !offline) colors.error else colors.textTertiary,
-            textAlign = TextAlign.Center,
-        )
+        if (aiDenial == null) {
+            Text(
+                text = stringResource(
+                    when {
+                        offline -> R.string.add_quote_scan_offline_caption
+                        noTextFound -> R.string.add_quote_scan_no_text
+                        else -> R.string.add_quote_scan_caption_live
+                    },
+                ),
+                style = typography.caption,
+                color = if (noTextFound && !offline) colors.error else colors.textTertiary,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -114,7 +105,7 @@ private fun CameraPreview(imageCapture: ImageCapture, modifier: Modifier = Modif
     val lifecycleOwner = LocalLifecycleOwner.current
     val previewView = remember {
         PreviewView(context).apply {
-            scaleType = PreviewView.ScaleType.FILL_CENTER
+            scaleType = PreviewView.ScaleType.FIT_CENTER
             implementationMode = PreviewView.ImplementationMode.COMPATIBLE
         }
     }
@@ -127,9 +118,10 @@ private fun CameraPreview(imageCapture: ImageCapture, modifier: Modifier = Modif
         future.addListener(
             {
                 provider = future.get().also { cameraProvider ->
-                    val preview = Preview.Builder().build().also {
-                        it.setSurfaceProvider(previewView.surfaceProvider)
-                    }
+                    val preview = Preview.Builder()
+                        .setResolutionSelector(fourByThreeSelector())
+                        .build()
+                        .also { it.setSurfaceProvider(previewView.surfaceProvider) }
                     runCatching {
                         cameraProvider.unbindAll()
                         cameraProvider.bindToLifecycle(
